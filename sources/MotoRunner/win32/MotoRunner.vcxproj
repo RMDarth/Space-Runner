@@ -1,0 +1,223 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{8F58598C-A94C-4F4D-85F8-DD8D25882CFD}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>MotoRunner</RootNamespace>
+    <ProjectName>MotoRunner</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <IntDir>$(Configuration)\obj\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <IntDir>$(Configuration)\obj\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>./;../core;../../Libs/Ogre.msvc13/include;../../Libs/Ogre.msvc13/include/OGRE;../../Libs/Ogre.msvc13/include/OGRE/Overlay;../../Libs/Ogre.msvc13/boost;../../Libs/OpenAL/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>..\..\Libs\Ogre.msvc13\lib\Debug;..\..\Libs\Ogre.msvc13\boost\lib;..\..\Libs\OpenAL\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>OgreMain_d.lib;OgreOverlay_d.lib;OIS_d.lib;OpenAL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <PreBuildEvent>
+      <Command>$(SolutionDir)buildincrement.exe $(SolutionDir)</Command>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>./;../core;../../Libs/Ogre.msvc13/include;../../Libs/Ogre.msvc13/include/OGRE;../../Libs/Ogre.msvc13/include/OGRE/Overlay;../../Libs/Ogre.msvc13/boost;../../Libs/OpenAL/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>OgreMain.lib;OgreOverlay.lib;OIS.lib;OpenAL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\..\Libs\Ogre.msvc13\lib\Release;..\..\Libs\Ogre.msvc13\boost\lib;..\..\Libs\OpenAL\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+    <PreBuildEvent>
+      <Command>$(SolutionDir)buildincrement.exe $(SolutionDir)</Command>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\core\AchievementsStateProcessor.cpp" />
+    <ClCompile Include="..\core\ArcadeDifficultyStateProcessor.cpp" />
+    <ClCompile Include="..\core\Basic.cpp" />
+    <ClCompile Include="..\core\Camera.cpp" />
+    <ClCompile Include="..\core\Car.cpp" />
+    <ClCompile Include="..\core\CircleDrawable.cpp" />
+    <ClCompile Include="..\core\Config.cpp" />
+    <ClCompile Include="..\core\ControlLibrary\ButtonControl.cpp" />
+    <ClCompile Include="..\core\ControlLibrary\ContainerControl.cpp" />
+    <ClCompile Include="..\core\ControlLibrary\Control.cpp" />
+    <ClCompile Include="..\core\ControlLibrary\ControlDocument.cpp" />
+    <ClCompile Include="..\core\ControlLibrary\ControlFactory.cpp" />
+    <ClCompile Include="..\core\ControlLibrary\ImageControl.cpp" />
+    <ClCompile Include="..\core\ControlLibrary\LabelControl.cpp" />
+    <ClCompile Include="..\core\ControlLibrary\LevelButtonControl.cpp" />
+    <ClCompile Include="..\core\ControlLibrary\PanelControl.cpp" />
+    <ClCompile Include="..\core\ControlLibrary\RadioButtonControl.cpp" />
+    <ClCompile Include="..\core\ControlLibrary\RadioButtonGroup.cpp" />
+    <ClCompile Include="..\core\ControlLibrary\SwipeBarControl.cpp" />
+    <ClCompile Include="..\core\CreditsStateProcessor.cpp" />
+    <ClCompile Include="..\core\Game.cpp" />
+    <ClCompile Include="..\core\Gun.cpp" />
+    <ClCompile Include="..\core\HighScoresStateProcessor.cpp" />
+    <ClCompile Include="..\core\LevelManager.cpp" />
+    <ClCompile Include="..\core\LevelSelectionStateProcessor.cpp" />
+    <ClCompile Include="..\core\Light.cpp" />
+    <ClCompile Include="..\core\LineDrawable.cpp" />
+    <ClCompile Include="..\core\MenuStateProcessor.cpp" />
+    <ClCompile Include="..\core\MessageStateProcessor.cpp" />
+    <ClCompile Include="..\core\ModelAnimation.cpp" />
+    <ClCompile Include="..\core\ModelDrawable.cpp" />
+    <ClCompile Include="..\core\ParticleSystem.cpp" />
+    <ClCompile Include="..\core\PauseStateProcessor.cpp" />
+    <ClCompile Include="..\core\PrecompileHeaders.cpp" />
+    <ClCompile Include="..\core\RaceStateProcessor.cpp" />
+    <ClCompile Include="..\core\RectDrawable.cpp" />
+    <ClCompile Include="..\core\Road.cpp" />
+    <ClCompile Include="..\core\RoadBlock.cpp" />
+    <ClCompile Include="..\core\RoadLine.cpp" />
+    <ClCompile Include="..\core\SceneSector.cpp" />
+    <ClCompile Include="..\core\Scores.cpp" />
+    <ClCompile Include="..\core\ScoreStateProcessor.cpp" />
+    <ClCompile Include="..\core\SkinManager.cpp" />
+    <ClCompile Include="..\core\SliderProcessor.cpp" />
+    <ClCompile Include="..\core\StateProcessorFactory.cpp" />
+    <ClCompile Include="..\core\StoreStateProcessor.cpp" />
+    <ClCompile Include="..\core\tinyxml\tinyxml2.cpp" />
+    <ClCompile Include="..\core\WorldSelectionStateProcessor.cpp" />
+    <ClCompile Include="BillingProcessor.cpp" />
+    <ClCompile Include="FileSystem.cpp" />
+    <ClCompile Include="Input.cpp" />
+    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="OgreApplication.cpp" />
+    <ClCompile Include="OpenAL\aldlist.cpp" />
+    <ClCompile Include="OpenAL\CWaves.cpp" />
+    <ClCompile Include="OpenAL\Framework.cpp" />
+    <ClCompile Include="OpenAL\LoadOAL.cpp" />
+    <ClCompile Include="RenderProcessor.cpp" />
+    <ClCompile Include="SoundSystem.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\core\AchievementsStateProcessor.h" />
+    <ClInclude Include="..\core\ArcadeDifficultyStateProcessor.h" />
+    <ClInclude Include="..\core\Basic.h" />
+    <ClInclude Include="..\core\Camera.h" />
+    <ClInclude Include="..\core\Car.h" />
+    <ClInclude Include="..\core\CircleDrawable.h" />
+    <ClInclude Include="..\core\Config.h" />
+    <ClInclude Include="..\core\ControlLibrary\ButtonControl.h" />
+    <ClInclude Include="..\core\ControlLibrary\ContainerControl.h" />
+    <ClInclude Include="..\core\ControlLibrary\Control.h" />
+    <ClInclude Include="..\core\ControlLibrary\ControlDocument.h" />
+    <ClInclude Include="..\core\ControlLibrary\ControlFactory.h" />
+    <ClInclude Include="..\core\ControlLibrary\ImageControl.h" />
+    <ClInclude Include="..\core\ControlLibrary\LabelControl.h" />
+    <ClInclude Include="..\core\ControlLibrary\LevelButtonControl.h" />
+    <ClInclude Include="..\core\ControlLibrary\PanelControl.h" />
+    <ClInclude Include="..\core\ControlLibrary\RadioButtonControl.h" />
+    <ClInclude Include="..\core\ControlLibrary\RadioButtonGroup.h" />
+    <ClInclude Include="..\core\ControlLibrary\SwipeBarControl.h" />
+    <ClInclude Include="..\core\CreditsStateProcessor.h" />
+    <ClInclude Include="..\core\Game.h" />
+    <ClInclude Include="..\core\GameState.h" />
+    <ClInclude Include="..\core\Gun.h" />
+    <ClInclude Include="..\core\HighScoresStateProcessor.h" />
+    <ClInclude Include="..\core\IDrawable.h" />
+    <ClInclude Include="..\core\IInputListener.h" />
+    <ClInclude Include="..\core\IStateProcessor.h" />
+    <ClInclude Include="..\core\LevelManager.h" />
+    <ClInclude Include="..\core\LevelSelectionStateProcessor.h" />
+    <ClInclude Include="..\core\Light.h" />
+    <ClInclude Include="..\core\LineDrawable.h" />
+    <ClInclude Include="..\core\MenuStateProcessor.h" />
+    <ClInclude Include="..\core\MessageStateProcessor.h" />
+    <ClInclude Include="..\core\ModelAnimation.h" />
+    <ClInclude Include="..\core\ModelDrawable.h" />
+    <ClInclude Include="..\core\ParticleSystem.h" />
+    <ClInclude Include="..\core\PauseStateProcessor.h" />
+    <ClInclude Include="..\core\PrecompileHeaders.h" />
+    <ClInclude Include="..\core\RaceStateProcessor.h" />
+    <ClInclude Include="..\core\RectDrawable.h" />
+    <ClInclude Include="..\core\Road.h" />
+    <ClInclude Include="..\core\RoadBlock.h" />
+    <ClInclude Include="..\core\RoadLine.h" />
+    <ClInclude Include="..\core\SceneSector.h" />
+    <ClInclude Include="..\core\Scores.h" />
+    <ClInclude Include="..\core\ScoreStateProcessor.h" />
+    <ClInclude Include="..\core\SkinManager.h" />
+    <ClInclude Include="..\core\SliderProcessor.h" />
+    <ClInclude Include="..\core\StateProcessorFactory.h" />
+    <ClInclude Include="..\core\StoreStateProcessor.h" />
+    <ClInclude Include="..\core\tinyxml\tinyxml2.h" />
+    <ClInclude Include="..\core\WorldSelectionStateProcessor.h" />
+    <ClInclude Include="BillingProcessor.h" />
+    <ClInclude Include="FileSystem.h" />
+    <ClInclude Include="Input.h" />
+    <ClInclude Include="OgreApplication.h" />
+    <ClInclude Include="OpenAL\aldlist.h" />
+    <ClInclude Include="OpenAL\CWaves.h" />
+    <ClInclude Include="OpenAL\Framework.h" />
+    <ClInclude Include="OpenAL\LoadOAL.h" />
+    <ClInclude Include="RenderProcessor.h" />
+    <ClInclude Include="SoundSystem.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

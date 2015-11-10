@@ -1,0 +1,412 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="..\core\Basic.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\core\PrecompileHeaders.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\core\ControlLibrary\ButtonControl.cpp">
+      <Filter>core\ControlLibrary</Filter>
+    </ClCompile>
+    <ClCompile Include="..\core\ControlLibrary\ContainerControl.cpp">
+      <Filter>core\ControlLibrary</Filter>
+    </ClCompile>
+    <ClCompile Include="..\core\ControlLibrary\Control.cpp">
+      <Filter>core\ControlLibrary</Filter>
+    </ClCompile>
+    <ClCompile Include="..\core\ControlLibrary\ControlDocument.cpp">
+      <Filter>core\ControlLibrary</Filter>
+    </ClCompile>
+    <ClCompile Include="..\core\ControlLibrary\ControlFactory.cpp">
+      <Filter>core\ControlLibrary</Filter>
+    </ClCompile>
+    <ClCompile Include="..\core\ControlLibrary\ImageControl.cpp">
+      <Filter>core\ControlLibrary</Filter>
+    </ClCompile>
+    <ClCompile Include="..\core\ControlLibrary\LabelControl.cpp">
+      <Filter>core\ControlLibrary</Filter>
+    </ClCompile>
+    <ClCompile Include="..\core\ControlLibrary\LevelButtonControl.cpp">
+      <Filter>core\ControlLibrary</Filter>
+    </ClCompile>
+    <ClCompile Include="..\core\ControlLibrary\PanelControl.cpp">
+      <Filter>core\ControlLibrary</Filter>
+    </ClCompile>
+    <ClCompile Include="..\core\ControlLibrary\RadioButtonControl.cpp">
+      <Filter>core\ControlLibrary</Filter>
+    </ClCompile>
+    <ClCompile Include="..\core\ControlLibrary\RadioButtonGroup.cpp">
+      <Filter>core\ControlLibrary</Filter>
+    </ClCompile>
+    <ClCompile Include="..\core\tinyxml\tinyxml2.cpp">
+      <Filter>core\tinyxml</Filter>
+    </ClCompile>
+    <ClCompile Include="Input.cpp">
+      <Filter>win32</Filter>
+    </ClCompile>
+    <ClCompile Include="OgreApplication.cpp">
+      <Filter>win32</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderProcessor.cpp">
+      <Filter>win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\core\Camera.cpp">
+      <Filter>core\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\core\CircleDrawable.cpp">
+      <Filter>core\Render\Drawables</Filter>
+    </ClCompile>
+    <ClCompile Include="..\core\LineDrawable.cpp">
+      <Filter>core\Render\Drawables</Filter>
+    </ClCompile>
+    <ClCompile Include="..\core\ModelAnimation.cpp">
+      <Filter>core\Render\Drawables</Filter>
+    </ClCompile>
+    <ClCompile Include="..\core\ModelDrawable.cpp">
+      <Filter>core\Render\Drawables</Filter>
+    </ClCompile>
+    <ClCompile Include="..\core\Light.cpp">
+      <Filter>core\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\core\SceneSector.cpp">
+      <Filter>core\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\core\Game.cpp">
+      <Filter>core\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="..\core\StateProcessorFactory.cpp">
+      <Filter>core\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="..\core\LevelManager.cpp">
+      <Filter>core\Game\StateProcessors\Level</Filter>
+    </ClCompile>
+    <ClCompile Include="..\core\WorldSelectionStateProcessor.cpp">
+      <Filter>core\Game\StateProcessors\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\core\ScoreStateProcessor.cpp">
+      <Filter>core\Game\StateProcessors\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\core\PauseStateProcessor.cpp">
+      <Filter>core\Game\StateProcessors\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\core\MenuStateProcessor.cpp">
+      <Filter>core\Game\StateProcessors\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\core\LevelSelectionStateProcessor.cpp">
+      <Filter>core\Game\StateProcessors\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="FileSystem.cpp">
+      <Filter>win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\core\Scores.cpp">
+      <Filter>core\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="..\core\ArcadeDifficultyStateProcessor.cpp">
+      <Filter>core\Game\StateProcessors\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\core\HighScoresStateProcessor.cpp">
+      <Filter>core\Game\StateProcessors\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\core\ControlLibrary\SwipeBarControl.cpp">
+      <Filter>core\ControlLibrary</Filter>
+    </ClCompile>
+    <ClCompile Include="..\core\Config.cpp">
+      <Filter>core\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="..\core\CreditsStateProcessor.cpp">
+      <Filter>core\Game\StateProcessors\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="BillingProcessor.cpp">
+      <Filter>win32</Filter>
+    </ClCompile>
+    <ClCompile Include="OpenAL\aldlist.cpp">
+      <Filter>win32\OpenAL</Filter>
+    </ClCompile>
+    <ClCompile Include="OpenAL\CWaves.cpp">
+      <Filter>win32\OpenAL</Filter>
+    </ClCompile>
+    <ClCompile Include="OpenAL\Framework.cpp">
+      <Filter>win32\OpenAL</Filter>
+    </ClCompile>
+    <ClCompile Include="OpenAL\LoadOAL.cpp">
+      <Filter>win32\OpenAL</Filter>
+    </ClCompile>
+    <ClCompile Include="SoundSystem.cpp">
+      <Filter>win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\core\MessageStateProcessor.cpp">
+      <Filter>core\Game\StateProcessors\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\core\SkinManager.cpp">
+      <Filter>core\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="..\core\SliderProcessor.cpp">
+      <Filter>core\Game\StateProcessors\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\core\Gun.cpp">
+      <Filter>core\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="..\core\StoreStateProcessor.cpp">
+      <Filter>core\Game\StateProcessors\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\core\ParticleSystem.cpp">
+      <Filter>core\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="..\core\AchievementsStateProcessor.cpp">
+      <Filter>core\Game\StateProcessors\Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\core\RectDrawable.cpp">
+      <Filter>core\Render\Drawables</Filter>
+    </ClCompile>
+    <ClCompile Include="..\core\Road.cpp">
+      <Filter>core\Game\StateProcessors\Race\Road</Filter>
+    </ClCompile>
+    <ClCompile Include="..\core\RoadBlock.cpp">
+      <Filter>core\Game\StateProcessors\Race\Road</Filter>
+    </ClCompile>
+    <ClCompile Include="..\core\RoadLine.cpp">
+      <Filter>core\Game\StateProcessors\Race\Road</Filter>
+    </ClCompile>
+    <ClCompile Include="..\core\RaceStateProcessor.cpp">
+      <Filter>core\Game\StateProcessors\Race</Filter>
+    </ClCompile>
+    <ClCompile Include="..\core\Car.cpp">
+      <Filter>core\Game\StateProcessors\Race\Road</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="win32">
+      <UniqueIdentifier>{7af91b97-66a5-413e-9695-07d92d2d31a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="core">
+      <UniqueIdentifier>{97f31788-8a7e-44a8-ae92-1c4300a0db54}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="core\ControlLibrary">
+      <UniqueIdentifier>{3782b810-f704-4906-a2ef-71d6fab3c4ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="core\tinyxml">
+      <UniqueIdentifier>{645e229f-7c42-4a73-9d70-3dbd67aca8c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="core\Input">
+      <UniqueIdentifier>{99a39e6e-c9e9-4398-beb9-d54e6bf4893d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="core\Render">
+      <UniqueIdentifier>{3cd42f4c-eff8-4097-9f8c-b02651385249}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="core\Render\Drawables">
+      <UniqueIdentifier>{f1240abd-dd4c-4a4a-8f05-80de6fca1aaa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="core\Game">
+      <UniqueIdentifier>{fceaf13f-4106-4d97-a2c1-d9aa9f94f59f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="core\Game\StateProcessors">
+      <UniqueIdentifier>{1c99712b-342f-4268-93b2-c9ea8a7215c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="core\Game\StateProcessors\Level">
+      <UniqueIdentifier>{5615b5ce-6765-47ea-8ed1-f10bdf405003}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="core\Game\StateProcessors\Menu">
+      <UniqueIdentifier>{a1c4732d-1f07-4f68-967f-61e340732004}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="win32\OpenAL">
+      <UniqueIdentifier>{eeacaba3-2923-4c40-b693-498da8c6f68d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="core\Game\StateProcessors\Race">
+      <UniqueIdentifier>{46dd2f5c-facf-4fb3-88f5-c77b0b9ad4e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="core\Game\StateProcessors\Race\Road">
+      <UniqueIdentifier>{e8f5ba2e-5ddb-4a2e-8cf4-c8eaab4c33b4}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\core\Basic.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\core\PrecompileHeaders.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\core\ControlLibrary\ButtonControl.h">
+      <Filter>core\ControlLibrary</Filter>
+    </ClInclude>
+    <ClInclude Include="..\core\ControlLibrary\ContainerControl.h">
+      <Filter>core\ControlLibrary</Filter>
+    </ClInclude>
+    <ClInclude Include="..\core\ControlLibrary\Control.h">
+      <Filter>core\ControlLibrary</Filter>
+    </ClInclude>
+    <ClInclude Include="..\core\ControlLibrary\ControlDocument.h">
+      <Filter>core\ControlLibrary</Filter>
+    </ClInclude>
+    <ClInclude Include="..\core\ControlLibrary\ControlFactory.h">
+      <Filter>core\ControlLibrary</Filter>
+    </ClInclude>
+    <ClInclude Include="..\core\ControlLibrary\ImageControl.h">
+      <Filter>core\ControlLibrary</Filter>
+    </ClInclude>
+    <ClInclude Include="..\core\ControlLibrary\LabelControl.h">
+      <Filter>core\ControlLibrary</Filter>
+    </ClInclude>
+    <ClInclude Include="..\core\ControlLibrary\LevelButtonControl.h">
+      <Filter>core\ControlLibrary</Filter>
+    </ClInclude>
+    <ClInclude Include="..\core\ControlLibrary\PanelControl.h">
+      <Filter>core\ControlLibrary</Filter>
+    </ClInclude>
+    <ClInclude Include="..\core\ControlLibrary\RadioButtonControl.h">
+      <Filter>core\ControlLibrary</Filter>
+    </ClInclude>
+    <ClInclude Include="..\core\ControlLibrary\RadioButtonGroup.h">
+      <Filter>core\ControlLibrary</Filter>
+    </ClInclude>
+    <ClInclude Include="..\core\tinyxml\tinyxml2.h">
+      <Filter>core\tinyxml</Filter>
+    </ClInclude>
+    <ClInclude Include="..\core\IInputListener.h">
+      <Filter>core\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\core\Camera.h">
+      <Filter>core\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\core\IDrawable.h">
+      <Filter>core\Render\Drawables</Filter>
+    </ClInclude>
+    <ClInclude Include="..\core\ModelDrawable.h">
+      <Filter>core\Render\Drawables</Filter>
+    </ClInclude>
+    <ClInclude Include="..\core\CircleDrawable.h">
+      <Filter>core\Render\Drawables</Filter>
+    </ClInclude>
+    <ClInclude Include="..\core\LineDrawable.h">
+      <Filter>core\Render\Drawables</Filter>
+    </ClInclude>
+    <ClInclude Include="..\core\ModelAnimation.h">
+      <Filter>core\Render\Drawables</Filter>
+    </ClInclude>
+    <ClInclude Include="..\core\Light.h">
+      <Filter>core\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\core\SceneSector.h">
+      <Filter>core\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\core\Game.h">
+      <Filter>core\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="..\core\GameState.h">
+      <Filter>core\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="..\core\StateProcessorFactory.h">
+      <Filter>core\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="..\core\IStateProcessor.h">
+      <Filter>core\Game\StateProcessors</Filter>
+    </ClInclude>
+    <ClInclude Include="..\core\LevelManager.h">
+      <Filter>core\Game\StateProcessors\Level</Filter>
+    </ClInclude>
+    <ClInclude Include="..\core\WorldSelectionStateProcessor.h">
+      <Filter>core\Game\StateProcessors\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\core\ScoreStateProcessor.h">
+      <Filter>core\Game\StateProcessors\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\core\PauseStateProcessor.h">
+      <Filter>core\Game\StateProcessors\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\core\MenuStateProcessor.h">
+      <Filter>core\Game\StateProcessors\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\core\LevelSelectionStateProcessor.h">
+      <Filter>core\Game\StateProcessors\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\core\Scores.h">
+      <Filter>core\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderProcessor.h">
+      <Filter>win32</Filter>
+    </ClInclude>
+    <ClInclude Include="Input.h">
+      <Filter>win32</Filter>
+    </ClInclude>
+    <ClInclude Include="OgreApplication.h">
+      <Filter>win32</Filter>
+    </ClInclude>
+    <ClInclude Include="FileSystem.h">
+      <Filter>win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\core\ArcadeDifficultyStateProcessor.h">
+      <Filter>core\Game\StateProcessors\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\core\HighScoresStateProcessor.h">
+      <Filter>core\Game\StateProcessors\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\core\ControlLibrary\SwipeBarControl.h">
+      <Filter>core\ControlLibrary</Filter>
+    </ClInclude>
+    <ClInclude Include="..\core\Config.h">
+      <Filter>core\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="..\core\CreditsStateProcessor.h">
+      <Filter>core\Game\StateProcessors\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="BillingProcessor.h">
+      <Filter>win32</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenAL\aldlist.h">
+      <Filter>win32\OpenAL</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenAL\CWaves.h">
+      <Filter>win32\OpenAL</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenAL\Framework.h">
+      <Filter>win32\OpenAL</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenAL\LoadOAL.h">
+      <Filter>win32\OpenAL</Filter>
+    </ClInclude>
+    <ClInclude Include="SoundSystem.h">
+      <Filter>win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\core\MessageStateProcessor.h">
+      <Filter>core\Game\StateProcessors\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\core\SkinManager.h">
+      <Filter>core\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="..\core\SliderProcessor.h">
+      <Filter>core\Game\StateProcessors\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\core\Gun.h">
+      <Filter>core\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="..\core\StoreStateProcessor.h">
+      <Filter>core\Game\StateProcessors\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\core\ParticleSystem.h">
+      <Filter>core\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="..\core\AchievementsStateProcessor.h">
+      <Filter>core\Game\StateProcessors\Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\core\RectDrawable.h">
+      <Filter>core\Render\Drawables</Filter>
+    </ClInclude>
+    <ClInclude Include="..\core\Road.h">
+      <Filter>core\Game\StateProcessors\Race\Road</Filter>
+    </ClInclude>
+    <ClInclude Include="..\core\RoadBlock.h">
+      <Filter>core\Game\StateProcessors\Race\Road</Filter>
+    </ClInclude>
+    <ClInclude Include="..\core\RoadLine.h">
+      <Filter>core\Game\StateProcessors\Race\Road</Filter>
+    </ClInclude>
+    <ClInclude Include="..\core\RaceStateProcessor.h">
+      <Filter>core\Game\StateProcessors\Race</Filter>
+    </ClInclude>
+    <ClInclude Include="..\core\Car.h">
+      <Filter>core\Game\StateProcessors\Race\Road</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

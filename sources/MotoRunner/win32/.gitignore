@@ -1,0 +1,9 @@
+/Debug
+/*.sdf
+/*.suo
+/*.user
+/buildincrement.exe
+/Release
+
+/Ogre.log
+*.opensdf
