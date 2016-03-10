@@ -65,7 +65,7 @@
       <AdditionalDependencies>OgreMain_d.lib;OgreOverlay_d.lib;OIS_d.lib;OpenAL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreBuildEvent>
-      <Command>$(SolutionDir)buildincrement.exe $(SolutionDir)</Command>
+      <Command>$(SolutionDir)buildinc.exe $(SolutionDir)</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -89,7 +89,7 @@
       <AdditionalLibraryDirectories>..\..\Libs\Ogre.msvc13\lib\Release;..\..\Libs\Ogre.msvc13\boost\lib;..\..\Libs\OpenAL\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PreBuildEvent>
-      <Command>$(SolutionDir)buildincrement.exe $(SolutionDir)</Command>
+      <Command>$(SolutionDir)buildinc.exe $(SolutionDir)</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -97,7 +97,7 @@
     <ClCompile Include="..\core\ArcadeDifficultyStateProcessor.cpp" />
     <ClCompile Include="..\core\Basic.cpp" />
     <ClCompile Include="..\core\Camera.cpp" />
-    <ClCompile Include="..\core\Car.cpp" />
+    <ClCompile Include="..\core\Asteroid.cpp" />
     <ClCompile Include="..\core\CircleDrawable.cpp" />
     <ClCompile Include="..\core\Config.cpp" />
     <ClCompile Include="..\core\ControlLibrary\ButtonControl.cpp" />
@@ -124,14 +124,14 @@
     <ClCompile Include="..\core\MessageStateProcessor.cpp" />
     <ClCompile Include="..\core\ModelAnimation.cpp" />
     <ClCompile Include="..\core\ModelDrawable.cpp" />
+    <ClCompile Include="..\core\ParticleDrawable.cpp" />
     <ClCompile Include="..\core\ParticleSystem.cpp" />
     <ClCompile Include="..\core\PauseStateProcessor.cpp" />
     <ClCompile Include="..\core\PrecompileHeaders.cpp" />
     <ClCompile Include="..\core\RaceStateProcessor.cpp" />
     <ClCompile Include="..\core\RectDrawable.cpp" />
-    <ClCompile Include="..\core\Road.cpp" />
-    <ClCompile Include="..\core\RoadBlock.cpp" />
-    <ClCompile Include="..\core\RoadLine.cpp" />
+    <ClCompile Include="..\core\Space.cpp" />
+    <ClCompile Include="..\core\SpaceDust.cpp" />
     <ClCompile Include="..\core\SceneSector.cpp" />
     <ClCompile Include="..\core\Scores.cpp" />
     <ClCompile Include="..\core\ScoreStateProcessor.cpp" />
@@ -158,7 +158,7 @@
     <ClInclude Include="..\core\ArcadeDifficultyStateProcessor.h" />
     <ClInclude Include="..\core\Basic.h" />
     <ClInclude Include="..\core\Camera.h" />
-    <ClInclude Include="..\core\Car.h" />
+    <ClInclude Include="..\core\Asteroid.h" />
     <ClInclude Include="..\core\CircleDrawable.h" />
     <ClInclude Include="..\core\Config.h" />
     <ClInclude Include="..\core\ControlLibrary\ButtonControl.h" />
@@ -175,6 +175,7 @@
     <ClInclude Include="..\core\ControlLibrary\SwipeBarControl.h" />
     <ClInclude Include="..\core\CreditsStateProcessor.h" />
     <ClInclude Include="..\core\Game.h" />
+    <ClInclude Include="..\core\GameDefs.h" />
     <ClInclude Include="..\core\GameState.h" />
     <ClInclude Include="..\core\Gun.h" />
     <ClInclude Include="..\core\HighScoresStateProcessor.h" />
@@ -189,19 +190,19 @@
     <ClInclude Include="..\core\MessageStateProcessor.h" />
     <ClInclude Include="..\core\ModelAnimation.h" />
     <ClInclude Include="..\core\ModelDrawable.h" />
+    <ClInclude Include="..\core\ParticleDrawable.h" />
     <ClInclude Include="..\core\ParticleSystem.h" />
     <ClInclude Include="..\core\PauseStateProcessor.h" />
     <ClInclude Include="..\core\PrecompileHeaders.h" />
     <ClInclude Include="..\core\RaceStateProcessor.h" />
     <ClInclude Include="..\core\RectDrawable.h" />
-    <ClInclude Include="..\core\Road.h" />
-    <ClInclude Include="..\core\RoadBlock.h" />
-    <ClInclude Include="..\core\RoadLine.h" />
+    <ClInclude Include="..\core\Space.h" />
     <ClInclude Include="..\core\SceneSector.h" />
     <ClInclude Include="..\core\Scores.h" />
     <ClInclude Include="..\core\ScoreStateProcessor.h" />
     <ClInclude Include="..\core\SkinManager.h" />
     <ClInclude Include="..\core\SliderProcessor.h" />
+    <ClInclude Include="..\core\SpaceDefs.h" />
     <ClInclude Include="..\core\StateProcessorFactory.h" />
     <ClInclude Include="..\core\StoreStateProcessor.h" />
     <ClInclude Include="..\core\tinyxml\tinyxml2.h" />
@@ -216,6 +217,7 @@
     <ClInclude Include="OpenAL\LoadOAL.h" />
     <ClInclude Include="RenderProcessor.h" />
     <ClInclude Include="SoundSystem.h" />
+    <ClInclude Include="SpaceDust.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

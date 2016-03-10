@@ -1,12 +1,11 @@
-#include "Car.h"
+#include "Asteroid.h"
 #include "ModelDrawable.h"
 #include "SceneSector.h"
 #include "RenderProcessor.h"
-#include "RoadBlock.h"
 
 namespace CoreEngine
 {
-	Car::Car(Vector3 offset, std::string model, float speed)
+	Asteroid::Asteroid(Vector3 offset, std::string model, float speed)
 	{
 		auto sceneManager = RenderProcessor::Instance()->GetSceneManager();
 		auto sceneNode = sceneManager->createSceneNode();
@@ -16,25 +15,25 @@ namespace CoreEngine
 
 		_sector->GetNode()->setDirection(Ogre::Vector3(1, 0, 0));
 		_model = new ModelDrawable(_sector, model);
-		_model->SetScale(25);
+		//_model->SetScale(1);
 		_speed = speed;
 		_pos = offset;
 	}
 
-	Car::~Car()
+	Asteroid::~Asteroid()
 	{
 		delete _model;
 		delete _sector;
 	}
 
-	void Car::Update(float time, float roadSpeed)
+	void Asteroid::Update(float time, float roadSpeed)
 	{
 		_pos.x -= _speed * time;
 		_pos.x += roadSpeed;
 		_sector->GetNode()->setPosition(VectorToOgre(_pos));
 	}
 
-	bool Car::IsIntersected(float turn)
+	bool Asteroid::IsIntersected(float turn)
 	{
 		float absPos = _pos.x;
 		if (absPos < 12 && absPos > 8 && _pos.z > turn - 1.2 && _pos.z < turn + 1.2f)
@@ -44,14 +43,26 @@ namespace CoreEngine
 		return false;
 	}
 
-	bool Car::IsDone()
+	bool Asteroid::IsDone()
 	{
-		if (_pos.x > ROADBLOCK_SIZE * 5)
+		if (_pos.x > BLOCK_SIZE * 5)
 			return true;
 		return false;
 	}
 
-	void Car::SetVisible(bool visible)
+	void Asteroid::TryReset()
+	{
+		if (_pos.x > BLOCK_SIZE * 5)
+		{
+			auto posX = (rand() % (int)(BLOCK_SIZE * 10.0f * 10)) / 10.0f - BLOCK_SIZE * 5.0f;
+			auto posY = (rand() % (int)(BLOCK_SIZE * 10.0f * 10)) / 10.0f - BLOCK_SIZE * 5.0f;
+			_pos = Vector3(-ASTEROID_NUM * BLOCK_SIZE, posY, posX);
+			_sector->GetNode()->setPosition(VectorToOgre(_pos));
+			_model->SetScale((rand()%15 + 5) / 10.0f);
+		}
+	}
+
+	void Asteroid::SetVisible(bool visible)
 	{
 		_sector->GetNode()->setVisible(visible);
 	}

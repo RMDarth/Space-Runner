@@ -1,16 +1,15 @@
-#include "RoadLine.h"
+#include "SpaceLine.h"
 #include "RoadBlock.h"
 #include "RenderProcessor.h"
 #include "SceneSector.h"
 #include "ModelDrawable.h"
-#include "Car.h"
 #include <memory>
 #include <functional>
 using namespace std;
 
 namespace CoreEngine
 {
-	RoadLine::RoadLine(Vector3 pos)
+	SpaceLine::SpaceLine(Vector3 pos)
 	{
 		auto sceneManager = RenderProcessor::Instance()->GetSceneManager();
 		auto sceneNode = sceneManager->createSceneNode();
@@ -53,34 +52,13 @@ namespace CoreEngine
 		SetBorder();
 	}
 
-	RoadLine::~RoadLine()
+	SpaceLine::~SpaceLine()
 	{
 		_sector->GetNode()->detachAllObjects();
-
-		if (_fenceLeft != nullptr)
-		{
-			delete _fenceLeft;
-			delete _fenceRight;
-		}
-		if (_borderLeft != nullptr)
-		{
-			delete _borderLeft;
-			delete _borderRight;
-		}
-		if (_specialModel != nullptr)
-			delete _specialModel;
-
-		for (int i = 0; i < BLOCKS_NUM; i++)
-			delete _roadBlockList[i];
-
-		delete _fenceLeftSector;
-		delete _fenceRightSector;
-		delete _borderLeftSector;
-		delete _borderRightSector;
-		delete _sector;
+		_sector.reset();
 	}
 
-	void RoadLine::SetFence(std::string fance /* = "fense.mesh" */)
+	void SpaceLine::SetFence(std::string fance /* = "fense.mesh" */)
 	{
 		auto sceneManager = RenderProcessor::Instance()->GetSceneManager();
 		auto sceneNode = _sector->GetNode();
@@ -97,7 +75,7 @@ namespace CoreEngine
 		_fenceRight->SetScale(Vector3(3.5, 2.0, 3.0));
 	}
 
-	void RoadLine::SetBorder(std::string border /* = "border.mesh" */)
+	void SpaceLine::SetBorder(std::string border /* = "border.mesh" */)
 	{
 		auto sceneManager = RenderProcessor::Instance()->GetSceneManager();
 		auto sceneNode = _sector->GetNode();
@@ -112,7 +90,7 @@ namespace CoreEngine
 		_borderRight = new ModelDrawable(_borderRightSector, border);
 	}
 
-	void RoadLine::SetSpecialModel(std::string specialModel /* = "" */)
+	void SpaceLine::SetSpecialModel(std::string specialModel /* = "" */)
 	{
 		if (_specialModel != nullptr)
 			delete _specialModel;
@@ -123,17 +101,17 @@ namespace CoreEngine
 			_specialModel = nullptr;
 	}
 
-	void RoadLine::SetPosition(Vector3 position)
+	void SpaceLine::SetPosition(Vector3 position)
 	{
 		_sector->GetNode()->setPosition(VectorToOgre(position));
 	}
 
-	Vector3 RoadLine::GetPosition()
+	Vector3 SpaceLine::GetPosition()
 	{
 		return VectorFromOgre(_sector->GetNode()->getPosition());
 	}
 
-	void RoadLine::Update(float time)
+	void SpaceLine::Update(float time)
 	{
 		if (_fenceLeft)
 		{
@@ -157,12 +135,12 @@ namespace CoreEngine
 
 	}
 
-	void RoadLine::SetRoadBlock(int index, int roadTile, std::string specialModel, bool blocked)
+	void SpaceLine::SetRoadBlock(int index, int roadTile, std::string specialModel, bool blocked)
 	{
 		_roadBlockList[index]->Init(roadTile, specialModel, blocked);
 	}
 
-	void RoadLine::SetVisible(bool visible)
+	void SpaceLine::SetVisible(bool visible)
 	{
 		_sector->GetNode()->setVisible(visible);
 	}

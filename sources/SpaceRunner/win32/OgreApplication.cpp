@@ -12,7 +12,7 @@ OgreApplication::OgreApplication()
 		return;
 	}
 
-	_renderWindow = _root->initialise(true, "Moto Runner");
+	_renderWindow = _root->initialise(true, "Space Runner");
 
 	_exit = false;
 }

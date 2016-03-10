@@ -7,8 +7,7 @@
 #include "ParticleSystem.h"
 #include "BillingProcessor.h"
 #include "LevelManager.h"
-#include "RoadBlock.h"
-#include "RoadLine.h"
+#include "SpaceDust.h"
 
 #include "ModelDrawable.h"
 #include "SceneSector.h"
@@ -30,11 +29,9 @@ namespace CoreEngine
 		//_soundsLoaded = false;
 		//InitSound();
 
-		_sector = nullptr;
 		PreloadModels();
 		
-
-		_document = new ControlDocument("GUI/HUD.xml");
+		_document = make_unique<ControlDocument>("GUI/HUD.xml");
 		_document->SetMouseUpHandler(this);
 		_document->Hide();
 
@@ -43,11 +40,11 @@ namespace CoreEngine
 
 	void RaceStateProcessor::Init()
 	{
-		_road = shared_ptr<Road>(new Road());
+		_space = make_unique<Space>();
 
 		//RenderProcessor::Instance()->SetSkybox(rand() % SKYBOX_NUM + 1);
-		if (_sector == nullptr)
-			InitBike();
+		if (!_sector)
+			InitSpaceShip();
 
 		_totalTime = 0;
 		_score = 0;
@@ -62,16 +59,26 @@ namespace CoreEngine
 		_init = true;
 	}
 
-	void RaceStateProcessor::InitBike()
+	void RaceStateProcessor::InitSpaceShip()
 	{
 		auto sceneManager = RenderProcessor::Instance()->GetSceneManager();
 		auto sceneNode = sceneManager->createSceneNode();
 		sceneManager->getRootSceneNode()->addChild(sceneNode);
-		_sector = new SceneSector(sceneNode);
+		_sector = make_unique<SceneSector>(sceneNode);
+		//sceneNode->setPosition(-1.0f, 0.1f, 0.0f);
 
-		_sector->GetNode()->setDirection(Ogre::Vector3(1, 0, 0));
-		_bike = new ModelDrawable(_sector, "bike.mesh");
-		_bike->SetScale(25);
+		//_sector->GetNode()->setDirection(Ogre::Vector3(1, 0, 0));
+		_ship = make_unique<ModelDrawable>(_sector.get(), "ship.mesh");
+		_ship->SetScale(5);
+
+		auto sceneNodeChild = sceneManager->createSceneNode();
+		sceneNodeChild->setPosition(0.35, 0.0, 0);
+		sceneNode->addChild(sceneNodeChild);
+
+		_engineFire = sceneManager->createParticleSystem("EngineFire", "Engine");
+		_engineFire->getEmitter(0)->setParticleVelocity(3.5f);
+		sceneNodeChild->attachObject(_engineFire);
+		//_engineFire = make_unique<ParticleSystem>();
 	}
 
 	void RaceStateProcessor::InitSound()
@@ -101,6 +108,7 @@ namespace CoreEngine
 	{
 		_totalTime += time;
 		_frames++;
+
 		SetLightAndCamera(time);
 		UpdateHUD();
 
@@ -108,14 +116,19 @@ namespace CoreEngine
 		_turn += _turnSpeed * time;
 
 
-		if (_turn > ROADBLOCK_SIZE * 1.5f)
-			_turn = ROADBLOCK_SIZE * 1.5f;
-		if (_turn < -ROADBLOCK_SIZE * 1.5f)
-			_turn = -ROADBLOCK_SIZE * 1.5f;
-		_road->Update(time, _speed);
+		if (_turn > BLOCK_SIZE * 1.5f)
+			_turn = BLOCK_SIZE * 1.5f;
+		if (_turn < -BLOCK_SIZE * 1.5f)
+			_turn = -BLOCK_SIZE * 1.5f;
+
+		auto multiplier = _speed * 0.8f;
+		if (multiplier > 1.1f) multiplier = 1.1f;
+		if (multiplier < 0.8f) multiplier = 0.8f;
+		_engineFire->getEmitter(0)->setParticleVelocity(3.5f * multiplier);
+		_space->Update(time, _speed);
 		_sector->GetNode()->setPosition(10, 0, _turn);
 
-		if (_road->IsIntersected(_turn))
+		if (_space->IsIntersected(_turn))
 			_score++;
 
 		/*if (IsGameLost())
@@ -146,7 +159,7 @@ namespace CoreEngine
 		static auto nameControl = _document->GetControlByName("name");
 		nameControl->SetText(stream.str());
 
-		if (Config::Instance()->IsShowFPS())
+		//if (Config::Instance()->IsShowFPS())
 		{
 			float fps = OgreApplication::Instance()->GetWindow()->getAverageFPS();
 
@@ -218,12 +231,12 @@ namespace CoreEngine
 	void RaceStateProcessor::SetLightAndCamera(float deltaTime)
 	{
 		//_cameraTime += deltaTime * _direction;
-		auto _cameraRadius = 20.0f;
+		auto _cameraRadius = 21.0f;
 		auto _cameraTime = 0.0f;
 		auto camera = RenderProcessor::Instance()->GetCamera();
 		Vector3 pos = Vector3(
 			_cameraRadius, //_cameraRadius * cos(_cameraTime * CAMERA_SPEED),
-			7.0f,
+			5.0f,
 			_turn);// *sin(_cameraTime * CAMERA_SPEED));
 		camera->SetPosition(pos);
 		camera->SetTarget(Vector3(0, 0, _turn));
@@ -237,12 +250,12 @@ namespace CoreEngine
 	{
 		if (_init)
 		{
-			if (_road)
+			if (_space)
 			{
-				_road->SetVisible(false);
+				_space->SetVisible(false);
 			}
 		}
-		if (_sector != nullptr)
+		if (_sector)
 			_sector->GetNode()->setVisible(false);
 
 		//for_each(particleList.begin(), particleList.end(), bind(&ParticleSystem::Update, placeholders::_1, 10.0f));
@@ -259,9 +272,9 @@ namespace CoreEngine
 			LevelManager::Instance()->SetVictory(false);
 		}
 		
-		if (_road)
+		if (_space)
 		{
-			_road->SetVisible(true);
+			_space->SetVisible(true);
 		}
 		_sector->GetNode()->setVisible(true);
 

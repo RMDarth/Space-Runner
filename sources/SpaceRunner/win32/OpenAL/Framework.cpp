@@ -106,7 +106,6 @@ ALboolean ALFWInitOpenAL()
 {
 	ALCcontext *pContext = NULL;
 	ALCdevice *pDevice = NULL;
-	ALint i;
 	ALboolean bReturn = AL_FALSE;
 
 	

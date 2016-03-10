@@ -143,7 +143,7 @@ void ModelDrawable::GenerateLods()
 	Ogre::LodLevel lodLevel;
 	lodLevel.reductionMethod = Ogre::LodLevel::VRM_PROPORTIONAL;
 	lodLevel.distance = 20;
-	lodLevel.reductionValue = 0.7;
+	lodLevel.reductionValue = 0.7f;
 
 
 	lodConfig.levels.push_back(lodLevel);

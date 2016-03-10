@@ -23,8 +23,9 @@ namespace CoreEngine
 		auto sceneNode = sceneManager->createSceneNode();
 		sceneManager->getRootSceneNode()->addChild(sceneNode);
 		_sectorBike = new SceneSector(sceneNode);
-		_model = new ModelDrawable(_sectorBike, "bike.mesh");
-		_model->SetScale(100);
+		_model = new ModelDrawable(_sectorBike, "ship.mesh");
+		_model->SetScale(15);
+		sceneNode->setPosition(Ogre::Vector3(0, 3, 0));
 
 		_document = new ControlDocument("GUI/startmenu.xml");
 		_document->SetMouseUpHandler(this);

@@ -161,20 +161,20 @@
     <ClCompile Include="..\core\RectDrawable.cpp">
       <Filter>core\Render\Drawables</Filter>
     </ClCompile>
-    <ClCompile Include="..\core\Road.cpp">
-      <Filter>core\Game\StateProcessors\Race\Road</Filter>
-    </ClCompile>
-    <ClCompile Include="..\core\RoadBlock.cpp">
-      <Filter>core\Game\StateProcessors\Race\Road</Filter>
-    </ClCompile>
-    <ClCompile Include="..\core\RoadLine.cpp">
-      <Filter>core\Game\StateProcessors\Race\Road</Filter>
-    </ClCompile>
     <ClCompile Include="..\core\RaceStateProcessor.cpp">
       <Filter>core\Game\StateProcessors\Race</Filter>
     </ClCompile>
-    <ClCompile Include="..\core\Car.cpp">
-      <Filter>core\Game\StateProcessors\Race\Road</Filter>
+    <ClCompile Include="..\core\Asteroid.cpp">
+      <Filter>core\Game\StateProcessors\Race\Space</Filter>
+    </ClCompile>
+    <ClCompile Include="..\core\Space.cpp">
+      <Filter>core\Game\StateProcessors\Race\Space</Filter>
+    </ClCompile>
+    <ClCompile Include="..\core\SpaceDust.cpp">
+      <Filter>core\Game\StateProcessors\Race\Space</Filter>
+    </ClCompile>
+    <ClCompile Include="..\core\ParticleDrawable.cpp">
+      <Filter>core\Render\Drawables</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -217,7 +217,7 @@
     <Filter Include="core\Game\StateProcessors\Race">
       <UniqueIdentifier>{46dd2f5c-facf-4fb3-88f5-c77b0b9ad4e7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="core\Game\StateProcessors\Race\Road">
+    <Filter Include="core\Game\StateProcessors\Race\Space">
       <UniqueIdentifier>{e8f5ba2e-5ddb-4a2e-8cf4-c8eaab4c33b4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -393,20 +393,26 @@
     <ClInclude Include="..\core\RectDrawable.h">
       <Filter>core\Render\Drawables</Filter>
     </ClInclude>
-    <ClInclude Include="..\core\Road.h">
-      <Filter>core\Game\StateProcessors\Race\Road</Filter>
-    </ClInclude>
-    <ClInclude Include="..\core\RoadBlock.h">
-      <Filter>core\Game\StateProcessors\Race\Road</Filter>
-    </ClInclude>
-    <ClInclude Include="..\core\RoadLine.h">
-      <Filter>core\Game\StateProcessors\Race\Road</Filter>
-    </ClInclude>
     <ClInclude Include="..\core\RaceStateProcessor.h">
       <Filter>core\Game\StateProcessors\Race</Filter>
     </ClInclude>
-    <ClInclude Include="..\core\Car.h">
-      <Filter>core\Game\StateProcessors\Race\Road</Filter>
+    <ClInclude Include="..\core\Asteroid.h">
+      <Filter>core\Game\StateProcessors\Race\Space</Filter>
+    </ClInclude>
+    <ClInclude Include="..\core\Space.h">
+      <Filter>core\Game\StateProcessors\Race\Space</Filter>
+    </ClInclude>
+    <ClInclude Include="SpaceDust.h">
+      <Filter>core\Game\StateProcessors\Race\Space</Filter>
+    </ClInclude>
+    <ClInclude Include="..\core\GameDefs.h">
+      <Filter>core\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="..\core\ParticleDrawable.h">
+      <Filter>core\Render\Drawables</Filter>
+    </ClInclude>
+    <ClInclude Include="..\core\SpaceDefs.h">
+      <Filter>core\Game\StateProcessors\Race\Space</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

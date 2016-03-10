@@ -1,11 +1,9 @@
 #pragma once
 #include "IStateProcessor.h"
 #include "ControlLibrary/ControlDocument.h"
-#include "Road.h"
-#include "Car.h"
+#include "Space.h"
 #include <vector>
 #include <memory>
-using namespace std;
 
 class Camera;
 class ParticleSystem;
@@ -14,18 +12,23 @@ class Sound;
 class ModelDrawable;
 class SceneSector;
 
+namespace Ogre
+{
+	class ParticleSystem;
+}
+
 namespace CoreEngine
 {
 	class RaceStateProcessor : public IStateProcessor, public IEventHandler
 	{
 		Camera* _camera;
-
-		ControlDocument * _document;
-
-		shared_ptr<Road> _road;
-
-		ModelDrawable * _bike;
-		SceneSector * _sector;
+		
+		UPtr<ControlDocument> _document;
+		UPtr<Space> _space;
+		UPtr<SceneSector> _sector;
+		UPtr<ModelDrawable> _ship;
+		//UPtr<ParticleSystem> _engineFire;
+		Ogre::ParticleSystem * _engineFire;
 
 		// sounds
 		//shared_ptr<Sound> _motorSound;
@@ -62,7 +65,7 @@ namespace CoreEngine
 
 	private:
 		void InitSound();
-		void InitBike();
+		void InitSpaceShip();
 		void GenerateLevel();
 		void PreloadModels();
 

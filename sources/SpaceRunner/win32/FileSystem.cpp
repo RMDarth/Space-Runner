@@ -174,7 +174,7 @@ const char* encryptDecryptFile(string file, long &size)
 
 	// get size of file
 	fin.seekg(0, fin.end);
-	size = fin.tellg();
+	size = static_cast<long>(fin.tellg());
 	fin.seekg(0);
 
 	char* buffer = new char[size];

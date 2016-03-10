@@ -37,8 +37,6 @@ void LevelButtonControl::InitOverlay()
 
 void LevelButtonControl::SetStarsNum(std::string num)
 {
-	int i;
-
 	if (num == "-1")
 	{
 		SetDefaultMaterial("levelx0.png");
