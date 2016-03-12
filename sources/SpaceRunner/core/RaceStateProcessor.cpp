@@ -7,7 +7,9 @@
 #include "ParticleSystem.h"
 #include "BillingProcessor.h"
 #include "LevelManager.h"
+
 #include "SpaceDust.h"
+#include "Fence.h"
 
 #include "ModelDrawable.h"
 #include "SceneSector.h"
@@ -24,6 +26,17 @@ using namespace std;
 
 namespace CoreEngine
 {
+	bool between(float x, float y, float mid)
+	{
+		if (x > mid && y < mid)
+			return true;
+		if (x < mid && y > mid)
+			return true;
+		if (x == mid || y == mid)
+			return true;
+		return false;
+	}
+
 	RaceStateProcessor::RaceStateProcessor()
 	{
 		//_soundsLoaded = false;
@@ -51,8 +64,15 @@ namespace CoreEngine
 		_frames = 0;
 		_speed = 1.0f;
 		_speedAccel = 0;
-		_turn = 0;
-		_turnSpeed = 0;
+		_pos = 0;
+		
+		_speedHorizontal = 0;
+		_speedAccelHorizontal = 0;
+		_speedLimitHorizontal = 0;
+
+		_angleHorizontal = 0;
+		_angleAccelHorizontal = 0;
+		_angleLimitHorizontal = 0;
 
 		_camera = RenderProcessor::Instance()->GetCamera();
 
@@ -72,7 +92,7 @@ namespace CoreEngine
 		_ship->SetScale(5);
 
 		auto sceneNodeChild = sceneManager->createSceneNode();
-		sceneNodeChild->setPosition(0.35, 0.0, 0);
+		sceneNodeChild->setPosition(0.35f, 0.0f, 0.0f);
 		sceneNode->addChild(sceneNodeChild);
 
 		_engineFire = sceneManager->createParticleSystem("EngineFire", "Engine");
@@ -104,6 +124,11 @@ namespace CoreEngine
 	}
 
 
+	void RaceStateProcessor::UpdateTurn(float time, float roadspeed)
+	{
+
+	}
+
 	GameState::State RaceStateProcessor::Update(float time)
 	{
 		_totalTime += time;
@@ -113,22 +138,50 @@ namespace CoreEngine
 		UpdateHUD();
 
 		_speed += _speedAccel * time;
-		_turn += _turnSpeed * time;
 
+		_pos += _speedHorizontal * time;
+		if (_speedHorizontal != _speedLimitHorizontal)
+		{
+			auto newHorizSpeed = _speedHorizontal + _speedAccelHorizontal * time;
+			if (between(_speedHorizontal, newHorizSpeed, _speedLimitHorizontal))
+			{
+				_speedHorizontal = _speedLimitHorizontal;
+			}
+			else
+			{
+				_speedHorizontal = newHorizSpeed;
+			}
+		}
 
-		if (_turn > BLOCK_SIZE * 1.5f)
-			_turn = BLOCK_SIZE * 1.5f;
-		if (_turn < -BLOCK_SIZE * 1.5f)
-			_turn = -BLOCK_SIZE * 1.5f;
+		if (_angleHorizontal != _angleLimitHorizontal)
+		{
+			auto newAngle = _angleHorizontal + _angleAccelHorizontal * time;
+			if (between(_angleHorizontal, newAngle, _angleLimitHorizontal))
+			{
+				_angleHorizontal = _angleLimitHorizontal;
+			}
+			else 
+			{
+				_angleHorizontal = newAngle;
+			}
+		}
+
+		if (_pos > BLOCK_SIZE * 1.5f)
+			_pos = BLOCK_SIZE * 1.5f;
+		if (_pos < -BLOCK_SIZE * 1.5f)
+			_pos = -BLOCK_SIZE * 1.5f;
 
 		auto multiplier = _speed * 0.8f;
+		
 		if (multiplier > 1.1f) multiplier = 1.1f;
 		if (multiplier < 0.8f) multiplier = 0.8f;
 		_engineFire->getEmitter(0)->setParticleVelocity(3.5f * multiplier);
 		_space->Update(time, _speed);
-		_sector->GetNode()->setPosition(10, 0, _turn);
+		_sector->GetNode()->setPosition(10, 0, _pos);
+		auto angle = Ogre::Quaternion(Ogre::Radian(_angleHorizontal), Ogre::Vector3(1, 0, 0));
+		_sector->GetNode()->setOrientation(angle);
 
-		if (_space->IsIntersected(_turn))
+		if (_space->IsIntersected(_pos))
 			_score++;
 
 		/*if (IsGameLost())
@@ -202,11 +255,34 @@ namespace CoreEngine
 		}
 		if (key == OIS::KC_LEFT)
 		{
-			_turnSpeed = 10.0f;
+			if (_speedHorizontal < -0.01f)
+			{
+				_speedAccelHorizontal = 30.0f;
+				_angleAccelHorizontal = 3.0f;
+			}
+			else 
+			{
+				_speedAccelHorizontal = 3.0f * 3;
+				_angleAccelHorizontal = 0.3f * 3;
+			}
+			_speedLimitHorizontal = 10.0f;
+			_angleLimitHorizontal = 1;
+
 		}
 		if (key == OIS::KC_RIGHT)
 		{
-			_turnSpeed = -10.0f;
+			if (_speedHorizontal > 0.01f)
+			{
+				_speedAccelHorizontal = -30.0f;
+				_angleAccelHorizontal = -3.0f;
+			}
+			else 
+			{
+				_speedAccelHorizontal = -3.0f * 3;
+				_angleAccelHorizontal = -0.3f * 3;
+			}
+			_speedLimitHorizontal = -10.0f;
+			_angleLimitHorizontal = -1;
 		}
 	}
 
@@ -219,7 +295,13 @@ namespace CoreEngine
 		}
 		if (key == OIS::KC_LEFT || key == OIS::KC_RIGHT)
 		{
-			_turnSpeed = 0.0f;
+			//_speedHorizontal = 0.0f;
+			_speedAccelHorizontal = -_speedAccelHorizontal * 3;
+			_speedLimitHorizontal = 0.0f;
+			
+			_angleAccelHorizontal = -_angleAccelHorizontal * 3;
+			_angleLimitHorizontal = 0.0f;
+			//_angleHorizontal = 0;
 		}
 	}
 
@@ -237,9 +319,9 @@ namespace CoreEngine
 		Vector3 pos = Vector3(
 			_cameraRadius, //_cameraRadius * cos(_cameraTime * CAMERA_SPEED),
 			5.0f,
-			_turn);// *sin(_cameraTime * CAMERA_SPEED));
+			_pos);// *sin(_cameraTime * CAMERA_SPEED));
 		camera->SetPosition(pos);
-		camera->SetTarget(Vector3(0, 0, _turn));
+		camera->SetTarget(Vector3(0, 0, _pos));
 
 		auto light = RenderProcessor::Instance()->GetLight(0);
 		pos.y += 2.0f;

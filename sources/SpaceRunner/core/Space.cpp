@@ -1,5 +1,6 @@
 #include "Space.h"
 #include "SpaceDust.h"
+#include "Fence.h"
 #include "Asteroid.h"
 #include "SceneSector.h"
 #include <memory>
@@ -13,6 +14,7 @@ namespace CoreEngine
 	{
 		_lastAsteroidCreated = 0;
 		_spaceDust = make_unique<SpaceDust>("SpaceDust");
+		_fence = make_unique<Fence>();
 		GenerateSpace();
 	}
 
@@ -20,9 +22,13 @@ namespace CoreEngine
 	{
 		for (int i = 0; i < ASTEROID_NUM; i++)
 		{
-			auto posX = (rand() % (int)(BLOCK_SIZE * 10.0f * 10)) / 10.0f - BLOCK_SIZE * 5.0f;
+			float posX = 0;
+			while (posX > -BLOCK_SIZE*1.5f && posX < BLOCK_SIZE*1.5f)
+			{
+				posX = (rand() % (int)(BLOCK_SIZE * 10.0f * 10)) / 10.0f - BLOCK_SIZE * 5.0f;
+			}
 			auto posY = (rand() % (int)(BLOCK_SIZE * 10.0f * 10)) / 10.0f - BLOCK_SIZE * 5.0f;
-			auto asteroid = make_shared<Asteroid>(Vector3(-i*BLOCK_SIZE, posY, posX), "moon.mesh", 0);
+			auto asteroid = make_shared<Asteroid>(Vector3(-i*BLOCK_SIZE, posY, posX), "moon.mesh", 0.0f);
 			_backgroundAsteroidList.push_back(asteroid);
 		}
 	}
@@ -33,6 +39,7 @@ namespace CoreEngine
 		float roadOffset = time * speed * 5.0f;
 
 		_spaceDust->Update(time, roadOffset);
+		_fence->Update(time, roadOffset);
 		//AddAsteroids(_totalTime);
 		for_each(_backgroundAsteroidList.begin(), _backgroundAsteroidList.end(), bind(&Asteroid::TryReset, placeholders::_1));
 		for_each(_backgroundAsteroidList.begin(), _backgroundAsteroidList.end(), bind(&Asteroid::Update, placeholders::_1, time, roadOffset));

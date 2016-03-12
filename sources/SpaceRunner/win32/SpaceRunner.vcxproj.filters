@@ -176,6 +176,9 @@
     <ClCompile Include="..\core\ParticleDrawable.cpp">
       <Filter>core\Render\Drawables</Filter>
     </ClCompile>
+    <ClCompile Include="..\core\Fence.cpp">
+      <Filter>core\Game\StateProcessors\Race\Space</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="win32">
@@ -412,6 +415,9 @@
       <Filter>core\Render\Drawables</Filter>
     </ClInclude>
     <ClInclude Include="..\core\SpaceDefs.h">
+      <Filter>core\Game\StateProcessors\Race\Space</Filter>
+    </ClInclude>
+    <ClInclude Include="..\core\Fence.h">
       <Filter>core\Game\StateProcessors\Race\Space</Filter>
     </ClInclude>
   </ItemGroup>

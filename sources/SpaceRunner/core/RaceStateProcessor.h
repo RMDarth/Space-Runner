@@ -35,12 +35,21 @@ namespace CoreEngine
 		//bool _soundsLoaded;
 
 		int _score;
-		float _speed;
+
 		float _totalTime;
 		int _frames;
+		
+		float _speed;
 		float _speedAccel;
-		float _turn;
-		float _turnSpeed;
+
+		float _pos;
+		float _speedHorizontal;
+		float _speedAccelHorizontal;
+		float _speedLimitHorizontal;
+
+		float _angleHorizontal;
+		float _angleAccelHorizontal;
+		float _angleLimitHorizontal;
 
 		bool _init;
 
@@ -68,6 +77,7 @@ namespace CoreEngine
 		void InitSpaceShip();
 		void GenerateLevel();
 		void PreloadModels();
+		void UpdateTurn(float time, float roadspeed);
 
 		void SetLightAndCamera(float deltaTime);
 		void UpdateHUD();

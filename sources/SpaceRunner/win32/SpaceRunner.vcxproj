@@ -113,6 +113,7 @@
     <ClCompile Include="..\core\ControlLibrary\RadioButtonGroup.cpp" />
     <ClCompile Include="..\core\ControlLibrary\SwipeBarControl.cpp" />
     <ClCompile Include="..\core\CreditsStateProcessor.cpp" />
+    <ClCompile Include="..\core\Fence.cpp" />
     <ClCompile Include="..\core\Game.cpp" />
     <ClCompile Include="..\core\Gun.cpp" />
     <ClCompile Include="..\core\HighScoresStateProcessor.cpp" />
@@ -174,6 +175,7 @@
     <ClInclude Include="..\core\ControlLibrary\RadioButtonGroup.h" />
     <ClInclude Include="..\core\ControlLibrary\SwipeBarControl.h" />
     <ClInclude Include="..\core\CreditsStateProcessor.h" />
+    <ClInclude Include="..\core\Fence.h" />
     <ClInclude Include="..\core\Game.h" />
     <ClInclude Include="..\core\GameDefs.h" />
     <ClInclude Include="..\core\GameState.h" />

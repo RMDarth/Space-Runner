@@ -9,12 +9,14 @@ namespace CoreEngine
 	class SpaceLine;
 	class Asteroid;
 	class SpaceDust;
+	class Fence;
 
 	class Space
 	{
 		PtrList<Asteroid> _backgroundAsteroidList;
 		PtrList<Asteroid> _asteroidList;
 		std::unique_ptr<SpaceDust> _spaceDust;
+		std::unique_ptr<Fence> _fence;
 		
 		float _totalTime;
 		float _lastAsteroidCreated;

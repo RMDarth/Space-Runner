@@ -54,7 +54,12 @@ namespace CoreEngine
 	{
 		if (_pos.x > BLOCK_SIZE * 5)
 		{
-			auto posX = (rand() % (int)(BLOCK_SIZE * 10.0f * 10)) / 10.0f - BLOCK_SIZE * 5.0f;
+			float posX = 0;
+			while (posX > -BLOCK_SIZE*1.5f && posX < BLOCK_SIZE*1.5f)
+			{
+				posX = (rand() % (int)(BLOCK_SIZE * 10.0f * 10)) / 10.0f - BLOCK_SIZE * 5.0f;
+			}
+			//auto posX = (rand() % (int)(BLOCK_SIZE * 10.0f * 10)) / 10.0f - BLOCK_SIZE * 5.0f;
 			auto posY = (rand() % (int)(BLOCK_SIZE * 10.0f * 10)) / 10.0f - BLOCK_SIZE * 5.0f;
 			_pos = Vector3(-ASTEROID_NUM * BLOCK_SIZE, posY, posX);
 			_sector->GetNode()->setPosition(VectorToOgre(_pos));
