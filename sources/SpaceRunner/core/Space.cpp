@@ -40,44 +40,42 @@ namespace CoreEngine
 
 		_spaceDust->Update(time, roadOffset);
 		_fence->Update(time, roadOffset);
-		//AddAsteroids(_totalTime);
+		
+		AddAsteroids(_totalTime);
+		
 		for_each(_backgroundAsteroidList.begin(), _backgroundAsteroidList.end(), bind(&Asteroid::TryReset, placeholders::_1));
 		for_each(_backgroundAsteroidList.begin(), _backgroundAsteroidList.end(), bind(&Asteroid::Update, placeholders::_1, time, roadOffset));
-		//for_each(_asteroidList.begin(), _asteroidList.end(), bind(&Asteroid::Update, placeholders::_1, time, roadOffset));
-		//_asteroidList.erase(remove_if(_asteroidList.begin(), _asteroidList.end(), bind(&Asteroid::IsDone, placeholders::_1)), _asteroidList.end());
+		
+		for_each(_asteroidList.begin(), _asteroidList.end(), bind(&Asteroid::Update, placeholders::_1, time, roadOffset));
+		_asteroidList.erase(remove_if(_asteroidList.begin(), _asteroidList.end(), bind(&Asteroid::IsDone, placeholders::_1)), _asteroidList.end());
 	}
 
-	void Space::AddAsteroids(float time)
+	void Space::AddAsteroids(float totalTime)
 	{
-		if (time > 3 && time - _lastAsteroidCreated > 3)
+		if (totalTime > 3 && totalTime - _lastAsteroidCreated > 4)
 		{
-			vector<float> posList;
-			int count = rand() % 7;
-			count = count % 4;
-			if (count == 0)
-				count++;
+			bool posUsed[3] = { false, false, false };
+			static const float presetPos[3] = { -BLOCK_SIZE * 1.1f, 0, BLOCK_SIZE * 1.1f };
+
+			int count = rand() % 2 + 1;
 			for (int i = 0; i < count; i++)
 			{
-				float pos;
-				bool found;
-				while (true) {
-					found = false;
-					pos = (rand() % (int)(BLOCK_SIZE * 2.6 * 10)) / 10.0f - BLOCK_SIZE * 1.3f;
-					for (unsigned int r = 0; r < posList.size(); r++)
-						if (fabs(pos - posList[r]) < 2.5f)
-						{
-							found = true;
-							break;
-						}
-					if (!found)
-						break;
-				}
-				posList.push_back(pos);
+				int posIndex;
+				do{
+					posIndex = rand() % 3;
+				} while (posUsed[posIndex]);
+				
+				float deviation = (rand() % 10 - 5.0f) / 10.0f;
+				float pos = presetPos[posIndex] + deviation;
 
-				Asteroid * asteroid = new Asteroid(Vector3(-ASTEROID_NUM * BLOCK_SIZE, 0, pos), "moon.mesh", 4.0f + ((rand() % 30) / 10 - 1) * 0.5f);
+				int anum = rand() % 6 + 1;
+				stringstream ss;
+				ss << "Asteroid" << anum << "_LOD0.mesh";
+
+				Asteroid * asteroid = new Asteroid(Vector3(-ASTEROID_NUM * BLOCK_SIZE, 0, pos), ss.str(), 0.0f, 5.0f);
 				_asteroidList.push_back(shared_ptr<Asteroid>(asteroid));
 			}
-			_lastAsteroidCreated = time;
+			_lastAsteroidCreated = totalTime;
 		}
 
 	}

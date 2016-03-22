@@ -27,8 +27,9 @@ namespace CoreEngine
 		UPtr<Space> _space;
 		UPtr<SceneSector> _sector;
 		UPtr<ModelDrawable> _ship;
-		//UPtr<ParticleSystem> _engineFire;
+
 		Ogre::ParticleSystem * _engineFire;
+		ParticleSystem * _explosionEffect;
 
 		// sounds
 		//shared_ptr<Sound> _motorSound;
@@ -41,15 +42,25 @@ namespace CoreEngine
 		
 		float _speed;
 		float _speedAccel;
-
-		float _pos;
-		float _speedHorizontal;
-		float _speedAccelHorizontal;
-		float _speedLimitHorizontal;
+		float _speedMax;
 
 		float _angleHorizontal;
-		float _angleAccelHorizontal;
-		float _angleLimitHorizontal;
+		const float _angleHorizontalMax = 0.7f;
+
+		float _pos;
+		
+		float _presetPos[3];
+		int _currentPosID;
+		int _targetPosID;
+		int _nextTargetPosID;
+		float _posChangingStarted;
+		const float _posChangingTime = 0.4f;
+
+		bool _invisibility;
+		float _invisibilityStart;
+		const float _invisibilityTime = 3.0f;
+
+		const float _explosionTime = 1.0f;
 
 		bool _init;
 
@@ -77,7 +88,8 @@ namespace CoreEngine
 		void InitSpaceShip();
 		void GenerateLevel();
 		void PreloadModels();
-		void UpdateTurn(float time, float roadspeed);
+		void UpdateTurn();
+		void StartExplosion();
 
 		void SetLightAndCamera(float deltaTime);
 		void UpdateHUD();

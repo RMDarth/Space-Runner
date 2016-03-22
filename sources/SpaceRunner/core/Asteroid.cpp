@@ -5,7 +5,7 @@
 
 namespace CoreEngine
 {
-	Asteroid::Asteroid(Vector3 offset, std::string model, float speed)
+	Asteroid::Asteroid(Vector3 offset, std::string model, float speed, float scale)
 	{
 		auto sceneManager = RenderProcessor::Instance()->GetSceneManager();
 		auto sceneNode = sceneManager->createSceneNode();
@@ -15,7 +15,8 @@ namespace CoreEngine
 
 		_sector->GetNode()->setDirection(Ogre::Vector3(1, 0, 0));
 		_model = new ModelDrawable(_sector, model);
-		//_model->SetScale(1);
+		_model->SetScale(scale);
+
 		_speed = speed;
 		_pos = offset;
 	}

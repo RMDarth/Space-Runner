@@ -16,7 +16,7 @@ namespace CoreEngine
 		Vector3 _pos;
 
 	public:
-		Asteroid(Vector3 offset, std::string model, float speed);
+		Asteroid(Vector3 offset, std::string model, float speed, float scale = 1.0f);
 		~Asteroid();
 		void Update(float time, float roadSpeed);
 		bool IsIntersected(float turn);

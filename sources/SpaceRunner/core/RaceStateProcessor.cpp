@@ -10,6 +10,7 @@
 
 #include "SpaceDust.h"
 #include "Fence.h"
+#include "Asteroid.h"
 
 #include "ModelDrawable.h"
 #include "SceneSector.h"
@@ -23,6 +24,7 @@ using namespace std;
 #define MIN_BALL_SIZE_ENDLESS 20
 #define FLYBALL_SPEED 20.0f
 #define REVEAL_COUNT 220
+#define PI 3.1415f
 
 namespace CoreEngine
 {
@@ -63,16 +65,18 @@ namespace CoreEngine
 		_score = 0;
 		_frames = 0;
 		_speed = 1.0f;
-		_speedAccel = 0;
+		_speedAccel = 5.0f;
+		_speedMax = 11.0f;
 		_pos = 0;
-		
-		_speedHorizontal = 0;
-		_speedAccelHorizontal = 0;
-		_speedLimitHorizontal = 0;
-
 		_angleHorizontal = 0;
-		_angleAccelHorizontal = 0;
-		_angleLimitHorizontal = 0;
+		_invisibility = false;
+		_explosionEffect = nullptr;
+
+		_presetPos[0] = -BLOCK_SIZE * 1.1f;
+		_presetPos[1] = 0;
+		_presetPos[2] = BLOCK_SIZE * 1.1f;
+
+		_currentPosID = _targetPosID = _nextTargetPosID = 1;
 
 		_camera = RenderProcessor::Instance()->GetCamera();
 
@@ -85,7 +89,6 @@ namespace CoreEngine
 		auto sceneNode = sceneManager->createSceneNode();
 		sceneManager->getRootSceneNode()->addChild(sceneNode);
 		_sector = make_unique<SceneSector>(sceneNode);
-		//sceneNode->setPosition(-1.0f, 0.1f, 0.0f);
 
 		//_sector->GetNode()->setDirection(Ogre::Vector3(1, 0, 0));
 		_ship = make_unique<ModelDrawable>(_sector.get(), "ship.mesh");
@@ -98,7 +101,6 @@ namespace CoreEngine
 		_engineFire = sceneManager->createParticleSystem("EngineFire", "Engine");
 		_engineFire->getEmitter(0)->setParticleVelocity(3.5f);
 		sceneNodeChild->attachObject(_engineFire);
-		//_engineFire = make_unique<ParticleSystem>();
 	}
 
 	void RaceStateProcessor::InitSound()
@@ -119,14 +121,45 @@ namespace CoreEngine
 	{
 		Vector3 zero;
 		Vector3i zeroi;
+
+		for (auto i = 1; i <= 6; i++)
+		{
+			stringstream ss;
+			ss << "Asteroid" << i << "_LOD0.mesh";
+			Asteroid * asteroid = new Asteroid(zero, ss.str(), 0, 0);
+			delete asteroid;
+		}
 		//auto gun = new Gun(zero);
 		//delete gun;
 	}
 
 
-	void RaceStateProcessor::UpdateTurn(float time, float roadspeed)
+	void RaceStateProcessor::UpdateTurn()
 	{
+		if (_currentPosID != _targetPosID)
+		{
+			auto curTime = _totalTime - _posChangingStarted;
+			if (curTime > _posChangingTime)
+			{
+				_pos = _presetPos[_targetPosID];
+				_currentPosID = _targetPosID;
+				_angleHorizontal = 0;
+				if (_nextTargetPosID != _targetPosID)
+				{
+					_targetPosID = _nextTargetPosID;
+					_posChangingStarted = _totalTime;
+				}
+				return;
+			}
 
+			auto scaleTime = curTime * PI / _posChangingTime;
+
+			auto k = 0.5f * (sin(scaleTime - PI*0.5f) + 1);
+			_pos = _presetPos[_currentPosID] + k*(_presetPos[_targetPosID] - _presetPos[_currentPosID]);
+
+			auto sign = _currentPosID < _targetPosID ? 1.0f : -1.0f;
+			_angleHorizontal = sin(scaleTime) * _angleHorizontalMax * sign;
+		}
 	}
 
 	GameState::State RaceStateProcessor::Update(float time)
@@ -138,52 +171,64 @@ namespace CoreEngine
 		UpdateHUD();
 
 		_speed += _speedAccel * time;
+		if (_speed > _speedMax)
+			_speed = _speedMax;
 
-		_pos += _speedHorizontal * time;
-		if (_speedHorizontal != _speedLimitHorizontal)
+		if (_invisibility)
 		{
-			auto newHorizSpeed = _speedHorizontal + _speedAccelHorizontal * time;
-			if (between(_speedHorizontal, newHorizSpeed, _speedLimitHorizontal))
+			if (_totalTime > _invisibilityStart + _invisibilityTime)
 			{
-				_speedHorizontal = _speedLimitHorizontal;
-			}
-			else
-			{
-				_speedHorizontal = newHorizSpeed;
-			}
-		}
-
-		if (_angleHorizontal != _angleLimitHorizontal)
-		{
-			auto newAngle = _angleHorizontal + _angleAccelHorizontal * time;
-			if (between(_angleHorizontal, newAngle, _angleLimitHorizontal))
-			{
-				_angleHorizontal = _angleLimitHorizontal;
+				_invisibility = false;
+				_ship->SetVisible(true);
 			}
 			else 
 			{
-				_angleHorizontal = newAngle;
+				auto invisTime = _totalTime - _invisibilityStart;
+				auto koef = static_cast<int>(invisTime * 10);
+				_ship->SetVisible(koef % 2 ? true : false);
 			}
 		}
 
-		if (_pos > BLOCK_SIZE * 1.5f)
-			_pos = BLOCK_SIZE * 1.5f;
-		if (_pos < -BLOCK_SIZE * 1.5f)
-			_pos = -BLOCK_SIZE * 1.5f;
+		if (_explosionEffect)
+		{
+			_explosionEffect->Update(time);
+			if (_explosionEffect->IsFinished())
+			{
+				delete _explosionEffect;
+				_explosionEffect = nullptr;
 
+				_invisibility = true;
+				_invisibilityStart = _totalTime;
+				_speedAccel = 5.0f;
+				_sector->GetNode()->setVisible(true);
+			}
+		}
+		else 
+		{
+			UpdateTurn();
+		}
+
+		// Engine fire strength
 		auto multiplier = _speed * 0.8f;
-		
 		if (multiplier > 1.1f) multiplier = 1.1f;
 		if (multiplier < 0.8f) multiplier = 0.8f;
 		_engineFire->getEmitter(0)->setParticleVelocity(3.5f * multiplier);
+
 		_space->Update(time, _speed);
 		_sector->GetNode()->setPosition(10, 0, _pos);
+
 		auto angle = Ogre::Quaternion(Ogre::Radian(_angleHorizontal), Ogre::Vector3(1, 0, 0));
 		_sector->GetNode()->setOrientation(angle);
 
-		if (_space->IsIntersected(_pos))
-			_score++;
+		if (_space->IsIntersected(_pos) && !_invisibility && !_explosionEffect)
+		{
+			_speed = 0.0f;
+			_speedAccel = 0.0f;
+			StartExplosion();
+			_sector->GetNode()->setVisible(false);
 
+			_score++;
+		}
 		/*if (IsGameLost())
 		{
 			for_each(particleList.begin(), particleList.end(), bind(&ParticleSystem::Update, placeholders::_1, 10.0f));
@@ -192,6 +237,19 @@ namespace CoreEngine
 		}*/
 
 		return Game::Instance()->GetState();
+	}
+
+	void RaceStateProcessor::StartExplosion()
+	{
+		if (_explosionEffect)
+			delete _explosionEffect;
+
+		auto sceneManager = RenderProcessor::Instance()->GetSceneManager();
+		auto sceneNodeChild = sceneManager->createSceneNode();
+		sceneNodeChild->setPosition(_sector->GetNode()->getPosition());
+
+		sceneManager->getRootSceneNode()->addChild(sceneNodeChild);
+		_explosionEffect = new ParticleSystem(sceneNodeChild, "ExplosionParticle_%d", "Explosion", _explosionTime);
 	}
 
 	
@@ -247,42 +305,39 @@ namespace CoreEngine
 		}
 		if (key == OIS::KC_UP)
 		{
-			_speedAccel = 5.0f;
+			//_speedAccel = 5.0f;
 		}
 		if (key == OIS::KC_DOWN)
 		{
-			_speedAccel = -5.0f;
+			//_speedAccel = -5.0f;
 		}
 		if (key == OIS::KC_LEFT)
 		{
-			if (_speedHorizontal < -0.01f)
+			if (_currentPosID == _targetPosID && _targetPosID < 2)
 			{
-				_speedAccelHorizontal = 30.0f;
-				_angleAccelHorizontal = 3.0f;
+				_targetPosID++;
+				_nextTargetPosID = _targetPosID;
+				_posChangingStarted = _totalTime;
 			}
 			else 
 			{
-				_speedAccelHorizontal = 3.0f * 3;
-				_angleAccelHorizontal = 0.3f * 3;
+				if (_targetPosID < 2)
+					_nextTargetPosID++;
 			}
-			_speedLimitHorizontal = 10.0f;
-			_angleLimitHorizontal = 1;
-
 		}
 		if (key == OIS::KC_RIGHT)
 		{
-			if (_speedHorizontal > 0.01f)
+			if (_currentPosID == _targetPosID && _targetPosID > 0)
 			{
-				_speedAccelHorizontal = -30.0f;
-				_angleAccelHorizontal = -3.0f;
+				_targetPosID--;
+				_nextTargetPosID = _targetPosID;
+				_posChangingStarted = _totalTime;
 			}
 			else 
 			{
-				_speedAccelHorizontal = -3.0f * 3;
-				_angleAccelHorizontal = -0.3f * 3;
+				if (_targetPosID > 0)
+					_nextTargetPosID--;
 			}
-			_speedLimitHorizontal = -10.0f;
-			_angleLimitHorizontal = -1;
 		}
 	}
 
@@ -291,17 +346,11 @@ namespace CoreEngine
 	{
 		if (key == OIS::KC_UP || key == OIS::KC_DOWN)
 		{
-			_speedAccel = 0.0f;
+			//_speedAccel = 0.0f;
 		}
 		if (key == OIS::KC_LEFT || key == OIS::KC_RIGHT)
 		{
-			//_speedHorizontal = 0.0f;
-			_speedAccelHorizontal = -_speedAccelHorizontal * 3;
-			_speedLimitHorizontal = 0.0f;
-			
-			_angleAccelHorizontal = -_angleAccelHorizontal * 3;
-			_angleLimitHorizontal = 0.0f;
-			//_angleHorizontal = 0;
+
 		}
 	}
 
