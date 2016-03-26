@@ -115,6 +115,7 @@
     <ClCompile Include="..\core\ControlLibrary\SwipeBarControl.cpp" />
     <ClCompile Include="..\core\CreditsStateProcessor.cpp" />
     <ClCompile Include="..\core\EnemyFighter.cpp" />
+    <ClCompile Include="..\core\Explosion.cpp" />
     <ClCompile Include="..\core\Fence.cpp" />
     <ClCompile Include="..\core\Game.cpp" />
     <ClCompile Include="..\core\Gun.cpp" />
@@ -140,6 +141,7 @@
     <ClCompile Include="..\core\ScoreStateProcessor.cpp" />
     <ClCompile Include="..\core\SkinManager.cpp" />
     <ClCompile Include="..\core\SliderProcessor.cpp" />
+    <ClCompile Include="..\core\SpaceObject.cpp" />
     <ClCompile Include="..\core\StateProcessorFactory.cpp" />
     <ClCompile Include="..\core\StoreStateProcessor.cpp" />
     <ClCompile Include="..\core\tinyxml\tinyxml2.cpp" />
@@ -179,6 +181,7 @@
     <ClInclude Include="..\core\ControlLibrary\SwipeBarControl.h" />
     <ClInclude Include="..\core\CreditsStateProcessor.h" />
     <ClInclude Include="..\core\EnemyFighter.h" />
+    <ClInclude Include="..\core\Explosion.h" />
     <ClInclude Include="..\core\Fence.h" />
     <ClInclude Include="..\core\Game.h" />
     <ClInclude Include="..\core\GameDefs.h" />
@@ -210,6 +213,7 @@
     <ClInclude Include="..\core\SkinManager.h" />
     <ClInclude Include="..\core\SliderProcessor.h" />
     <ClInclude Include="..\core\SpaceDefs.h" />
+    <ClInclude Include="..\core\SpaceObject.h" />
     <ClInclude Include="..\core\StateProcessorFactory.h" />
     <ClInclude Include="..\core\StoreStateProcessor.h" />
     <ClInclude Include="..\core\tinyxml\tinyxml2.h" />

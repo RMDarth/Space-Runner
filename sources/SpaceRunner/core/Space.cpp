@@ -3,6 +3,8 @@
 #include "Fence.h"
 #include "Asteroid.h"
 #include "EnemyFighter.h"
+#include "BlasterBurst.h"
+
 #include "SceneSector.h"
 
 #include "LevelStructure.h"
@@ -76,6 +78,8 @@ namespace CoreEngine
 
 		for_each(_fighterList.begin(), _fighterList.end(), bind(&EnemyFighter::Update, placeholders::_1, time, roadOffset));
 		_fighterList.erase(remove_if(_fighterList.begin(), _fighterList.end(), bind(&EnemyFighter::IsDone, placeholders::_1)), _fighterList.end());
+
+		UpdateShots(time, roadOffset);
 	}
 
 	void Space::AddObstacles(float totalTime)
@@ -91,23 +95,24 @@ namespace CoreEngine
 			{
 			case ObstacleType::AsteroidsPack:
 				{
-					_currentObstacle = make_unique<Obstacle>();
 					int count = rand() % 5 + 2;
 					_lastObstacleCreated = totalTime;
 
-					_currentObstacle->type = ObstacleType::AsteroidsPack;
-					_currentObstacle->timeLength = count * 4 + 1;
-					_currentObstacle->timeStarted = totalTime;
-					_currentObstacle->energyCount = count;
+					_currentObstacle = make_unique<Obstacle>(
+						ObstacleType::AsteroidsPack,
+						count * 4 + 1,
+						totalTime,
+						count);
 				}
 				break;
 
 			case ObstacleType::EnemyFighter:
-				_currentObstacle = make_unique<Obstacle>();
-				_currentObstacle->type = ObstacleType::EnemyFighter;
-				_currentObstacle->timeLength = 25;
-				_currentObstacle->timeStarted = totalTime;
-				_currentObstacle->energyCount = 0;
+				_currentObstacle = make_unique<Obstacle>(
+					ObstacleType::EnemyFighter, 
+					25, 
+					totalTime,
+					0);
+
 				break;
 			}
 		}
@@ -124,6 +129,12 @@ namespace CoreEngine
 				break;
 			}
 		}
+	}
+
+	void Space::AddShot(Vector3 pos, float speed)
+	{
+		auto shot = make_shared<BlasterBurst>(pos, "BlasterShotMaterial", 0, speed);
+		_shotList.push_back(shot);
 	}
 
 	void Space::AddAsteroids(float totalTime)
@@ -168,6 +179,12 @@ namespace CoreEngine
 		}
 	}
 
+	void Space::UpdateShots(float time, float roadOffset)
+	{
+		for_each(_shotList.begin(), _shotList.end(), bind(&BlasterBurst::Update, placeholders::_1, time, roadOffset));
+		_shotList.erase(remove_if(_shotList.begin(), _shotList.end(), bind(&BlasterBurst::IsDone, placeholders::_1)), _shotList.end());
+	}
+
 	void Space::SetVisible(bool visible)
 	{
 		for_each(_asteroidList.begin(), _asteroidList.end(), bind(&Asteroid::SetVisible, placeholders::_1, visible));
@@ -197,5 +214,4 @@ namespace CoreEngine
 		}
 		return false;
 	}
-
 }

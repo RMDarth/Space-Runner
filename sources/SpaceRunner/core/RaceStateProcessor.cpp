@@ -11,7 +11,9 @@
 #include "SpaceDust.h"
 #include "Fence.h"
 #include "Asteroid.h"
+#include "EnemyFighter.h"
 #include "BlasterBurst.h"
+#include "Explosion.h"
 
 #include "LevelStructure.h"
 
@@ -28,12 +30,9 @@ using namespace std;
 #define FLYBALL_SPEED 20.0f
 #define REVEAL_COUNT 220
 #define PI 3.1415f
-#define EXPLOSIONS_NUM 4
 
 namespace CoreEngine
 {
-	const float RaceStateProcessor::_explosionTime[4] = { 1.0f, 2.0f, 1.5f, 2.0f };
-
 	namespace 
 	{
 		bool between(float x, float y, float mid)
@@ -78,12 +77,14 @@ namespace CoreEngine
 		_speedMax = 11.0f;
 		_pos = 0;
 		_angleHorizontal = 0;
-		_invisibility = false;
-		_explosionEffect[0] = nullptr;
+		_invincibility = false;
+		_shootingStarted = 0;
 
 		_presetPos[0] = -BLOCK_SIZE * 1.1f;
 		_presetPos[1] = 0;
 		_presetPos[2] = BLOCK_SIZE * 1.1f;
+
+		_explosion.reset();
 
 		_currentPosID = _targetPosID = _nextTargetPosID = 1;
 
@@ -116,7 +117,7 @@ namespace CoreEngine
 		auto soundSystem = SoundSystem::Instance();
 		if (soundSystem->IsLoaded() && _soundsLoaded == false)
 		{
-			//_launchSound = shared_ptr<Sound>(soundSystem->CreateSound("Sound/LaunchSound.wav"));
+			_shootSound = unique_ptr<Sound>(soundSystem->CreateSound("Sound/LaunchSound.wav"));
 			//_hitSound = shared_ptr<Sound>(soundSystem->CreateSound("Sound/HitSound.wav"));
 			//_hitDestroySound = shared_ptr<Sound>(soundSystem->CreateSound("Sound/HitDestroySound.wav"));
 			_bombSound = unique_ptr<Sound>(soundSystem->CreateSound("Sound/BombSound.wav"));
@@ -137,17 +138,12 @@ namespace CoreEngine
 			Asteroid * asteroid = new Asteroid(zero, ss.str(), 0, 0);
 			delete asteroid;
 		}
-		auto sceneManager = RenderProcessor::Instance()->GetSceneManager();
-		for (int i = 1; i <= EXPLOSIONS_NUM; i++)
-		{
-			auto sceneNodeChild = sceneManager->createSceneNode();
-			sceneManager->getRootSceneNode()->addChild(sceneNodeChild);
-			stringstream ss;
-			ss << "Blast" << i;
-			auto particleSystem = sceneManager->createParticleSystem(ss.str(), ss.str());
-			sceneNodeChild->attachObject(particleSystem);
-			sceneManager->getRootSceneNode()->removeChild(sceneNodeChild);
-		}
+		EnemyFighter * enemyFighter = new EnemyFighter(zero, "ship.mesh", "ShipMaterialYellow", 0);
+		delete enemyFighter;
+
+		_explosion = make_unique<Explosion>(zero);
+		_explosion->Update(100.0f, 100.0f);
+		_explosion->SetVisible(false);
 	}
 
 
@@ -179,20 +175,6 @@ namespace CoreEngine
 		}
 	}
 
-	void RaceStateProcessor::UpdateShots(float time)
-	{
-		for_each(_shotList.begin(), _shotList.end(), bind(&BlasterBurst::Update, placeholders::_1, time, time * _speed * 5.0f));
-		_shotList.erase(remove_if(_shotList.begin(), _shotList.end(), bind(&BlasterBurst::IsDone, placeholders::_1)), _shotList.end());
-		if (_shotList.empty())
-		{
-			for (auto i = 0; i < 4; i++)
-			{
-				auto shot = make_shared<BlasterBurst>(Vector3(10 - 3.0f*i, 0, _pos), "BlasterShotMaterial", 0, 80.0f);
-				_shotList.push_back(shot);
-			}
-		}
-	}
-
 	GameState::State RaceStateProcessor::Update(float time)
 	{
 		_totalTime += time;
@@ -205,37 +187,29 @@ namespace CoreEngine
 		if (_speed > _speedMax)
 			_speed = _speedMax;
 
-		if (_invisibility)
+		if (_invincibility)
 		{
-			if (_totalTime > _invisibilityStart + _invisibilityTime)
+			if (_totalTime > _invincibilityStart + _invincibilityTime)
 			{
-				_invisibility = false;
+				_invincibility = false;
 				_ship->SetVisible(true);
 			}
 			else 
 			{
-				auto invisTime = _totalTime - _invisibilityStart;
+				auto invisTime = _totalTime - _invincibilityStart;
 				auto koef = static_cast<int>(invisTime * 10);
 				_ship->SetVisible(koef % 2 ? true : false);
 			}
 		}
 
-		if (_explosionEffect[0])
+		if (_explosion)
 		{
-			for (int i = 0; i < EXPLOSIONS_NUM; i++)
+			_explosion->Update(time, _speed * time * 5.0f);
+			if (_explosion->IsDone())
 			{
-				_explosionEffect[i]->Update(time);
-			}
-			if (_explosionEffect[1]->IsFinished())
-			{
-				for (int i = 0; i < EXPLOSIONS_NUM; i++)
-				{
-					delete _explosionEffect[i];
-					_explosionEffect[i] = nullptr;
-				}
-
-				_invisibility = true;
-				_invisibilityStart = _totalTime;
+				_explosion.reset();
+				_invincibility = true;
+				_invincibilityStart = _totalTime;
 				_speedAccel = 5.0f;
 				_sector->GetNode()->setVisible(true);
 			}
@@ -243,7 +217,6 @@ namespace CoreEngine
 		else 
 		{
 			UpdateTurn();
-			UpdateShots(time);
 		}
 
 		// Engine fire strength
@@ -258,7 +231,7 @@ namespace CoreEngine
 		auto angle = Ogre::Quaternion(Ogre::Radian(_angleHorizontal), Ogre::Vector3(1, 0, 0));
 		_sector->GetNode()->setOrientation(angle);
 
-		if (!_invisibility && !_explosionEffect[0] && _space->IsIntersected(_pos))
+		if (!_invincibility && !_explosion && _space->IsIntersected(_pos))
 		{
 			_speed = 0.0f;
 			_speedAccel = 0.0f;
@@ -279,27 +252,7 @@ namespace CoreEngine
 
 	void RaceStateProcessor::StartExplosion()
 	{
-		if (_explosionEffect[0])
-		{
-			for (int i = 0; i < EXPLOSIONS_NUM; i++)
-				delete _explosionEffect[i];
-		}
-
-		auto sceneManager = RenderProcessor::Instance()->GetSceneManager();
-		for (auto i = 0; i < EXPLOSIONS_NUM; i++)
-		{
-			auto sceneNodeChild = sceneManager->createSceneNode();
-			sceneNodeChild->setPosition(_sector->GetNode()->getPosition());
-			sceneManager->getRootSceneNode()->addChild(sceneNodeChild);
-			stringstream str;
-			str << "Blast" << (i+1) << "_%d";
-			string templateName = str.str();
-			str.str("");
-			str << "Blast" << (i+1);
-			_explosionEffect[i] = new ParticleSystem(sceneNodeChild, templateName, str.str(), _explosionTime[i], EXPLOSIONS_NUM - i);
-
-		}
-
+		_explosion = make_unique<Explosion>(VectorFromOgre(_sector->GetNode()->getPosition()));
 		if (Config::Instance()->IsSoundEnabled())
 			_bombSound->Play();
 	}
@@ -356,7 +309,15 @@ namespace CoreEngine
 		}
 		if (key == OIS::KC_UP)
 		{
-			//_speedAccel = 5.0f;
+			if (_totalTime - _shootingStarted > _shootingTime)
+			{
+				for (auto i = 0; i < 4; i++)
+				{
+					_space->AddShot(Vector3(10 - 3.0f*i, 0, _pos), 80);
+				}
+				_shootSound->Play();
+				_shootingStarted = _totalTime;
+			}
 		}
 		if (key == OIS::KC_DOWN)
 		{

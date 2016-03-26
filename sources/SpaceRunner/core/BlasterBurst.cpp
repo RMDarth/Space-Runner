@@ -9,6 +9,7 @@ using namespace std;
 namespace CoreEngine
 {
 	BlasterBurst::BlasterBurst(Vector3 offset, std::string material, int count, float speed, float size)
+		: SpaceObject(offset, speed)
 	{
 		auto sceneManager = RenderProcessor::Instance()->GetSceneManager();
 		auto sceneNode = sceneManager->createSceneNode();
@@ -22,9 +23,6 @@ namespace CoreEngine
 		pointList.push_back(Vector3(0.0f, 0,  0.05));
 		pointList.push_back(Vector3(-1.8f, 0, 0.05));
 		_rect = make_unique<RectDrawable>(_sector, material, pointList);
-
-		_speed = speed;
-		_pos = offset;
 	}
 
 	BlasterBurst::~BlasterBurst()
@@ -35,8 +33,7 @@ namespace CoreEngine
 
 	void BlasterBurst::Update(float time, float roadSpeed)
 	{
-		_pos.x -= _speed * time;
-		_pos.x += roadSpeed;
+		SpaceObject::Update(time, roadSpeed);
 		_sector->GetNode()->setPosition(VectorToOgre(_pos));
 	}
 

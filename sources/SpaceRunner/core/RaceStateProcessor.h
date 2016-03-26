@@ -19,7 +19,7 @@ namespace Ogre
 
 namespace CoreEngine
 {
-	class BlasterBurst;
+	class Explosion;
 
 	class RaceStateProcessor : public IStateProcessor, public IEventHandler
 	{
@@ -30,13 +30,13 @@ namespace CoreEngine
 		UPtr<SceneSector> _sector;
 		UPtr<ModelDrawable> _ship;
 
-		PtrList<BlasterBurst> _shotList;
-
 		Ogre::ParticleSystem * _engineFire;
-		ParticleSystem * _explosionEffect[4];
+
+		UPtr<Explosion> _explosion;
 
 		// sounds
 		UPtr<Sound> _bombSound;
+		UPtr<Sound> _shootSound;
 		bool _soundsLoaded;
 
 		int _score;
@@ -60,11 +60,12 @@ namespace CoreEngine
 		float _posChangingStarted;
 		const float _posChangingTime = 0.4f;
 
-		bool _invisibility;
-		float _invisibilityStart;
-		const float _invisibilityTime = 3.0f;
+		bool _invincibility;
+		float _invincibilityStart;
+		const float _invincibilityTime = 3.0f;
 
-		static const float _explosionTime[4];
+		float _shootingStarted;
+		const float _shootingTime = 1.5f;
 
 		bool _init;
 
@@ -93,7 +94,6 @@ namespace CoreEngine
 		void GenerateLevel();
 		void PreloadModels();
 		void UpdateTurn();
-		void UpdateShots(float time);
 		void StartExplosion();
 
 		void SetLightAndCamera(float deltaTime);

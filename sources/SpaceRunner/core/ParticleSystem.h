@@ -11,6 +11,7 @@ class ParticleSystem
 	
 public:
 	ParticleSystem(Ogre::SceneNode* node, std::string nameTemplate, std::string particleTemplate, float time, int priority = 0);
+	virtual ~ParticleSystem();
 
 	void Update(float deltaTime);
 	bool IsFinished();

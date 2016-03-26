@@ -14,6 +14,12 @@ namespace CoreEngine
 
 	struct Obstacle
 	{
+		Obstacle(ObstacleType type, float timeLength, float timeStarted, int energyCount)
+			: type(type), timeLength(timeLength), timeStarted(timeStarted), energyCount(energyCount)
+		{
+
+		}
+
 		ObstacleType type;
 		float timeLength;
 		float timeStarted;

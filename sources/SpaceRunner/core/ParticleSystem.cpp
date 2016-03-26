@@ -15,6 +15,12 @@ ParticleSystem::ParticleSystem(Ogre::SceneNode* node, std::string nameTemplate, 
 	_time = time;
 }
 
+ParticleSystem::~ParticleSystem()
+{
+	_system->setVisible(false);
+	RenderProcessor::Instance()->GetSceneManager()->destroyParticleSystem(_system);
+}
+
 void ParticleSystem::Update(float deltaTime)
 {
 	_time -= deltaTime;

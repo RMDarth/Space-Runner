@@ -6,19 +6,22 @@
 
 class SceneSector;
 class ModelDrawable;
+class ParticleSystem;
 
 namespace CoreEngine
 {
-	class Asteroid : public SpaceObject
+	class Explosion : public SpaceObject
 	{
 		SceneSector * _sector;
-		ModelDrawable * _model;
+		ParticleSystem * _explosionEffect[4];
+
+		static const float _explosionTime[4];
 
 	public:
-		Asteroid(Vector3 offset, std::string model, float speed, float scale = 1.0f);
-		~Asteroid();
+		Explosion(Vector3 offset);
+		~Explosion();
 		void Update(float time, float roadSpeed) override;
-		void TryReset();
+		bool IsDone() override;
 
 		void SetVisible(bool visible) override;
 
