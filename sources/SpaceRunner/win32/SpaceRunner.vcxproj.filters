@@ -432,5 +432,8 @@
     <ClInclude Include="..\core\EnemyFighter.h">
       <Filter>core\Game\StateProcessors\Race\Space</Filter>
     </ClInclude>
+    <ClInclude Include="..\core\LevelStructure.h">
+      <Filter>core\Game\StateProcessors\Race</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

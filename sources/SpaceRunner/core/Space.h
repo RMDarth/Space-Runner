@@ -12,14 +12,19 @@ namespace CoreEngine
 	class SpaceDust;
 	class Fence;
 
+	struct Level;
+	struct Obstacle;
+
 	class Space
 	{
 		PtrList<Asteroid> _backgroundAsteroidList;
 		PtrList<Asteroid> _asteroidList;
 		PtrList<EnemyFighter> _fighterList;
 		
-		std::unique_ptr<SpaceDust> _spaceDust;
-		std::unique_ptr<Fence> _fence;
+		UPtr<SpaceDust> _spaceDust;
+		UPtr<Fence> _fence;
+		UPtr<Level> _currentLevel;
+		UPtr<Obstacle> _currentObstacle;
 		
 		float _totalTime;
 		float _lastObstacleCreated;
@@ -31,5 +36,8 @@ namespace CoreEngine
 		bool IsIntersected(float turn);
 	private:
 		void AddObstacles(float time);
+		
+		void AddAsteroids(float time);
+		void AddEnemyFighter(float time);
 	};
 }

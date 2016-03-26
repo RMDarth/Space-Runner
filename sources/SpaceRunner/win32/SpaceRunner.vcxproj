@@ -190,6 +190,7 @@
     <ClInclude Include="..\core\IStateProcessor.h" />
     <ClInclude Include="..\core\LevelManager.h" />
     <ClInclude Include="..\core\LevelSelectionStateProcessor.h" />
+    <ClInclude Include="..\core\LevelStructure.h" />
     <ClInclude Include="..\core\Light.h" />
     <ClInclude Include="..\core\LineDrawable.h" />
     <ClInclude Include="..\core\MenuStateProcessor.h" />

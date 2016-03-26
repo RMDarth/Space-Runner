@@ -4,6 +4,9 @@
 #include "Asteroid.h"
 #include "EnemyFighter.h"
 #include "SceneSector.h"
+
+#include "LevelStructure.h"
+
 #include <memory>
 #include <algorithm>
 #include <functional>
@@ -11,6 +14,8 @@ using namespace std;
 
 namespace CoreEngine
 {
+	static const float presetPos[3] = { -BLOCK_SIZE * 1.1f, 0, BLOCK_SIZE * 1.1f };
+
 	Space::Space()
 	{
 		_lastObstacleCreated = 0;
@@ -32,6 +37,25 @@ namespace CoreEngine
 			auto asteroid = make_shared<Asteroid>(Vector3(-i*BLOCK_SIZE, posY, posX), "moon.mesh", 0.0f);
 			_backgroundAsteroidList.push_back(asteroid);
 		}
+
+		vector<ObstacleType> obstacleList;
+		for (int i = 0; i < 50; i++)
+		{
+			int type = rand() % 10;
+			if (type < 2)
+			{
+				obstacleList.push_back(ObstacleType::EnemyFighter);
+			}
+			else
+			{
+				obstacleList.push_back(ObstacleType::AsteroidsPack);
+			}
+		}
+		_currentLevel = make_unique<Level>();
+		_currentLevel->currentObstacle = 0;
+		_currentLevel->obstacleList = obstacleList;
+		_currentLevel->skyboxId = 0;
+		_currentLevel->energyToComplete = 100;
 	}
 
 	void Space::Update(float time, float speed)
@@ -56,44 +80,92 @@ namespace CoreEngine
 
 	void Space::AddObstacles(float totalTime)
 	{
+		if (!_currentObstacle || (totalTime - _currentObstacle->timeStarted) > _currentObstacle->timeLength )
+		{
+			// create new obstacle
+			_currentLevel->currentObstacle++;
+			if (_currentLevel->currentObstacle == _currentLevel->obstacleList.size())
+				_currentLevel->currentObstacle = 0;
+
+			switch (_currentLevel->obstacleList[_currentLevel->currentObstacle])
+			{
+			case ObstacleType::AsteroidsPack:
+				{
+					_currentObstacle = make_unique<Obstacle>();
+					int count = rand() % 5 + 2;
+					_lastObstacleCreated = totalTime;
+
+					_currentObstacle->type = ObstacleType::AsteroidsPack;
+					_currentObstacle->timeLength = count * 4 + 1;
+					_currentObstacle->timeStarted = totalTime;
+					_currentObstacle->energyCount = count;
+				}
+				break;
+
+			case ObstacleType::EnemyFighter:
+				_currentObstacle = make_unique<Obstacle>();
+				_currentObstacle->type = ObstacleType::EnemyFighter;
+				_currentObstacle->timeLength = 25;
+				_currentObstacle->timeStarted = totalTime;
+				_currentObstacle->energyCount = 0;
+				break;
+			}
+		}
+		else 
+		{
+			switch (_currentObstacle->type)
+			{
+			case ObstacleType::AsteroidsPack:
+				AddAsteroids(totalTime);
+				break;
+
+			case ObstacleType::EnemyFighter:
+				AddEnemyFighter(totalTime);
+				break;
+			}
+		}
+	}
+
+	void Space::AddAsteroids(float totalTime)
+	{
 		if (totalTime > 3 && totalTime - _lastObstacleCreated > 4)
 		{
 			bool posUsed[3] = { false, false, false };
-			static const float presetPos[3] = { -BLOCK_SIZE * 1.1f, 0, BLOCK_SIZE * 1.1f };
-
-			int type = rand() % 20;
-			if (type == 1)
+			
+			int count = rand() % 2 + 1;
+			for (int i = 0; i < count; i++)
 			{
-				int posIndex = rand() % 3;
-				float pos = presetPos[posIndex];
+				int posIndex;
+				do{
+					posIndex = rand() % 3;
+				} while (posUsed[posIndex]);
 
-				auto fighter = make_shared<EnemyFighter>(Vector3(-ASTEROID_NUM * BLOCK_SIZE, 0, pos), "ship.mesh", "ShipMaterialYellow", 0.2f, 8.0f);
-				_fighterList.push_back(fighter);
-			}
-			else 
-			{
-				int count = rand() % 2 + 1;
-				for (int i = 0; i < count; i++)
-				{
-					int posIndex;
-					do{
-						posIndex = rand() % 3;
-					} while (posUsed[posIndex]);
+				float deviation = (rand() % 10 - 5.0f) / 10.0f;
+				float pos = presetPos[posIndex] + deviation;
 
-					float deviation = (rand() % 10 - 5.0f) / 10.0f;
-					float pos = presetPos[posIndex] + deviation;
+				int anum = rand() % 6 + 1;
+				stringstream ss;
+				ss << "Asteroid" << anum << "_LOD0.mesh";
 
-					int anum = rand() % 6 + 1;
-					stringstream ss;
-					ss << "Asteroid" << anum << "_LOD0.mesh";
-
-					Asteroid * asteroid = new Asteroid(Vector3(-ASTEROID_NUM * BLOCK_SIZE, 0, pos), ss.str(), 0.0f, 5.0f);
-					_asteroidList.push_back(shared_ptr<Asteroid>(asteroid));
-				}
+				Asteroid * asteroid = new Asteroid(Vector3(-ASTEROID_NUM * BLOCK_SIZE, 0, pos), ss.str(), 0.0f, 5.0f);
+				_asteroidList.push_back(shared_ptr<Asteroid>(asteroid));
 			}
 			_lastObstacleCreated = totalTime;
 		}
+	}
 
+	void Space::AddEnemyFighter(float totalTime)
+	{
+		if (totalTime > 3 && totalTime - _lastObstacleCreated > 10)
+		{
+			int posIndex = rand() % 3;
+			float pos = presetPos[posIndex];
+
+			auto fighter = make_shared<EnemyFighter>(Vector3(-ASTEROID_NUM * BLOCK_SIZE, 0, pos), "ship.mesh", "ShipMaterialYellow", 0.2f, 8.0f);
+			_fighterList.push_back(fighter);
+
+			_lastObstacleCreated = totalTime + 10;
+		}
 	}
 
 	void Space::SetVisible(bool visible)

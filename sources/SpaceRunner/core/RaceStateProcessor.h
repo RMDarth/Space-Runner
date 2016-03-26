@@ -33,12 +33,11 @@ namespace CoreEngine
 		PtrList<BlasterBurst> _shotList;
 
 		Ogre::ParticleSystem * _engineFire;
-
 		ParticleSystem * _explosionEffect[4];
 
 		// sounds
-		//shared_ptr<Sound> _motorSound;
-		//bool _soundsLoaded;
+		UPtr<Sound> _bombSound;
+		bool _soundsLoaded;
 
 		int _score;
 

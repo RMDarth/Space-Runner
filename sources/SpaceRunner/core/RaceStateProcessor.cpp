@@ -13,6 +13,8 @@
 #include "Asteroid.h"
 #include "BlasterBurst.h"
 
+#include "LevelStructure.h"
+
 #include "ModelDrawable.h"
 #include "SceneSector.h"
 
@@ -32,21 +34,24 @@ namespace CoreEngine
 {
 	const float RaceStateProcessor::_explosionTime[4] = { 1.0f, 2.0f, 1.5f, 2.0f };
 
-	bool between(float x, float y, float mid)
+	namespace 
 	{
-		if (x > mid && y < mid)
-			return true;
-		if (x < mid && y > mid)
-			return true;
-		if (x == mid || y == mid)
-			return true;
-		return false;
-	}
+		bool between(float x, float y, float mid)
+		{
+			if (x > mid && y < mid)
+				return true;
+			if (x < mid && y > mid)
+				return true;
+			if (x == mid || y == mid)
+				return true;
+			return false;
+		}
+	} // anon namespace
 
 	RaceStateProcessor::RaceStateProcessor()
 	{
-		//_soundsLoaded = false;
-		//InitSound();
+		_soundsLoaded = false;
+		InitSound();
 
 		PreloadModels();
 		
@@ -94,7 +99,6 @@ namespace CoreEngine
 		sceneManager->getRootSceneNode()->addChild(sceneNode);
 		_sector = make_unique<SceneSector>(sceneNode);
 
-		//_sector->GetNode()->setDirection(Ogre::Vector3(1, 0, 0));
 		_ship = make_unique<ModelDrawable>(_sector.get(), "ship.mesh");
 		_ship->SetScale(5);
 
@@ -110,15 +114,15 @@ namespace CoreEngine
 	void RaceStateProcessor::InitSound()
 	{
 		auto soundSystem = SoundSystem::Instance();
-		/*if (soundSystem->IsLoaded() && _soundsLoaded == false)
+		if (soundSystem->IsLoaded() && _soundsLoaded == false)
 		{
-			_launchSound = shared_ptr<Sound>(soundSystem->CreateSound("Sound/LaunchSound.wav"));
-			_hitSound = shared_ptr<Sound>(soundSystem->CreateSound("Sound/HitSound.wav"));
-			_hitDestroySound = shared_ptr<Sound>(soundSystem->CreateSound("Sound/HitDestroySound.wav"));
-			_bombSound = shared_ptr<Sound>(soundSystem->CreateSound("Sound/BombSound.wav"));
-			_successSound = shared_ptr<Sound>(soundSystem->CreateSound("Sound/SuccessSound.wav"));
+			//_launchSound = shared_ptr<Sound>(soundSystem->CreateSound("Sound/LaunchSound.wav"));
+			//_hitSound = shared_ptr<Sound>(soundSystem->CreateSound("Sound/HitSound.wav"));
+			//_hitDestroySound = shared_ptr<Sound>(soundSystem->CreateSound("Sound/HitDestroySound.wav"));
+			_bombSound = unique_ptr<Sound>(soundSystem->CreateSound("Sound/BombSound.wav"));
+			//_successSound = shared_ptr<Sound>(soundSystem->CreateSound("Sound/SuccessSound.wav"));
 			_soundsLoaded = true;
-		}*/
+		}
 	}
 
 	void RaceStateProcessor::PreloadModels()
@@ -144,8 +148,6 @@ namespace CoreEngine
 			sceneNodeChild->attachObject(particleSystem);
 			sceneManager->getRootSceneNode()->removeChild(sceneNodeChild);
 		}
-		//auto gun = new Gun(zero);
-		//delete gun;
 	}
 
 
@@ -297,9 +299,11 @@ namespace CoreEngine
 			_explosionEffect[i] = new ParticleSystem(sceneNodeChild, templateName, str.str(), _explosionTime[i], EXPLOSIONS_NUM - i);
 
 		}
+
+		if (Config::Instance()->IsSoundEnabled())
+			_bombSound->Play();
 	}
 
-	
 	void RaceStateProcessor::UpdateHUD()
 	{
 		stringstream stream;
