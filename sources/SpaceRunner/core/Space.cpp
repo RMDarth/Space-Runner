@@ -2,6 +2,7 @@
 #include "SpaceDust.h"
 #include "Fence.h"
 #include "Asteroid.h"
+#include "EnemyFighter.h"
 #include "SceneSector.h"
 #include <memory>
 #include <algorithm>
@@ -12,7 +13,7 @@ namespace CoreEngine
 {
 	Space::Space()
 	{
-		_lastAsteroidCreated = 0;
+		_lastObstacleCreated = 0;
 		_spaceDust = make_unique<SpaceDust>("SpaceDust");
 		_fence = make_unique<Fence>();
 		GenerateSpace();
@@ -41,41 +42,56 @@ namespace CoreEngine
 		_spaceDust->Update(time, roadOffset);
 		_fence->Update(time, roadOffset);
 		
-		AddAsteroids(_totalTime);
+		AddObstacles(_totalTime);
 		
 		for_each(_backgroundAsteroidList.begin(), _backgroundAsteroidList.end(), bind(&Asteroid::TryReset, placeholders::_1));
 		for_each(_backgroundAsteroidList.begin(), _backgroundAsteroidList.end(), bind(&Asteroid::Update, placeholders::_1, time, roadOffset));
 		
 		for_each(_asteroidList.begin(), _asteroidList.end(), bind(&Asteroid::Update, placeholders::_1, time, roadOffset));
 		_asteroidList.erase(remove_if(_asteroidList.begin(), _asteroidList.end(), bind(&Asteroid::IsDone, placeholders::_1)), _asteroidList.end());
+
+		for_each(_fighterList.begin(), _fighterList.end(), bind(&EnemyFighter::Update, placeholders::_1, time, roadOffset));
+		_fighterList.erase(remove_if(_fighterList.begin(), _fighterList.end(), bind(&EnemyFighter::IsDone, placeholders::_1)), _fighterList.end());
 	}
 
-	void Space::AddAsteroids(float totalTime)
+	void Space::AddObstacles(float totalTime)
 	{
-		if (totalTime > 3 && totalTime - _lastAsteroidCreated > 4)
+		if (totalTime > 3 && totalTime - _lastObstacleCreated > 4)
 		{
 			bool posUsed[3] = { false, false, false };
 			static const float presetPos[3] = { -BLOCK_SIZE * 1.1f, 0, BLOCK_SIZE * 1.1f };
 
-			int count = rand() % 2 + 1;
-			for (int i = 0; i < count; i++)
+			int type = rand() % 20;
+			if (type == 1)
 			{
-				int posIndex;
-				do{
-					posIndex = rand() % 3;
-				} while (posUsed[posIndex]);
-				
-				float deviation = (rand() % 10 - 5.0f) / 10.0f;
-				float pos = presetPos[posIndex] + deviation;
+				int posIndex = rand() % 3;
+				float pos = presetPos[posIndex];
 
-				int anum = rand() % 6 + 1;
-				stringstream ss;
-				ss << "Asteroid" << anum << "_LOD0.mesh";
-
-				Asteroid * asteroid = new Asteroid(Vector3(-ASTEROID_NUM * BLOCK_SIZE, 0, pos), ss.str(), 0.0f, 5.0f);
-				_asteroidList.push_back(shared_ptr<Asteroid>(asteroid));
+				auto fighter = make_shared<EnemyFighter>(Vector3(-ASTEROID_NUM * BLOCK_SIZE, 0, pos), "ship.mesh", "ShipMaterialYellow", 0.2f, 8.0f);
+				_fighterList.push_back(fighter);
 			}
-			_lastAsteroidCreated = totalTime;
+			else 
+			{
+				int count = rand() % 2 + 1;
+				for (int i = 0; i < count; i++)
+				{
+					int posIndex;
+					do{
+						posIndex = rand() % 3;
+					} while (posUsed[posIndex]);
+
+					float deviation = (rand() % 10 - 5.0f) / 10.0f;
+					float pos = presetPos[posIndex] + deviation;
+
+					int anum = rand() % 6 + 1;
+					stringstream ss;
+					ss << "Asteroid" << anum << "_LOD0.mesh";
+
+					Asteroid * asteroid = new Asteroid(Vector3(-ASTEROID_NUM * BLOCK_SIZE, 0, pos), ss.str(), 0.0f, 5.0f);
+					_asteroidList.push_back(shared_ptr<Asteroid>(asteroid));
+				}
+			}
+			_lastObstacleCreated = totalTime;
 		}
 
 	}
@@ -83,6 +99,7 @@ namespace CoreEngine
 	void Space::SetVisible(bool visible)
 	{
 		for_each(_asteroidList.begin(), _asteroidList.end(), bind(&Asteroid::SetVisible, placeholders::_1, visible));
+		for_each(_fighterList.begin(), _fighterList.end(), bind(&EnemyFighter::SetVisible, placeholders::_1, visible));
 		for_each(_backgroundAsteroidList.begin(), _backgroundAsteroidList.end(), bind(&Asteroid::SetVisible, placeholders::_1, visible));
 		_spaceDust->SetVisible(visible);
 	}
@@ -93,6 +110,16 @@ namespace CoreEngine
 		{
 			if ((*i)->IsIntersected(turn))
 			{
+				(*i)->Update(0, 15.0f);
+				return true;
+			}
+		}
+
+		for (auto i = _fighterList.begin(); i != _fighterList.end(); i++)
+		{
+			if ((*i)->IsIntersected(turn))
+			{
+				(*i)->Update(0, 15.0f);
 				return true;
 			}
 		}

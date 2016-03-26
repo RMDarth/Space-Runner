@@ -10,7 +10,7 @@ class ParticleSystem
 	static int _count;
 	
 public:
-	ParticleSystem(Ogre::SceneNode* node, char* nameTemplate, char* particleTemplate, float time);
+	ParticleSystem(Ogre::SceneNode* node, std::string nameTemplate, std::string particleTemplate, float time, int priority = 0);
 
 	void Update(float deltaTime);
 	bool IsFinished();

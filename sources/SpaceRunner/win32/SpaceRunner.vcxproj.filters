@@ -179,6 +179,12 @@
     <ClCompile Include="..\core\Fence.cpp">
       <Filter>core\Game\StateProcessors\Race\Space</Filter>
     </ClCompile>
+    <ClCompile Include="..\core\BlasterBurst.cpp">
+      <Filter>core\Game\StateProcessors\Race\Space</Filter>
+    </ClCompile>
+    <ClCompile Include="..\core\EnemyFighter.cpp">
+      <Filter>core\Game\StateProcessors\Race\Space</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="win32">
@@ -418,6 +424,12 @@
       <Filter>core\Game\StateProcessors\Race\Space</Filter>
     </ClInclude>
     <ClInclude Include="..\core\Fence.h">
+      <Filter>core\Game\StateProcessors\Race\Space</Filter>
+    </ClInclude>
+    <ClInclude Include="..\core\BlasterBurst.h">
+      <Filter>core\Game\StateProcessors\Race\Space</Filter>
+    </ClInclude>
+    <ClInclude Include="..\core\EnemyFighter.h">
       <Filter>core\Game\StateProcessors\Race\Space</Filter>
     </ClInclude>
   </ItemGroup>

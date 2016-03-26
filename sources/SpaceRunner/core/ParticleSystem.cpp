@@ -2,14 +2,14 @@
 
 int ParticleSystem::_count = 0;
 
-ParticleSystem::ParticleSystem(Ogre::SceneNode* node, char* nameTemplate, char* particleTemplate, float time)
+ParticleSystem::ParticleSystem(Ogre::SceneNode* node, std::string nameTemplate, std::string particleTemplate, float time, int priority)
 {
 	_count++;
 	char name[100];
-	sprintf(name, nameTemplate, _count);
+	sprintf(name, nameTemplate.c_str(), _count);
 	_system = RenderProcessor::Instance()->GetSceneManager()->createParticleSystem(name, particleTemplate);
 	node->attachObject(_system);
-	_system->setRenderQueueGroup(Ogre::RENDER_QUEUE_OVERLAY);
+	_system->setRenderQueueGroup(Ogre::RENDER_QUEUE_OVERLAY + priority);
 
 	_node = node;
 	_time = time;

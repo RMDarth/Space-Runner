@@ -96,6 +96,7 @@
     <ClCompile Include="..\core\AchievementsStateProcessor.cpp" />
     <ClCompile Include="..\core\ArcadeDifficultyStateProcessor.cpp" />
     <ClCompile Include="..\core\Basic.cpp" />
+    <ClCompile Include="..\core\BlasterBurst.cpp" />
     <ClCompile Include="..\core\Camera.cpp" />
     <ClCompile Include="..\core\Asteroid.cpp" />
     <ClCompile Include="..\core\CircleDrawable.cpp" />
@@ -113,6 +114,7 @@
     <ClCompile Include="..\core\ControlLibrary\RadioButtonGroup.cpp" />
     <ClCompile Include="..\core\ControlLibrary\SwipeBarControl.cpp" />
     <ClCompile Include="..\core\CreditsStateProcessor.cpp" />
+    <ClCompile Include="..\core\EnemyFighter.cpp" />
     <ClCompile Include="..\core\Fence.cpp" />
     <ClCompile Include="..\core\Game.cpp" />
     <ClCompile Include="..\core\Gun.cpp" />
@@ -158,6 +160,7 @@
     <ClInclude Include="..\core\AchievementsStateProcessor.h" />
     <ClInclude Include="..\core\ArcadeDifficultyStateProcessor.h" />
     <ClInclude Include="..\core\Basic.h" />
+    <ClInclude Include="..\core\BlasterBurst.h" />
     <ClInclude Include="..\core\Camera.h" />
     <ClInclude Include="..\core\Asteroid.h" />
     <ClInclude Include="..\core\CircleDrawable.h" />
@@ -175,6 +178,7 @@
     <ClInclude Include="..\core\ControlLibrary\RadioButtonGroup.h" />
     <ClInclude Include="..\core\ControlLibrary\SwipeBarControl.h" />
     <ClInclude Include="..\core\CreditsStateProcessor.h" />
+    <ClInclude Include="..\core\EnemyFighter.h" />
     <ClInclude Include="..\core\Fence.h" />
     <ClInclude Include="..\core\Game.h" />
     <ClInclude Include="..\core\GameDefs.h" />

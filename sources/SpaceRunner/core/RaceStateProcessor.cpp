@@ -11,6 +11,7 @@
 #include "SpaceDust.h"
 #include "Fence.h"
 #include "Asteroid.h"
+#include "BlasterBurst.h"
 
 #include "ModelDrawable.h"
 #include "SceneSector.h"
@@ -25,9 +26,12 @@ using namespace std;
 #define FLYBALL_SPEED 20.0f
 #define REVEAL_COUNT 220
 #define PI 3.1415f
+#define EXPLOSIONS_NUM 4
 
 namespace CoreEngine
 {
+	const float RaceStateProcessor::_explosionTime[4] = { 1.0f, 2.0f, 1.5f, 2.0f };
+
 	bool between(float x, float y, float mid)
 	{
 		if (x > mid && y < mid)
@@ -70,7 +74,7 @@ namespace CoreEngine
 		_pos = 0;
 		_angleHorizontal = 0;
 		_invisibility = false;
-		_explosionEffect = nullptr;
+		_explosionEffect[0] = nullptr;
 
 		_presetPos[0] = -BLOCK_SIZE * 1.1f;
 		_presetPos[1] = 0;
@@ -129,6 +133,17 @@ namespace CoreEngine
 			Asteroid * asteroid = new Asteroid(zero, ss.str(), 0, 0);
 			delete asteroid;
 		}
+		auto sceneManager = RenderProcessor::Instance()->GetSceneManager();
+		for (int i = 1; i <= EXPLOSIONS_NUM; i++)
+		{
+			auto sceneNodeChild = sceneManager->createSceneNode();
+			sceneManager->getRootSceneNode()->addChild(sceneNodeChild);
+			stringstream ss;
+			ss << "Blast" << i;
+			auto particleSystem = sceneManager->createParticleSystem(ss.str(), ss.str());
+			sceneNodeChild->attachObject(particleSystem);
+			sceneManager->getRootSceneNode()->removeChild(sceneNodeChild);
+		}
 		//auto gun = new Gun(zero);
 		//delete gun;
 	}
@@ -162,6 +177,20 @@ namespace CoreEngine
 		}
 	}
 
+	void RaceStateProcessor::UpdateShots(float time)
+	{
+		for_each(_shotList.begin(), _shotList.end(), bind(&BlasterBurst::Update, placeholders::_1, time, time * _speed * 5.0f));
+		_shotList.erase(remove_if(_shotList.begin(), _shotList.end(), bind(&BlasterBurst::IsDone, placeholders::_1)), _shotList.end());
+		if (_shotList.empty())
+		{
+			for (auto i = 0; i < 4; i++)
+			{
+				auto shot = make_shared<BlasterBurst>(Vector3(10 - 3.0f*i, 0, _pos), "BlasterShotMaterial", 0, 80.0f);
+				_shotList.push_back(shot);
+			}
+		}
+	}
+
 	GameState::State RaceStateProcessor::Update(float time)
 	{
 		_totalTime += time;
@@ -189,13 +218,19 @@ namespace CoreEngine
 			}
 		}
 
-		if (_explosionEffect)
+		if (_explosionEffect[0])
 		{
-			_explosionEffect->Update(time);
-			if (_explosionEffect->IsFinished())
+			for (int i = 0; i < EXPLOSIONS_NUM; i++)
 			{
-				delete _explosionEffect;
-				_explosionEffect = nullptr;
+				_explosionEffect[i]->Update(time);
+			}
+			if (_explosionEffect[1]->IsFinished())
+			{
+				for (int i = 0; i < EXPLOSIONS_NUM; i++)
+				{
+					delete _explosionEffect[i];
+					_explosionEffect[i] = nullptr;
+				}
 
 				_invisibility = true;
 				_invisibilityStart = _totalTime;
@@ -206,6 +241,7 @@ namespace CoreEngine
 		else 
 		{
 			UpdateTurn();
+			UpdateShots(time);
 		}
 
 		// Engine fire strength
@@ -220,7 +256,7 @@ namespace CoreEngine
 		auto angle = Ogre::Quaternion(Ogre::Radian(_angleHorizontal), Ogre::Vector3(1, 0, 0));
 		_sector->GetNode()->setOrientation(angle);
 
-		if (_space->IsIntersected(_pos) && !_invisibility && !_explosionEffect)
+		if (!_invisibility && !_explosionEffect[0] && _space->IsIntersected(_pos))
 		{
 			_speed = 0.0f;
 			_speedAccel = 0.0f;
@@ -241,15 +277,26 @@ namespace CoreEngine
 
 	void RaceStateProcessor::StartExplosion()
 	{
-		if (_explosionEffect)
-			delete _explosionEffect;
+		if (_explosionEffect[0])
+		{
+			for (int i = 0; i < EXPLOSIONS_NUM; i++)
+				delete _explosionEffect[i];
+		}
 
 		auto sceneManager = RenderProcessor::Instance()->GetSceneManager();
-		auto sceneNodeChild = sceneManager->createSceneNode();
-		sceneNodeChild->setPosition(_sector->GetNode()->getPosition());
+		for (auto i = 0; i < EXPLOSIONS_NUM; i++)
+		{
+			auto sceneNodeChild = sceneManager->createSceneNode();
+			sceneNodeChild->setPosition(_sector->GetNode()->getPosition());
+			sceneManager->getRootSceneNode()->addChild(sceneNodeChild);
+			stringstream str;
+			str << "Blast" << (i+1) << "_%d";
+			string templateName = str.str();
+			str.str("");
+			str << "Blast" << (i+1);
+			_explosionEffect[i] = new ParticleSystem(sceneNodeChild, templateName, str.str(), _explosionTime[i], EXPLOSIONS_NUM - i);
 
-		sceneManager->getRootSceneNode()->addChild(sceneNodeChild);
-		_explosionEffect = new ParticleSystem(sceneNodeChild, "ExplosionParticle_%d", "Explosion", _explosionTime);
+		}
 	}
 
 	
