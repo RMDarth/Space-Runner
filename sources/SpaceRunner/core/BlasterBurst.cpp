@@ -18,10 +18,10 @@ namespace CoreEngine
 		sceneNode->setPosition(VectorToOgre(offset));
 
 		std::vector<Vector3> pointList;
-		pointList.push_back(Vector3(-1.8f, 0, -0.05));
-		pointList.push_back(Vector3(0.0f, 0, -0.05));
-		pointList.push_back(Vector3(0.0f, 0,  0.05));
-		pointList.push_back(Vector3(-1.8f, 0, 0.05));
+		pointList.push_back(Vector3(-1.8f, 0, -0.05f));
+		pointList.push_back(Vector3(0.0f, 0, -0.05f));
+		pointList.push_back(Vector3(0.0f, 0,  0.05f));
+		pointList.push_back(Vector3(-1.8f, 0, 0.05f));
 		_rect = make_unique<RectDrawable>(_sector, material, pointList);
 	}
 
@@ -39,7 +39,7 @@ namespace CoreEngine
 
 	bool BlasterBurst::IsDone()
 	{
-		if (_pos.x > BLOCK_SIZE * 5 || _pos.x < -10 * BLOCK_SIZE)
+		if (_pos.x > BLOCK_SIZE * 5 || _pos.x < -10 * BLOCK_SIZE || _destroyed)
 			return true;
 		return false;
 	}
@@ -48,4 +48,11 @@ namespace CoreEngine
 	{
 		_sector->GetNode()->setVisible(visible);
 	}
+
+	const Vector3& BlasterBurst::getHalfSize()
+	{
+		static Vector3 standardBurstSize(1, 0.05f, 0.05f);
+		return standardBurstSize;
+	}
+
 }

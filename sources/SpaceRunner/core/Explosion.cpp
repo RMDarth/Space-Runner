@@ -27,7 +27,7 @@ namespace CoreEngine
 			std::string templateName = str.str();
 			str.str("");
 			str << "Blast" << (i + 1);
-			_explosionEffect[i] = new ParticleSystem(sceneNodeChild, templateName, str.str(), _explosionTime[i], EXPLOSIONS_NUM - i);
+			_explosionEffect[i] = new ParticleSystem(sceneNodeChild, templateName, str.str(), _explosionTime[i], EXPLOSIONS_NUM - i, true);
 		}
 	}
 

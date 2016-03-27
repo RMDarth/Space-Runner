@@ -9,6 +9,7 @@ namespace CoreEngine
 	protected:
 		float _speed;
 		Vector3 _pos;
+		bool _destroyed;
 
 	public:
 		SpaceObject(Vector3 offset, float speed);
@@ -20,7 +21,10 @@ namespace CoreEngine
 		virtual bool IsIntersected(SpaceObject * other);
 
 		virtual bool IsDone();
+		virtual void Destroy();
 		virtual void SetVisible(bool visible) = 0;
+
+		virtual const Vector3& getPos();
 
 	protected:
 		virtual const Vector3& getHalfSize();

@@ -37,6 +37,7 @@ namespace CoreEngine
 		// sounds
 		UPtr<Sound> _bombSound;
 		UPtr<Sound> _shootSound;
+		UPtr<Sound> _impactSound;
 		bool _soundsLoaded;
 
 		int _score;

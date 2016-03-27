@@ -10,7 +10,7 @@ class ParticleSystem
 	static int _count;
 	
 public:
-	ParticleSystem(Ogre::SceneNode* node, std::string nameTemplate, std::string particleTemplate, float time, int priority = 0);
+	ParticleSystem(Ogre::SceneNode* node, std::string nameTemplate, std::string particleTemplate, float time, int priority = 0, bool localSpaceParticles = false);
 	virtual ~ParticleSystem();
 
 	void Update(float deltaTime);

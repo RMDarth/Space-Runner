@@ -64,6 +64,17 @@ namespace CoreEngine
 	void RaceStateProcessor::Init()
 	{
 		_space = make_unique<Space>();
+		_space->RegisterShotEvent(
+			[this](SpaceObjectType type)
+			{
+				if (Config::Instance()->IsSoundEnabled())
+				{
+					if (type == SpaceObjectType::EnemyFighter)
+						_bombSound->Play();
+					else
+						_impactSound->Play();
+				}
+			});
 
 		//RenderProcessor::Instance()->SetSkybox(rand() % SKYBOX_NUM + 1);
 		if (!_sector)
@@ -117,7 +128,8 @@ namespace CoreEngine
 		auto soundSystem = SoundSystem::Instance();
 		if (soundSystem->IsLoaded() && _soundsLoaded == false)
 		{
-			_shootSound = unique_ptr<Sound>(soundSystem->CreateSound("Sound/LaunchSound.wav"));
+			_shootSound = unique_ptr<Sound>(soundSystem->CreateSound("Sound/LaserSound2.wav"));
+			_impactSound = unique_ptr<Sound>(soundSystem->CreateSound("Sound/ImpactSound.wav"));
 			//_hitSound = shared_ptr<Sound>(soundSystem->CreateSound("Sound/HitSound.wav"));
 			//_hitDestroySound = shared_ptr<Sound>(soundSystem->CreateSound("Sound/HitDestroySound.wav"));
 			_bombSound = unique_ptr<Sound>(soundSystem->CreateSound("Sound/BombSound.wav"));
@@ -313,7 +325,8 @@ namespace CoreEngine
 			{
 				for (auto i = 0; i < 4; i++)
 				{
-					_space->AddShot(Vector3(10 - 3.0f*i, 0, _pos), 80);
+					_space->AddShot(Vector3(12 - 3.0f*i, 0, _pos - 0.4), 80);
+					_space->AddShot(Vector3(12 - 3.0f*i, 0, _pos + 0.4), 80);
 				}
 				_shootSound->Play();
 				_shootingStarted = _totalTime;

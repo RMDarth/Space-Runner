@@ -4,6 +4,8 @@
 #include "Asteroid.h"
 #include "EnemyFighter.h"
 #include "BlasterBurst.h"
+#include "Explosion.h"
+#include "Sparks.h"
 
 #include "SceneSector.h"
 
@@ -69,7 +71,8 @@ namespace CoreEngine
 		_fence->Update(time, roadOffset);
 		
 		AddObstacles(_totalTime);
-		
+		UpdateShots(time, roadOffset);
+
 		for_each(_backgroundAsteroidList.begin(), _backgroundAsteroidList.end(), bind(&Asteroid::TryReset, placeholders::_1));
 		for_each(_backgroundAsteroidList.begin(), _backgroundAsteroidList.end(), bind(&Asteroid::Update, placeholders::_1, time, roadOffset));
 		
@@ -79,7 +82,11 @@ namespace CoreEngine
 		for_each(_fighterList.begin(), _fighterList.end(), bind(&EnemyFighter::Update, placeholders::_1, time, roadOffset));
 		_fighterList.erase(remove_if(_fighterList.begin(), _fighterList.end(), bind(&EnemyFighter::IsDone, placeholders::_1)), _fighterList.end());
 
-		UpdateShots(time, roadOffset);
+		for_each(_explosionList.begin(), _explosionList.end(), bind(&Explosion::Update, placeholders::_1, time, roadOffset));
+		_explosionList.erase(remove_if(_explosionList.begin(), _explosionList.end(), bind(&Explosion::IsDone, placeholders::_1)), _explosionList.end());
+
+		for_each(_sparksList.begin(), _sparksList.end(), bind(&Sparks::Update, placeholders::_1, time, roadOffset));
+		_sparksList.erase(remove_if(_sparksList.begin(), _sparksList.end(), bind(&Sparks::IsDone, placeholders::_1)), _sparksList.end());
 	}
 
 	void Space::AddObstacles(float totalTime)
@@ -137,6 +144,11 @@ namespace CoreEngine
 		_shotList.push_back(shot);
 	}
 
+	void Space::RegisterShotEvent(EventCallback callback)
+	{
+		_shotCallback = callback;
+	}
+
 	void Space::AddAsteroids(float totalTime)
 	{
 		if (totalTime > 3 && totalTime - _lastObstacleCreated > 4)
@@ -182,6 +194,33 @@ namespace CoreEngine
 	void Space::UpdateShots(float time, float roadOffset)
 	{
 		for_each(_shotList.begin(), _shotList.end(), bind(&BlasterBurst::Update, placeholders::_1, time, roadOffset));
+		
+		for (auto& shot : _shotList)
+		{
+			for (auto& fighter : _fighterList)
+			{
+				if (shot->IsIntersected(fighter.get()))
+				{
+					shot->Destroy();
+					fighter->Destroy();
+					_explosionList.push_back(make_shared<Explosion>(fighter->getPos()));
+					if (_shotCallback)
+						_shotCallback(SpaceObjectType::EnemyFighter);
+				}
+			}
+
+			for (auto& asteroid : _asteroidList)
+			{
+				if (shot->IsIntersected(asteroid.get()))
+				{
+					shot->Destroy();
+					_sparksList.push_back(make_shared<Sparks>(shot->getPos()));
+					if (_shotCallback)
+						_shotCallback(SpaceObjectType::Asteroid);
+				}
+			}
+		}
+
 		_shotList.erase(remove_if(_shotList.begin(), _shotList.end(), bind(&BlasterBurst::IsDone, placeholders::_1)), _shotList.end());
 	}
 

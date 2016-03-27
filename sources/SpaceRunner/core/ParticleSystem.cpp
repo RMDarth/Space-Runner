@@ -2,7 +2,7 @@
 
 int ParticleSystem::_count = 0;
 
-ParticleSystem::ParticleSystem(Ogre::SceneNode* node, std::string nameTemplate, std::string particleTemplate, float time, int priority)
+ParticleSystem::ParticleSystem(Ogre::SceneNode* node, std::string nameTemplate, std::string particleTemplate, float time, int priority, bool localSpaceParticles)
 {
 	_count++;
 	char name[100];
@@ -10,6 +10,7 @@ ParticleSystem::ParticleSystem(Ogre::SceneNode* node, std::string nameTemplate, 
 	_system = RenderProcessor::Instance()->GetSceneManager()->createParticleSystem(name, particleTemplate);
 	node->attachObject(_system);
 	_system->setRenderQueueGroup(Ogre::RENDER_QUEUE_OVERLAY + priority);
+	_system->setKeepParticlesInLocalSpace(localSpaceParticles);
 
 	_node = node;
 	_time = time;

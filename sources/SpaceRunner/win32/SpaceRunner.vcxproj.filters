@@ -191,6 +191,9 @@
     <ClCompile Include="..\core\SpaceObject.cpp">
       <Filter>core\Game\StateProcessors\Race\Space</Filter>
     </ClCompile>
+    <ClCompile Include="..\core\Sparks.cpp">
+      <Filter>core\Game\StateProcessors\Race\Space</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="win32">
@@ -445,6 +448,9 @@
       <Filter>core\Game\StateProcessors\Race\Space</Filter>
     </ClInclude>
     <ClInclude Include="..\core\SpaceObject.h">
+      <Filter>core\Game\StateProcessors\Race\Space</Filter>
+    </ClInclude>
+    <ClInclude Include="..\core\Sparks.h">
       <Filter>core\Game\StateProcessors\Race\Space</Filter>
     </ClInclude>
   </ItemGroup>

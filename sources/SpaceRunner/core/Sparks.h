@@ -6,18 +6,23 @@
 
 class SceneSector;
 class ModelDrawable;
+class ParticleSystem;
 
 namespace CoreEngine
 {
-	class EnemyFighter : public SpaceObject
+	class Sparks : public SpaceObject
 	{
 		SceneSector * _sector;
-		ModelDrawable * _model;
+		ParticleSystem * _sparksEffect;
+		ParticleSystem * _glowEffect;
 
 	public:
-		EnemyFighter(Vector3 offset, std::string model, std::string material, float speed, float scale = 1.0f);
-		~EnemyFighter();
+		Sparks(Vector3 offset);
+		~Sparks();
 		void Update(float time, float roadSpeed) override;
+		bool IsDone() override;
+
 		void SetVisible(bool visible) override;
+
 	};
 }

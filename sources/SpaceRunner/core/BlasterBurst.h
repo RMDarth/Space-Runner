@@ -23,5 +23,8 @@ namespace CoreEngine
 		bool IsDone() override;
 		void SetVisible(bool visible) override;
 
+	private:
+		const Vector3& getHalfSize() override;
+
 	};
 }
