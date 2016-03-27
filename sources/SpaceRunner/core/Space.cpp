@@ -6,6 +6,7 @@
 #include "BlasterBurst.h"
 #include "Explosion.h"
 #include "Sparks.h"
+#include "EnergyOrb.h"
 
 #include "SceneSector.h"
 
@@ -45,10 +46,14 @@ namespace CoreEngine
 		vector<ObstacleType> obstacleList;
 		for (int i = 0; i < 50; i++)
 		{
-			int type = rand() % 10;
+			int type = rand() % 12;
 			if (type < 2)
 			{
 				obstacleList.push_back(ObstacleType::EnemyFighter);
+			}
+			else if (type < 4)
+			{
+				obstacleList.push_back(ObstacleType::EnergyOrb);
 			}
 			else
 			{
@@ -87,6 +92,9 @@ namespace CoreEngine
 
 		for_each(_sparksList.begin(), _sparksList.end(), bind(&Sparks::Update, placeholders::_1, time, roadOffset));
 		_sparksList.erase(remove_if(_sparksList.begin(), _sparksList.end(), bind(&Sparks::IsDone, placeholders::_1)), _sparksList.end());
+
+		for_each(_orbList.begin(), _orbList.end(), bind(&EnergyOrb::Update, placeholders::_1, time, roadOffset));
+		_orbList.erase(remove_if(_orbList.begin(), _orbList.end(), bind(&EnergyOrb::IsDone, placeholders::_1)), _orbList.end());
 	}
 
 	void Space::AddObstacles(float totalTime)
@@ -119,6 +127,16 @@ namespace CoreEngine
 					25, 
 					totalTime,
 					0);
+				break;
+
+			case ObstacleType::EnergyOrb:
+				_lastObstaclePos = rand() % 3;
+				_lastPosChange = totalTime;
+				_currentObstacle = make_unique<Obstacle>(
+					ObstacleType::EnergyOrb,
+					20,
+					totalTime,
+					0);
 
 				break;
 			}
@@ -129,6 +147,10 @@ namespace CoreEngine
 			{
 			case ObstacleType::AsteroidsPack:
 				AddAsteroids(totalTime);
+				break;
+
+			case ObstacleType::EnergyOrb:
+				AddEnergyOrbs(totalTime);
 				break;
 
 			case ObstacleType::EnemyFighter:
@@ -144,9 +166,49 @@ namespace CoreEngine
 		_shotList.push_back(shot);
 	}
 
+	void Space::PreloadModels()
+	{
+		Vector3 zero;
+
+		for (auto i = 1; i <= 6; i++)
+		{
+			stringstream ss;
+			ss << "Asteroid" << i << "_LOD0.mesh";
+			Asteroid * asteroid = new Asteroid(zero, ss.str(), 0, 0);
+			delete asteroid;
+		}
+		EnemyFighter * enemyFighter = new EnemyFighter(zero, "ship.mesh", "ShipMaterialYellow", 0);
+		delete enemyFighter;
+
+		BlasterBurst * blasterBurst = new BlasterBurst(zero, "BlasterShotMaterial", 0, 80);
+		blasterBurst->Destroy();
+		blasterBurst->SetVisible(false);
+		_shotList.push_back(shared_ptr<BlasterBurst>(blasterBurst));
+
+		Sparks * sparks = new Sparks(zero);
+		sparks->Destroy();
+		sparks->SetVisible(false);
+		_sparksList.push_back(shared_ptr<Sparks>(sparks));
+
+		EnergyOrb * orb = new EnergyOrb(zero);
+		orb->Destroy();
+		orb->SetVisible(false);
+		_orbList.push_back(shared_ptr<EnergyOrb>(orb));
+
+		Explosion * explosion = new Explosion(zero);
+		explosion->Destroy();
+		explosion->SetVisible(false);
+		_explosionList.push_back(shared_ptr<Explosion>(explosion));
+	}
+
 	void Space::RegisterShotEvent(EventCallback callback)
 	{
 		_shotCallback = callback;
+	}
+
+	Level* Space::GetCurrentLevel()
+	{
+		return _currentLevel.get();
 	}
 
 	void Space::AddAsteroids(float totalTime)
@@ -179,7 +241,7 @@ namespace CoreEngine
 
 	void Space::AddEnemyFighter(float totalTime)
 	{
-		if (totalTime > 3 && totalTime - _lastObstacleCreated > 10)
+		if (totalTime > 3 && totalTime - _lastObstacleCreated > 9)
 		{
 			int posIndex = rand() % 3;
 			float pos = presetPos[posIndex];
@@ -191,6 +253,39 @@ namespace CoreEngine
 		}
 	}
 
+	void Space::AddEnergyOrbs(float totalTime)
+	{
+		if (totalTime > 3 && totalTime - _lastObstacleCreated > 2.0f)
+		{
+			float pos;
+			if (rand() % 3 == 0 && totalTime - _lastPosChange > 10)
+			{
+				if (_lastObstaclePos == 0 
+					|| (rand() % 2 == 0 && _lastObstaclePos != 2))
+				{
+					pos = presetPos[_lastObstaclePos];
+					pos += (presetPos[_lastObstaclePos + 1] - presetPos[_lastObstaclePos]) * 0.5f;
+					_lastObstaclePos++;
+				}
+				else
+				{
+					pos = presetPos[_lastObstaclePos];
+					pos -= (presetPos[_lastObstaclePos] - presetPos[_lastObstaclePos - 1]) * 0.5f;
+					_lastObstaclePos--;
+				}
+
+				_lastPosChange = totalTime;
+			}
+			else 
+			{
+				pos = presetPos[_lastObstaclePos];
+			}
+
+			_orbList.push_back(make_shared<EnergyOrb>(Vector3(-ASTEROID_NUM * BLOCK_SIZE, 0, pos)));
+			_lastObstacleCreated = totalTime;
+		}
+	}
+
 	void Space::UpdateShots(float time, float roadOffset)
 	{
 		for_each(_shotList.begin(), _shotList.end(), bind(&BlasterBurst::Update, placeholders::_1, time, roadOffset));
@@ -199,7 +294,7 @@ namespace CoreEngine
 		{
 			for (auto& fighter : _fighterList)
 			{
-				if (shot->IsIntersected(fighter.get()))
+				if (!fighter->IsDone() && shot->IsIntersected(fighter.get()))
 				{
 					shot->Destroy();
 					fighter->Destroy();
@@ -219,6 +314,14 @@ namespace CoreEngine
 						_shotCallback(SpaceObjectType::Asteroid);
 				}
 			}
+
+			for (auto& explosion : _explosionList)
+			{
+				if (shot->IsIntersected(explosion.get()))
+				{
+					shot->Destroy();
+				}
+			}
 		}
 
 		_shotList.erase(remove_if(_shotList.begin(), _shotList.end(), bind(&BlasterBurst::IsDone, placeholders::_1)), _shotList.end());
@@ -228,18 +331,22 @@ namespace CoreEngine
 	{
 		for_each(_asteroidList.begin(), _asteroidList.end(), bind(&Asteroid::SetVisible, placeholders::_1, visible));
 		for_each(_fighterList.begin(), _fighterList.end(), bind(&EnemyFighter::SetVisible, placeholders::_1, visible));
+		for_each(_shotList.begin(), _shotList.end(), bind(&BlasterBurst::SetVisible, placeholders::_1, visible));
+		for_each(_orbList.begin(), _orbList.end(), bind(&EnergyOrb::SetVisible, placeholders::_1, visible));
+		for_each(_explosionList.begin(), _explosionList.end(), bind(&Explosion::SetVisible, placeholders::_1, visible));
 		for_each(_backgroundAsteroidList.begin(), _backgroundAsteroidList.end(), bind(&Asteroid::SetVisible, placeholders::_1, visible));
+		_fence->SetVisible(visible);
 		_spaceDust->SetVisible(visible);
 	}
 
-	bool Space::IsIntersected(float turn)
+	SpaceObjectType Space::IsIntersected(float turn)
 	{
 		for (auto i = _asteroidList.begin(); i != _asteroidList.end(); i++)
 		{
 			if ((*i)->IsIntersected(turn))
 			{
-				(*i)->Update(0, 15.0f);
-				return true;
+				(*i)->Destroy();
+				return SpaceObjectType::Asteroid;
 			}
 		}
 
@@ -247,10 +354,19 @@ namespace CoreEngine
 		{
 			if ((*i)->IsIntersected(turn))
 			{
-				(*i)->Update(0, 15.0f);
-				return true;
+				(*i)->Destroy();
+				return SpaceObjectType::EnemyFighter;
 			}
 		}
-		return false;
+
+		for (auto i = _orbList.begin(); i != _orbList.end(); i++)
+		{
+			if ((*i)->IsIntersected(turn))
+			{
+				(*i)->Destroy();
+				return SpaceObjectType::EnergyOrb;
+			}
+		}
+		return SpaceObjectType::None;
 	}
 }

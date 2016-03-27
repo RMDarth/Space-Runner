@@ -38,9 +38,12 @@ namespace CoreEngine
 		UPtr<Sound> _bombSound;
 		UPtr<Sound> _shootSound;
 		UPtr<Sound> _impactSound;
+		UPtr<Sound> _collectSound;
+		UPtr<Sound> _successSound;
 		bool _soundsLoaded;
 
 		int _score;
+		int _lives;
 
 		float _totalTime;
 		int _frames;
@@ -96,6 +99,8 @@ namespace CoreEngine
 		void PreloadModels();
 		void UpdateTurn();
 		void StartExplosion();
+		
+		bool IsGameFinished();
 
 		void SetLightAndCamera(float deltaTime);
 		void UpdateHUD();

@@ -70,7 +70,10 @@ namespace CoreEngine
 				if (Config::Instance()->IsSoundEnabled())
 				{
 					if (type == SpaceObjectType::EnemyFighter)
+					{
 						_bombSound->Play();
+						_score += 15;
+					}
 					else
 						_impactSound->Play();
 				}
@@ -82,6 +85,7 @@ namespace CoreEngine
 
 		_totalTime = 0;
 		_score = 0;
+		_lives = 0;
 		_frames = 0;
 		_speed = 1.0f;
 		_speedAccel = 5.0f;
@@ -131,31 +135,18 @@ namespace CoreEngine
 			_shootSound = unique_ptr<Sound>(soundSystem->CreateSound("Sound/LaserSound2.wav"));
 			_impactSound = unique_ptr<Sound>(soundSystem->CreateSound("Sound/ImpactSound.wav"));
 			//_hitSound = shared_ptr<Sound>(soundSystem->CreateSound("Sound/HitSound.wav"));
-			//_hitDestroySound = shared_ptr<Sound>(soundSystem->CreateSound("Sound/HitDestroySound.wav"));
+			_collectSound = unique_ptr<Sound>(soundSystem->CreateSound("Sound/HitDestroySound.wav"));
 			_bombSound = unique_ptr<Sound>(soundSystem->CreateSound("Sound/BombSound.wav"));
-			//_successSound = shared_ptr<Sound>(soundSystem->CreateSound("Sound/SuccessSound.wav"));
+			_successSound = unique_ptr<Sound>(soundSystem->CreateSound("Sound/SuccessSound.wav"));
 			_soundsLoaded = true;
 		}
 	}
 
 	void RaceStateProcessor::PreloadModels()
 	{
-		Vector3 zero;
-		Vector3i zeroi;
-
-		for (auto i = 1; i <= 6; i++)
-		{
-			stringstream ss;
-			ss << "Asteroid" << i << "_LOD0.mesh";
-			Asteroid * asteroid = new Asteroid(zero, ss.str(), 0, 0);
-			delete asteroid;
-		}
-		EnemyFighter * enemyFighter = new EnemyFighter(zero, "ship.mesh", "ShipMaterialYellow", 0);
-		delete enemyFighter;
-
-		_explosion = make_unique<Explosion>(zero);
-		_explosion->Update(100.0f, 100.0f);
-		_explosion->SetVisible(false);
+		_space = make_unique<Space>();
+		_space->PreloadModels();
+		_space->SetVisible(false);
 	}
 
 
@@ -243,21 +234,31 @@ namespace CoreEngine
 		auto angle = Ogre::Quaternion(Ogre::Radian(_angleHorizontal), Ogre::Vector3(1, 0, 0));
 		_sector->GetNode()->setOrientation(angle);
 
-		if (!_invincibility && !_explosion && _space->IsIntersected(_pos))
+		auto intersectedObject = _space->IsIntersected(_pos);
+		if (!_invincibility && !_explosion && intersectedObject != SpaceObjectType::None && intersectedObject != SpaceObjectType::EnergyOrb)
 		{
 			_speed = 0.0f;
 			_speedAccel = 0.0f;
 			StartExplosion();
 			_sector->GetNode()->setVisible(false);
 
+			_lives++;
+		}
+
+		if (intersectedObject == SpaceObjectType::EnergyOrb)
+		{
+			if (Config::Instance()->IsSoundEnabled())
+				_collectSound->Play();
+
 			_score++;
 		}
-		/*if (IsGameLost())
+
+		if (IsGameFinished())
 		{
-			for_each(particleList.begin(), particleList.end(), bind(&ParticleSystem::Update, placeholders::_1, 10.0f));
+			//for_each(particleList.begin(), particleList.end(), bind(&ParticleSystem::Update, placeholders::_1, 10.0f));
 			_document->Hide();
 			return GameState::Score;
-		}*/
+		}
 
 		return Game::Instance()->GetState();
 	}
@@ -267,6 +268,27 @@ namespace CoreEngine
 		_explosion = make_unique<Explosion>(VectorFromOgre(_sector->GetNode()->getPosition()));
 		if (Config::Instance()->IsSoundEnabled())
 			_bombSound->Play();
+	}
+
+	bool RaceStateProcessor::IsGameFinished()
+	{
+		if (_lives == 2)
+		{
+			LevelManager::Instance()->SetScore(_score);
+			LevelManager::Instance()->SetTime((int)_totalTime);
+			return true;
+		}
+		if (_score >= _space->GetCurrentLevel()->energyToComplete)
+		{
+			if (Config::Instance()->IsSoundEnabled())
+				_successSound->Play();
+
+			LevelManager::Instance()->SetScore(_score);
+			LevelManager::Instance()->SetTime((int)_totalTime);
+			LevelManager::Instance()->SetVictory(true);
+			return true;
+		}
+		return false;
 	}
 
 	void RaceStateProcessor::UpdateHUD()
@@ -291,7 +313,8 @@ namespace CoreEngine
 			float fps = OgreApplication::Instance()->GetWindow()->getAverageFPS();
 
 			stream.str("");
-			stream << (int)(fps);
+			//stream << (int)(fps);
+			stream << (int)(_lives);
 			static auto fpsControl = _document->GetControlByName("FPS");
 			fpsControl->SetText(stream.str());
 		}
@@ -328,7 +351,8 @@ namespace CoreEngine
 					_space->AddShot(Vector3(12 - 3.0f*i, 0, _pos - 0.4), 80);
 					_space->AddShot(Vector3(12 - 3.0f*i, 0, _pos + 0.4), 80);
 				}
-				_shootSound->Play();
+				if (Config::Instance()->IsSoundEnabled())
+					_shootSound->Play();
 				_shootingStarted = _totalTime;
 			}
 		}

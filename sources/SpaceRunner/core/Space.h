@@ -16,6 +16,7 @@ namespace CoreEngine
 	class BlasterBurst;
 	class Explosion;
 	class Sparks;
+	class EnergyOrb;
 
 	struct Level;
 	struct Obstacle;
@@ -23,7 +24,9 @@ namespace CoreEngine
 	enum class SpaceObjectType
 	{
 		Asteroid,
-		EnemyFighter
+		EnemyFighter,
+		EnergyOrb,
+		None
 	};
 
 	using EventCallback = std::function<void(SpaceObjectType)>;
@@ -33,6 +36,7 @@ namespace CoreEngine
 		PtrList<Asteroid> _backgroundAsteroidList;
 		PtrList<Asteroid> _asteroidList;
 		PtrList<EnemyFighter> _fighterList;
+		PtrList<EnergyOrb> _orbList;
 
 		PtrList<BlasterBurst> _shotList;
 		PtrList<Explosion> _explosionList;
@@ -47,20 +51,26 @@ namespace CoreEngine
 		
 		float _totalTime;
 		float _lastObstacleCreated;
+		int _lastObstaclePos;
+		float _lastPosChange;
 	public:
 		Space();
 		void GenerateSpace();
 		void Update(float time, float speed);
 		void SetVisible(bool visible);
-		bool IsIntersected(float turn);
+		SpaceObjectType IsIntersected(float turn);
 		void AddShot(Vector3 pos, float speed);
+
+		void PreloadModels();
 		
 		void RegisterShotEvent(EventCallback callback);
+		Level* GetCurrentLevel();
 	private:
 		void AddObstacles(float time);
 		
 		void AddAsteroids(float time);
 		void AddEnemyFighter(float time);
+		void AddEnergyOrbs(float time);
 
 		void UpdateShots(float time, float roadOffset);
 	};
