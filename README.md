@@ -1,29 +1,17 @@
-# README #
+# What is this? #
 
-This README would normally document whatever steps are necessary to get your application up and running.
+This is a repository for a runner style game, Space Runner. It has space style, written in C++ using Ogre3D engine, and is targeted for all mobile platforms (though it can be built for desktop too). 
 
-### What is this repository for? ###
+### Dependencies ###
 
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
+* [Ogre 3D engine version 1.10](https://bitbucket.org/sinbad/ogre)
+* zlib
 
 ### How do I get set up? ###
 
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
+Repository contains project files for Visual Studio 2013 for windows/windows phone builds, xcode project for iOS build, and eclipse project for android build. 
+TODO: Describe resources, add scripts to move resources to binary folders.
 
-### Contribution guidelines ###
+### Copyrights ###
 
-* Writing tests
-* Code review
-* Other guidelines
-
-### Who do I talk to? ###
-
-* Repo owner or admin
-* Other community or team contact
+Copyright (c) Turbulent Software, 2014-2016
