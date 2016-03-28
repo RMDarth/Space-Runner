@@ -10,9 +10,6 @@
 
 #include "SpaceDust.h"
 #include "Fence.h"
-#include "Asteroid.h"
-#include "EnemyFighter.h"
-#include "BlasterBurst.h"
 #include "Explosion.h"
 
 #include "LevelStructure.h"
@@ -93,6 +90,7 @@ namespace CoreEngine
 		_pos = 0;
 		_angleHorizontal = 0;
 		_invincibility = false;
+		_shield = false;
 		_shootingStarted = 0;
 
 		_presetPos[0] = -BLOCK_SIZE * 1.1f;
@@ -114,9 +112,19 @@ namespace CoreEngine
 		auto sceneNode = sceneManager->createSceneNode();
 		sceneManager->getRootSceneNode()->addChild(sceneNode);
 		_sector = make_unique<SceneSector>(sceneNode);
+		sceneNode->setScale(5.0f, 5.0f, 5.0f);
 
-		_ship = make_unique<ModelDrawable>(_sector.get(), "ship.mesh");
-		_ship->SetScale(5);
+		auto sceneNodeShip = sceneManager->createSceneNode();
+		sceneNode->addChild(sceneNodeShip);
+		_shipSector = make_unique<SceneSector>(sceneNodeShip);
+		_ship = make_unique<ModelDrawable>(_shipSector.get(), "ship.mesh");
+
+		auto sceneNodeShieldModel = sceneManager->createSceneNode();
+		//sceneNode->addChild(sceneNodeShieldModel);
+		_shieldSector = make_unique<SceneSector>(sceneNodeShieldModel);
+		_shipShield = make_unique<ModelDrawable>(_shieldSector.get(), "ship.mesh");
+		_shipShield->SetMaterial("ShieldMaterial");
+		_shipShield->SetScale(1.2f);
 
 		auto sceneNodeChild = sceneManager->createSceneNode();
 		sceneNodeChild->setPosition(0.35f, 0.0f, 0.0f);
@@ -125,6 +133,14 @@ namespace CoreEngine
 		_engineFire = sceneManager->createParticleSystem("EngineFire", "Engine");
 		_engineFire->getEmitter(0)->setParticleVelocity(3.5f);
 		sceneNodeChild->attachObject(_engineFire);
+
+		auto sceneNodeShieldEffect = sceneManager->createSceneNode();
+		_shieldEffectSector = make_unique<SceneSector>(sceneNodeShieldEffect);
+		sceneNodeShieldEffect->setPosition(0.3f, 0.0f, 0.0f);
+
+		_shieldEffect = sceneManager->createParticleSystem("ShieldEffect", "Shield");
+		_shieldEffect->setKeepParticlesInLocalSpace(true);
+		sceneNodeShieldEffect->attachObject(_shieldEffect);
 	}
 
 	void RaceStateProcessor::InitSound()
@@ -205,6 +221,16 @@ namespace CoreEngine
 			}
 		}
 
+		if (_shield)
+		{
+			if (_totalTime > _shieldStart + _shieldTime)
+			{
+				_shield = false;
+				_sector->GetNode()->removeChild(_shieldSector->GetNode());
+				_sector->GetNode()->removeChild(_shieldEffectSector->GetNode());
+			}
+		}
+
 		if (_explosion)
 		{
 			_explosion->Update(time, _speed * time * 5.0f);
@@ -237,12 +263,19 @@ namespace CoreEngine
 		auto intersectedObject = _space->IsIntersected(_pos);
 		if (!_invincibility && !_explosion && intersectedObject != SpaceObjectType::None && intersectedObject != SpaceObjectType::EnergyOrb)
 		{
-			_speed = 0.0f;
-			_speedAccel = 0.0f;
-			StartExplosion();
-			_sector->GetNode()->setVisible(false);
+			if (intersectedObject == SpaceObjectType::Barrier && _shield)
+			{
+				// play sound of dodging?
+			}
+			else 
+			{
+				_speed = 0.0f;
+				_speedAccel = 0.0f;
+				StartExplosion();
+				_sector->GetNode()->setVisible(false);
 
-			_lives++;
+				_lives++;
+			}
 		}
 
 		if (intersectedObject == SpaceObjectType::EnergyOrb)
@@ -358,7 +391,17 @@ namespace CoreEngine
 		}
 		if (key == OIS::KC_DOWN)
 		{
-			//_speedAccel = -5.0f;
+			if (_totalTime - _shieldStart > _shieldTime)
+			{
+				_shield = true;
+				_shieldStart = _totalTime;
+
+				_sector->GetNode()->addChild(_shieldSector->GetNode());
+				_sector->GetNode()->addChild(_shieldEffectSector->GetNode());
+
+				//if (Config::Instance()->IsSoundEnabled())
+				//	_shootSound->Play();
+			}
 		}
 		if (key == OIS::KC_LEFT)
 		{
@@ -432,6 +475,12 @@ namespace CoreEngine
 		{
 			if (_space)
 			{
+				if (_shield)
+				{
+					_sector->GetNode()->removeChild(_shieldSector->GetNode());
+					_sector->GetNode()->removeChild(_shieldEffectSector->GetNode());
+					_shield = false;
+				}
 				_space->SetVisible(false);
 			}
 		}

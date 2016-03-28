@@ -44,7 +44,7 @@ namespace CoreEngine
 			auto posY = (rand() % (int)(BLOCK_SIZE * 10.0f * 10)) / 10.0f - BLOCK_SIZE * 5.0f;
 			_pos = Vector3(-ASTEROID_NUM * BLOCK_SIZE, posY, posX);
 			_sector->GetNode()->setPosition(VectorToOgre(_pos));
-			_model->SetScale((rand()%15 + 5) / 10.0f);
+			_model->SetScale((rand() % 15 + 5) / 10.0f);
 		}
 	}
 

@@ -197,6 +197,9 @@
     <ClCompile Include="..\core\EnergyOrb.cpp">
       <Filter>core\Game\StateProcessors\Race\Space</Filter>
     </ClCompile>
+    <ClCompile Include="..\core\Barrier.cpp">
+      <Filter>core\Game\StateProcessors\Race\Space</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="win32">
@@ -457,6 +460,9 @@
       <Filter>core\Game\StateProcessors\Race\Space</Filter>
     </ClInclude>
     <ClInclude Include="..\core\EnergyOrb.h">
+      <Filter>core\Game\StateProcessors\Race\Space</Filter>
+    </ClInclude>
+    <ClInclude Include="..\core\Barrier.h">
       <Filter>core\Game\StateProcessors\Race\Space</Filter>
     </ClInclude>
   </ItemGroup>

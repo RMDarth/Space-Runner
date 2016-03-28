@@ -28,9 +28,16 @@ namespace CoreEngine
 		UPtr<ControlDocument> _document;
 		UPtr<Space> _space;
 		UPtr<SceneSector> _sector;
+		UPtr<SceneSector> _shipSector;
+		UPtr<SceneSector> _shieldSector;
+		UPtr<SceneSector> _shieldEffectSector;
+
 		UPtr<ModelDrawable> _ship;
+		UPtr<ModelDrawable> _shipShield;
 
 		Ogre::ParticleSystem * _engineFire;
+		Ogre::ParticleSystem * _shieldEffect;
+
 
 		UPtr<Explosion> _explosion;
 
@@ -67,6 +74,10 @@ namespace CoreEngine
 		bool _invincibility;
 		float _invincibilityStart;
 		const float _invincibilityTime = 3.0f;
+
+		bool _shield;
+		float _shieldStart;
+		const float _shieldTime = 1.5f;
 
 		float _shootingStarted;
 		const float _shootingTime = 1.5f;

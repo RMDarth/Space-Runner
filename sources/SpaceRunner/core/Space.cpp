@@ -7,6 +7,7 @@
 #include "Explosion.h"
 #include "Sparks.h"
 #include "EnergyOrb.h"
+#include "Barrier.h"
 
 #include "SceneSector.h"
 
@@ -46,12 +47,16 @@ namespace CoreEngine
 		vector<ObstacleType> obstacleList;
 		for (int i = 0; i < 50; i++)
 		{
-			int type = rand() % 12;
+			int type = rand() % 14;
 			if (type < 2)
+			{
+				obstacleList.push_back(ObstacleType::EnergyBarrier);
+			} else
+			if (type < 4)
 			{
 				obstacleList.push_back(ObstacleType::EnemyFighter);
 			}
-			else if (type < 4)
+			else if (type < 6)
 			{
 				obstacleList.push_back(ObstacleType::EnergyOrb);
 			}
@@ -95,6 +100,9 @@ namespace CoreEngine
 
 		for_each(_orbList.begin(), _orbList.end(), bind(&EnergyOrb::Update, placeholders::_1, time, roadOffset));
 		_orbList.erase(remove_if(_orbList.begin(), _orbList.end(), bind(&EnergyOrb::IsDone, placeholders::_1)), _orbList.end());
+
+		for_each(_barrierList.begin(), _barrierList.end(), bind(&Barrier::Update, placeholders::_1, time, roadOffset));
+		_barrierList.erase(remove_if(_barrierList.begin(), _barrierList.end(), bind(&Barrier::IsDone, placeholders::_1)), _barrierList.end());
 	}
 
 	void Space::AddObstacles(float totalTime)
@@ -139,6 +147,15 @@ namespace CoreEngine
 					0);
 
 				break;
+
+			case ObstacleType::EnergyBarrier:
+				_currentObstacle = make_unique<Obstacle>(
+					ObstacleType::EnergyBarrier,
+					15,
+					totalTime,
+					0);
+
+				break;
 			}
 		}
 		else 
@@ -155,6 +172,10 @@ namespace CoreEngine
 
 			case ObstacleType::EnemyFighter:
 				AddEnemyFighter(totalTime);
+				break;
+
+			case ObstacleType::EnergyBarrier:
+				AddEnergyBarrier(totalTime);
 				break;
 			}
 		}
@@ -199,6 +220,11 @@ namespace CoreEngine
 		explosion->Destroy();
 		explosion->SetVisible(false);
 		_explosionList.push_back(shared_ptr<Explosion>(explosion));
+
+		Barrier * barrier = new Barrier(zero);
+		barrier->Destroy();
+		barrier->SetVisible(false);
+		_barrierList.push_back(shared_ptr<Barrier>(barrier));
 	}
 
 	void Space::RegisterShotEvent(EventCallback callback)
@@ -286,6 +312,17 @@ namespace CoreEngine
 		}
 	}
 
+	void Space::AddEnergyBarrier(float totalTime)
+	{
+		if (totalTime > 3 && totalTime - _lastObstacleCreated > 9)
+		{
+			auto barrier = make_shared<Barrier>(Vector3(-ASTEROID_NUM * BLOCK_SIZE, 0, 0));
+			_barrierList.push_back(barrier);
+
+			_lastObstacleCreated = totalTime + 6;
+		}
+	}
+
 	void Space::UpdateShots(float time, float roadOffset)
 	{
 		for_each(_shotList.begin(), _shotList.end(), bind(&BlasterBurst::Update, placeholders::_1, time, roadOffset));
@@ -334,6 +371,7 @@ namespace CoreEngine
 		for_each(_shotList.begin(), _shotList.end(), bind(&BlasterBurst::SetVisible, placeholders::_1, visible));
 		for_each(_orbList.begin(), _orbList.end(), bind(&EnergyOrb::SetVisible, placeholders::_1, visible));
 		for_each(_explosionList.begin(), _explosionList.end(), bind(&Explosion::SetVisible, placeholders::_1, visible));
+		for_each(_barrierList.begin(), _barrierList.end(), bind(&Barrier::SetVisible, placeholders::_1, visible));
 		for_each(_backgroundAsteroidList.begin(), _backgroundAsteroidList.end(), bind(&Asteroid::SetVisible, placeholders::_1, visible));
 		_fence->SetVisible(visible);
 		_spaceDust->SetVisible(visible);
@@ -365,6 +403,14 @@ namespace CoreEngine
 			{
 				(*i)->Destroy();
 				return SpaceObjectType::EnergyOrb;
+			}
+		}
+
+		for (auto i = _barrierList.begin(); i != _barrierList.end(); i++)
+		{
+			if ((*i)->IsIntersected(turn))
+			{
+				return SpaceObjectType::Barrier;
 			}
 		}
 		return SpaceObjectType::None;

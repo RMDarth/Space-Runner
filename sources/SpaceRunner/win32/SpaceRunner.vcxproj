@@ -95,6 +95,7 @@
   <ItemGroup>
     <ClCompile Include="..\core\AchievementsStateProcessor.cpp" />
     <ClCompile Include="..\core\ArcadeDifficultyStateProcessor.cpp" />
+    <ClCompile Include="..\core\Barrier.cpp" />
     <ClCompile Include="..\core\Basic.cpp" />
     <ClCompile Include="..\core\BlasterBurst.cpp" />
     <ClCompile Include="..\core\Camera.cpp" />
@@ -163,6 +164,7 @@
   <ItemGroup>
     <ClInclude Include="..\core\AchievementsStateProcessor.h" />
     <ClInclude Include="..\core\ArcadeDifficultyStateProcessor.h" />
+    <ClInclude Include="..\core\Barrier.h" />
     <ClInclude Include="..\core\Basic.h" />
     <ClInclude Include="..\core\BlasterBurst.h" />
     <ClInclude Include="..\core\Camera.h" />

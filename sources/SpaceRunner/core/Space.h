@@ -17,6 +17,7 @@ namespace CoreEngine
 	class Explosion;
 	class Sparks;
 	class EnergyOrb;
+	class Barrier;
 
 	struct Level;
 	struct Obstacle;
@@ -26,6 +27,7 @@ namespace CoreEngine
 		Asteroid,
 		EnemyFighter,
 		EnergyOrb,
+		Barrier,
 		None
 	};
 
@@ -37,6 +39,7 @@ namespace CoreEngine
 		PtrList<Asteroid> _asteroidList;
 		PtrList<EnemyFighter> _fighterList;
 		PtrList<EnergyOrb> _orbList;
+		PtrList<Barrier> _barrierList;
 
 		PtrList<BlasterBurst> _shotList;
 		PtrList<Explosion> _explosionList;
@@ -71,6 +74,7 @@ namespace CoreEngine
 		void AddAsteroids(float time);
 		void AddEnemyFighter(float time);
 		void AddEnergyOrbs(float time);
+		void AddEnergyBarrier(float time);
 
 		void UpdateShots(float time, float roadOffset);
 	};
