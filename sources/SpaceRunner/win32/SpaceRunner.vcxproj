@@ -218,6 +218,7 @@
     <ClInclude Include="..\core\SkinManager.h" />
     <ClInclude Include="..\core\SliderProcessor.h" />
     <ClInclude Include="..\core\SpaceDefs.h" />
+    <ClInclude Include="..\core\SpaceDust.h" />
     <ClInclude Include="..\core\SpaceObject.h" />
     <ClInclude Include="..\core\Sparks.h" />
     <ClInclude Include="..\core\StateProcessorFactory.h" />
@@ -234,7 +235,6 @@
     <ClInclude Include="OpenAL\LoadOAL.h" />
     <ClInclude Include="RenderProcessor.h" />
     <ClInclude Include="SoundSystem.h" />
-    <ClInclude Include="SpaceDust.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

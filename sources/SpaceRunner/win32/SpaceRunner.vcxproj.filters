@@ -426,9 +426,6 @@
     <ClInclude Include="..\core\Space.h">
       <Filter>core\Game\StateProcessors\Race\Space</Filter>
     </ClInclude>
-    <ClInclude Include="SpaceDust.h">
-      <Filter>core\Game\StateProcessors\Race\Space</Filter>
-    </ClInclude>
     <ClInclude Include="..\core\GameDefs.h">
       <Filter>core\Game</Filter>
     </ClInclude>
@@ -463,6 +460,9 @@
       <Filter>core\Game\StateProcessors\Race\Space</Filter>
     </ClInclude>
     <ClInclude Include="..\core\Barrier.h">
+      <Filter>core\Game\StateProcessors\Race\Space</Filter>
+    </ClInclude>
+    <ClInclude Include="..\core\SpaceDust.h">
       <Filter>core\Game\StateProcessors\Race\Space</Filter>
     </ClInclude>
   </ItemGroup>
