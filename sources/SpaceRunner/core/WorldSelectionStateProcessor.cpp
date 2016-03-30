@@ -6,6 +6,8 @@
 #include "Scores.h"
 #include "Game.h"
 
+#include "OgreRectangle2D.h"
+
 #include <sstream>
 using namespace std;
 

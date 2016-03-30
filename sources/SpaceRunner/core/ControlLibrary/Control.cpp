@@ -4,6 +4,7 @@
 #include "OgreOverlayContainer.h"
 #include "OgreOverlayElement.h"
 #include "OgreOverlayManager.h"
+#include "OgreRectangle2D.h"
 #include "../SceneSector.h"
 #include <sstream>
 
@@ -163,6 +164,8 @@ void Control::InitOverlay()
 
 void Control::CreateMaterial(std::string image)
 {
+	if (!Ogre::MaterialManager::getSingleton().getByName(image, "General").isNull())
+		return;
 	Ogre::MaterialPtr material = Ogre::MaterialManager::getSingleton().create(image, "General");
 	material->getTechnique(0)->getPass(0)->setVertexProgram("simpletex_vs");
 	material->getTechnique(0)->getPass(0)->setFragmentProgram("simpletex_ps");
@@ -225,10 +228,16 @@ void Control::SetDiffuseColor(float* rgbaColor)
 
 	std::stringstream str;
 	str << " " << _diffuseColor[0] << " " << _diffuseColor[1] << " " << _diffuseColor[2] << " " << _diffuseColor[3];
-	auto newMaterial = Ogre::MaterialManager::getSingleton().create(_defaultMaterial + str.str(), "General");
-	Ogre::MaterialManager::getSingleton().getByName(_defaultMaterial)->copyDetailsTo(newMaterial);
-	newMaterial->getBestTechnique()->getPass(0)->getFragmentProgramParameters()->setNamedConstant("color", _diffuseColor, 1, 4);
-	_defaultMaterial = newMaterial->getName();
+	auto materialName = _defaultMaterial + str.str();
+	if (Ogre::MaterialManager::getSingleton().getByName(materialName).isNull())
+	{
+		auto newMaterial = Ogre::MaterialManager::getSingleton().create(materialName, "General");
+		Ogre::MaterialManager::getSingleton().getByName(_defaultMaterial)->copyDetailsTo(newMaterial);
+		newMaterial->getBestTechnique()->getPass(0)->getFragmentProgramParameters()->setNamedConstant("color",
+																									  _diffuseColor, 1,
+																									  4);
+	}
+	_defaultMaterial = materialName;
 
 	SetMaterial(_defaultMaterial);
 }

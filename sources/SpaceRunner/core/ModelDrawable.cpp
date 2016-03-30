@@ -1,5 +1,4 @@
 #include "ModelDrawable.h"
-#include "OgreProgressiveMeshGenerator.h"
 #include "OgreDistanceLodStrategy.h"
 #include "OgrePixelCountLodStrategy.h"
 
@@ -131,23 +130,6 @@ void ModelDrawable::SetMaterial(std::string name, int lod)
 
 void ModelDrawable::GenerateLods()
 {
-	auto mesh = _entity->getMesh();
-	Ogre::ProgressiveMeshGenerator pm;
-
-	Ogre::LodConfig lodConfig;
-	
-	lodConfig.levels.clear();
-	lodConfig.mesh = mesh;
-	lodConfig.strategy = Ogre::DistanceLodSphereStrategy::getSingletonPtr();
-	
-	Ogre::LodLevel lodLevel;
-	lodLevel.reductionMethod = Ogre::LodLevel::VRM_PROPORTIONAL;
-	lodLevel.distance = 20;
-	lodLevel.reductionValue = 0.7f;
-
-
-	lodConfig.levels.push_back(lodLevel);
-	pm.generateLodLevels(lodConfig);
 
 	//pm.generateAutoconfiguredLodLevels(mesh);
 }

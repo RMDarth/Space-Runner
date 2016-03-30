@@ -2,6 +2,9 @@
 #include "../PrecompileHeaders.h"
 #include "../SceneSector.h"
 #include "../Basic.h"
+
+#include "OgreOverlayElement.h"
+
 #include <string>
 #include <sstream>
 

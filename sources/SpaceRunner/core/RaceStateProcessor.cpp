@@ -19,6 +19,8 @@
 
 #include <algorithm>
 #include <functional>
+#include <iomanip>
+
 using namespace std;
 
 #define CAMERA_SPEED 0.35f
@@ -92,6 +94,7 @@ namespace CoreEngine
 		_invincibility = false;
 		_shield = false;
 		_shootingStarted = 0;
+		_shieldStart = 0;
 
 		_presetPos[0] = -BLOCK_SIZE * 1.1f;
 		_presetPos[1] = 0;

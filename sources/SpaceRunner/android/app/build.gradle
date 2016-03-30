@@ -1,0 +1,139 @@
+apply plugin: "com.android.model.application"
+
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+def ndkDir = properties.getProperty('ndk.dir')
+
+model {
+    android {
+        compileSdkVersion = 23
+        buildToolsVersion = "23.0.1"
+
+        defaultConfig.with {
+            applicationId =  "com.turbulent.spacerush"
+            minSdkVersion.apiLevel = 16
+            targetSdkVersion.apiLevel = 23
+            versionCode = 1
+            versionName = "1.0"
+
+            buildConfigFields.with {
+                create() {
+                    type = "int"
+                    name = "VALUE"
+                    value = "1"
+                }
+            }
+        }
+    }
+
+    android.ndk {
+        moduleName = "SpaceRunner"
+
+        ldFlags.add("-Ldeps/Dependencies/lib/armeabi-v7a")
+
+        ldLibs.add("android")
+        ldLibs.add("c")
+        ldLibs.add("m")
+        ldLibs.add("dl")
+        ldLibs.add("log")
+        ldLibs.add("EGL")
+        ldLibs.add("GLESv2")
+
+
+        ldFlags.add("-Ldeps/Ogre/lib/armeabi-v7a")
+
+        ldLibs.add("Plugin_ParticleFXStatic")
+        ldLibs.add("Plugin_OctreeSceneManagerStatic")
+        ldLibs.add("RenderSystem_GLES2Static")
+        ldLibs.add("OgreRTShaderSystemStatic")
+        ldLibs.add("OgreOverlayStatic")
+        ldLibs.add("OgreMainStatic")
+
+        ldLibs.add("zziplib")
+        ldLibs.add("z")
+        ldLibs.add("freetype")
+        ldLibs.add("FreeImage")
+        ldLibs.add("OIS")
+        ldLibs.add("mesa")
+        ldLibs.add("glsl_optimizer")
+        ldLibs.add("OpenSLES")
+
+        ldLibs.add("boost_atomic")
+        ldLibs.add("boost_chrono")
+        ldLibs.add("boost_date_time")
+        ldLibs.add("boost_system")
+        ldLibs.add("boost_thread")
+
+        cppFlags.add("-DGL_GLEXT_PROTOTYPES=1")
+        cppFlags.add("-I${file("../../core")}".toString())
+
+        cppFlags.add("-I${file("deps/Ogre/include/Build")}".toString())
+        cppFlags.add("-I${file("deps/Ogre/include")}".toString())
+        cppFlags.add("-I${file("deps/Ogre/include/RenderSystems/GLES2")}".toString())
+        cppFlags.add("-I${file("deps/Ogre/include/RenderSystems/GLES2/GLES2")}".toString())
+        cppFlags.add("-I${file("deps/Ogre/include/Overlay")}".toString())
+        cppFlags.add("-I${file("deps/Ogre/include/RTShaderSystem")}".toString())
+        cppFlags.add("-I${file("deps/Ogre/include/Plugins/ParticleFX")}".toString())
+        cppFlags.add("-I${file("deps/Ogre/include/Plugins/OctreeSceneManager")}".toString())
+        cppFlags.add("-I${file("deps/Dependencies/include")}".toString())
+        cppFlags.add("-I${file("deps/Dependencies/include/OIS")}".toString())
+        cppFlags.add("-I${file("src/main/jni")}".toString())
+        cppFlags.add("-I${file("src/main/jni/OpenSL")}".toString())
+        cppFlags.add("-fexceptions")
+        cppFlags.add("-frtti")
+        cppFlags.add("-D___ANDROID___")
+        cppFlags.add("-DANDROID")
+        cppFlags.add("-DZZIP_OMIT_CONFIG_H")
+        cppFlags.add("-DUSE_RTSHADER_SYSTEM=1")
+        cppFlags.add("-std=c++11")
+
+        cppFlags.add("-Ideps/Ogre/include/Build")
+        cppFlags.add("-Ideps/Ogre/include")
+        cppFlags.add("-Ideps/Ogre/include/RenderSystems/GLES2")
+
+        cppFlags.add("-I${file("src/main/jni/native_app_glue")}".toString())
+        cppFlags.add("-I${file("src/main/jni/cpufeatures")}".toString())
+
+
+        stl = "gnustl_shared"
+    }
+
+    android.buildTypes {
+        release {
+            minifyEnabled = false
+            proguardFiles.add(file("proguard-rules.pro"))
+        }
+    }
+    android.productFlavors {
+        create("arm") {
+            applicationId = "com.turbulent.spacerush"
+            ndk.with {
+                // You can customize the NDK configurations for each
+                // productFlavors and buildTypes.
+                abiFilters.add("armeabi-v7a");
+            }
+        }
+    }
+
+    // Configures source set directory.
+    android.sources {
+        main {
+            java {
+                source {
+                    srcDir "src"
+                }
+            }
+            jni {
+                source {
+                    srcDir "src/main/jni"
+                    srcDir "${file("../../core")}"
+                }
+            }
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.android.support:appcompat-v7:23.2.1'
+}

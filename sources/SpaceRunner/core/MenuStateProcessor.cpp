@@ -7,6 +7,8 @@
 #include "SoundSystem.h"
 #include "BillingProcessor.h"
 
+#include "OgreRectangle2D.h"
+
 #define SIZE 2.5f
 #define CAMERA_RADIUS 15
 #define CAMERA_SPEED 0.35f

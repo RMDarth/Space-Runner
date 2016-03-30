@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="CPP_MODULE" version="4">
+  <component name="NewModuleRootManager">
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/Input.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/OgreApplication.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Input.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/BillingProcessor.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/SoundSystem.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/SoundSystem.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/OpenAL/OpenAL.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/OpenAL/OpenAL.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/LinuxDefs.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/RenderProcessor.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/OgreApplication.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/FileSystem.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/RenderProcessor.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/GameDefs.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/BlasterBurst.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/IDrawable.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/ModelAnimation.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/IStateProcessor.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/MenuStateProcessor.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/StateProcessorFactory.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/ModelDrawable.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/WorldSelectionStateProcessor.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/Scores.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/LevelSelectionStateProcessor.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/IInputListener.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/HighScoresStateProcessor.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/StoreStateProcessor.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/CircleDrawable.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/Explosion.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/ParticleSystem.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/Sparks.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/PauseStateProcessor.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/LineDrawable.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/RaceStateProcessor.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/SpaceObject.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/ModelAnimation.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/Explosion.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/SliderProcessor.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/GameState.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/WorldSelectionStateProcessor.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/ScoreStateProcessor.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/SkinManager.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/SpaceDust.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/Space.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/SpaceDefs.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/Camera.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/LevelSelectionStateProcessor.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/PrecompileHeaders.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/BlasterBurst.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/Config.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/Asteroid.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/RectDrawable.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/SceneSector.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/Basic.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/Sparks.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/MessageStateProcessor.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/ParticleDrawable.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/MessageStateProcessor.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/SpaceDust.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/Barrier.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/Gun.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/LevelManager.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/AchievementsStateProcessor.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/SliderProcessor.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/MenuStateProcessor.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/AchievementsStateProcessor.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/StoreStateProcessor.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/SpaceObject.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/CreditsStateProcessor.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/EnergyOrb.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/Space.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/Gun.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/tinyxml/tinyxml2.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/tinyxml/tinyxml2.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/LevelManager.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/LineDrawable.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/ControlLibrary/Control.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/ControlLibrary/LabelControl.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/ControlLibrary/RadioButtonGroup.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/ControlLibrary/PanelControl.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/ControlLibrary/PanelControl.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/ControlLibrary/RadioButtonGroup.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/ControlLibrary/LevelButtonControl.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/ControlLibrary/RadioButtonControl.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/ControlLibrary/ControlDocument.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/ControlLibrary/Control.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/ControlLibrary/LabelControl.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/ControlLibrary/SwipeBarControl.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/ControlLibrary/ControlDocument.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/ControlLibrary/ContainerControl.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/ControlLibrary/ButtonControl.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/ControlLibrary/LevelButtonControl.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/ControlLibrary/ButtonControl.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/ControlLibrary/ControlFactory.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/ControlLibrary/SwipeBarControl.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/ControlLibrary/RadioButtonControl.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/ControlLibrary/ImageControl.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/ControlLibrary/ImageControl.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/ControlLibrary/ControlFactory.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/ControlLibrary/ContainerControl.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/ArcadeDifficultyStateProcessor.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/Barrier.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/CreditsStateProcessor.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/ParticleDrawable.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/SkinManager.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/HighScoresStateProcessor.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/Light.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/Game.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/PrecompileHeaders.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/PauseStateProcessor.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/Light.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/EnergyOrb.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/ArcadeDifficultyStateProcessor.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/Camera.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/ScoreStateProcessor.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/Asteroid.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/RaceStateProcessor.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/Scores.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/CircleDrawable.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/Basic.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/Fence.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/ModelDrawable.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/EnemyFighter.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/EnemyFighter.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/LevelStructure.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/StateProcessorFactory.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/ParticleSystem.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/Config.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/RectDrawable.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/Game.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/SceneSector.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/Fence.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/CMakeLists.txt" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Main.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/FileSystem.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/BillingProcessor.cpp" isTestSource="false" />
+    </content>
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module-library">
+      <library name="Header Search Paths">
+        <CLASSES>
+          <root url="file:///usr/include" />
+          <root url="file:///usr/lib/gcc/x86_64-linux-gnu/4.8/include" />
+          <root url="file:///usr/lib/gcc/x86_64-linux-gnu/4.8/include-fixed" />
+          <root url="file:///usr/local/include" />
+        </CLASSES>
+        <SOURCES>
+          <root url="file:///usr/include" />
+          <root url="file:///usr/lib/gcc/x86_64-linux-gnu/4.8/include" />
+          <root url="file:///usr/lib/gcc/x86_64-linux-gnu/4.8/include-fixed" />
+          <root url="file:///usr/local/include" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+  </component>
+</module>
