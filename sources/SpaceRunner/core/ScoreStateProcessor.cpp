@@ -302,7 +302,7 @@ namespace CoreEngine
 		if (soundSystem->IsLoaded() && _soundsLoaded == false)
 		{
 #ifdef __ANDROID_API__
-			_starSound = shared_ptr<Sound>(soundSystem->CreateSound("Sound/Bell.ogg"));
+			_starSound = shared_ptr<Sound>(soundSystem->CreateSound("Sound/Bell.wav"));
 #else
 			_starSound = shared_ptr<Sound>(soundSystem->CreateSound("Sound/Bell.wav"));
 #endif

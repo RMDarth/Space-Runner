@@ -2,7 +2,6 @@ apply plugin: "com.android.model.application"
 
 Properties properties = new Properties()
 properties.load(project.rootProject.file('local.properties').newDataInputStream())
-def ndkDir = properties.getProperty('ndk.dir')
 
 model {
     android {
@@ -58,11 +57,11 @@ model {
         ldLibs.add("glsl_optimizer")
         ldLibs.add("OpenSLES")
 
-        ldLibs.add("boost_atomic")
-        ldLibs.add("boost_chrono")
-        ldLibs.add("boost_date_time")
-        ldLibs.add("boost_system")
-        ldLibs.add("boost_thread")
+        ldLibs.add("boost_thread_pthread-gcc-mt-s-1_58")
+        ldLibs.add("boost_date_time-gcc-mt-s-1_58")
+        ldLibs.add("boost_chrono-gcc-mt-s-1_58")
+        ldLibs.add("boost_system-gcc-mt-s-1_58")
+        ldLibs.add("boost_atomic-gcc-mt-s-1_58")
 
         cppFlags.add("-DGL_GLEXT_PROTOTYPES=1")
         cppFlags.add("-I${file("../../core")}".toString())

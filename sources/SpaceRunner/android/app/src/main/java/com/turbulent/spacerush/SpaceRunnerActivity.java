@@ -57,6 +57,10 @@ import com.turbulent.bubbleshooter3d.util.Purchase;*/
 
 public class SpaceRunnerActivity extends NativeActivity
 {
+    static {
+        System.loadLibrary("SpaceRunner");
+    }
+
     private static final String TAG = "SpaceRunner";
 
     private static final int REQUEST_ACHIEVEMENTS = 12634236;
@@ -253,7 +257,7 @@ public class SpaceRunnerActivity extends NativeActivity
     // Our popup window, you will call it from your C/C++ code later
     public void showAdPopup(int top)
     {
-        final int gravity = top;
+        /*final int gravity = top;
         if(adsinited)
         {
             if (adshidden)
@@ -268,7 +272,7 @@ public class SpaceRunnerActivity extends NativeActivity
                 });
             }
             return;
-        }
+        }*/
     }
 
     public void hideAdPopup()
@@ -276,7 +280,7 @@ public class SpaceRunnerActivity extends NativeActivity
         if (adshidden)
             return;
 
-        Runnable myRunnable = new Runnable()  {
+        /*Runnable myRunnable = new Runnable()  {
             @Override
             public void run()  {
 
@@ -295,7 +299,7 @@ public class SpaceRunnerActivity extends NativeActivity
                 myRunnable.wait(1000);
             } catch (InterruptedException e) {
             }
-        }
+        }*/
     }
 
     /**

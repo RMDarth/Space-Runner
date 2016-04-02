@@ -35,6 +35,9 @@
 #define GRAVITY_BOTTOMRIGHT 80 | 5
 #define GRAVITY_BOTTOM 80
 
+#define LOGI(...) ((void)__android_log_print(ANDROID_LOG_INFO, "SpaceRunner", __VA_ARGS__))
+#define LOGW(...) ((void)__android_log_print(ANDROID_LOG_WARN, "SpaceRunner", __VA_ARGS__))
+
 
 static Ogre::RenderWindow* gRenderWnd = NULL;
 static Ogre::Root* gRoot = NULL;
@@ -198,19 +201,26 @@ void InitLoadingScreen()
 
 static void setupScene(int dpi)
 {
+    LOGW("Setup scene started");
 	RenderProcessor::Instance()->Init(dpi);
+    LOGW("Render processor initialized");
 	gSceneMgr = RenderProcessor::Instance()->GetSceneManager();
-
+    LOGW("Get scene manager");
 	gRoot->renderOneFrame();
+    LOGW("Render frame");
 	Ogre::ResourceGroupManager::getSingleton().addResourceLocation("/Materials", "APKFileSystem", "Loading");
+    Ogre::LogManager::getSingleton().logMessage("TestTest");
+    LOGW("Init resources locations");
 	Ogre::ResourceGroupManager::getSingleton().initialiseResourceGroup("Loading");
+    LOGW("Load loading resources");
 	InitLoadingScreen();
+    LOGW("Loading screen loaded");
 	gRoot->renderOneFrame();
 
 	Ogre::ConfigFile cf;
 
 	//if (getRAMSize() < 700)
-		cf.load(openAPKFile("resources_low.cfg"));
+		cf.load(openAPKFile("resources.cfg"));
 	//else
 		//cf.load(openAPKFile("resources.cfg"));
 
@@ -515,9 +525,10 @@ void android_main(struct android_app* state)
 		gStaticPluginLoader->load();
 #endif
 		gRoot->setRenderSystem(gRoot->getAvailableRenderers().at(0));
+        LOGW(gRoot->getAvailableRenderers().at(0)->getName().c_str());
 		gRoot->initialise(false);
 
-		Ogre::LogManager::getSingleton().setLogDetail(Ogre::LL_LOW);
+		//Ogre::LogManager::getSingleton().setLogDetail(Ogre::LL_LOW);
 	}
 
 	state->onAppCmd = &handleCmd;

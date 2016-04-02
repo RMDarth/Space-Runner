@@ -82,6 +82,9 @@ namespace CoreEngine
 		float _shootingStarted;
 		const float _shootingTime = 1.5f;
 
+		float _startSlideX;
+        float _startSlideY;
+
 		bool _init;
 
 	public:

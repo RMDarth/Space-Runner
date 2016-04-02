@@ -360,11 +360,28 @@ namespace CoreEngine
 	{
 		if (_document->OnMouseDown(x, y))
 			return;
+
+		_startSlideX = x;
+		_startSlideY = y;
 	}
 
 	void RaceStateProcessor::OnMouseUp(int x, int y)
 	{
-		_document->OnMouseUp(x, y);
+		if (_document->OnMouseUp(x, y))
+			return;
+
+		if (abs(x - _startSlideX) > abs(y - _startSlideY))
+		{
+			if (_startSlideX > x)
+				OnKeyPressed(OIS::KC_LEFT);
+			else if (_startSlideX < x)
+				OnKeyPressed(OIS::KC_RIGHT);
+		} else {
+			if (_startSlideY > y)
+				OnKeyPressed(OIS::KC_UP);
+			else if (_startSlideY < y)
+				OnKeyPressed(OIS::KC_DOWN);
+		}
 	}
 
 	void RaceStateProcessor::OnMouseMove(int x, int y)
