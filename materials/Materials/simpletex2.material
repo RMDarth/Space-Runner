@@ -1,0 +1,74 @@
+vertex_program simpletex2_vs_CG cg
+{
+    source simpletex2.cg
+    profiles vs_1_1 arbvp1
+    entry_point simpletex2_vs
+ 
+    default_params
+    {
+        param_named_auto wvpMat worldviewproj_matrix
+    }
+}
+
+fragment_program simpletex2_ps_CG cg
+{
+    source simpletex2.cg
+    profiles ps_2_x arbfp1
+    entry_point simpletex2_ps
+}
+
+vertex_program simpletex2_vs_GLSLES glsles
+{
+    source simpletex2.vert
+    profiles glsles
+ 
+    default_params
+    {
+        param_named_auto wvpMat worldviewproj_matrix
+    }
+}
+
+fragment_program simpletex2_ps_GLSLES glsles
+{
+    source simpletex2.frag
+    profiles glsles
+ 
+    default_params
+    {
+        param_named diffuseMap int 0
+    }
+}
+
+vertex_program simpletex2_vs unified
+{
+    delegate simpletex2_vs_GLSLES
+    delegate simpletex2_vs_CG
+}
+
+fragment_program simpletex2_ps unified
+{
+    delegate simpletex2_ps_GLSLES
+    delegate simpletex2_ps_CG
+}
+
+material SimpleTexturedMaterial2
+{
+  technique
+  {
+    pass
+    {
+        vertex_program_ref simpletex2_vs 
+        {
+        }
+ 
+        fragment_program_ref simpletex2_ps 
+        {
+        }
+
+	texture_unit diffuseMap
+	{
+		texture empty.png
+	}
+    }
+  }
+}

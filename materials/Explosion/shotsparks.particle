@@ -1,0 +1,50 @@
+particle_system ShotSparks
+{
+    material            SparksExplosionMaterial
+    particle_width      0.02                
+    particle_height     0.2                 
+    cull_each           false
+    quota               20
+    billboard_type      oriented_self
+    billboard_rotation_type vertex
+    sorted              false
+
+    emitter Point
+    {
+        angle 360
+        emission_rate 50
+        time_to_live_min 0.5
+        time_to_live_max 1.5
+        duration 0.6
+        velocity_min 1
+        velocity_max 3
+        colour 0.952 0.6137 0.2 1
+    }
+}
+
+particle_system ShotGlow
+{
+    material            GlowExplosionMaterial
+    particle_width      2                
+    particle_height     2                 
+    cull_each           false
+    quota               1
+    billboard_type      oriented_common
+    billboard_rotation_type vertex
+    sorted              true
+
+    emitter Point
+    {
+        angle 180
+        emission_rate 100
+        time_to_live 1.5
+        duration 1.5
+        velocity 0
+        colour 0.952 0.6137 0.2 1
+    }
+
+    affector ColourFader
+    {
+        alpha -0.75
+    }
+}

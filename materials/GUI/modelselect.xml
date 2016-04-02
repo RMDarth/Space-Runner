@@ -1,0 +1,6 @@
+<document>
+	<Button name="select" text="Select" x="0.4" y="0.72" width="0.2" height="0.1" />
+	<Button name="back"  x="0.05" y="0.85" width="0.08" height="-1" image="buttons/back.png" hoverimage="buttons/back_hover.png" pressedimage="buttons/back_pressed.png" />
+	<Label name="qualityLabel" text="Quality:" x="0.35" y="0.84" width="0.1" height="0.1" />
+	<Button name="quality" text="Good" x="0.5" y="0.84" width="0.2" height="0.1" />		
+</document>

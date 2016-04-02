@@ -45,7 +45,7 @@ bool SoundSystem::Init()
 }
 
 
-Sound* SoundSystem::CreateSound(char* filename, bool loop)
+Sound* SoundSystem::CreateSound(const char* filename, bool loop)
 {
     auto sound = new Sound(OpenALProcessor::Instance()->RegisterSound(std::string(filename), loop));
     return sound;
@@ -72,7 +72,7 @@ SoundSystem::~SoundSystem()
 	ALFWShutdown();*/
 }
 
-void SoundSystem::InitBackgroundMusic(char* filename)
+void SoundSystem::InitBackgroundMusic(const char* filename)
 {
 	_bgm = CreateSound(filename, true);
 }

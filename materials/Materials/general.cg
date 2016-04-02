@@ -1,0 +1,95 @@
+struct VIn
+{
+    float4 p    : POSITION;
+    float3 n    : NORMAL;
+    float3 b 	: BINORMAL;
+    float3 t    : TANGENT;
+    float2 uv   : TEXCOORD0;
+    float  blendIdx : BLENDINDICES;
+};
+ 
+struct VOut
+{
+    float4 p    : POSITION;
+ 
+    float2 uv   : TEXCOORD0;
+    float4 wp   : TEXCOORD1;
+    float3 n    : TEXCOORD2;
+    float3 t    : TEXCOORD3;
+    float3 b    : TEXCOORD4;
+};
+ 
+struct PIn
+{
+    float2 uv   : TEXCOORD0;
+    float4 wp   : TEXCOORD1;
+    float3 n    : TEXCOORD2;
+    float3 t    : TEXCOORD3;
+    float3 b    : TEXCOORD4;
+};
+ 
+ 
+ 
+VOut diffuse_vs(VIn IN,
+    uniform float4x4 vpMat,
+    uniform float3x4 wMat3x4Array[24],
+    uniform float4x4 invWMat)
+{
+    VOut OUT;
+	
+    OUT.wp = float4(mul(wMat3x4Array[IN.blendIdx], IN.p).xyz, 1.0);
+    OUT.p = mul(vpMat, OUT.wp);
+	
+    OUT.uv = IN.uv;
+ 
+    OUT.n = mul((float3x3)wMat3x4Array[IN.blendIdx], IN.n);
+    OUT.n = mul((float3x3)invWMat, OUT.n);
+	
+    OUT.t = mul((float3x3)wMat3x4Array[IN.blendIdx], IN.t);
+    OUT.t = mul((float3x3)invWMat, OUT.t);
+	
+    OUT.b = mul((float3x3)wMat3x4Array[IN.blendIdx], IN.b);
+    OUT.b = mul((float3x3)invWMat, OUT.b);
+ 
+    return OUT;
+}
+ 
+float4 diffuse_ps(
+    PIn IN,
+    uniform float3 lightDif0,
+    uniform float4 lightPos0,
+    uniform float3 lightSpec0,
+    uniform float4 matDif,
+    uniform float4 matSpec,
+    uniform float matShininess,
+    uniform float3 camPos,
+    uniform float4x4 iTWMat,
+    uniform sampler2D diffuseMap : TEXUNIT0,
+    uniform sampler2D specMap : TEXUNIT1,
+    uniform sampler2D normalMap : TEXUNIT2): COLOR0
+{
+    // direction
+    float3 ld0 = normalize(lightPos0.xyz - (lightPos0.w * IN.wp.xyz));
+ 
+    float4 normalTex = tex2D(normalMap, IN.uv);
+ 
+    float3x3 tbn = float3x3(IN.t, IN.b, IN.n);
+    float3 normal = mul(transpose(tbn), normalTex.xyz * 2 - 1); // to object space
+    normal = normalize(mul((float3x3)iTWMat, normal));
+ 
+    float3 diffuse = max(dot(ld0, normal), 0);
+ 
+ 
+    float3 camDir = normalize(camPos - IN.wp.xyz);
+    float3 halfVec = normalize(ld0 + camDir);
+    float3 specular = pow(max(dot(normal, halfVec), 0), matShininess);
+ 
+    float4 diffuseTex = tex2D(diffuseMap, IN.uv);
+    float4 specTex = tex2D(specMap, IN.uv);
+ 
+    float3 diffuseContrib = (diffuse * lightDif0 * diffuseTex.rgb * matDif.rgb);
+    float3 specularContrib = (specular * lightSpec0 * specTex.rgb * matSpec.rgb);
+    float3 light0C = (diffuseContrib + specularContrib);
+ 
+    return diffuseTex * 0.1 + float4(light0C, diffuseTex.a);
+}

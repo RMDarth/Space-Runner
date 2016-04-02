@@ -1,0 +1,161 @@
+material ExplosionSpriteSheetMaterial
+{
+  technique
+  {
+    pass
+    {
+        illumination_stage per_light
+        cull_hardware none
+        scene_blend alpha_blend
+        transparent_sorting on
+        alpha_to_coverage off
+        depth_write off
+        
+        scene_blend_op add
+    
+        vertex_program_ref spritesheet_vs
+        {
+        }
+ 
+        fragment_program_ref spritesheet_ps 
+        {
+            param_named width float 12
+            param_named height float 7
+        }
+
+        texture_unit diffuseMap
+        {
+            texture Explosion12.png
+        }
+    }
+  }
+}
+
+material Explosion2SpriteSheetMaterial
+{
+  technique
+  {
+    pass
+    {
+        illumination_stage per_light
+        cull_hardware none
+        scene_blend alpha_blend
+        transparent_sorting on
+        alpha_to_coverage off
+        depth_write off
+        
+        scene_blend_op add
+    
+        vertex_program_ref spritesheet_vs
+        {
+        }
+ 
+        fragment_program_ref spritesheet_ps 
+        {
+            param_named width float 7
+            param_named height float 7
+        }
+
+        texture_unit diffuseMap
+        {
+            texture Explosion_003.png
+        }
+    }
+  }
+}
+
+material SmokeSpriteSheetMaterial
+{
+  technique
+  {
+    pass
+    {
+        illumination_stage per_light
+        cull_hardware none
+        scene_blend alpha_blend
+        transparent_sorting on
+        alpha_to_coverage off
+        depth_write off
+        
+        scene_blend_op add
+    
+        vertex_program_ref spritesheet_vs
+        {
+        }
+ 
+        fragment_program_ref spritesheet_ps 
+        {
+            param_named width float 12
+            param_named height float 7
+        }
+
+        texture_unit diffuseMap
+        {
+            texture Explosion13.png
+        }
+    }
+  }
+}
+
+material GlowExplosionMaterial
+{
+  technique
+  {
+    pass
+    {
+        illumination_stage per_light
+        cull_hardware none
+        scene_blend alpha_blend
+        transparent_sorting on
+        alpha_to_coverage off
+        depth_write off
+        
+        scene_blend_op add
+    
+        vertex_program_ref simpletex2_vs 
+        {
+        }
+ 
+        fragment_program_ref simpletex2_ps 
+        {
+        }
+
+        texture_unit diffuseMap
+        {
+            texture Glow.png
+        }
+    }
+  }
+}
+
+
+material SparksExplosionMaterial
+{
+  technique
+  {
+    pass
+    {
+        illumination_stage per_light
+        cull_hardware none
+        scene_blend alpha_blend
+        transparent_sorting on
+        alpha_to_coverage off
+        depth_write off
+        
+        scene_blend_op add
+    
+        vertex_program_ref simpletex2_vs 
+        {
+        }
+ 
+        fragment_program_ref simpletex2_ps 
+        {
+        }
+
+        texture_unit diffuseMap
+        {
+            texture ParticleTrail1.png
+        }
+    }
+  }
+}

@@ -1,0 +1,6 @@
+<document>
+	<Label name="unlockstars" text="5/150" x="0.3" y="0.8" width="0.1" height="0.05" />
+	<Image name="star" image="Star.png" x="0.42" y="0.775" width="-1" height="0.08" />
+	<Label name="unlockmoney" text="or 0.99$" x="0.55" y="0.8" width="0.1" height="0.05" />
+	<Button name="back"  x="0.05" y="0.85" width="0.08" height="-1" image="buttons/back.png" hoverimage="buttons/back_hover.png" pressedimage="buttons/back_pressed.png" />
+</document>

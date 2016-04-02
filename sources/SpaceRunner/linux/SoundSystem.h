@@ -4,7 +4,7 @@ class SoundSystem;
 
 class Sound
 {
-	friend SoundSystem;
+	friend class SoundSystem;
 
 	unsigned int _id;
 
@@ -29,9 +29,9 @@ public:
 	static SoundSystem* Instance();
 	bool IsLoaded();
 
-	Sound* CreateSound(char* filename, bool loop = false);
+	Sound* CreateSound(const char* filename, bool loop = false);
 
-	void InitBackgroundMusic(char* filename);
+	void InitBackgroundMusic(const char* filename);
 	void StartBackgroundMusic();
 	void StopBackgroundMusic();
 };

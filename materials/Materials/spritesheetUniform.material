@@ -1,0 +1,87 @@
+vertex_program spritesheetUniform_vs_CG cg
+{
+    source spritesheetUniform.cg
+    profiles vs_1_1 arbvp1
+    entry_point spritesheetUniform_vs
+ 
+    default_params
+    {
+        param_named_auto wvpMat worldviewproj_matrix
+    }
+}
+
+fragment_program spritesheetUniform_ps_CG cg
+{
+    source spritesheetUniform.cg
+    profiles ps_2_x arbfp1
+    entry_point spritesheetUniform_ps
+    
+    default_params
+    {
+        param_named color float4 0 0 0 0
+        param_named width float 1
+        param_named height float 1
+    }
+}
+
+vertex_program spritesheetUniform_vs_GLSLES glsles
+{
+    source spritesheetUniform.vert
+    profiles glsles
+ 
+    default_params
+    {
+        param_named_auto wvpMat worldviewproj_matrix
+    }
+}
+
+fragment_program spritesheetUniform_ps_GLSLES glsles
+{
+    source spritesheetUniform.frag
+    profiles glsles
+ 
+    default_params
+    {
+        param_named diffuseMap int 0
+        param_named color float4 1 1 1 1
+        param_named width float 1
+        param_named height float 1
+    }
+}
+
+vertex_program spritesheetUniform_vs unified
+{
+    delegate spritesheetUniform_vs_GLSLES
+    delegate spritesheetUniform_vs_CG
+}
+
+fragment_program spritesheetUniform_ps unified
+{
+    delegate spritesheetUniform_vs_GLSLES
+    delegate spritesheetUniform_ps_CG
+}
+
+material SimpleSpriteSheetUniformMaterial
+{
+  technique
+  {
+    pass
+    {
+        vertex_program_ref spritesheetUniform_vs
+        {
+        }
+ 
+        fragment_program_ref spritesheetUniform_ps 
+        {
+            param_named color float4 1 1 1 1
+            param_named width float 2
+            param_named height float 2
+        }
+
+        texture_unit diffuseMap
+        {
+            texture empty.png
+        }
+    }
+  }
+}

@@ -9,7 +9,7 @@ ParticleSystem::ParticleSystem(Ogre::SceneNode* node, std::string nameTemplate, 
 	sprintf(name, nameTemplate.c_str(), _count);
 	_system = RenderProcessor::Instance()->GetSceneManager()->createParticleSystem(name, particleTemplate);
 	node->attachObject(_system);
-	_system->setRenderQueueGroup(Ogre::RENDER_QUEUE_OVERLAY + priority);
+	_system->setRenderQueueGroup(Ogre::RENDER_QUEUE_OVERLAY - 5 + priority);
 	_system->setKeepParticlesInLocalSpace(localSpaceParticles);
 
 	_node = node;

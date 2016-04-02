@@ -1,0 +1,6 @@
+<document>
+	<Panel name="panel" image="windows/help.png" x="0.01" y="0.33" width="0.98" height="0.28">
+		<Label name="text" text="" alignment="center" y="0.2" width="0.9" height="0.1" />
+	</Panel>
+	<Button name="ok" x="0.46" y="0.57" width="0.08" height="-1" image="buttons/play.png" hoverimage="buttons/play_hover.png" pressedimage="buttons/play_pressed.png" />
+</document>

@@ -1,0 +1,17 @@
+struct VIn
+{
+    float4 p    : POSITION;
+};
+ 
+ 
+void solidcolor_vs(VIn IN,
+    uniform float4x4 wvpMat,
+    out float4 oPos : POSITION)
+{
+    oPos = mul(wvpMat, IN.p);
+}
+ 
+float4 solidcolor_ps(uniform float4 color): COLOR0
+{
+    return color;
+}

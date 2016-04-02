@@ -1,0 +1,36 @@
+struct VIn
+{
+    float4 p    : POSITION;
+    float2 uv   : TEXCOORD0;
+};
+ 
+void spritesheetUniform_vs(VIn IN,
+    uniform float4x4 wvpMat,
+    out float4 oPos : POSITION,
+    out float2 oUV : TEXCOORD0)
+{
+    oPos = mul(wvpMat, IN.p);
+    oUV = IN.uv;
+}
+ 
+float4 spritesheetUniform_ps(in float2 uv : TEXCOORD0,
+    uniform float4 color : COLOR0,
+    uniform float width,
+    uniform float height,
+    uniform sampler2D diffuseMap): COLOR0
+{
+    float size = width * height; 
+    float index = (1 - color.a) * size;
+    float y = floor(index / width);
+    float x = floor(index - width * y);
+    
+    float startU = x / width;
+    float endU = (x + 1) / width;
+    float u = startU + (endU - startU) * uv.x;
+    
+    float startV = y / height;
+    float endV = (y + 1) / height;
+    float v = startV + (endV - startV) * uv.y;
+    
+    return tex2D(diffuseMap, float2(u, v)) * float4(color.rgb, 1.0);
+}

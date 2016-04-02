@@ -1,0 +1,32 @@
+particle_system Engine
+{
+	material      		EngineMaterial
+	particle_width		0.4
+	particle_height		0.4
+	cull_each			false
+	quota				100
+	billboard_type		point
+	sorted	true
+
+	// Area emitter
+	emitter Point
+	{
+		angle                  	4
+		emission_rate			80
+		time_to_live_min		0.5
+		time_to_live_max		0.5
+		direction			1 0 0
+		velocity_min			3.5
+		velocity_max			3.5
+	}
+
+	affector ColourFader
+   	{
+   		red 2.0
+   	}	
+
+	affector Scaler
+	{
+		rate	-0.7
+	}
+}

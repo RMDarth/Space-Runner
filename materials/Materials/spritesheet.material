@@ -1,0 +1,84 @@
+vertex_program spritesheet_vs_CG cg
+{
+    source spritesheet.cg
+    profiles vs_1_1 arbvp1
+    entry_point spritesheet_vs
+ 
+    default_params
+    {
+        param_named_auto wvpMat worldviewproj_matrix
+    }
+}
+
+fragment_program spritesheet_ps_CG cg
+{
+    source spritesheet.cg
+    profiles ps_2_x arbfp1
+    entry_point spritesheet_ps
+    
+    default_params
+    {
+        param_named width float 1
+        param_named height float 1
+    }
+}
+
+vertex_program spritesheet_vs_GLSLES glsles
+{
+    source spritesheet.vert
+    profiles glsles
+ 
+    default_params
+    {
+        param_named_auto wvpMat worldviewproj_matrix
+    }
+}
+
+fragment_program spritesheet_ps_GLSLES glsles
+{
+    source spritesheet.frag
+    profiles glsles
+ 
+    default_params
+    {
+        param_named diffuseMap int 0
+        param_named width float 1
+        param_named height float 1
+    }
+}
+
+vertex_program spritesheet_vs unified
+{
+    delegate spritesheet_vs_CG
+    delegate spritesheet_vs_GLSLES
+}
+
+fragment_program spritesheet_ps unified
+{
+    delegate spritesheet_ps_CG
+    delegate spritesheet_ps_GLSLES
+}
+
+material SimpleSpriteSheetMaterial
+{
+  technique
+  {
+    pass
+    {
+        vertex_program_ref spritesheet_vs
+        {
+        }
+ 
+        fragment_program_ref spritesheet_ps 
+        {
+            param_named width float 2
+            param_named height float 2
+        }
+
+        texture_unit diffuseMap
+        {
+            texture empty.png
+        }
+    }
+  }
+}

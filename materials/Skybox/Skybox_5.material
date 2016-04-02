@@ -1,0 +1,18 @@
+material Skybox_5
+{
+    technique
+    {
+        pass
+        {
+            lighting off
+            depth_write off
+	
+            texture_unit cubeMap
+            {
+                cubic_texture 05_temple.jpg separateUV
+                tex_address_mode clamp
+            }
+        }
+    }
+}
+

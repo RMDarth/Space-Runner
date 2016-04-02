@@ -1,0 +1,24 @@
+struct VIn
+{
+    float4 p     : POSITION;
+    float2 uv    : TEXCOORD0;
+    float4 color : COLOR0;
+};
+ 
+void simpletex2_vs(VIn IN,
+    uniform float4x4 wvpMat,
+    out float4 oPos : POSITION,
+    out float2 oUV : TEXCOORD0,
+    out float4 oColor : COLOR0)
+{
+    oPos = mul(wvpMat, IN.p);
+    oUV = IN.uv;
+    oColor = IN.color;
+}
+ 
+float4 simpletex2_ps(in float2 uv : TEXCOORD0,
+    in float4 color : COLOR0,
+    uniform sampler2D diffuseMap): COLOR0
+{
+    return tex2D(diffuseMap, uv) * color;
+}

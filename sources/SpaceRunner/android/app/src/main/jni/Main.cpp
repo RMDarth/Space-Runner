@@ -203,18 +203,13 @@ static void setupScene(int dpi)
 {
     LOGW("Setup scene started");
 	RenderProcessor::Instance()->Init(dpi);
-    LOGW("Render processor initialized");
 	gSceneMgr = RenderProcessor::Instance()->GetSceneManager();
-    LOGW("Get scene manager");
 	gRoot->renderOneFrame();
-    LOGW("Render frame");
 	Ogre::ResourceGroupManager::getSingleton().addResourceLocation("/Materials", "APKFileSystem", "Loading");
     Ogre::LogManager::getSingleton().logMessage("TestTest");
-    LOGW("Init resources locations");
+    LOGW("Load starting resources");
 	Ogre::ResourceGroupManager::getSingleton().initialiseResourceGroup("Loading");
-    LOGW("Load loading resources");
 	InitLoadingScreen();
-    LOGW("Loading screen loaded");
 	gRoot->renderOneFrame();
 
 	Ogre::ConfigFile cf;

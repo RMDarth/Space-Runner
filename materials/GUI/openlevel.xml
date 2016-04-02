@@ -1,0 +1,8 @@
+<document>
+	<Panel name="panel" x="0.3" y="0.3" width="0.4" height="0.3" />
+	<Button name="left" x="0.4" y="0.4" width="0.05" height="0.05" image="button_arrow/button01_left_norm.png" hoverimage="button_arrow/button01_left_float.png" pressedimage="button_arrow/button01_left_down.png" />
+	<Button name="right"x="0.55" y="0.4" width="0.05" height="0.05" image="button_arrow/button01_right_norm.png" hoverimage="button_arrow/button01_right_float.png" pressedimage="button_arrow/button01_right_down.png" />
+	<Button name="load" text="Load" x="0.35" y="0.5" width="0.12" height="0.05" />
+	<Button name="cancel" text="Cancel" x="0.53" y="0.5" width="0.12" height="0.05" />
+	<Label name="level" text="1" x="0.45" y="0.4" width="0.1" height="0.05" />
+</document>

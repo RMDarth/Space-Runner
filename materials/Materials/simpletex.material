@@ -1,0 +1,82 @@
+vertex_program simpletex_vs_CG cg
+{
+    source simpletex.cg
+    profiles vs_1_1 arbvp1
+    entry_point simpletex_vs
+ 
+    default_params
+    {
+        param_named_auto wvpMat worldviewproj_matrix
+    }
+}
+
+fragment_program simpletex_ps_CG cg
+{
+    source simpletex.cg
+    profiles ps_2_x arbfp1
+    entry_point simpletex_ps
+	
+	default_params
+	{
+		param_named color float4 1 1 1 1
+	}
+}
+
+vertex_program simpletex_vs_GLSLES glsles
+{
+    source simpletex.vert
+    profiles glsles
+ 
+    default_params
+    {
+        param_named_auto wvpMat worldviewproj_matrix
+    }
+}
+
+fragment_program simpletex_ps_GLSLES glsles
+{
+    source simpletex.frag
+    profiles glsles
+ 
+    default_params
+    {
+        param_named diffuseMap int 0
+		param_named color float4 1 1 1 1
+    }
+}
+
+vertex_program simpletex_vs unified
+{
+    delegate simpletex_vs_GLSLES
+    delegate simpletex_vs_CG
+}
+
+fragment_program simpletex_ps unified
+{
+    delegate simpletex_ps_GLSLES
+    delegate simpletex_ps_CG
+}
+
+
+
+material SimpleTexturedMaterial
+{
+  technique
+  {
+    pass
+    {
+        vertex_program_ref simpletex_vs 
+        {
+        }
+ 
+        fragment_program_ref simpletex_ps 
+        {
+        }
+
+		texture_unit diffuseMap
+		{
+			texture empty.png
+		}
+    }
+  }
+}

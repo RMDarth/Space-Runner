@@ -1,0 +1,6 @@
+xneg = RT
+xpos = LF
+yneg = DN
+ypos = UP
+zneg = FR
+zpos = BK

@@ -1,0 +1,8 @@
+GUIfont
+{
+  type truetype
+  source NordBoldUpd.otf
+  size 26
+  resolution 96
+  code_points 33-256 1040-1108
+}

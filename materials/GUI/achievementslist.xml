@@ -1,0 +1,57 @@
+<document>
+	<Panel name="panel" x="0.05" y="0.02" width="0.9" height="0.9" >
+		<!-- Label name="DifficultyLabel" text="Select difficulty" alignment="center" y="0.01" width="0.6" height="0.05" /-->
+		<Label name="bg1" image="achievment_button1.png" x="0.03" y="0.04" width="0.22" height="0.2" />
+		<Label name="bg2" image="achievment_button0.png" x="0.27" y="0.04" width="0.22" height="0.2" />
+		<Label name="bg3" image="achievment_button0.png" x="0.51" y="0.04" width="0.22" height="0.2" />
+		<Label name="bg4" image="achievment_button0.png" x="0.75" y="0.04" width="0.22" height="0.2" />
+		
+		<Label name="bg5" image="achievment_button0.png" x="0.03" y="0.26" width="0.22" height="0.2" />
+		<Label name="bg6" image="achievment_button0.png" x="0.27" y="0.26" width="0.22" height="0.2" />
+		<Label name="bg7" image="achievment_button0.png" x="0.51" y="0.26" width="0.22" height="0.2" />
+		<Label name="bg8" image="achievment_button0.png" x="0.75" y="0.26" width="0.22" height="0.2" />
+		
+		<Label name="bg9" image="achievment_button0.png" x="0.03" y="0.48" width="0.22" height="0.2" />
+		<Label name="bg10" image="achievment_button0.png" x="0.27" y="0.48" width="0.22" height="0.2" />
+		<Label name="bg11" image="achievment_button0.png" x="0.51" y="0.48" width="0.22" height="0.2" />
+		<Label name="bg12" image="achievment_button0.png" x="0.75" y="0.48" width="0.22" height="0.2"/>
+		
+		<Label name="bg13" image="achievment_button0.png" x="0.03" y="0.7" width="0.22" height="0.2" />
+		<Label name="bg14" image="achievment_button0.png" x="0.27" y="0.7" width="0.22" height="0.2" />
+		<Label name="bg15" image="achievment_button0.png" x="0.51" y="0.7" width="0.22" height="0.2" />
+		<Label name="bg16" image="achievment_button0.png" x="0.75" y="0.7" width="0.22" height="0.2" />
+		
+		<Label name="ach1" text="Newcomer" x="0.03" y="0.04" width="0.2" height="0.1"  />
+		<Label name="ach2" text="Bubble" x="0.27" y="0.04" width="0.2" height="0.1" />
+		<Label name="ach2_1" text="Shooter" x="0.27" y="0.14" width="0.2" height="0.1" />
+		<Label name="ach3" text="Level" x="0.51" y="0.04" width="0.2" height="0.1"  />
+		<Label name="ach3_1" text="Smasher" x="0.51" y="0.14" width="0.2" height="0.1" />
+		<Label name="ach4" text="Conqueror" x="0.75" y="0.04" width="0.2" height="0.1" />
+		
+		<Label name="ach5" text="Superbubble" x="0.03" y="0.26" width="0.2" height="0.1" />
+		<Label name="ach6" text="Star" x="0.27" y="0.26" width="0.2" height="0.1" />
+		<Label name="ach6_1" text="Collector" x="0.27" y="0.36" width="0.2" height="0.1" />
+		<Label name="ach7" text="Star" x="0.51" y="0.26" width="0.2" height="0.1" />
+		<Label name="ach7_1" text="Shooter" x="0.51" y="0.36" width="0.2" height="0.1" />
+		<Label name="ach8" text="Super" x="0.75" y="0.26" width="0.2" height="0.1" />
+		<Label name="ach8_1" text="Star" x="0.75" y="0.36" width="0.2" height="0.1" />
+		
+		<Label name="ach9" text="Puzzle" x="0.03" y="0.48" width="0.2" height="0.1" />
+		<Label name="ach9_1" text="Lover" x="0.03" y="0.58" width="0.2" height="0.1" />
+		<Label name="ach10" text="Puzzle" x="0.27" y="0.48" width="0.2" height="0.1" />
+		<Label name="ach10_1" text="Hero" x="0.27" y="0.58" width="0.2" height="0.1" />
+		<Label name="ach11" text="Arcade" x="0.51" y="0.48" width="0.2" height="0.1" />
+		<Label name="ach11_1" text="Smasher" x="0.51" y="0.58" width="0.2" height="0.1" />
+		<Label name="ach12" text="Endless" x="0.75" y="0.48" width="0.2" height="0.1" />
+		<Label name="ach12_1" text="Destroyer" x="0.75" y="0.58" width="0.2" height="0.1" />
+		
+		<Label name="ach13" text="Hard" x="0.03" y="0.7" width="0.2" height="0.1" />
+		<Label name="ach13_1" text="Worker" x="0.03" y="0.8" width="0.2" height="0.1" />
+		<Label name="ach14" text="Deep" x="0.27" y="0.7" width="0.2" height="0.1" />
+		<Label name="ach14_1" text="Diver" x="0.27" y="0.8" width="0.2" height="0.1" />
+		<Label name="ach15" text="Mission" x="0.51" y="0.7" width="0.2" height="0.1" />
+		<Label name="ach15_1" text="Accomplished" x="0.51" y="0.8" width="0.2" height="0.1" />
+		<Label name="ach16" text="Superhuman" x="0.75" y="0.7" width="0.2" height="0.1" />
+	</Panel>
+	<Button name="back"  x="0.3" y="0.86" width="0.08" height="-1" image="buttons/back.png" hoverimage="buttons/back_hover.png" pressedimage="buttons/back_pressed.png" />
+</document>

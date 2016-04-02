@@ -1,0 +1,81 @@
+vertex_program endlessLine_vs_CG cg
+{
+    source endlessLine.cg
+    profiles vs_1_1 arbvp1
+    entry_point endlessLine_vs
+ 
+    default_params
+    {
+        param_named_auto wvpMat worldviewproj_matrix
+    }
+}
+
+fragment_program endlessLine_ps_CG cg
+{
+    source endlessLine.cg
+    profiles ps_2_x arbfp1
+    entry_point endlessLine_ps
+    
+    default_params
+    {
+        param_named color float4 0 0 0 0
+    }
+}
+
+vertex_program endlessLine_vs_GLSLES glsles
+{
+    source endlessLine.vert
+    profiles glsles
+ 
+    default_params
+    {
+        param_named_auto wvpMat worldviewproj_matrix
+    }
+}
+
+fragment_program endlessLine_ps_GLSLES glsles
+{
+    source endlessLine.frag
+    profiles glsles
+ 
+    default_params
+    {
+        param_named diffuseMap int 0
+        param_named color float4 0 0 0 0
+    }
+}
+
+vertex_program endlessLine_vs unified
+{
+    delegate endlessLine_vs_GLSLES
+    delegate endlessLine_vs_CG
+}
+
+fragment_program endlessLine_ps unified
+{
+    delegate endlessLine_ps_GLSLES
+    delegate endlessLine_ps_CG
+}
+
+material SimpleEndlessLineMaterial
+{
+  technique
+  {
+    pass
+    {
+        vertex_program_ref endlessLine_vs
+        {
+        }
+ 
+        fragment_program_ref endlessLine_ps 
+        {
+            param_named color float4 1 1 1 1
+        }
+
+        texture_unit diffuseMap
+        {
+            texture empty.png
+        }
+    }
+  }
+}

@@ -1,0 +1,19 @@
+<document>
+	<!--Panel name="panel" x="0.25" y="0.3" width="0.5" height="0.6" /-->
+	<Button name="start" text="Race" alignment="center" y="0.65" width="0.35" height="0.10" />	
+	<Button name="scores" text="Scores" alignment="center" y="0.8" width="0.35" height="0.10"  />	
+
+	<!--Button name="sound" text="" x="0.05" y="0.85" width="-1" height="0.1" image="SoundIcon.png" hoverimage="SoundIcon.png" pressedimage="NoSound.png"/-->
+	<Button name="config" text="" x="0.05" y="0.85" width="0.08" height="-1" image="buttons/config.png" hoverimage="buttons/config_hover.png" pressedimage="buttons/config_pressed.png" />
+	
+	<Panel name="configpanel" x="0.055" y="0.85" width="0.07" height="0.12" image="buttons/config_panel.png" >
+		<Button name="graphics" text="" x="0.05" y="0" width="0.9" height="0.2" image="buttons/skins.png" hoverimage="buttons/skins.png" pressedimage="buttons/skins.png" />
+		<Button name="sound" text="" x="0.05" y="0.2" width="0.9" height="0.2" image="buttons/Sound.png" hoverimage="buttons/Sound.png" pressedimage="buttons/NoSound.png" />
+		<Button name="music" text="" x="0.05" y="0.4" width="0.9" height="0.2" image="buttons/Music.png" hoverimage="buttons/Music.png" pressedimage="buttons/NoMusic.png" />
+		<Button name="info" text="" x="0.05" y="0.6" width="0.9" height="0.2" image="buttons/Info.png" hoverimage="buttons/Info.png" pressedimage="buttons/Info.png" />
+	</Panel>
+	<!--Button name="store" text="" x="0.77" y="0.85" width="0.08" height="-1" image="buttons/store.png" hoverimage="buttons/store_hover.png" pressedimage="buttons/store_pressed.png" /-->
+	<Button name="googleplay" text="" x="0.15" y="0.85" width="0.08" height="-1" image="buttons/googleplay_gray.png" hoverimage="buttons/googleplay_gray.png" pressedimage="buttons/googleplay_gray.png" />
+	<Button name="facebook" text="" x="0.87" y="0.85" width="0.08" height="-1" image="buttons/Facebook.png" hoverimage="buttons/Facebook_hover.png" pressedimage="buttons/Facebook_pressed.png" />
+	
+</document>

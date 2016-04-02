@@ -1,0 +1,20 @@
+particle_system Shield
+{
+    material            GlowShieldMaterial
+    particle_width      0.9                
+    particle_height     0.9                 
+    cull_each           false
+    quota               1
+    billboard_type      oriented_common
+    billboard_rotation_type vertex
+    sorted              true
+
+    emitter Point
+    {
+        angle 180
+        emission_rate 100
+        time_to_live 15
+        velocity 0
+        colour 0.5 0.5 0.8 0.6
+    }
+}

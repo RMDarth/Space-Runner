@@ -1,0 +1,115 @@
+vertex_program diffuse_vs_CG cg
+{
+    source general.cg
+    profiles vs_1_1 arbvp1
+    entry_point diffuse_vs
+    includes_skeletal_animation true
+ 
+    default_params
+    {
+		param_named_auto invWMat inverse_world_matrix
+		param_named_auto wMat3x4Array world_matrix_array_3x4
+        param_named_auto vpMat viewproj_matrix
+    }
+}
+
+fragment_program diffuse_ps_CG cg
+{
+    source general.cg
+    profiles ps_2_x arbfp1
+    entry_point diffuse_ps
+ 
+    default_params
+    {
+        param_named_auto lightDif0 light_diffuse_colour 0
+        param_named_auto lightPos0 light_position 0
+        param_named_auto lightSpec0 light_specular_colour 0
+        param_named_auto camPos camera_position
+        param_named_auto matShininess surface_shininess
+        param_named_auto matDif surface_diffuse_colour
+        param_named_auto matSpec surface_specular_colour
+        param_named_auto iTWMat inverse_transpose_world_matrix
+    }
+}
+
+vertex_program diffuse_vs_GLSLES glsles
+{
+    source diffuse.vert
+    profiles glsles
+	includes_skeletal_animation true
+ 
+    default_params
+    {
+		param_named_auto vpMat viewproj_matrix
+		param_named_auto invWMat inverse_world_matrix
+		param_named_auto boneMatrices world_matrix_array_3x4
+
+    }
+}
+
+fragment_program diffuse_ps_GLSLES glsles
+{
+    source diffuse.frag
+    profiles glsles
+ 
+    default_params
+    {
+        param_named_auto lightDif0 light_diffuse_colour 0
+        param_named_auto lightPos0 light_position 0
+        param_named_auto lightSpec0 light_specular_colour 0
+        param_named_auto camPos camera_position
+        param_named_auto matShininess surface_shininess
+        param_named_auto matDif surface_diffuse_colour
+        param_named_auto matSpec surface_specular_colour
+		param_named_auto iTWMat inverse_transpose_world_matrix
+        
+        param_named diffuseMap int 0
+        param_named specMap int 1
+        param_named normalMap int 2
+    }
+}
+
+vertex_program diffuse_vs unified
+{
+    delegate diffuse_vs_CG
+    delegate diffuse_vs_GLSLES 
+}
+
+fragment_program diffuse_ps unified
+{
+    delegate diffuse_ps_CG
+    delegate diffuse_ps_GLSLES
+}
+
+material GeneralSimpleMaterial
+{
+    technique
+    {
+        pass
+        {
+            vertex_program_ref diffuse_vs
+            {
+            }
+ 
+            fragment_program_ref diffuse_ps
+            {
+            }
+ 
+ 
+            texture_unit diffuseMap
+            {
+                texture empty.png
+            }
+ 
+            texture_unit specMap
+            {
+                texture empty.png
+            }
+ 
+            texture_unit normalMap
+            {
+                texture empty.png
+            }
+        }
+    }
+}
