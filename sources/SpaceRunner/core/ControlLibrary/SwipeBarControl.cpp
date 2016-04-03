@@ -1,6 +1,6 @@
 #include "SwipeBarControl.h"
 #include "../PrecompileHeaders.h"
-#include "../SceneSector.h"
+#include "Render/SceneSector.h"
 
 SwipeBarControl::SwipeBarControl(SceneSector* sector, std::string name, float x, float y, float width, float height, Control * parent)
 : Control(sector, "SwipeBar", name, x, y, width, height, "swipebar_left.png", parent)

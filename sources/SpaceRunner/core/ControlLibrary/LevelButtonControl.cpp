@@ -1,6 +1,6 @@
 #include "LevelButtonControl.h"
 #include "../PrecompileHeaders.h"
-#include "../SceneSector.h"
+#include "Render/SceneSector.h"
 #include "../Basic.h"
 
 #include "OgreOverlayElement.h"

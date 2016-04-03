@@ -1,9 +1,9 @@
 #pragma once
 #include "PrecompileHeaders.h"
 #include "OgreOverlaySystem.h"
-#include "IDrawable.h"
-#include "Camera.h"
-#include "Light.h"
+#include "Render/Drawables/IDrawable.h"
+#include "Render/Camera.h"
+#include "Render/Light.h"
 #include "LinuxDefs.h"
 #define SKYBOX_NUM 5
 

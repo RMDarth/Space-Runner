@@ -5,7 +5,7 @@
 #include "OgreOverlayElement.h"
 #include "OgreOverlayManager.h"
 #include "OgreRectangle2D.h"
-#include "../SceneSector.h"
+#include "Render/SceneSector.h"
 #include <sstream>
 
 int Control::_id = 0;

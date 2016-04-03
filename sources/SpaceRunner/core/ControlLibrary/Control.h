@@ -1,6 +1,6 @@
 #pragma once
 #include <string>
-#include "../IInputListener.h"
+#include "Input/IInputListener.h"
 #include <memory>
 #include <vector>
 class SceneSector;

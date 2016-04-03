@@ -1,9 +1,9 @@
 #include "PrecompileHeaders.h"
 #include "OgreApplication.h"
 #include "RenderProcessor.h"
-#include "Game.h"
+#include "Game/Game.h"
 #include "Input.h"
-#include "Config.h"
+#include "Game/Config.h"
 #include "SoundSystem.h"
 #include <iostream>
 #include <ctime>

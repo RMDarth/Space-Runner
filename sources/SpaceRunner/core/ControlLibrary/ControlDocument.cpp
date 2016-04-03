@@ -1,6 +1,6 @@
 #include "ControlDocument.h"
 #include "ControlFactory.h"
-#include "../SceneSector.h"
+#include "Render/SceneSector.h"
 #include "RenderProcessor.h"
 #include "../tinyxml/tinyxml2.h"
 #include "FileSystem.h"
