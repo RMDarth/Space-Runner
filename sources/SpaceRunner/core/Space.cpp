@@ -9,13 +9,8 @@
 #include "EnergyOrb.h"
 #include "Barrier.h"
 
-#include "SceneSector.h"
-
 #include "LevelStructure.h"
 
-#include <memory>
-#include <algorithm>
-#include <functional>
 using namespace std;
 
 namespace CoreEngine
@@ -35,12 +30,17 @@ namespace CoreEngine
 		for (int i = 0; i < ASTEROID_NUM; i++)
 		{
 			float posX = 0;
-			while (posX > -BLOCK_SIZE*1.5f && posX < BLOCK_SIZE*1.5f)
+			while (posX > -BLOCK_SIZE*15.0f && posX < BLOCK_SIZE*15.0f)
 			{
-				posX = (rand() % (int)(BLOCK_SIZE * 10.0f * 10)) / 10.0f - BLOCK_SIZE * 5.0f;
+				posX = (rand() % (int)(BLOCK_SIZE * 50.0f * 10)) / 10.0f - BLOCK_SIZE * 25.0f;
 			}
-			auto posY = (rand() % (int)(BLOCK_SIZE * 10.0f * 10)) / 10.0f - BLOCK_SIZE * 5.0f;
-			auto asteroid = make_shared<Asteroid>(Vector3(-i*BLOCK_SIZE, posY, posX), "moon.mesh", 0.0f);
+			auto posY = (rand() % (int)(BLOCK_SIZE * 40.0f * 10)) / 10.0f - BLOCK_SIZE * 20.0f;
+
+            int num = 1;//rand()%6 + 1;
+			auto asteroid = make_shared<Asteroid>(Vector3(-i*BLOCK_SIZE * 10, posY, posX), Asteroid::getAsteroidName(num), 0.0f, 90.0);
+            std::stringstream ss;
+            ss << "asteroid" << num << "_Dark";
+            asteroid->SetMaterial(ss.str());
 			_backgroundAsteroidList.push_back(asteroid);
 		}
 
@@ -193,12 +193,10 @@ namespace CoreEngine
 
 		for (auto i = 1; i <= 6; i++)
 		{
-			stringstream ss;
-			ss << "Asteroid" << i << "_LOD0.mesh";
-			Asteroid * asteroid = new Asteroid(zero, ss.str(), 0, 0);
+			auto * asteroid = new Asteroid(zero, Asteroid::getAsteroidName(i), 0, 0);
 			delete asteroid;
 		}
-		EnemyFighter * enemyFighter = new EnemyFighter(zero, "ship.mesh", "ShipMaterialYellow", 0);
+		auto * enemyFighter = new EnemyFighter(zero, "ship.mesh", "ShipMaterialYellow", 0);
 		delete enemyFighter;
 
 		BlasterBurst * blasterBurst = new BlasterBurst(zero, "BlasterShotMaterial", 0, 80);
@@ -211,7 +209,7 @@ namespace CoreEngine
 		sparks->SetVisible(false);
 		_sparksList.push_back(shared_ptr<Sparks>(sparks));
 
-		EnergyOrb * orb = new EnergyOrb(zero);
+		auto * orb = new EnergyOrb(zero);
 		orb->Destroy();
 		orb->SetVisible(false);
 		_orbList.push_back(shared_ptr<EnergyOrb>(orb));
@@ -221,7 +219,7 @@ namespace CoreEngine
 		explosion->SetVisible(false);
 		_explosionList.push_back(shared_ptr<Explosion>(explosion));
 
-		Barrier * barrier = new Barrier(zero);
+		auto * barrier = new Barrier(zero);
 		barrier->Destroy();
 		barrier->SetVisible(false);
 		_barrierList.push_back(shared_ptr<Barrier>(barrier));
@@ -254,11 +252,11 @@ namespace CoreEngine
 				float deviation = (rand() % 10 - 5.0f) / 10.0f;
 				float pos = presetPos[posIndex] + deviation;
 
-				int anum = rand() % 6 + 1;
-				stringstream ss;
-				ss << "Asteroid" << anum << "_LOD0.mesh";
-
-				Asteroid * asteroid = new Asteroid(Vector3(-ASTEROID_NUM * BLOCK_SIZE, 0, pos), ss.str(), 0.0f, 5.0f);
+				auto * asteroid = new Asteroid(
+						Vector3(-ASTEROID_NUM * BLOCK_SIZE, 0, pos),
+						Asteroid::getAsteroidName(rand() % 6 + 1),
+						0.0f,
+						5.0f);
 				_asteroidList.push_back(shared_ptr<Asteroid>(asteroid));
 			}
 			_lastObstacleCreated = totalTime;

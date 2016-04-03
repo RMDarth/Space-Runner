@@ -13,6 +13,8 @@ namespace CoreEngine
 	{
 		SceneSector * _sector;
 		ModelDrawable * _model;
+		float _scale;
+        Vector3 _size;
 
 	public:
 		Asteroid(Vector3 offset, std::string model, float speed, float scale = 1.0f);
@@ -20,7 +22,13 @@ namespace CoreEngine
 		void Update(float time, float roadSpeed) override;
 		void TryReset();
 
-		void SetVisible(bool visible) override;
+        static std::string getAsteroidName(int num);
 
-	};
+		void SetVisible(bool visible) override;
+        void SetMaterial(std::string material);
+        bool IsDone() override;
+
+    protected:
+        const Vector3& getHalfSize();
+    };
 }

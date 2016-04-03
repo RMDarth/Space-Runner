@@ -1,6 +1,5 @@
 #include "Fence.h"
 #include "SceneSector.h"
-#include "RenderProcessor.h"
 #include "RectDrawable.h"
 
 using namespace std;
@@ -12,16 +11,8 @@ namespace CoreEngine
 		auto sceneManager = RenderProcessor::Instance()->GetSceneManager();
 		auto sceneNode1 = sceneManager->createSceneNode();
 		sceneManager->getRootSceneNode()->addChild(sceneNode1);
-		_sector1 = make_unique<SceneSector>(sceneNode1);
-
-		auto sceneNode2 = sceneManager->createSceneNode();
-		sceneManager->getRootSceneNode()->addChild(sceneNode2);
-		_sector2 = make_unique<SceneSector>(sceneNode2);
-
-		_sector2->GetNode()->setPosition(Ogre::Vector3(-BLOCK_SIZE * 40, 0, 0));
-
-		_pos1 = Vector3(0, 0, 0);
-		_pos2 = Vector3(-BLOCK_SIZE * 40, 0, 0);
+		_sector = make_unique<SceneSector>(sceneNode1);
+        _alpha = 0;
 
 		Generate();
 	}
@@ -29,52 +20,39 @@ namespace CoreEngine
 
 	Fence::~Fence()
 	{
-
 	}
 
 	void Fence::Generate()
 	{
-		auto sceneManager = RenderProcessor::Instance()->GetSceneManager();
-
 		std::vector<Vector3> pointList;
-		pointList.push_back(Vector3(0, 0, -BLOCK_SIZE * 1.5));
-		pointList.push_back(Vector3(-BLOCK_SIZE * 40.01f, 0, -BLOCK_SIZE * 1.5));
-		pointList.push_back(Vector3(-BLOCK_SIZE * 40.01f, 0.5f, -BLOCK_SIZE * 1.5));
-		pointList.push_back(Vector3(0, 0.5f, -BLOCK_SIZE * 1.5));
-		_modelLeft[0] = make_unique<RectDrawable>(_sector1.get(), "FenceMaterial", pointList);
-		_modelLeft[1] = make_unique<RectDrawable>(_sector2.get(), "FenceMaterial", pointList);
+		pointList.push_back(Vector3(-BLOCK_SIZE * 70.01f, 0.0f, -BLOCK_SIZE * 1.5));
+		pointList.push_back(Vector3(-BLOCK_SIZE * 70.01f, 1.0f, -BLOCK_SIZE * 1.5));
+		pointList.push_back(Vector3(BLOCK_SIZE * 10.01f, 1.0f, -BLOCK_SIZE * 1.5));
+		pointList.push_back(Vector3(BLOCK_SIZE * 10.01f, 0.0f, -BLOCK_SIZE * 1.5));
+		_modelLeft = make_unique<RectDrawable>(_sector.get(), "FenceMaterial", pointList);
 
 		pointList.clear();
-		pointList.push_back(Vector3(0, 0, BLOCK_SIZE * 1.5));
-		pointList.push_back(Vector3(-BLOCK_SIZE * 40.01f, 0, BLOCK_SIZE * 1.5));
-		pointList.push_back(Vector3(-BLOCK_SIZE * 40.01f, 0.5f, BLOCK_SIZE * 1.5));
-		pointList.push_back(Vector3(0, 0.5f, BLOCK_SIZE * 1.5));
-		_modelRight[0] = make_unique<RectDrawable>(_sector1.get(), "FenceMaterial", pointList);
-		_modelRight[1] = make_unique<RectDrawable>(_sector2.get(), "FenceMaterial", pointList);
+        pointList.push_back(Vector3(-BLOCK_SIZE * 70.01f, 0.0f, BLOCK_SIZE * 1.5));
+        pointList.push_back(Vector3(-BLOCK_SIZE * 70.01f, 1.0f, BLOCK_SIZE * 1.5));
+        pointList.push_back(Vector3(BLOCK_SIZE * 10.01f, 1.0f, BLOCK_SIZE * 1.5));
+        pointList.push_back(Vector3(BLOCK_SIZE * 10.01f, 0.0f, BLOCK_SIZE * 1.5));
+		_modelRight = make_unique<RectDrawable>(_sector.get(), "FenceMaterial", pointList);
+
+        _material = Ogre::MaterialManager::getSingleton().getByName("FenceMaterial").get();
 	}
 
 	void Fence::Update(float time, float roadSpeed)
 	{
-		_pos1.x += roadSpeed;
-		_pos2.x += roadSpeed;
+        _alpha -= (time * 0.01 + time * roadSpeed * 0.1);
+        while (_alpha < 0.0f)
+            _alpha += 1.0f;
 
-		if (_pos1.x > BLOCK_SIZE * 45)
-		{
-			_pos1.x -= BLOCK_SIZE * 75;
-		}
-		if (_pos2.x > BLOCK_SIZE * 45)
-		{
-			_pos2.x -= BLOCK_SIZE * 75;
-		}
-
-		_sector1->GetNode()->setPosition(VectorToOgre(_pos1));
-		_sector2->GetNode()->setPosition(VectorToOgre(_pos2));
+        _material->getTechnique(0)->getPass(0)->getFragmentProgramParameters()->setNamedConstant("color", Ogre::ColourValue(1, 1, 1, _alpha));
 	}
 
 	void Fence::SetVisible(bool visible)
 	{
-		_sector1->GetNode()->setVisible(visible);
-		_sector2->GetNode()->setVisible(visible);
+		_sector->GetNode()->setVisible(visible);
 	}
 
 }

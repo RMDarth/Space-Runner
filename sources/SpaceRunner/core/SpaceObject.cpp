@@ -24,11 +24,8 @@ namespace CoreEngine
 
 	bool SpaceObject::IsIntersected(float turn)
 	{
-		if (_pos.x < 10 + getHalfSize().x && _pos.x > 10 - getHalfSize().x && _pos.z > turn - getHalfSize().z && _pos.z < turn + getHalfSize().z)
-		{
-			return true;
-		}
-		return false;
+		return _pos.x < 10 + getHalfSize().x && _pos.x > 10 - getHalfSize().x
+			   && _pos.z > turn - getHalfSize().z && _pos.z < turn + getHalfSize().z;
 	}
 
 	bool SpaceObject::IsIntersected(SpaceObject * other)
@@ -36,19 +33,13 @@ namespace CoreEngine
 		Vector3 dist = _pos - other->_pos;
 		dist.Abs();
 
-		if (other->getHalfSize().x + getHalfSize().x > dist.x
-			&& other->getHalfSize().z + getHalfSize().z > dist.z)
-		{
-			return true;
-		}
-		return false;
+		return other->getHalfSize().x + getHalfSize().x > dist.x
+			   && other->getHalfSize().z + getHalfSize().z > dist.z;
 	}
 
 	bool SpaceObject::IsDone()
 	{
-		if (_pos.x > BLOCK_SIZE * 5 || _destroyed)
-			return true;
-		return false;
+		return _pos.x > BLOCK_SIZE * 5 || _destroyed;
 	}
 
 	void SpaceObject::Destroy()
