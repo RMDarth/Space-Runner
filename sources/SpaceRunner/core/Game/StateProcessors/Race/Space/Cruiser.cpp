@@ -18,11 +18,34 @@ namespace CoreEngine
         _model = new ModelDrawable(_sector, "Cruiser.mesh");
         //_model->SetMaterial(material);
         _model->SetScale(scale);
+        _model->SetVisible(true);
+
+        Ogre::Vector3 pos[] = {
+                {0, 2.5f, -0.5f},
+                {0, 0, -0.7f},
+                {0, -2.3f, -1.0f}
+        };
+        for (auto i = 0; i < 3; i++)
+        {
+            auto turretNode = sceneManager->createSceneNode();
+            sceneNode->addChild(turretNode);
+            turretNode->setDirection(1, 0, 0, Ogre::Node::TransformSpace::TS_LOCAL, Ogre::Vector3::UNIT_Y);
+            turretNode->setPosition(pos[i]);
+            _sectorTurret[i] = new SceneSector(turretNode);
+            _modelTurret[i] = new ModelDrawable(_sectorTurret[i], "CruiserTurret.mesh");
+            _modelTurret[i]->SetScale(scale * 1.5);
+        }
     }
 
     Cruiser::~Cruiser()
     {
         delete _model;
+        for (auto i = 0; i < 3; i++)
+        {
+            delete _modelTurret[i];
+            delete _sectorTurret[i];
+        }
+
         delete _sector;
     }
 

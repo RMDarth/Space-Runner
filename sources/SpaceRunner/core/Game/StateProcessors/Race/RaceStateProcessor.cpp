@@ -62,10 +62,10 @@ namespace CoreEngine
 			{
 				if (Config::Instance()->IsSoundEnabled())
 				{
-					if (type == SpaceObjectType::EnemyFighter)
+					if (type == SpaceObjectType::EnemyFighter || type == SpaceObjectType::EnemyCruiser)
 					{
 						_bombSound->Play();
-						_score += 15;
+						_score += 5;
 					}
 					else
 						_impactSound->Play();
@@ -260,7 +260,8 @@ namespace CoreEngine
 		auto intersectedObject = _space->IsIntersected(_pos);
 		if (!_invincibility && !_explosion && intersectedObject != SpaceObjectType::None && intersectedObject != SpaceObjectType::EnergyOrb)
 		{
-			if (intersectedObject == SpaceObjectType::Barrier && _shield)
+			if ((intersectedObject == SpaceObjectType::Barrier || intersectedObject == SpaceObjectType::Missile)
+				 && _shield)
 			{
 				// play sound of dodging?
 			}

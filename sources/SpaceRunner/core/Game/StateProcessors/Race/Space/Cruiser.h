@@ -3,6 +3,7 @@
 #include "SpaceDefs.h"
 #include "SpaceObject.h"
 #include <string>
+#include <Render/SceneSector.h>
 
 class SceneSector;
 class ModelDrawable;
@@ -13,6 +14,9 @@ namespace CoreEngine
     {
         SceneSector * _sector;
         ModelDrawable * _model;
+
+        ModelDrawable * _modelTurret[3];
+        SceneSector* _sectorTurret[3];
 
     public:
         Cruiser(Vector3 offset, float speed, float scale = 1.0f);
