@@ -148,7 +148,7 @@ set(SOURCE_FILES
     RenderProcessor.cpp
     RenderProcessor.h
     SoundSystem.cpp
-    SoundSystem.h LinuxDefs.h)
+    SoundSystem.h LinuxDefs.h core/Game/StateProcessors/Race/Space/Cruiser.cpp core/Game/StateProcessors/Race/Space/Cruiser.h core/Game/StateProcessors/Race/Space/Missile.cpp core/Game/StateProcessors/Race/Space/Missile.h)
 
 add_executable(spacerush ${SOURCE_FILES})
 

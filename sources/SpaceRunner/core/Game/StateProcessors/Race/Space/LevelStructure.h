@@ -7,6 +7,7 @@ namespace CoreEngine
 	{
 		AsteroidsPack = 0,
 		EnemyFighter,
+		EnemyCruiser,
 		EnergyOrb,
 		EnergyBarrier,
 		Last

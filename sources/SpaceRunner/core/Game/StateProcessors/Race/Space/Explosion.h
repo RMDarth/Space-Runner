@@ -18,7 +18,7 @@ namespace CoreEngine
 		static const float _explosionTime[4];
 
 	public:
-		Explosion(Vector3 offset);
+		Explosion(Vector3 offset, float scale = 1.0f);
 		~Explosion();
 		void Update(float time, float roadSpeed) override;
 		bool IsDone() override;

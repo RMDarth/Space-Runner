@@ -4,7 +4,6 @@
 #include "SoundSystem.h"
 #include "Game/Game.h"
 #include "Game/Config.h"
-#include "Render/ParticleSystem.h"
 #include "BillingProcessor.h"
 #include "Game/StateProcessors/Level/LevelManager.h"
 
@@ -15,7 +14,6 @@
 #include "Game/StateProcessors/Race/Space/LevelStructure.h"
 
 #include "Render/Drawables/ModelDrawable.h"
-#include "Render/SceneSector.h"
 
 #include <algorithm>
 #include <functional>
@@ -24,10 +22,6 @@
 using namespace std;
 
 #define CAMERA_SPEED 0.35f
-#define MAP_SIZE 40
-#define MIN_BALL_SIZE_ENDLESS 20
-#define FLYBALL_SPEED 20.0f
-#define REVEAL_COUNT 220
 #define PI 3.1415f
 
 namespace CoreEngine

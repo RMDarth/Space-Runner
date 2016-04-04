@@ -1,15 +1,14 @@
 #include "Explosion.h"
 #include "Render/SceneSector.h"
-#include "RenderProcessor.h"
 #include "Render/ParticleSystem.h"
-#include <sstream>
+
 #define EXPLOSIONS_NUM 4
 
 namespace CoreEngine
 {
 	const float Explosion::_explosionTime[4] = { 1.0f, 2.0f, 1.5f, 2.0f };;
 
-	Explosion::Explosion(Vector3 offset)
+	Explosion::Explosion(Vector3 offset, float scale)
 		: SpaceObject(offset, 0)
 	{
 		auto sceneManager = RenderProcessor::Instance()->GetSceneManager();
@@ -21,6 +20,7 @@ namespace CoreEngine
 		for (auto i = 0; i < EXPLOSIONS_NUM; i++)
 		{
 			auto sceneNodeChild = sceneManager->createSceneNode();
+			sceneNodeChild->setScale(scale, scale, scale);
 			sceneNode->addChild(sceneNodeChild);
 			std::stringstream str;
 			str << "Blast" << (i + 1) << "_%d";

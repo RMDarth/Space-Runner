@@ -1,9 +1,4 @@
-//
-// Created by darth on 3/30/16.
-//
-
-#ifndef LINUX_LINUXDEFS_H
-#define LINUX_LINUXDEFS_H
+#pragma once
 
 #if __cplusplus < 201402L
 
@@ -14,5 +9,3 @@ std::unique_ptr<T> make_unique(Args&&... args)
 }
 
 #endif
-
-#endif //LINUX_LINUXDEFS_H

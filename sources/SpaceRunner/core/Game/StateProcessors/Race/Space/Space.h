@@ -11,6 +11,7 @@ namespace CoreEngine
 	class SpaceLine;
 	class Asteroid;
 	class EnemyFighter;
+	class Cruiser;
 	class SpaceDust;
 	class Fence;
 	class BlasterBurst;
@@ -18,6 +19,7 @@ namespace CoreEngine
 	class Sparks;
 	class EnergyOrb;
 	class Barrier;
+	class Missile;
 
 	struct Level;
 	struct Obstacle;
@@ -26,8 +28,10 @@ namespace CoreEngine
 	{
 		Asteroid,
 		EnemyFighter,
+		EnemyCruiser,
 		EnergyOrb,
 		Barrier,
+		Missile,
 		None
 	};
 
@@ -38,10 +42,12 @@ namespace CoreEngine
 		PtrList<Asteroid> _backgroundAsteroidList;
 		PtrList<Asteroid> _asteroidList;
 		PtrList<EnemyFighter> _fighterList;
+		PtrList<Cruiser> _cruiserList;
 		PtrList<EnergyOrb> _orbList;
 		PtrList<Barrier> _barrierList;
 
 		PtrList<BlasterBurst> _shotList;
+		PtrList<Missile> _missileList;
 		PtrList<Explosion> _explosionList;
 		PtrList<Sparks> _sparksList;
 		
@@ -73,6 +79,7 @@ namespace CoreEngine
 		
 		void AddAsteroids(float time);
 		void AddEnemyFighter(float time);
+		void AddEnemyCruiser(float time);
 		void AddEnergyOrbs(float time);
 		void AddEnergyBarrier(float time);
 

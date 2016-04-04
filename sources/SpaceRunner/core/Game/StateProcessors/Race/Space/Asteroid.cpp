@@ -63,9 +63,7 @@ namespace CoreEngine
 
 	bool Asteroid::IsDone()
 	{
-		if (_pos.x + getHalfSize().x > BLOCK_SIZE * 5 || _destroyed)
-			return true;
-		return false;
+		return _pos.x + getHalfSize().x > BLOCK_SIZE * 5 || _destroyed;
 	}
 
 	std::string Asteroid::getAsteroidName(int num)
