@@ -1,5 +1,6 @@
 #include "Cruiser.h"
 #include "Render/Drawables/ModelDrawable.h"
+#include "Render/ParticleSystem.h"
 #include "Render/SceneSector.h"
 #include "RenderProcessor.h"
 
@@ -18,7 +19,7 @@ namespace CoreEngine
         _model = new ModelDrawable(_sector, "Cruiser.mesh");
         //_model->SetMaterial(material);
         _model->SetScale(scale);
-        _model->SetVisible(true);
+        //_model->SetVisible(false);
 
         Ogre::Vector3 pos[] = {
                 {0, 2.5f, -0.5f},
@@ -35,6 +36,13 @@ namespace CoreEngine
             _modelTurret[i] = new ModelDrawable(_sectorTurret[i], "CruiserTurret.mesh");
             _modelTurret[i]->SetScale(scale * 1.5);
         }
+
+        auto sceneNodeParticle = sceneManager->createSceneNode();
+        sceneNodeParticle->setPosition(0, -3.8, 0);
+        sceneNode->addChild(sceneNodeParticle);
+        _sectorParticle = new SceneSector(sceneNodeParticle);
+
+        _engineEffect = new ParticleSystem(sceneNodeParticle, "EngineFireCruiser_%d", "EngineRight", 100, 0, true);
     }
 
     Cruiser::~Cruiser()
@@ -46,6 +54,8 @@ namespace CoreEngine
             delete _sectorTurret[i];
         }
 
+        delete _engineEffect;
+        delete _sectorParticle;
         delete _sector;
     }
 

@@ -35,7 +35,7 @@ namespace CoreEngine
 		UPtr<ModelDrawable> _ship;
 		UPtr<ModelDrawable> _shipShield;
 
-		Ogre::ParticleSystem * _engineFire;
+		Ogre::ParticleSystem * _engineFire[2];
 		Ogre::ParticleSystem * _shieldEffect;
 
 

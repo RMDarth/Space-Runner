@@ -124,12 +124,19 @@ namespace CoreEngine
 		_shipShield->SetScale(1.2f);
 
 		auto sceneNodeChild = sceneManager->createSceneNode();
-		sceneNodeChild->setPosition(0.35f, 0.0f, 0.0f);
+		sceneNodeChild->setPosition(0.25f, 0.03f, 0.12f);
 		sceneNode->addChild(sceneNodeChild);
 
-		_engineFire = sceneManager->createParticleSystem("EngineFire", "Engine");
-		_engineFire->getEmitter(0)->setParticleVelocity(3.5f);
-		sceneNodeChild->attachObject(_engineFire);
+		_engineFire[0] = sceneManager->createParticleSystem("EngineFire", "Engine");
+		sceneNodeChild->attachObject(_engineFire[0]);
+
+		sceneNodeChild = sceneManager->createSceneNode();
+		sceneNodeChild->setPosition(0.25f, 0.03f, -0.12f);
+		sceneNode->addChild(sceneNodeChild);
+
+		_engineFire[1] = sceneManager->createParticleSystem("EngineFire2", "Engine");
+		sceneNodeChild->attachObject(_engineFire[1]);
+
 
 		auto sceneNodeShieldEffect = sceneManager->createSceneNode();
 		_shieldEffectSector = make_unique<SceneSector>(sceneNodeShieldEffect);
@@ -249,7 +256,7 @@ namespace CoreEngine
 		auto multiplier = _speed * 0.8f;
 		if (multiplier > 1.1f) multiplier = 1.1f;
 		if (multiplier < 0.8f) multiplier = 0.8f;
-		_engineFire->getEmitter(0)->setParticleVelocity(3.5f * multiplier);
+		//_engineFire->getEmitter(0)->setParticleVelocity(3.5f * multiplier);
 
 		_space->Update(time, _speed);
 		_sector->GetNode()->setPosition(10, 0, _pos);
@@ -474,7 +481,7 @@ namespace CoreEngine
 		auto camera = RenderProcessor::Instance()->GetCamera();
 		Vector3 pos = Vector3(
 			_cameraRadius, //_cameraRadius * cos(_cameraTime * CAMERA_SPEED),
-			5.0f,
+			6.0f,
 			_pos);// *sin(_cameraTime * CAMERA_SPEED));
 		camera->SetPosition(pos);
 		camera->SetTarget(Vector3(0, 0, _pos));

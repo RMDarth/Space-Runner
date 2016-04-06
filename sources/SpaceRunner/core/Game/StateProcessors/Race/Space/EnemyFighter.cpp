@@ -15,9 +15,9 @@ namespace CoreEngine
 		sceneNode->setPosition(VectorToOgre(offset));
 
 		_sector->GetNode()->setDirection(Ogre::Vector3(0, 0, 1));
-		_model = new ModelDrawable(_sector, model);
-		_model->SetMaterial(material);
-		_model->SetScale(scale);
+		_model = new ModelDrawable(_sector, "Mine.mesh");
+		//_model->SetMaterial(material);
+		_model->SetScale(5.0f);
 	}
 
 	EnemyFighter::~EnemyFighter()

@@ -29,6 +29,29 @@ namespace CoreEngine
 		_model->SetScale(15);
 		sceneNode->setPosition(Ogre::Vector3(0, 3, 0));
 
+
+/*
+		////
+		auto sceneNodeChild = sceneManager->createSceneNode();
+		sceneNodeChild->setScale(15, 15, 15);
+		sceneNodeChild->setPosition(0.37f, 0.05f, 0.1f);
+		sceneNode->addChild(sceneNodeChild);
+
+		auto engineFire1 = sceneManager->createParticleSystem("EngineFire12", "Engine");
+		sceneNodeChild->attachObject(engineFire1);
+
+
+		sceneNodeChild = sceneManager->createSceneNode();
+		sceneNodeChild->setScale(15, 15, 15);
+		sceneNodeChild->setPosition(0.37f, 0.05f, -0.1f);
+		sceneNode->addChild(sceneNodeChild);
+
+		auto engineFire2 = sceneManager->createParticleSystem("EngineFire13", "Engine");
+		sceneNodeChild->attachObject(engineFire2);
+
+		///
+*/
+
 		_document = new ControlDocument("GUI/startmenu.xml");
 		_document->SetMouseUpHandler(this);
 		

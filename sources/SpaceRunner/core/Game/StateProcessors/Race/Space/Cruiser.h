@@ -7,6 +7,7 @@
 
 class SceneSector;
 class ModelDrawable;
+class ParticleSystem;
 
 namespace CoreEngine
 {
@@ -17,6 +18,9 @@ namespace CoreEngine
 
         ModelDrawable * _modelTurret[3];
         SceneSector* _sectorTurret[3];
+
+        SceneSector* _sectorParticle;
+        ParticleSystem * _engineEffect;
 
     public:
         Cruiser(Vector3 offset, float speed, float scale = 1.0f);

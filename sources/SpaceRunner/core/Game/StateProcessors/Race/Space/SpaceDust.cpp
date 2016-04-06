@@ -43,7 +43,7 @@ namespace CoreEngine
 			auto posY = (rand() % (int)(BLOCK_SIZE * 5.0f * 10)) / 10.0f - BLOCK_SIZE * 2.5f;
 			auto posZ = (rand() % BLOCK_SIZE * 15);
 			sceneNode->setPosition(Ogre::Vector3(-posZ, posY, posX));
-			auto particle = make_shared<ParticleDrawable>(new SceneSector(sceneNode), material, 0.3f);
+			auto particle = make_shared<ParticleDrawable>(new SceneSector(sceneNode), material, 0.2f);
 			_particleList1.push_back(particle);
 		}
 		for (auto i = 0; i < SPACE_DUST_NUM; i++)
@@ -54,7 +54,7 @@ namespace CoreEngine
 			auto posY = (rand() % (int)(BLOCK_SIZE * 5.0f * 10)) / 10.0f - BLOCK_SIZE * 2.5f;
 			auto posZ = (rand() % BLOCK_SIZE * 15);
 			sceneNode->setPosition(Ogre::Vector3(-posZ, posY, posX));
-			auto particle = make_shared<ParticleDrawable>(new SceneSector(sceneNode), material, 0.3f);
+			auto particle = make_shared<ParticleDrawable>(new SceneSector(sceneNode), material, 0.2f);
 			_particleList2.push_back(particle);
 		}
 	}

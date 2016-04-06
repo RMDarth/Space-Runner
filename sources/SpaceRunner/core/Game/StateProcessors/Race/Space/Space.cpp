@@ -49,6 +49,7 @@ namespace CoreEngine
         vector<ObstacleType> obstacleList;
         for (int i = 0; i < 50; i++)
         {
+            //obstacleList.push_back(ObstacleType::EnemyCruiser); continue;
             int type = rand() % 16;
             if (type < 2)
             {
@@ -331,7 +332,7 @@ namespace CoreEngine
                 posUsed[posIndex] = true;
                 auto missilePos = presetPos[posIndex];
 
-                auto missile = make_shared<Missile>(Vector3(-ASTEROID_NUM * BLOCK_SIZE, 0, missilePos), -12.0f - rand()%6 , 0.4f);
+                auto missile = make_shared<Missile>(Vector3(-ASTEROID_NUM * BLOCK_SIZE, 0, missilePos), -12.0f - rand()%6 , 0.25f);
                 _missileList.push_back(missile);
             }
 
