@@ -8,7 +8,7 @@ class FileInputRef
 	ifstream fin;
 	bool opened;
 public:
-	FileInputRef(string filename, bool storage = false);
+	FileInputRef(const string& filename, bool storage = false);
 	~FileInputRef();
 
 	bool IsOpened();
@@ -17,6 +17,7 @@ public:
 	float ReadFloat();
 	double ReadDouble();
 	string ReadString();
+	string ReadSubstring(char delim = '\n');
 	char ReadChar();
 	string ReadToEnd();
 
@@ -28,7 +29,7 @@ class FileOutputRef
 	ofstream fout;
 	bool opened;
 public:
-	FileOutputRef(string filename);
+	FileOutputRef(const string&  filename);
 	~FileOutputRef();
 
 	void WriteInt(int data);

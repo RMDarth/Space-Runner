@@ -84,7 +84,7 @@ set(SOURCE_FILES
     core/Game/StateProcessors/Level/LevelManager.h
     core/Game/StateProcessors/Menu/LevelSelectionStateProcessor.cpp
     core/Game/StateProcessors/Menu/LevelSelectionStateProcessor.h
-    core/Game/StateProcessors/Race/Space/LevelStructure.h
+        core/Game/StateProcessors/Race/LevelStructure.h
     core/Render/Light.cpp
     core/Render/Light.h
     core/Render/Drawables/LineDrawable.cpp
@@ -148,7 +148,7 @@ set(SOURCE_FILES
     RenderProcessor.cpp
     RenderProcessor.h
     SoundSystem.cpp
-    SoundSystem.h LinuxDefs.h core/Game/StateProcessors/Race/Space/Cruiser.cpp core/Game/StateProcessors/Race/Space/Cruiser.h core/Game/StateProcessors/Race/Space/Missile.cpp core/Game/StateProcessors/Race/Space/Missile.h)
+    SoundSystem.h LinuxDefs.h core/Game/StateProcessors/Race/Space/Cruiser.cpp core/Game/StateProcessors/Race/Space/Cruiser.h core/Game/StateProcessors/Race/Space/Missile.cpp core/Game/StateProcessors/Race/Space/Missile.h core/Game/StateProcessors/Race/Prefab.cpp core/Game/StateProcessors/Race/Prefab.h core/Game/StateProcessors/Race/PrefabManager.cpp core/Game/StateProcessors/Race/PrefabManager.h core/Game/StateProcessors/Race/Space/PrefabProcessor.cpp core/Game/StateProcessors/Race/Space/PrefabProcessor.h)
 
 add_executable(spacerush ${SOURCE_FILES})
 

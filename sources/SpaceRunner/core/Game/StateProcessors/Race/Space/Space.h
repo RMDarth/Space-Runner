@@ -2,7 +2,9 @@
 #include <vector>
 #include <memory>
 #include <functional>
+#include "core/Game/StateProcessors/Race/LevelStructure.h"
 #include "SpaceDefs.h"
+#include "PrefabProcessor.h"
 #include "Basic.h"
 #define VISIBLE_NUM 15
 
@@ -24,21 +26,12 @@ namespace CoreEngine
 	struct Level;
 	struct Obstacle;
 
-	enum class SpaceObjectType
-	{
-		Asteroid,
-		EnemyFighter,
-		EnemyCruiser,
-		EnergyOrb,
-		Barrier,
-		Missile,
-		None
-	};
-
 	using EventCallback = std::function<void(SpaceObjectType)>;
 
 	class Space
 	{
+        friend class PrefabProcessor;
+
 		PtrList<Asteroid> _backgroundAsteroidList;
 		PtrList<Asteroid> _asteroidList;
 		PtrList<EnemyFighter> _fighterList;
@@ -62,6 +55,8 @@ namespace CoreEngine
 		float _lastObstacleCreated;
 		int _lastObstaclePos;
 		float _lastPosChange;
+
+        PrefabProcessor * _prefabProcessor;
 	public:
 		Space();
 		void GenerateSpace();

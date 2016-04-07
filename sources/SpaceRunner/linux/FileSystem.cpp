@@ -2,7 +2,7 @@
 #include <fstream>
 #include <sstream>
 
-FileInputRef::FileInputRef(string filename, bool storage)
+FileInputRef::FileInputRef(const string& filename, bool storage)
 {
 	fin.open(filename, ios::in);
 
@@ -52,6 +52,14 @@ string FileInputRef::ReadString()
 	return data;
 }
 
+string FileInputRef::ReadSubstring(char delim)
+{
+	string data;
+	getline(fin, data, delim);
+
+	return data;
+}
+
 char FileInputRef::ReadChar()
 {
 	char data;
@@ -86,7 +94,7 @@ void FileInputRef::Close()
 
 
 
-FileOutputRef::FileOutputRef(string filename)
+FileOutputRef::FileOutputRef(const string& filename)
 {
 	fout.open(filename, ios::out);
 	opened = true;

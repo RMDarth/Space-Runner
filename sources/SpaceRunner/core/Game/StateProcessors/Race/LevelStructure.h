@@ -3,6 +3,17 @@
 
 namespace CoreEngine
 {
+	enum class SpaceObjectType : int8_t
+	{
+		Asteroid = 0,
+		EnemyFighter = 1,
+		EnemyCruiser = 2,
+		EnergyOrb = 3,
+		Barrier = 4,
+		Missile = 5,
+		None = 6
+	};
+
 	enum class ObstacleType
 	{
 		AsteroidsPack = 0,

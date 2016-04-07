@@ -14,10 +14,10 @@ namespace CoreEngine
 		_sector = new SceneSector(sceneNode);
 		sceneNode->setPosition(VectorToOgre(offset));
 
-		_sector->GetNode()->setDirection(Ogre::Vector3(0, 0, 1));
+		_sector->GetNode()->setDirection(Ogre::Vector3(0, 1, 0));
 		_model = new ModelDrawable(_sector, "Mine.mesh");
 		//_model->SetMaterial(material);
-		_model->SetScale(5.0f);
+		_model->SetScale(100.0f);
 	}
 
 	EnemyFighter::~EnemyFighter()

@@ -11,7 +11,7 @@
 #include "EnergyOrb.h"
 #include "Barrier.h"
 
-#include "LevelStructure.h"
+#include "Game/StateProcessors/Race/LevelStructure.h"
 
 using namespace std;
 
@@ -24,6 +24,9 @@ namespace CoreEngine
         _lastObstacleCreated = 0;
         _spaceDust = make_unique<SpaceDust>("SpaceDust");
         _fence = make_unique<Fence>();
+
+        _prefabProcessor = new PrefabProcessor(this);
+
         GenerateSpace();
     }
 

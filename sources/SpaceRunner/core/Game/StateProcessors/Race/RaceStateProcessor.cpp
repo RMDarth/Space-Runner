@@ -11,7 +11,8 @@
 #include "Game/StateProcessors/Race/Space/Fence.h"
 #include "Game/StateProcessors/Race/Space/Explosion.h"
 
-#include "Game/StateProcessors/Race/Space/LevelStructure.h"
+#include "LevelStructure.h"
+#include "PrefabManager.h"
 
 #include "Render/Drawables/ModelDrawable.h"
 
@@ -167,6 +168,8 @@ namespace CoreEngine
 		_space = make_unique<Space>();
 		_space->PreloadModels();
 		_space->SetVisible(false);
+
+		PrefabManager::Instance()->LoadPrefabs();
 	}
 
 
