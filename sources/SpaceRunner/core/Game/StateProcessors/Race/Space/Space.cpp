@@ -1,3 +1,4 @@
+#include <Game/StateProcessors/Race/PrefabManager.h>
 #include "Space.h"
 #include "SpaceDust.h"
 #include "Fence.h"
@@ -11,6 +12,9 @@
 #include "EnergyOrb.h"
 #include "Barrier.h"
 
+
+#include "Game/StateProcessors/Race/Prefab.h"
+#include "Game/StateProcessors/Race/PrefabManager.h"
 #include "Game/StateProcessors/Race/LevelStructure.h"
 
 using namespace std;
@@ -24,8 +28,8 @@ namespace CoreEngine
         _lastObstacleCreated = 0;
         _spaceDust = make_unique<SpaceDust>("SpaceDust");
         _fence = make_unique<Fence>();
-
-        _prefabProcessor = new PrefabProcessor(this);
+        _totalTime = 0;
+        _lastObstaclePos = 0;
 
         GenerateSpace();
     }
@@ -50,10 +54,11 @@ namespace CoreEngine
         }
 
         vector<ObstacleType> obstacleList;
+        vector<PrefabInfo> prefabList;
         for (int i = 0; i < 50; i++)
         {
             //obstacleList.push_back(ObstacleType::EnemyCruiser); continue;
-            int type = rand() % 16;
+            int type = rand() % 18;
             if (type < 2)
             {
                 obstacleList.push_back(ObstacleType::EnergyBarrier);
@@ -70,6 +75,12 @@ namespace CoreEngine
             {
                 obstacleList.push_back(ObstacleType::EnergyOrb);
             }
+            else if (type < 10)
+            {
+                obstacleList.push_back(ObstacleType::Prefab);
+                PrefabInfo prefabInfo { "standard", 1  };
+                prefabList.push_back(std::move(prefabInfo));
+            }
             else
             {
                 obstacleList.push_back(ObstacleType::AsteroidsPack);
@@ -77,7 +88,9 @@ namespace CoreEngine
         }
         _currentLevel = make_unique<Level>();
         _currentLevel->currentObstacle = 0;
+        _currentLevel->currentPrefab = 0;
         _currentLevel->obstacleList = obstacleList;
+        _currentLevel->prefabList = prefabList;
         _currentLevel->skyboxId = 0;
         _currentLevel->energyToComplete = 100;
     }
@@ -179,7 +192,25 @@ namespace CoreEngine
                     totalTime,
                     0);
 
-                break;
+            case ObstacleType::Prefab:
+                {
+                    _lastObstaclePos = 0;
+                    _lastPosChange = -1;
+                    const auto& currentPrefabInfo = _currentLevel->prefabList[_currentLevel->currentPrefab];
+
+                    _currentLevel->currentPrefab++;
+                    if (_currentLevel->currentPrefab >= _currentLevel->prefabList.size())
+                        _currentLevel->currentPrefab = 0;
+
+                    _currentPrefab = PrefabManager::Instance()->getPrefabList(currentPrefabInfo.category).at(currentPrefabInfo.prefabNum - 1);
+
+                    _currentObstacle = make_unique<Obstacle>(
+                            ObstacleType::Prefab,
+                            _currentPrefab->getRowList().size()  * 4 + 1,
+                            totalTime,
+                            0);
+                    break;
+                }
             }
         }
         else
@@ -204,6 +235,10 @@ namespace CoreEngine
 
             case ObstacleType::EnergyBarrier:
                 AddEnergyBarrier(totalTime);
+                break;
+
+            case ObstacleType::Prefab:
+                AddPrefab(totalTime);
                 break;
             }
         }
@@ -385,6 +420,114 @@ namespace CoreEngine
             _barrierList.push_back(barrier);
 
             _lastObstacleCreated = totalTime + 6;
+        }
+    }
+
+    void Space::AddPrefab(float totalTime)
+    {
+        if (totalTime > 3 && totalTime - _lastObstacleCreated > 4)
+        {
+            const auto& row = _currentPrefab->getRowList()[_lastObstaclePos];
+            _lastObstaclePos++;
+
+            for (auto i = 0; i < 3; i++)
+            {
+                Vector3 pos(-ASTEROID_NUM * BLOCK_SIZE, 0, presetPos[i]);
+
+                switch (row.objects[i].type)
+                {
+                    case SpaceObjectType::Asteroid:
+                    {
+                        auto asteroid = make_shared<Asteroid>(
+                                pos,
+                                Asteroid::getAsteroidName(rand() % 6 + 1),
+                                row.objects[i].speed,
+                                5.0f);
+                        _asteroidList.push_back(std::move(asteroid));
+                        break;
+                    }
+                    case SpaceObjectType::EnemyFighter:
+                    {
+                        auto fighter = make_shared<EnemyFighter>(pos, "ship.mesh", "ShipMaterialYellow",
+                                                                 row.objects[i].speed, 8.0f);
+                        _fighterList.push_back(std::move(fighter));
+                        break;
+                    }
+                    case SpaceObjectType::EnemyCruiser:
+                        _cruiserList.push_back(make_shared<Cruiser>(pos, row.objects[i].speed, 2.0f));
+                        break;
+                    case SpaceObjectType::EnergyOrb:
+                        _orbList.push_back(make_shared<EnergyOrb>(pos));
+                        _lastPosChange = _totalTime;
+                        break;
+                    case SpaceObjectType::Barrier:
+                        _barrierList.push_back(make_shared<Barrier>(pos));
+                        break;
+                    case SpaceObjectType::Missile:
+                        _missileList.push_back(make_shared<Missile>(pos, -12.0f - rand()%6 , 0.25f));
+                        break;
+                    case SpaceObjectType::None:
+                        break;
+                }
+            }
+
+            _lastObstacleCreated = totalTime;
+        }
+        else if (totalTime > 3 && totalTime - _lastObstacleCreated > 2)
+        {
+           AddPrefabEnergyOrbs(totalTime);
+        }
+    }
+
+    void Space::AddPrefabEnergyOrbs(float totalTime)
+    {
+        // Adding interim energy orbs
+        if (_lastPosChange > 0 && totalTime - _lastPosChange > 2)
+        {
+            const auto& row = _currentPrefab->getRowList()[_lastObstaclePos - 1];
+            for (auto i = 0; i < 3; i++)
+            {
+                Vector3 pos(-ASTEROID_NUM * BLOCK_SIZE, 0, presetPos[i]);
+                if (row.objects[i].type == SpaceObjectType::EnergyOrb)
+                {
+                    if (_lastObstaclePos == _currentPrefab->getRowList().size())
+                    {
+                        // for last row add in the same spot
+                        _orbList.push_back(make_shared<EnergyOrb>(pos));
+                    } else {
+                        // for other cases create way to next one
+                        const auto& nextrow = _currentPrefab->getRowList()[_lastObstaclePos];
+                        bool found = false;
+                        for (auto r = 0; r < 3; r++)
+                        {
+                            if (nextrow.objects[r].type == SpaceObjectType::EnergyOrb)
+                            {
+                                found = true;
+                                if (r < i)
+                                {
+                                    _orbList.push_back(make_shared<EnergyOrb>(Vector3(pos.x, pos.y, pos.z - (presetPos[i] - presetPos[r])*0.5f)));
+                                    break;
+                                }
+                                else if (r == i)
+                                {
+                                    _orbList.push_back(make_shared<EnergyOrb>(pos));
+                                    break;
+                                }
+                                else
+                                {
+                                    _orbList.push_back(make_shared<EnergyOrb>(Vector3(pos.x, pos.y, pos.z + (presetPos[r] - presetPos[i])*0.5f)));
+                                    break;
+                                }
+                            }
+                        }
+                        if (!found)
+                        {
+                            _orbList.push_back(make_shared<EnergyOrb>(pos));
+                        }
+                    }
+                }
+            }
+            _lastPosChange = totalTime;
         }
     }
 

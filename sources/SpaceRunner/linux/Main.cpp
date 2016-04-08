@@ -5,8 +5,6 @@
 #include "Input.h"
 #include "Game/Config.h"
 #include "SoundSystem.h"
-#include <iostream>
-#include <ctime>
 #include <ratio>
 #include <chrono>
 using namespace std;
@@ -34,7 +32,6 @@ int main()
 	input->AddListener((IInputListener*)game);
 
 	high_resolution_clock::time_point oldtime = high_resolution_clock::now();
-	high_resolution_clock::time_point time;
 	float deltaTime;
 
 	while (!OgreApplication::Instance()->IsExit())

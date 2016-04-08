@@ -4,7 +4,6 @@
 #include <functional>
 #include "core/Game/StateProcessors/Race/LevelStructure.h"
 #include "SpaceDefs.h"
-#include "PrefabProcessor.h"
 #include "Basic.h"
 #define VISIBLE_NUM 15
 
@@ -30,8 +29,6 @@ namespace CoreEngine
 
 	class Space
 	{
-        friend class PrefabProcessor;
-
 		PtrList<Asteroid> _backgroundAsteroidList;
 		PtrList<Asteroid> _asteroidList;
 		PtrList<EnemyFighter> _fighterList;
@@ -47,7 +44,9 @@ namespace CoreEngine
 		UPtr<SpaceDust> _spaceDust;
 		UPtr<Fence> _fence;
 		UPtr<Level> _currentLevel;
+
 		UPtr<Obstacle> _currentObstacle;
+		std::shared_ptr<Prefab> _currentPrefab;
 
 		EventCallback _shotCallback;
 		
@@ -55,8 +54,6 @@ namespace CoreEngine
 		float _lastObstacleCreated;
 		int _lastObstaclePos;
 		float _lastPosChange;
-
-        PrefabProcessor * _prefabProcessor;
 	public:
 		Space();
 		void GenerateSpace();
@@ -76,7 +73,9 @@ namespace CoreEngine
 		void AddEnemyFighter(float time);
 		void AddEnemyCruiser(float time);
 		void AddEnergyOrbs(float time);
+		void AddPrefabEnergyOrbs(float time);
 		void AddEnergyBarrier(float time);
+		void AddPrefab(float time);
 
 		void UpdateShots(float time, float roadOffset);
 	};
