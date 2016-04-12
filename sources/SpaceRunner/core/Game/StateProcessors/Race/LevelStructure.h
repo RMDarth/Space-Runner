@@ -25,6 +25,7 @@ namespace CoreEngine
         EnergyOrb,
         EnergyBarrier,
         Prefab,
+        Boss,
         Last
     };
 

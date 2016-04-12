@@ -116,6 +116,8 @@ namespace CoreEngine
 		
 		bool IsGameFinished();
 
+		void UpdateBossLifePanel(int lives, int maxlives);
+
 		void SetLightAndCamera(float deltaTime);
 		void UpdateHUD();
 	};

@@ -4,20 +4,16 @@
 #include "SoundSystem.h"
 #include "Game/Game.h"
 #include "Game/Config.h"
-#include "BillingProcessor.h"
 #include "Game/StateProcessors/Level/LevelManager.h"
 
 #include "Game/StateProcessors/Race/Space/SpaceDust.h"
 #include "Game/StateProcessors/Race/Space/Fence.h"
 #include "Game/StateProcessors/Race/Space/Explosion.h"
 
-#include "LevelStructure.h"
 #include "PrefabManager.h"
 
 #include "Render/Drawables/ModelDrawable.h"
 
-#include <algorithm>
-#include <functional>
 #include <iomanip>
 
 using namespace std;
@@ -74,6 +70,13 @@ namespace CoreEngine
 				}
 			});
 
+        _space->RegisterBossEvent(
+                [this](int lives, int maxlives)
+                {
+                    UpdateBossLifePanel(lives, maxlives);
+                }
+        );
+
 		//RenderProcessor::Instance()->SetSkybox(rand() % SKYBOX_NUM + 1);
 		if (!_sector)
 			InitSpaceShip();
@@ -101,6 +104,8 @@ namespace CoreEngine
 		_currentPosID = _targetPosID = _nextTargetPosID = 1;
 
 		_camera = RenderProcessor::Instance()->GetCamera();
+
+        _document->GetControlByName("bosslifebar")->SetDefaultMaterial("red.png", true);
 
 		_init = true;
 	}
@@ -152,7 +157,7 @@ namespace CoreEngine
 	void RaceStateProcessor::InitSound()
 	{
 		auto soundSystem = SoundSystem::Instance();
-		if (soundSystem->IsLoaded() && _soundsLoaded == false)
+		if (soundSystem->IsLoaded() && !_soundsLoaded)
 		{
 			_shootSound = unique_ptr<Sound>(soundSystem->CreateSound("Sound/LaserSound2.wav"));
 			_impactSound = unique_ptr<Sound>(soundSystem->CreateSound("Sound/ImpactSound.wav"));
@@ -544,6 +549,9 @@ namespace CoreEngine
 			_document->GetControlByName("FPStext")->SetVisible(false);
 			_document->GetControlByName("FPS")->SetVisible(false);
 		}
+
+		_document->GetControlByName("bosslifepanel")->SetVisible(false);
+		_document->GetControlByName("bosslifebar")->SetVisible(false);
 	}
 
 
@@ -555,4 +563,42 @@ namespace CoreEngine
 			Game::Instance()->ChangeState(GameState::Pause);
 		}
 	}
+
+    void RaceStateProcessor::UpdateBossLifePanel(int lives, int maxlives)
+    {
+        if (Config::Instance()->IsSoundEnabled() && lives < maxlives)
+        {
+            if (lives > 0)
+                _impactSound->Play();
+            else
+                _bombSound->Play();
+        }
+
+        static auto bossLifePanel = _document->GetControlByName("bosslifepanel");
+        static auto bossLifeBar = _document->GetControlByName("bosslifebar");
+
+        if (lives == 0)
+        {
+            bossLifePanel->SetVisible(false);
+            bossLifeBar->SetVisible(false);
+        } else {
+            bossLifePanel->SetVisible(true);
+
+            int baseWidth = bossLifePanel->GetWidth();
+
+            int height = bossLifeBar->GetHeight();
+            float k = (float)lives / (float)maxlives;
+
+            if (k < 0.25f)
+                bossLifeBar->SetDefaultMaterial("red.png", false);
+            else
+                bossLifeBar->SetDefaultMaterial("green.png", false);
+
+            int width = (int)(k * baseWidth);
+            bossLifeBar->SetSize(width, height);
+            bossLifeBar->SetVisible(true);
+        }
+    }
+
+
 }

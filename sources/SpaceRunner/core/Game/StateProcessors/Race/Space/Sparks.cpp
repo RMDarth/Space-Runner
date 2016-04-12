@@ -5,8 +5,8 @@
 
 namespace CoreEngine
 {
-	Sparks::Sparks(Vector3 offset)
-		: SpaceObject(offset, 0)
+	Sparks::Sparks(Vector3 offset, float speed)
+		: SpaceObject(offset, speed)
 	{
 		auto sceneManager = RenderProcessor::Instance()->GetSceneManager();
 		auto sceneNode = sceneManager->createSceneNode();

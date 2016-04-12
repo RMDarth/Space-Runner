@@ -11,6 +11,7 @@
 #include "Sparks.h"
 #include "EnergyOrb.h"
 #include "Barrier.h"
+#include "Boss.h"
 
 using namespace std;
 
@@ -50,7 +51,7 @@ namespace CoreEngine
         vector<PrefabInfo> prefabList;
         for (int i = 0; i < 50; i++)
         {
-            //obstacleList.push_back(ObstacleType::EnemyCruiser); continue;
+            obstacleList.push_back(ObstacleType::Boss); continue;
             int type = rand() % 18;
             if (type < 2)
             {
@@ -109,8 +110,8 @@ namespace CoreEngine
         for_each(_missileList.begin(), _missileList.end(), bind(&Missile::Update, placeholders::_1, time, roadOffset));
         _missileList.erase(remove_if(_missileList.begin(), _missileList.end(), bind(&Missile::IsDone, placeholders::_1)), _missileList.end());
 
-        for_each(_fighterList.begin(), _fighterList.end(), bind(&Mine::Update, placeholders::_1, time, roadOffset));
-        _fighterList.erase(remove_if(_fighterList.begin(), _fighterList.end(), bind(&Mine::IsDone, placeholders::_1)), _fighterList.end());
+        for_each(_mineList.begin(), _mineList.end(), bind(&Mine::Update, placeholders::_1, time, roadOffset));
+        _mineList.erase(remove_if(_mineList.begin(), _mineList.end(), bind(&Mine::IsDone, placeholders::_1)), _mineList.end());
 
         for_each(_cruiserList.begin(), _cruiserList.end(), bind(&Cruiser::Update, placeholders::_1, time, roadOffset));
         _cruiserList.erase(remove_if(_cruiserList.begin(), _cruiserList.end(), bind(&Cruiser::IsDone, placeholders::_1)), _cruiserList.end());
@@ -126,6 +127,13 @@ namespace CoreEngine
 
         for_each(_barrierList.begin(), _barrierList.end(), bind(&Barrier::Update, placeholders::_1, time, roadOffset));
         _barrierList.erase(remove_if(_barrierList.begin(), _barrierList.end(), bind(&Barrier::IsDone, placeholders::_1)), _barrierList.end());
+
+        if (_boss)
+        {
+            _boss->Update(time, roadOffset);
+            if (_boss->IsDone())
+                _boss.reset();
+        }
     }
 
     void Space::AddObstacles(float totalTime)
@@ -207,35 +215,47 @@ namespace CoreEngine
                             0);
                     break;
                 }
+
+                case ObstacleType::Boss:
+                    _currentObstacle = make_unique<Obstacle>(
+                            ObstacleType::Boss,
+                            5000,
+                            totalTime,
+                            0);
+                    break;
             }
         }
         else
         {
             switch (_currentObstacle->type)
             {
-            case ObstacleType::AsteroidsPack:
-                AddAsteroids(totalTime);
-                break;
+                case ObstacleType::AsteroidsPack:
+                    ProcessAsteroids(totalTime);
+                    break;
 
-            case ObstacleType::EnergyOrb:
-                AddEnergyOrbs(totalTime);
-                break;
+                case ObstacleType::EnergyOrb:
+                    ProcessEnergyOrbs(totalTime);
+                    break;
 
-            case ObstacleType::EnemyFighter:
-                AddEnemyFighter(totalTime);
-                break;
+                case ObstacleType::EnemyFighter:
+                    ProcessMine(totalTime);
+                    break;
 
-            case ObstacleType::EnemyCruiser:
-                AddEnemyCruiser(totalTime);
-                break;
+                case ObstacleType::EnemyCruiser:
+                    ProcessEnemyCruiser(totalTime);
+                    break;
 
-            case ObstacleType::EnergyBarrier:
-                AddEnergyBarrier(totalTime);
-                break;
+                case ObstacleType::EnergyBarrier:
+                    ProcessEnergyBarrier(totalTime);
+                    break;
 
-            case ObstacleType::Prefab:
-                AddPrefab(totalTime);
-                break;
+                case ObstacleType::Prefab:
+                    ProcessPrefabs(totalTime);
+                    break;
+
+                case ObstacleType::Boss:
+                    ProcessBoss(totalTime);
+                    break;
             }
         }
     }
@@ -263,6 +283,9 @@ namespace CoreEngine
 
         auto* missile = new Missile(zero, 0);
         delete missile;
+
+        auto* boss = new Boss(zero);
+        delete boss;
 
         auto * blasterBurst = new BlasterBurst(zero, "BlasterShotMaterial", 0, 80);
         blasterBurst->Destroy();
@@ -295,12 +318,17 @@ namespace CoreEngine
         _shotCallback = callback;
     }
 
+    void Space::RegisterBossEvent(BossCallback callback)
+    {
+        _bossCallback = callback;
+    }
+
     Level* Space::GetCurrentLevel()
     {
         return _currentLevel.get();
     }
 
-    void Space::AddAsteroids(float totalTime)
+    void Space::ProcessAsteroids(float totalTime)
     {
         if (totalTime > 3 && totalTime - _lastObstacleCreated > 4)
         {
@@ -329,21 +357,21 @@ namespace CoreEngine
         }
     }
 
-    void Space::AddEnemyFighter(float totalTime)
+    void Space::ProcessMine(float totalTime)
     {
         if (totalTime > 3 && totalTime - _lastObstacleCreated > 9)
         {
             int posIndex = rand() % 3;
             float pos = presetPos[posIndex];
 
-            auto fighter = make_shared<Mine>(Vector3(-ASTEROID_NUM * BLOCK_SIZE, 0, pos), 0.2f, 8.0f);
-            _fighterList.push_back(fighter);
+            auto mine = make_shared<Mine>(Vector3(-ASTEROID_NUM * BLOCK_SIZE, 0, pos), 0.2f, 8.0f);
+            _mineList.push_back(mine);
 
             _lastObstacleCreated = totalTime + 10;
         }
     }
 
-    void Space::AddEnemyCruiser(float totalTime)
+    void Space::ProcessEnemyCruiser(float totalTime)
     {
         if (totalTime > 3 && totalTime - _lastObstacleCreated > 9)
         {
@@ -374,7 +402,7 @@ namespace CoreEngine
     }
 
 
-    void Space::AddEnergyOrbs(float totalTime)
+    void Space::ProcessEnergyOrbs(float totalTime)
     {
         if (totalTime > 3 && totalTime - _lastObstacleCreated > 2.0f)
         {
@@ -407,7 +435,7 @@ namespace CoreEngine
         }
     }
 
-    void Space::AddEnergyBarrier(float totalTime)
+    void Space::ProcessEnergyBarrier(float totalTime)
     {
         if (totalTime > 3 && totalTime - _lastObstacleCreated > 9)
         {
@@ -418,7 +446,7 @@ namespace CoreEngine
         }
     }
 
-    void Space::AddPrefab(float totalTime)
+    void Space::ProcessPrefabs(float totalTime)
     {
         if (totalTime > 3 && totalTime - _lastObstacleCreated > 4)
         {
@@ -449,7 +477,7 @@ namespace CoreEngine
                     case SpaceObjectType::Mine:
                     {
                         auto fighter = make_shared<Mine>(pos, row.objects[i].speed, 8.0f);
-                        _fighterList.push_back(std::move(fighter));
+                        _mineList.push_back(std::move(fighter));
                         break;
                     }
                     case SpaceObjectType::EnemyCruiser:
@@ -474,11 +502,11 @@ namespace CoreEngine
         }
         else if (totalTime > 3 && totalTime - _lastObstacleCreated > 2)
         {
-           AddPrefabEnergyOrbs(totalTime);
+            ProcessPrefabEnergyOrbs(totalTime);
         }
     }
 
-    void Space::AddPrefabEnergyOrbs(float totalTime)
+    void Space::ProcessPrefabEnergyOrbs(float totalTime)
     {
         // Adding interim energy orbs
         if (_lastPosChange > 0 && totalTime - _lastPosChange > 2)
@@ -538,13 +566,34 @@ namespace CoreEngine
         }
     }
 
+    void Space::ProcessBoss(float totalTime)
+    {
+        if (totalTime > 3 && totalTime - _lastObstacleCreated > 9 && !_boss)
+        {
+            _boss = make_shared<Boss>(Vector3(-ASTEROID_NUM * BLOCK_SIZE, 0, presetPos[0]));
+            _bossCallback(50, 50);
+
+            _lastObstacleCreated = totalTime + 10;
+        }
+
+        if (_boss && totalTime - _lastObstacleCreated > 1.5f * 10)
+        {
+            Vector3 missilePos = _boss->getPos();
+            missilePos.x += 0.1f;
+
+            auto missile = make_shared<Missile>(missilePos, -12.0f - rand()%6 , 0.25f);
+            _missileList.push_back(missile);
+            _lastObstacleCreated = totalTime;
+        }
+    }
+
     void Space::UpdateShots(float time, float roadOffset)
     {
         for_each(_shotList.begin(), _shotList.end(), bind(&BlasterBurst::Update, placeholders::_1, time, roadOffset));
 
         for (auto& shot : _shotList)
         {
-            for (auto& fighter : _fighterList)
+            for (auto& fighter : _mineList)
             {
                 if (!fighter->IsDone() && shot->IsIntersected(fighter.get()))
                 {
@@ -584,6 +633,22 @@ namespace CoreEngine
                 }
             }
 
+            if (_boss && shot->IsIntersected(_boss.get()))
+            {
+                shot->Destroy();
+                _boss->Hit();
+                if (!_boss->IsDone())
+                {
+                    _sparksList.push_back(make_shared<Sparks>(shot->getPos(), 11.0f * 5));
+                } else {
+                    _boss->Destroy();
+                    _explosionList.push_back(make_shared<Explosion>(_boss->getPos()));
+                }
+
+                if (_bossCallback)
+                    _bossCallback(_boss->GetLives(), 50);
+            }
+
             for (auto& explosion : _explosionList)
             {
                 if (shot->IsIntersected(explosion.get()))
@@ -599,7 +664,7 @@ namespace CoreEngine
     void Space::SetVisible(bool visible)
     {
         for_each(_asteroidList.begin(), _asteroidList.end(), bind(&Asteroid::SetVisible, placeholders::_1, visible));
-        for_each(_fighterList.begin(), _fighterList.end(), bind(&Mine::SetVisible, placeholders::_1, visible));
+        for_each(_mineList.begin(), _mineList.end(), bind(&Mine::SetVisible, placeholders::_1, visible));
         for_each(_cruiserList.begin(), _cruiserList.end(), bind(&Cruiser::SetVisible, placeholders::_1, visible));
         for_each(_shotList.begin(), _shotList.end(), bind(&BlasterBurst::SetVisible, placeholders::_1, visible));
         for_each(_missileList.begin(), _missileList.end(), bind(&Missile::SetVisible, placeholders::_1, visible));
@@ -622,7 +687,7 @@ namespace CoreEngine
             }
         }
 
-        for (auto i = _fighterList.begin(); i != _fighterList.end(); i++)
+        for (auto i = _mineList.begin(); i != _mineList.end(); i++)
         {
             if ((*i)->IsIntersected(turn))
             {
@@ -668,4 +733,8 @@ namespace CoreEngine
         }
         return SpaceObjectType::None;
     }
+
+
+
+
 }

@@ -17,7 +17,7 @@ namespace CoreEngine
 		ParticleSystem * _glowEffect;
 
 	public:
-		Sparks(Vector3 offset);
+		Sparks(Vector3 offset, float speed = 0);
 		~Sparks();
 		void Update(float time, float roadSpeed) override;
 		bool IsDone() override;

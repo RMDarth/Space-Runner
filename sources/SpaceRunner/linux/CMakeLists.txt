@@ -155,7 +155,7 @@ set(SOURCE_FILES
     core/Game/StateProcessors/Race/Prefab.cpp
     core/Game/StateProcessors/Race/Prefab.h
     core/Game/StateProcessors/Race/PrefabManager.cpp
-    core/Game/StateProcessors/Race/PrefabManager.h)
+    core/Game/StateProcessors/Race/PrefabManager.h core/Game/StateProcessors/Race/Space/Boss.cpp core/Game/StateProcessors/Race/Space/Boss.h)
 
 add_executable(spacerush ${SOURCE_FILES})
 

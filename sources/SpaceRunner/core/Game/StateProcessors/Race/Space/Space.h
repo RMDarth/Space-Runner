@@ -21,20 +21,23 @@ namespace CoreEngine
 	class EnergyOrb;
 	class Barrier;
 	class Missile;
+    class Boss;
 
 	struct Level;
 	struct Obstacle;
 
 	using EventCallback = std::function<void(SpaceObjectType)>;
+    using BossCallback = std::function<void(int,int)>; // curlives, maxlives
 
 	class Space
 	{
 		PtrList<Asteroid> _backgroundAsteroidList;
 		PtrList<Asteroid> _asteroidList;
-		PtrList<Mine> _fighterList;
+		PtrList<Mine> _mineList;
 		PtrList<Cruiser> _cruiserList;
 		PtrList<EnergyOrb> _orbList;
 		PtrList<Barrier> _barrierList;
+        Ptr<Boss> _boss;
 
 		PtrList<BlasterBurst> _shotList;
 		PtrList<Missile> _missileList;
@@ -49,6 +52,7 @@ namespace CoreEngine
 		std::shared_ptr<Prefab> _currentPrefab;
 
 		EventCallback _shotCallback;
+        BossCallback _bossCallback;
 		
 		float _totalTime;
 		float _lastObstacleCreated;
@@ -65,17 +69,19 @@ namespace CoreEngine
 		void PreloadModels();
 		
 		void RegisterShotEvent(EventCallback callback);
+        void RegisterBossEvent(BossCallback callback);
 		Level* GetCurrentLevel();
 	private:
 		void AddObstacles(float time);
 		
-		void AddAsteroids(float time);
-		void AddEnemyFighter(float time);
-		void AddEnemyCruiser(float time);
-		void AddEnergyOrbs(float time);
-		void AddPrefabEnergyOrbs(float time);
-		void AddEnergyBarrier(float time);
-		void AddPrefab(float time);
+		void ProcessAsteroids(float time);
+		void ProcessMine(float time);
+		void ProcessEnemyCruiser(float time);
+		void ProcessEnergyOrbs(float time);
+		void ProcessPrefabs(float time);
+		void ProcessPrefabEnergyOrbs(float time);
+		void ProcessEnergyBarrier(float time);
+        void ProcessBoss(float time);
 
 		void UpdateShots(float time, float roadOffset);
 	};
