@@ -11,7 +11,7 @@ namespace CoreEngine
 {
 	class SpaceLine;
 	class Asteroid;
-	class EnemyFighter;
+	class Mine;
 	class Cruiser;
 	class SpaceDust;
 	class Fence;
@@ -31,7 +31,7 @@ namespace CoreEngine
 	{
 		PtrList<Asteroid> _backgroundAsteroidList;
 		PtrList<Asteroid> _asteroidList;
-		PtrList<EnemyFighter> _fighterList;
+		PtrList<Mine> _fighterList;
 		PtrList<Cruiser> _cruiserList;
 		PtrList<EnergyOrb> _orbList;
 		PtrList<Barrier> _barrierList;

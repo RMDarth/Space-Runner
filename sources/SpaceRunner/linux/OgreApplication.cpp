@@ -28,7 +28,7 @@ OgreApplication::OgreApplication()
 		return;
 	}
 
-	_renderWindow = _root->initialise(true, "Bubble shooter 3D");
+	_renderWindow = _root->initialise(true, "Space Rush 3D");
 
 	_exit = false;
 }

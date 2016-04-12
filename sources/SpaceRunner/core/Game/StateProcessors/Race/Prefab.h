@@ -9,6 +9,8 @@ namespace CoreEngine
     class Prefab
     {
         int _rowNum;
+        bool _mirror;
+        bool _inverted;
 
         struct Row
         {
@@ -29,5 +31,9 @@ namespace CoreEngine
 
         void Load(std::string filename);
         const std::vector<Row>& getRowList();
+        bool isMirrorable();
+
+        void setInverted(bool value);
+        bool isInverted();
     };
 }

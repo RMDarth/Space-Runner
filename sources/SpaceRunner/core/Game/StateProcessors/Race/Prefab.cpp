@@ -15,6 +15,8 @@ namespace CoreEngine
     Prefab::~Prefab()
     {
         _rowNum = 0;
+        _inverted = false;
+        _mirror = false;
         _rowList.clear();
     }
 
@@ -24,8 +26,10 @@ namespace CoreEngine
         if (!file.IsOpened())
             return;
 
-        int rowNum = file.ReadInt();
-        for (int rowId = 0; rowId < rowNum; rowId++)
+        _rowNum = file.ReadInt();
+        _mirror = file.ReadInt() == 1;
+
+        for (int rowId = 0; rowId < _rowNum; rowId++)
         {
             Row row;
             for (auto lane = 0; lane < 3; lane++)
@@ -42,6 +46,21 @@ namespace CoreEngine
     const std::vector<Prefab::Row>& Prefab::getRowList()
     {
         return _rowList;
+    }
+
+    bool Prefab::isMirrorable()
+    {
+        return _mirror;
+    }
+
+    void Prefab::setInverted(bool value)
+    {
+        _inverted = value;
+    }
+
+    bool Prefab::isInverted()
+    {
+        return _inverted;
     }
 
 

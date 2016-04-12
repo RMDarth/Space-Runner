@@ -1,11 +1,11 @@
-#include "EnemyFighter.h"
+#include "Mine.h"
 #include "Render/Drawables/ModelDrawable.h"
 #include "Render/SceneSector.h"
 #include "RenderProcessor.h"
 
 namespace CoreEngine
 {
-	EnemyFighter::EnemyFighter(Vector3 offset, std::string model, std::string material, float speed, float scale)
+	Mine::Mine(Vector3 offset, float speed, float scale)
 		: SpaceObject(offset, speed)
 	{
 		auto sceneManager = RenderProcessor::Instance()->GetSceneManager();
@@ -20,19 +20,19 @@ namespace CoreEngine
 		_model->SetScale(100.0f);
 	}
 
-	EnemyFighter::~EnemyFighter()
+	Mine::~Mine()
 	{
 		delete _model;
 		delete _sector;
 	}
 
-	void EnemyFighter::Update(float time, float roadSpeed)
+	void Mine::Update(float time, float roadSpeed)
 	{
 		SpaceObject::Update(time, roadSpeed);
 		_sector->GetNode()->setPosition(VectorToOgre(_pos));
 	}
 
-	void EnemyFighter::SetVisible(bool visible)
+	void Mine::SetVisible(bool visible)
 	{
 		_sector->GetNode()->setVisible(visible);
 	}

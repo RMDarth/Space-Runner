@@ -9,14 +9,14 @@ class ModelDrawable;
 
 namespace CoreEngine
 {
-	class EnemyFighter : public SpaceObject
+	class Mine : public SpaceObject
 	{
 		SceneSector * _sector;
 		ModelDrawable * _model;
 
 	public:
-		EnemyFighter(Vector3 offset, std::string model, std::string material, float speed, float scale = 1.0f);
-		~EnemyFighter();
+		Mine(Vector3 offset, float speed, float scale = 1.0f);
+		~Mine();
 		void Update(float time, float roadSpeed) override;
 		void SetVisible(bool visible) override;
 	};

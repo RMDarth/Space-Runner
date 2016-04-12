@@ -9,7 +9,7 @@ namespace CoreEngine
     enum class SpaceObjectType : int8_t
     {
         Asteroid = 0,
-        EnemyFighter = 1,
+        Mine = 1,
         EnemyCruiser = 2,
         EnergyOrb = 3,
         Barrier = 4,

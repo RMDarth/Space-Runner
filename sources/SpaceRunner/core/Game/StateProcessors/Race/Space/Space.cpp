@@ -3,7 +3,7 @@
 #include "SpaceDust.h"
 #include "Fence.h"
 #include "Asteroid.h"
-#include "EnemyFighter.h"
+#include "Mine.h"
 #include "Cruiser.h"
 #include "BlasterBurst.h"
 #include "Missile.h"
@@ -11,11 +11,6 @@
 #include "Sparks.h"
 #include "EnergyOrb.h"
 #include "Barrier.h"
-
-
-#include "Game/StateProcessors/Race/Prefab.h"
-#include "Game/StateProcessors/Race/PrefabManager.h"
-#include "Game/StateProcessors/Race/LevelStructure.h"
 
 using namespace std;
 
@@ -30,8 +25,6 @@ namespace CoreEngine
         _fence = make_unique<Fence>();
         _totalTime = 0;
         _lastObstaclePos = 0;
-
-        GenerateSpace();
     }
 
     void Space::GenerateSpace()
@@ -77,8 +70,9 @@ namespace CoreEngine
             }
             else if (type < 10)
             {
+                int num = PrefabManager::Instance()->getPrefabList("normal").size();
                 obstacleList.push_back(ObstacleType::Prefab);
-                PrefabInfo prefabInfo { "standard", 1  };
+                PrefabInfo prefabInfo { "normal", rand() % num + 1 };
                 prefabList.push_back(std::move(prefabInfo));
             }
             else
@@ -115,8 +109,8 @@ namespace CoreEngine
         for_each(_missileList.begin(), _missileList.end(), bind(&Missile::Update, placeholders::_1, time, roadOffset));
         _missileList.erase(remove_if(_missileList.begin(), _missileList.end(), bind(&Missile::IsDone, placeholders::_1)), _missileList.end());
 
-        for_each(_fighterList.begin(), _fighterList.end(), bind(&EnemyFighter::Update, placeholders::_1, time, roadOffset));
-        _fighterList.erase(remove_if(_fighterList.begin(), _fighterList.end(), bind(&EnemyFighter::IsDone, placeholders::_1)), _fighterList.end());
+        for_each(_fighterList.begin(), _fighterList.end(), bind(&Mine::Update, placeholders::_1, time, roadOffset));
+        _fighterList.erase(remove_if(_fighterList.begin(), _fighterList.end(), bind(&Mine::IsDone, placeholders::_1)), _fighterList.end());
 
         for_each(_cruiserList.begin(), _cruiserList.end(), bind(&Cruiser::Update, placeholders::_1, time, roadOffset));
         _cruiserList.erase(remove_if(_cruiserList.begin(), _cruiserList.end(), bind(&Cruiser::IsDone, placeholders::_1)), _cruiserList.end());
@@ -191,6 +185,7 @@ namespace CoreEngine
                     15,
                     totalTime,
                     0);
+                break;
 
             case ObstacleType::Prefab:
                 {
@@ -203,6 +198,7 @@ namespace CoreEngine
                         _currentLevel->currentPrefab = 0;
 
                     _currentPrefab = PrefabManager::Instance()->getPrefabList(currentPrefabInfo.category).at(currentPrefabInfo.prefabNum - 1);
+                    _currentPrefab->setInverted(_currentPrefab->isMirrorable() && rand()%2 == 0);
 
                     _currentObstacle = make_unique<Obstacle>(
                             ObstacleType::Prefab,
@@ -259,8 +255,8 @@ namespace CoreEngine
             auto * asteroid = new Asteroid(zero, Asteroid::getAsteroidName(i), 0, 0);
             delete asteroid;
         }
-        auto* enemyFighter = new EnemyFighter(zero, "ship.mesh", "ShipMaterialYellow", 0);
-        delete enemyFighter;
+        auto* mine = new Mine(zero, 0);
+        delete mine;
 
         auto* cruiser = new Cruiser(zero, 0);
         delete cruiser;
@@ -340,7 +336,7 @@ namespace CoreEngine
             int posIndex = rand() % 3;
             float pos = presetPos[posIndex];
 
-            auto fighter = make_shared<EnemyFighter>(Vector3(-ASTEROID_NUM * BLOCK_SIZE, 0, pos), "ship.mesh", "ShipMaterialYellow", 0.2f, 8.0f);
+            auto fighter = make_shared<Mine>(Vector3(-ASTEROID_NUM * BLOCK_SIZE, 0, pos), 0.2f, 8.0f);
             _fighterList.push_back(fighter);
 
             _lastObstacleCreated = totalTime + 10;
@@ -352,7 +348,6 @@ namespace CoreEngine
         if (totalTime > 3 && totalTime - _lastObstacleCreated > 9)
         {
             float pos = presetPos[1];
-
 
             auto cruiser = make_shared<Cruiser>(Vector3(-ASTEROID_NUM * BLOCK_SIZE, 0, pos), 0.0f, 2.0f);
             _cruiserList.push_back(cruiser);
@@ -427,12 +422,17 @@ namespace CoreEngine
     {
         if (totalTime > 3 && totalTime - _lastObstacleCreated > 4)
         {
+            if (_lastObstaclePos >= _currentPrefab->getRowList().size())
+                return;
+
             const auto& row = _currentPrefab->getRowList()[_lastObstaclePos];
             _lastObstaclePos++;
 
             for (auto i = 0; i < 3; i++)
             {
-                Vector3 pos(-ASTEROID_NUM * BLOCK_SIZE, 0, presetPos[i]);
+                Vector3 pos(-ASTEROID_NUM * BLOCK_SIZE, 0, presetPos[2-i]);
+                if (_currentPrefab->isInverted())
+                    pos = Vector3(-ASTEROID_NUM * BLOCK_SIZE, 0, presetPos[i]);
 
                 switch (row.objects[i].type)
                 {
@@ -446,10 +446,9 @@ namespace CoreEngine
                         _asteroidList.push_back(std::move(asteroid));
                         break;
                     }
-                    case SpaceObjectType::EnemyFighter:
+                    case SpaceObjectType::Mine:
                     {
-                        auto fighter = make_shared<EnemyFighter>(pos, "ship.mesh", "ShipMaterialYellow",
-                                                                 row.objects[i].speed, 8.0f);
+                        auto fighter = make_shared<Mine>(pos, row.objects[i].speed, 8.0f);
                         _fighterList.push_back(std::move(fighter));
                         break;
                     }
@@ -487,7 +486,11 @@ namespace CoreEngine
             const auto& row = _currentPrefab->getRowList()[_lastObstaclePos - 1];
             for (auto i = 0; i < 3; i++)
             {
-                Vector3 pos(-ASTEROID_NUM * BLOCK_SIZE, 0, presetPos[i]);
+                int id = 2 - i;
+                if (_currentPrefab->isInverted())
+                    id = i;
+                Vector3 pos(-ASTEROID_NUM * BLOCK_SIZE, 0, presetPos[id]);
+
                 if (row.objects[i].type == SpaceObjectType::EnergyOrb)
                 {
                     if (_lastObstaclePos == _currentPrefab->getRowList().size())
@@ -500,22 +503,26 @@ namespace CoreEngine
                         bool found = false;
                         for (auto r = 0; r < 3; r++)
                         {
+                            int idNext = 2 - r;
+                            if (_currentPrefab->isInverted())
+                                idNext = r;
+
                             if (nextrow.objects[r].type == SpaceObjectType::EnergyOrb)
                             {
                                 found = true;
-                                if (r < i)
+                                if (id < idNext)
                                 {
-                                    _orbList.push_back(make_shared<EnergyOrb>(Vector3(pos.x, pos.y, pos.z - (presetPos[i] - presetPos[r])*0.5f)));
+                                    _orbList.push_back(make_shared<EnergyOrb>(Vector3(pos.x, pos.y, pos.z - (presetPos[id] - presetPos[idNext])*0.5f)));
                                     break;
                                 }
-                                else if (r == i)
+                                else if (id == idNext)
                                 {
                                     _orbList.push_back(make_shared<EnergyOrb>(pos));
                                     break;
                                 }
                                 else
                                 {
-                                    _orbList.push_back(make_shared<EnergyOrb>(Vector3(pos.x, pos.y, pos.z + (presetPos[r] - presetPos[i])*0.5f)));
+                                    _orbList.push_back(make_shared<EnergyOrb>(Vector3(pos.x, pos.y, pos.z + (presetPos[idNext] - presetPos[id])*0.5f)));
                                     break;
                                 }
                             }
@@ -545,7 +552,7 @@ namespace CoreEngine
                     fighter->Destroy();
                     _explosionList.push_back(make_shared<Explosion>(fighter->getPos()));
                     if (_shotCallback)
-                        _shotCallback(SpaceObjectType::EnemyFighter);
+                        _shotCallback(SpaceObjectType::Mine);
                 }
             }
 
@@ -592,7 +599,7 @@ namespace CoreEngine
     void Space::SetVisible(bool visible)
     {
         for_each(_asteroidList.begin(), _asteroidList.end(), bind(&Asteroid::SetVisible, placeholders::_1, visible));
-        for_each(_fighterList.begin(), _fighterList.end(), bind(&EnemyFighter::SetVisible, placeholders::_1, visible));
+        for_each(_fighterList.begin(), _fighterList.end(), bind(&Mine::SetVisible, placeholders::_1, visible));
         for_each(_cruiserList.begin(), _cruiserList.end(), bind(&Cruiser::SetVisible, placeholders::_1, visible));
         for_each(_shotList.begin(), _shotList.end(), bind(&BlasterBurst::SetVisible, placeholders::_1, visible));
         for_each(_missileList.begin(), _missileList.end(), bind(&Missile::SetVisible, placeholders::_1, visible));
@@ -620,7 +627,7 @@ namespace CoreEngine
             if ((*i)->IsIntersected(turn))
             {
                 (*i)->Destroy();
-                return SpaceObjectType::EnemyFighter;
+                return SpaceObjectType::Mine;
             }
         }
 

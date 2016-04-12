@@ -58,12 +58,13 @@ namespace CoreEngine
 	void RaceStateProcessor::Init()
 	{
 		_space = make_unique<Space>();
+		_space->GenerateSpace();
 		_space->RegisterShotEvent(
 			[this](SpaceObjectType type)
 			{
 				if (Config::Instance()->IsSoundEnabled())
 				{
-					if (type == SpaceObjectType::EnemyFighter || type == SpaceObjectType::EnemyCruiser)
+					if (type == SpaceObjectType::Mine || type == SpaceObjectType::EnemyCruiser)
 					{
 						_bombSound->Play();
 						_score += 5;
