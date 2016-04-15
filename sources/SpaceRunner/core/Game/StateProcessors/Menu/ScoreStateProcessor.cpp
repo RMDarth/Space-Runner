@@ -181,7 +181,7 @@ namespace CoreEngine
 			LevelManager::Instance()->SetStarted(false);
 			if (LevelManager::Instance()->IsPuzzle())
 			{
-				Game::Instance()->ChangeState(GameState::LevelSelect);
+				Game::Instance()->ChangeState(GameState::Storyboard);
 			}
 			else {
 				Game::Instance()->ChangeState(GameState::DifficultySelect);
@@ -551,7 +551,7 @@ namespace CoreEngine
 					Game::Instance()->ChangeState(GameState::Level);
 				}
 				else {
-					Game::Instance()->ChangeState(GameState::LevelSelect);
+					Game::Instance()->ChangeState(GameState::Storyboard);
 				}
 			} else {
 				int level = LevelManager::Instance()->GetLevelNum();
@@ -569,7 +569,7 @@ namespace CoreEngine
 		{
 			if (LevelManager::Instance()->IsPuzzle())
 			{
-				Game::Instance()->ChangeState(GameState::LevelSelect);
+				Game::Instance()->ChangeState(GameState::Storyboard);
 			}
 			else {
 				Game::Instance()->ChangeState(GameState::DifficultySelect);

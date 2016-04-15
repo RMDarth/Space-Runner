@@ -38,7 +38,7 @@ namespace CoreEngine
 			_changeState = 0;
 			return GameState::Level;
 		}
-		return GameState::LevelSelect;
+		return GameState::Storyboard;
 	}
 	
 	void LevelSelectionStateProcessor::OnMouseDown(int x, int y)
@@ -60,7 +60,7 @@ namespace CoreEngine
 	{
 		if (key == OIS::KC_ESCAPE)
 		{
-			Game::Instance()->ChangeState(GameState::WorldSelect);
+			Game::Instance()->ChangeState(GameState::MainMenu);
 		}
 	}
 
@@ -144,7 +144,7 @@ namespace CoreEngine
 	{
 		if (control->GetName() == "back")
 		{
-			Game::Instance()->ChangeState(GameState::WorldSelect);
+			Game::Instance()->ChangeState(GameState::MainMenu);
 		}
 		else if (control->GetName() == "reset")
 		{

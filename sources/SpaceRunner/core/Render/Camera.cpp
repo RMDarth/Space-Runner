@@ -46,3 +46,16 @@ Vector3 Camera::GetViewportCameraRay(float screenposX, float screenposY)
 	return VectorFromOgre(ray.getDirection());
 }
 
+void Camera::SetOrthogonal()
+{
+	_camera->setProjectionType(Ogre::PT_ORTHOGRAPHIC);
+	//_camera->setAspectRatio(1.0f);
+}
+
+void Camera::SetPerspective()
+{
+	_camera->setProjectionType(Ogre::PT_PERSPECTIVE);
+}
+
+
+

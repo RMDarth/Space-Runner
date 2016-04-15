@@ -1,10 +1,10 @@
+
 #include "Game.h"
 #include "StateProcessorFactory.h"
 #include "Game/StateProcessors/Menu/MenuStateProcessor.h"
 #include "Game/StateProcessors/Menu/PauseStateProcessor.h"
 #include "Game/StateProcessors/Menu/ScoreStateProcessor.h"
-#include "Game/StateProcessors/Menu/WorldSelectionStateProcessor.h"
-#include "Game/StateProcessors/Menu/LevelSelectionStateProcessor.h"
+#include "Game/StateProcessors/Menu/StoryboardStateProcessor.h"
 #include "Game/StateProcessors/Menu/ArcadeDifficultyStateProcessor.h"
 #include "Game/StateProcessors/Menu/HighScoresStateProcessor.h"
 #include "Game/StateProcessors/Menu/MessageStateProcessor.h"
@@ -39,8 +39,8 @@ Game::Game()
 	AchievementsStateProcessor *achievement = new AchievementsStateProcessor();
 #endif
 	ScoreStateProcessor * score = new ScoreStateProcessor();
-	WorldSelectionStateProcessor *worldSelection = new WorldSelectionStateProcessor();
-	LevelSelectionStateProcessor *levelSelection = new LevelSelectionStateProcessor();
+	StoryboardStateProcessor * storyboard = new StoryboardStateProcessor();
+
 	ArcadeDifficultyStateProcessor *arcade = new ArcadeDifficultyStateProcessor();
 	HighScoresStateProcessor *highScores = new HighScoresStateProcessor();
 	MessageStateProcessor* message = new MessageStateProcessor();
@@ -50,7 +50,7 @@ Game::Game()
 	CreditsStateProcessor *credits = new CreditsStateProcessor();
 
 	race->Hide();
-	worldSelection->Hide();
+    storyboard->Hide();
 
 	StateProcessorFactory::Instance()->RegisterProcessor(race, GameState::Level);
 	StateProcessorFactory::Instance()->RegisterProcessor(menu, GameState::MainMenu);
@@ -60,8 +60,7 @@ Game::Game()
 #if OGRE_PLATFORM == OGRE_PLATFORM_WINRT || defined(CHINA_SHOP)
 	StateProcessorFactory::Instance()->RegisterProcessor(achievement, GameState::Achievements);
 #endif
-	StateProcessorFactory::Instance()->RegisterProcessor(worldSelection, GameState::WorldSelect);
-	StateProcessorFactory::Instance()->RegisterProcessor(levelSelection, GameState::LevelSelect);
+	StateProcessorFactory::Instance()->RegisterProcessor(storyboard, GameState::Storyboard);
 	StateProcessorFactory::Instance()->RegisterProcessor(arcade, GameState::DifficultySelect);
 	StateProcessorFactory::Instance()->RegisterProcessor(highScores, GameState::HighScores);
 	StateProcessorFactory::Instance()->RegisterProcessor(message, GameState::Message);

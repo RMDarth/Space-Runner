@@ -72,7 +72,7 @@ namespace CoreEngine
 			LevelManager::Instance()->SetStarted(false);
 			if (LevelManager::Instance()->IsPuzzle())
 			{
-				Game::Instance()->ChangeState(GameState::LevelSelect);
+				Game::Instance()->ChangeState(GameState::Storyboard);
 			}
 			else {
 				Game::Instance()->ChangeState(GameState::DifficultySelect);

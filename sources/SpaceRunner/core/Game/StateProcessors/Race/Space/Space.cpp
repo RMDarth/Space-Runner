@@ -570,7 +570,7 @@ namespace CoreEngine
     {
         if (totalTime > 3 && totalTime - _lastObstacleCreated > 9 && !_boss)
         {
-            _boss = make_shared<Boss>(Vector3(-ASTEROID_NUM * BLOCK_SIZE, 0, presetPos[0]));
+            _boss = make_shared<Boss>(Vector3(-ASTEROID_NUM * BLOCK_SIZE, 0, presetPos[1]));
             _bossCallback(50, 50);
 
             _lastObstacleCreated = totalTime + 10;

@@ -13,7 +13,7 @@ private:
 	std::vector<ModelAnimation> _stateList;
 
 public:
-	ModelDrawable(SceneSector * sector, std::string name);
+	ModelDrawable(SceneSector * sector, const std::string& name);
 	virtual ~ModelDrawable();
 
 	virtual void Update(float deltaTime);

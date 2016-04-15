@@ -4,7 +4,7 @@
 
 using namespace std;
 
-ModelDrawable::ModelDrawable(SceneSector * sector, std::string name)
+ModelDrawable::ModelDrawable(SceneSector * sector, const std::string& name)
 {
 	_sceneSector = sector;
 

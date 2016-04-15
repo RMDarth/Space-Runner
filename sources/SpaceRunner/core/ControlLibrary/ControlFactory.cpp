@@ -8,6 +8,7 @@
 #include "ContainerControl.h"
 #include "LevelButtonControl.h"
 #include "SwipeBarControl.h"
+#include "SlidePanelControl.h"
 
 ControlFactory* ControlFactory::_instance = nullptr;
 
@@ -38,6 +39,10 @@ Control* ControlFactory::CreateControl(SceneSector* sector, std::string type, st
 	if (type == "Panel")
 	{
 		return new PanelControl(sector, name, x, y, width, height, parent);
+	}
+	if (type == "SlidePanel")
+	{
+		return new SlidePanelControl(sector, name, x, y, width, height, parent);
 	}
 	if (type == "RadioButton")
 	{

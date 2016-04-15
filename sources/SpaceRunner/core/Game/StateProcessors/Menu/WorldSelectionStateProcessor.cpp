@@ -143,7 +143,7 @@ namespace CoreEngine
 		}
 
 		LevelManager::Instance()->SetWorld(object);
-		Game::Instance()->ChangeState(GameState::LevelSelect);
+		Game::Instance()->ChangeState(GameState::Storyboard);
 	}
 
 	GameState::State WorldSelectionStateProcessor::Update(float time)
@@ -170,7 +170,7 @@ namespace CoreEngine
 
 		UpdateUnlockText();
 
-		return GameState::WorldSelect;
+		return GameState::MainMenu;
 	}
 
 	void WorldSelectionStateProcessor::OnMouseDown(int x, int y)

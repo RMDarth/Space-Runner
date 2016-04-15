@@ -16,6 +16,8 @@ public:
 
 	void SetRotation(float yaw, float pitch, float roll);
 	void SetTarget(Vector3 pos);
+	void SetOrthogonal();
+	void SetPerspective();
 	Vector3 GetTarget();
 	Vector3 GetViewportCameraRay(float screenposX, float screenposY);
 };
