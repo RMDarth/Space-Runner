@@ -20,6 +20,7 @@ namespace CoreEngine
         sceneManager->getRootSceneNode()->addChild(sceneNode);
 
         _sector = new SceneSector(sceneNode);
+        sceneNode->setScale(3.0f,3.0f, 3.0f);
 
         auto shipNode = sceneManager->createSceneNode();
         sceneNode->addChild(shipNode);
@@ -43,8 +44,28 @@ namespace CoreEngine
 
         _explosionEffect[0] = nullptr;
 
-    }
+        // create spritesheet tex
+        int left, top, width, height;
+        RenderProcessor::Instance()->GetViewport()->getActualDimensions(left, top, width, height);
 
+        _rttTexture = Ogre::TextureManager::getSingleton().createManual(
+                        "RttTex",
+                        Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
+                        Ogre::TEX_TYPE_2D,
+                        width, height,
+                        0,
+                        Ogre::PF_R8G8B8A8,
+                        Ogre::TU_RENDERTARGET);
+
+        Ogre::RenderTexture* renderTexture = _rttTexture->getBuffer()->getRenderTarget();
+
+        renderTexture->addViewport(RenderProcessor::Instance()->GetCamera()->getPtr());
+        renderTexture->getViewport(0)->setClearEveryFrame(true);
+        renderTexture->getViewport(0)->setBackgroundColour(Ogre::ColourValue(0,0,0,0));
+        renderTexture->getViewport(0)->setSkiesEnabled(false);
+        renderTexture->getViewport(0)->setOverlaysEnabled(false);
+
+    }
 
     StoryboardStateProcessor::~StoryboardStateProcessor()
     {
@@ -76,9 +97,6 @@ namespace CoreEngine
 
         _sectorShip->GetNode()->setPosition(pos);
 
-
-
-
         for (auto i = 0; i < 4; i++)
             _explosionEffect[i]->Update(time);
 
@@ -104,14 +122,6 @@ namespace CoreEngine
         float aspect = (float) width / height;
 
         _document->OnMouseMove(x, y, 0);
-        if (_moving)
-        {
-            int x, y;
-            _document->GetControlByName("panel")->GetPos(x, y);
-            _sector->GetNode()->setPosition(Ogre::Vector3((float)x * aspect,0,0));
-            SetLightAndCamera();
-            //_sectorShip->GetNode()->setPosition(Ogre::Vector3(_shift, 3, 0));
-        }
 
     }
 
@@ -120,6 +130,13 @@ namespace CoreEngine
         if (key == OIS::KC_ESCAPE)
         {
             Game::Instance()->ChangeState(GameState::MainMenu);
+        }
+
+        if (key == OIS::KC_P)
+        {
+            auto renderTexture = _rttTexture->getBuffer()->getRenderTarget();
+            renderTexture->update();
+            renderTexture->writeContentsToFile("screenshot.png");
         }
 
        /* static float x = 0;
@@ -211,7 +228,7 @@ namespace CoreEngine
         Vector3 pos = Vector3(
                 0,
                 0,
-                200);
+                300);
         camera->SetPosition(pos);
         camera->SetTarget(Vector3(0, 0, 0));
 

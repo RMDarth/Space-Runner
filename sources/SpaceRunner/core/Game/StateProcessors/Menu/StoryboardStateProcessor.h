@@ -23,6 +23,8 @@ namespace CoreEngine
         SceneSector* _sector;
         ParticleSystem * _explosionEffect[4];
 
+        Ogre::TexturePtr _rttTexture;
+
         bool _moving;
 
     public:

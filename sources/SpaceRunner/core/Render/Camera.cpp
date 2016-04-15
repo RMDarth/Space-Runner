@@ -57,5 +57,12 @@ void Camera::SetPerspective()
 	_camera->setProjectionType(Ogre::PT_PERSPECTIVE);
 }
 
+Ogre::Camera *Camera::getPtr()
+{
+	return _camera;
+}
+
+
+
 
 

@@ -28,7 +28,7 @@ RenderProcessor::RenderProcessor()
 	camera->setNearClipDistance(5);
 
 	_viewport = window->addViewport(camera);
-	_viewport->setBackgroundColour(Ogre::ColourValue(0.4f,0.5f,0.4f));
+	//_viewport->setBackgroundColour(Ogre::ColourValue(0.4f,0.5f,0.4f));
 	camera->setAspectRatio(Ogre::Real(_viewport->getActualWidth()) / Ogre::Real(_viewport->getActualHeight()));
 
 	_overlaySystem = new Ogre::OverlaySystem();
@@ -73,7 +73,7 @@ void RenderProcessor::InitLoadingScreen()
 
 	// Attach background to the scene
 	Ogre::SceneNode* node = _sceneManager->getRootSceneNode()->createChildSceneNode("Background");
-	node->attachObject(rect);
+	//node->attachObject(rect);
 }
 
 

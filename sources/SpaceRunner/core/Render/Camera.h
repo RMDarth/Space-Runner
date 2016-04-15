@@ -11,6 +11,8 @@ public:
 	Camera(Ogre::Camera* camera);
 	~Camera();
 
+	Ogre::Camera* getPtr();
+
 	void SetPosition(Vector3 pos);
 	Vector3 GetPosition();
 
