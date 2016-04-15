@@ -21,28 +21,22 @@ namespace CoreEngine
 
         _sector = new SceneSector(sceneNode);
 
-        auto shipNode = sceneManager->createSceneNode();
-        sceneNode->addChild(shipNode);
-        _sectorShip = new SceneSector(shipNode);
-        _modelShip = new ModelDrawable(_sectorShip, "ship.mesh");
-        _modelShip->SetScale(100);
-        _sectorShip->GetNode()->setDirection(-1.7f, 1.3f, -0.8f);
-        _modelShip->SetRenderingQueue(-Ogre::RENDER_QUEUE_MAIN + Ogre::RENDER_QUEUE_OVERLAY + 2);
-        _sectorShip->GetNode()->setPosition(Ogre::Vector3(100, -5, 50));
+        auto rectNode = sceneManager->createSceneNode();
+        _sectorLevel = new SceneSector(rectNode);
+        _sectorLevel->GetNode()->setPosition(0,0, 20);
 
-        auto cruiserNode = sceneManager->createSceneNode();
-        sceneNode->addChild(cruiserNode);
-        _sectorCruiser = new SceneSector(cruiserNode);
-        _modelCruiser = new ModelDrawable(_sectorCruiser, "Cruiser.mesh");
-        _modelCruiser->SetScale(30);
-        _sectorCruiser->GetNode()->setDirection(2.8f, 6.0f, 5.4f);
-        _modelCruiser->SetRenderingQueue(-Ogre::RENDER_QUEUE_MAIN + Ogre::RENDER_QUEUE_OVERLAY + 2);
-
+        //_sectorLevel->GetNode()->setDirection(0,0,1);
+        sceneNode->addChild(rectNode);
+        std::vector<Vector3> pointList;
+        pointList.push_back(Vector3(-35, 25, 0));
+        pointList.push_back(Vector3(-35, -25, 0));
+        pointList.push_back(Vector3(35, -25, 0));
+        pointList.push_back(Vector3(35, 25, 0));
+        _levelEffect = new RectDrawable(_sectorLevel, "LevelEffectMaterial", pointList);
+        _levelEffect->SetRenderingQueue(Ogre::RENDER_QUEUE_OVERLAY + 2);
+        rectNode->setScale(4, 4, 4);
 
         sceneNode->setPosition(Ogre::Vector3(0, 0, 0));
-
-        _explosionEffect[0] = nullptr;
-
     }
 
 
@@ -61,26 +55,12 @@ namespace CoreEngine
             return GameState::Level;
         }
 
-        if (_explosionEffect[0] != nullptr)
-        {
-            if (_explosionEffect[0]->IsFinished())
-            {
-                InitExplosions(Vector3(-40, 30, 50));
-            }
-        }
+        _alpha += time * 1;
+        while (_alpha > 1.0f)
+            _alpha -= 1.0f;
 
-        Ogre::Vector3 pos = _sectorShip->GetNode()->getPosition();
-        pos = pos + Ogre::Vector3(-50.0f, -30.0f, 0) * time;
-        if (pos.x < -100)
-            pos = Ogre::Vector3(100, -5, 50);
-
-        _sectorShip->GetNode()->setPosition(pos);
-
-
-
-
-        for (auto i = 0; i < 4; i++)
-            _explosionEffect[i]->Update(time);
+        auto material = Ogre::MaterialManager::getSingleton().getByName("LevelEffectMaterial").get();
+        material->getTechnique(0)->getPass(0)->getFragmentProgramParameters()->setNamedConstant("color", Ogre::ColourValue(1, 1, 1, _alpha));
 
         return GameState::Storyboard;
     }
@@ -110,7 +90,6 @@ namespace CoreEngine
             _document->GetControlByName("panel")->GetPos(x, y);
             _sector->GetNode()->setPosition(Ogre::Vector3((float)x * aspect,0,0));
             SetLightAndCamera();
-            //_sectorShip->GetNode()->setPosition(Ogre::Vector3(_shift, 3, 0));
         }
 
     }
@@ -156,14 +135,14 @@ namespace CoreEngine
 
     void StoryboardStateProcessor::Hide()
     {
-        _sectorShip->GetNode()->setVisible(false);
+        _sectorLevel->GetNode()->setVisible(false);
         _document->Hide();
         RenderProcessor::Instance()->GetCamera()->SetPerspective();
     }
 
     void StoryboardStateProcessor::Show()
     {
-        _sectorShip->GetNode()->setVisible(true);
+        _sectorLevel->GetNode()->setVisible(true);
         _document->Show();
 
         SetLightAndCamera();
@@ -178,9 +157,7 @@ namespace CoreEngine
             stream.str("");
             stream << Scores::Instance()->GetBestStars(i + 1 + LevelManager::Instance()->GetWorld() * 20);
             control->SetCustomAttribute("stars", stream.str());
-        }*/
-
-        InitExplosions(Vector3(-40, 30, 50));
+        }*/;
     }
 
     void StoryboardStateProcessor::ProcessEvent(Control* control, IEventHandler::EventType type, int x, int y)
@@ -219,26 +196,6 @@ namespace CoreEngine
         auto light = RenderProcessor::Instance()->GetLight(0);
         pos.y += 1;
         light->SetPosition(pos);
-    }
-
-    void StoryboardStateProcessor::InitExplosions(Vector3 pos)
-    {
-        auto sceneManager = RenderProcessor::Instance()->GetSceneManager();
-        auto sceneNode = _sector->GetNode();
-        for (auto i = 0; i < 4; i++)
-        {
-            auto sceneNodeChild = sceneManager->createSceneNode();
-            sceneNodeChild->setPosition(VectorToOgre(pos));
-            sceneNodeChild->setDirection(0, 1, 0);
-            sceneNodeChild->setScale(10, 10, 10);
-            sceneNode->addChild(sceneNodeChild);
-            std::stringstream str;
-            str << "StoryBlast" << (i + 1) << "_%d";
-            std::string templateName = str.str();
-            str.str("");
-            str << "Blast" << (i + 1);
-            _explosionEffect[i] = new ParticleSystem(sceneNodeChild, templateName, str.str(), 2, 10 - i, true);
-        }
     }
 
 

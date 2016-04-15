@@ -43,3 +43,9 @@ void RectDrawable::SetVisible(bool value)
 {
 	_manualObject->setVisible(value);
 }
+
+void RectDrawable::SetRenderingQueue(unsigned int renderingQueue)
+{
+	_manualObject->setRenderQueueGroup(renderingQueue);
+}
+

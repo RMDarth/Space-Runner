@@ -15,13 +15,12 @@ namespace CoreEngine
         ControlDocument * _document;
         int _changeState;
 
-        ModelDrawable* _modelShip;
-        ModelDrawable* _modelCruiser;
-        SceneSector* _sectorShip;
-        SceneSector* _sectorCruiser;
+        SceneSector* _sectorLevel;
 
         SceneSector* _sector;
-        ParticleSystem * _explosionEffect[4];
+        RectDrawable * _levelEffect;
+
+        float _alpha = 0;
 
         bool _moving;
 
@@ -45,6 +44,5 @@ namespace CoreEngine
 
     private:
         void SetLightAndCamera();
-        void InitExplosions(Vector3 pos);
     };
 }

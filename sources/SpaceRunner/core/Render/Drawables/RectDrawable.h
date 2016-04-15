@@ -14,6 +14,7 @@ public:
 	RectDrawable(SceneSector * sector, std::string material, std::vector<Vector3> pointlist);
 	virtual ~RectDrawable();
 
+	void SetRenderingQueue(unsigned int renderingQueue);
 	void SetMaterial(std::string name);
 
 	virtual void Update(float deltaTime);
