@@ -14,6 +14,7 @@ namespace CoreEngine
     {
         ControlDocument * _document;
         int _changeState;
+        float _totalTime;
 
         ModelDrawable* _modelShip;
         ModelDrawable* _modelCruiser;
@@ -24,8 +25,11 @@ namespace CoreEngine
         ParticleSystem * _explosionEffect[4];
 
         Ogre::TexturePtr _rttTexture;
+        Ogre::TexturePtr _spriteSheet;
 
-        bool _moving;
+        bool _renderSpritesheet;
+        float _renderStarted;
+        int _currentFrame;
 
     public:
         StoryboardStateProcessor();
