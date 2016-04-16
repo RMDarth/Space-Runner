@@ -6,7 +6,7 @@
 
 #define RENDER_FRAMES_WIDTH 8
 #define RENDER_FRAMES_HEIGHT 5
-#define RENDER_TIME 2.0
+#define RENDER_TIME 2.0f
 
 namespace CoreEngine
 {
@@ -26,29 +26,92 @@ namespace CoreEngine
         _sector = new SceneSector(sceneNode);
         sceneNode->setScale(3.0f,3.0f, 3.0f);
 
-        auto shipNode = sceneManager->createSceneNode();
-        sceneNode->addChild(shipNode);
-        _sectorShip = new SceneSector(shipNode);
-        _modelShip = new ModelDrawable(_sectorShip, "ship.mesh");
-        _modelShip->SetScale(100);
-        _sectorShip->GetNode()->setDirection(-1.7f, 1.3f, -0.8f);
-        _modelShip->SetRenderingQueue(-Ogre::RENDER_QUEUE_MAIN + Ogre::RENDER_QUEUE_OVERLAY + 2);
-        _sectorShip->GetNode()->setPosition(Ogre::Vector3(100, -5, 50));
+        // Adding mines
+        _minePos[0] = { 100, -20, 150};
+        _minePos[1] = {70, 100, 180};
+        for (auto i = 0; i < 2; i++)
+        {
+            auto mineNode = sceneManager->createSceneNode();
+            sceneNode->addChild(mineNode);
+            _sectorMine[i] = new SceneSector(mineNode);
+            _modelMine[i] = new ModelDrawable(_sectorMine[i], "Mine.mesh");
+            _modelMine[i]->SetScale(1100);
+            _sectorMine[i]->GetNode()->setDirection(-1.0f, 0.9f, -0.8f);
+            _modelMine[i]->SetRenderingQueue(-Ogre::RENDER_QUEUE_MAIN + Ogre::RENDER_QUEUE_OVERLAY + 2);
+            _explosionPos[i] = _minePos[i] +  Ogre::Vector3(-50.0f, -20.0f, 0) * (i+1) * 2.0f;
+            _sectorMine[i]->GetNode()->setPosition(_minePos[i] +  Ogre::Vector3(-50.0f, -20.0f, 0) * (i+1) * 2.0f);
+        }
 
+        // Adding ships
+        _shipPos[0] = { 150, -15, 150};
+        _shipPos[1] = {130, 100, 180};
+        for (auto i = 0; i < 2; i++)
+        {
+            auto shipNode = sceneManager->createSceneNode();
+            sceneNode->addChild(shipNode);
+            _sectorShip[i] = new SceneSector(shipNode);
+            _modelShip[i] = new ModelDrawable(_sectorShip[i], "ship.mesh");
+            _modelShip[i]->SetScale(100);
+            _sectorShip[i]->GetNode()->setDirection(-1.0f, 0.9f, -0.8f);
+            _modelShip[i]->SetRenderingQueue(-Ogre::RENDER_QUEUE_MAIN + Ogre::RENDER_QUEUE_OVERLAY + 2);
+            _sectorShip[i]->GetNode()->setPosition(_shipPos[i] +  Ogre::Vector3(-50.0f, -20.0f, 0) * i * 3.0f);
+        }
+
+        // Adding blaster shots
+        for (auto i = 0; i < 2; i++)
+        {
+            for (auto r = 0; r < 4; r++)
+            {
+                auto blastNode = sceneManager->createSceneNode();
+                //sceneNode->addChild(blastNode);
+                _sectorShip[i]->GetNode()->addChild(blastNode);
+                _sectorBlaster[i*4 + r] = new SceneSector(blastNode);
+
+                std::vector<Vector3> pointList;
+                pointList.push_back(Vector3(0.4f, 0.0, 0.1f));
+                pointList.push_back(Vector3(-0.4f, 0.0, 0.1f));
+                pointList.push_back(Vector3(-0.4f, 0.0,  -0.1f));
+                pointList.push_back(Vector3(0.4f, 0.0, -0.1f));
+                float sign = r % 2 ? -1.0f : 1.0f;
+                float step = r < 2 ? -0.8f : 0.0f;
+                _blasterPos[i * 4 + r] = Ogre::Vector3(step, 0, -0.1f * sign);
+                blastNode->setPosition(_blasterPos[i * 4 + r]);
+                _blaster[i*4 + r] = new RectDrawable(_sectorBlaster[i*4 + r], "BlasterShotMaterial", pointList);
+                _blaster[i*4 + r]->SetPriority(Ogre::RENDER_QUEUE_OVERLAY + 1);
+            }
+        }
+
+        // Adding cruiser
         auto cruiserNode = sceneManager->createSceneNode();
         sceneNode->addChild(cruiserNode);
         _sectorCruiser = new SceneSector(cruiserNode);
         _modelCruiser = new ModelDrawable(_sectorCruiser, "Cruiser.mesh");
         _modelCruiser->SetScale(30);
-        _sectorCruiser->GetNode()->setDirection(2.8f, 6.0f, 5.4f);
+        _sectorCruiser->GetNode()->setDirection(2.1f, 3.6f, 2.7f);
+        _sectorCruiser->GetNode()->setPosition(0,0,100);
         _modelCruiser->SetRenderingQueue(-Ogre::RENDER_QUEUE_MAIN + Ogre::RENDER_QUEUE_OVERLAY + 2);
+
+        // Adding circle
+        auto circleNode = sceneManager->createSceneNode();
+        sceneNode->addChild(circleNode);
+        _sectorCircle = new SceneSector(circleNode);
+        std::vector<Vector3> pointList;
+        pointList.push_back(Vector3(-250.0f, 250, 0));
+        pointList.push_back(Vector3(250.0f, 250, 0));
+        pointList.push_back(Vector3(250.0f, -250,  0));
+        pointList.push_back(Vector3(-250.0f, -250, 0));
+        _sectorCircle->GetNode()->setPosition(0, -40, 0);
+        _sectorCircle->GetNode()->setDirection(0.0f, 0.2f, 0.1f);
+        _circle = new RectDrawable(_sectorCircle, "SelectionCircleMaterial", pointList);
+        _circle->SetPriority(Ogre::RENDER_QUEUE_OVERLAY + 2);
 
 
         sceneNode->setPosition(Ogre::Vector3(0, 0, 0));
+        //_explosionEffect[0][0] = nullptr;
+        //_explosionEffect[1][0] = nullptr;
 
-        _explosionEffect[0] = nullptr;
 
-        // create spritesheet tex
+        // Create texture to render
         int left, top, width, height;
         RenderProcessor::Instance()->GetViewport()->getActualDimensions(left, top, width, height);
 
@@ -69,6 +132,7 @@ namespace CoreEngine
         renderTexture->getViewport(0)->setSkiesEnabled(false);
         renderTexture->getViewport(0)->setOverlaysEnabled(false);
 
+        // Creating spritesheet
         _spriteSheet = Ogre::TextureManager::getSingleton().createManual(
                 "DynamicTexture", // name
                 Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
@@ -76,8 +140,7 @@ namespace CoreEngine
                 RENDER_FRAMES_WIDTH * width, RENDER_FRAMES_HEIGHT * height,         // width & height
                 0,                // number of mipmaps
                 Ogre::PF_BYTE_BGRA,     // pixel format
-                Ogre::TU_DEFAULT);      // usage; should be TU_DYNAMIC_WRITE_ONLY_DISCARDABLE for
-        // textures updated very often (e.g. each frame)
+                Ogre::TU_DEFAULT);
 
         _renderSpritesheet = false;
         _totalTime = 0;
@@ -89,6 +152,7 @@ namespace CoreEngine
         delete _document;
     }
 
+    // save texture to disk
     void SaveImage(Ogre::TexturePtr TextureToSave, std::string filename)
     {
         Ogre::HardwarePixelBufferSharedPtr readbuffer;
@@ -116,24 +180,53 @@ namespace CoreEngine
             return GameState::Level;
         }
 
-        if (_explosionEffect[0] != nullptr)
+        // Update explosions and mines
+        for (auto i = 0; i < 2; i++)
         {
-            if (_explosionEffect[0]->IsFinished())
+            if (_explosionEffect[i][0] != nullptr)
             {
-                InitExplosions(Vector3(-40, 30, 50));
+                if (_explosionEffect[i][0]->IsFinished())
+                {
+                    InitExplosions(VectorFromOgre(_explosionPos[i]), i, 0);
+                    _sectorMine[i]->GetNode()->setVisible(false);
+                }
             }
+            if (_explosionEffect[i][0]->getRemainingTime() < 0.5f)
+            {
+                _sectorMine[i]->GetNode()->setVisible(true);
+            }
+            for (auto r = 0; r < 4; r++)
+                _explosionEffect[i][r]->Update(time);
         }
 
-        Ogre::Vector3 pos = _sectorShip->GetNode()->getPosition();
-        pos = pos + Ogre::Vector3(-50.0f, -30.0f, 0) * time;
-        if (pos.x < -100)
-            pos = Ogre::Vector3(100, -5, 50);
 
-        _sectorShip->GetNode()->setPosition(pos);
 
-        for (auto i = 0; i < 4; i++)
-            _explosionEffect[i]->Update(time);
+        // Update ships
+        for (auto i = 0; i < 2; i++)
+        {
+            Ogre::Vector3 pos = _sectorShip[i]->GetNode()->getPosition();
+            pos = pos + Ogre::Vector3(-70.0f, -20.0f, 0) * time * 2;
+            if (pos.x < _shipPos[i].x - 280)
+            {
+                for (auto r = 0;r < 4; r++)
+                    _sectorBlaster[i*4 + r]->GetNode()->setPosition(_blasterPos[i*4 + r]);
+                pos = _shipPos[i];
+            }
+            _sectorShip[i]->GetNode()->setPosition(pos);
+        }
 
+        // Update shots
+        for (auto i = 0; i < 8; i++)
+        {
+            Ogre::Vector3 pos = _sectorBlaster[i]->GetNode()->getPosition();
+            pos = pos + Ogre::Vector3(-0.5f, 0, 0) * time * 2;
+            /*if (pos.x < -1.3f - 2.0f)
+                pos.x = 0;*/
+            _sectorBlaster[i]->GetNode()->setPosition(pos);
+        }
+
+        // Update circle
+        _sectorCircle->GetNode()->rotate(Ogre::Quaternion(Ogre::Degree(time*45), Ogre::Vector3::UNIT_Z));
 
         // rendering spritesheet
         if (_renderSpritesheet)
@@ -207,9 +300,9 @@ namespace CoreEngine
             _renderStarted = _totalTime;
         }
 
-       /* static float x = 0;
-        static float y = 0;
-        static float z = 0;
+        /*static float x = -1.7f;
+        static float y = 1.3f;
+        static float z = -0.8f;
         if (key == OIS::KC_RIGHT)
         {
             x += 0.1f;
@@ -234,21 +327,21 @@ namespace CoreEngine
         {
             z -= 0.1f;
         }
-        _sectorShip->GetNode()->resetOrientation();
-        _sectorShip->GetNode()->setDirection(x, y, z);*/
+        _sectorShip[0]->GetNode()->resetOrientation();
+        _sectorShip[0]->GetNode()->setDirection(x, y, z);*/
     }
 
 
     void StoryboardStateProcessor::Hide()
     {
-        _sectorShip->GetNode()->setVisible(false);
+        _sector->GetNode()->setVisible(false);
         _document->Hide();
         RenderProcessor::Instance()->GetCamera()->SetPerspective();
     }
 
     void StoryboardStateProcessor::Show()
     {
-        _sectorShip->GetNode()->setVisible(true);
+        _sector->GetNode()->setVisible(true);
         _document->Show();
 
         SetLightAndCamera();
@@ -265,7 +358,8 @@ namespace CoreEngine
             control->SetCustomAttribute("stars", stream.str());
         }*/
 
-        InitExplosions(Vector3(-40, 30, 50));
+        InitExplosions(VectorFromOgre(_minePos[0]), 0, 0.0f);
+        InitExplosions(VectorFromOgre(_minePos[1]), 1, 0.5f);
     }
 
     void StoryboardStateProcessor::ProcessEvent(Control* control, IEventHandler::EventType type, int x, int y)
@@ -296,17 +390,18 @@ namespace CoreEngine
         Vector3 pos = Vector3(
                 0,
                 0,
-                300);
+                1800);
         camera->SetPosition(pos);
         camera->SetTarget(Vector3(0, 0, 0));
 
 
         auto light = RenderProcessor::Instance()->GetLight(0);
         pos.y += 1;
+        pos.z += 500;
         light->SetPosition(pos);
     }
 
-    void StoryboardStateProcessor::InitExplosions(Vector3 pos)
+    void StoryboardStateProcessor::InitExplosions(Vector3 pos, int num, float time)
     {
         auto sceneManager = RenderProcessor::Instance()->GetSceneManager();
         auto sceneNode = _sector->GetNode();
@@ -322,7 +417,8 @@ namespace CoreEngine
             std::string templateName = str.str();
             str.str("");
             str << "Blast" << (i + 1);
-            _explosionEffect[i] = new ParticleSystem(sceneNodeChild, templateName, str.str(), 2, 10 - i, true);
+            _explosionEffect[num][i] = new ParticleSystem(sceneNodeChild, templateName, str.str(), 2, 10 - i, true);
+            _explosionEffect[num][i]->FastForward(time);
         }
     }
 

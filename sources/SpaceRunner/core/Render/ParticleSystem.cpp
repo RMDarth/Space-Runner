@@ -40,5 +40,12 @@ bool ParticleSystem::IsFinished()
 
 void ParticleSystem::FastForward(float time)
 {
+	_time-=time;
 	_system->fastForward(time);
 }
+
+float ParticleSystem::getRemainingTime()
+{
+	return _time;
+}
+

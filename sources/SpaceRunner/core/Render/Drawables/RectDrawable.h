@@ -15,6 +15,7 @@ public:
 	virtual ~RectDrawable();
 
 	void SetMaterial(std::string name);
+	void SetPriority(unsigned int priority);
 
 	virtual void Update(float deltaTime);
 	virtual void SetVisible(bool value);

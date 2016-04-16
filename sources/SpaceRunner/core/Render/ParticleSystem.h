@@ -16,5 +16,7 @@ public:
 	void Update(float deltaTime);
 	bool IsFinished();
 	void FastForward(float time);
+
+	float getRemainingTime();
 };
 

@@ -43,3 +43,9 @@ void RectDrawable::SetVisible(bool value)
 {
 	_manualObject->setVisible(value);
 }
+
+void RectDrawable::SetPriority(unsigned int priority)
+{
+	_manualObject->setRenderQueueGroup(priority);
+}
+
