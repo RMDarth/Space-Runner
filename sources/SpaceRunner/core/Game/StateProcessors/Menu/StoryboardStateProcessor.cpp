@@ -4,7 +4,7 @@
 #include "Game/StateProcessors/Level/LevelManager.h"
 #include "Game/Scores.h"
 
-#define RENDER_FRAMES_WIDTH 8
+#define RENDER_FRAMES_WIDTH 4
 #define RENDER_FRAMES_HEIGHT 5
 #define RENDER_TIME 2.0f
 
@@ -55,6 +55,27 @@ namespace CoreEngine
             _sectorShip[i]->GetNode()->setDirection(-1.0f, 0.9f, -0.8f);
             _modelShip[i]->SetRenderingQueue(-Ogre::RENDER_QUEUE_MAIN + Ogre::RENDER_QUEUE_OVERLAY + 2);
             _sectorShip[i]->GetNode()->setPosition(_shipPos[i] +  Ogre::Vector3(-50.0f, -20.0f, 0) * i * 3.0f);
+
+            // Engine
+            auto sceneNodeChild = sceneManager->createSceneNode();
+            sceneNodeChild->setPosition(0.25f, 0.03f, 0.12f);
+            shipNode->addChild(sceneNodeChild);
+
+            std::stringstream ss;
+            ss << "EngineFire_board" << i;
+            _engineEffect[0] = sceneManager->createParticleSystem(ss.str(), "EngineBig");
+            _engineEffect[0]->setRenderQueueGroup(Ogre::RENDER_QUEUE_OVERLAY + 2);
+            sceneNodeChild->attachObject(_engineEffect[0]);
+
+            sceneNodeChild = sceneManager->createSceneNode();
+            sceneNodeChild->setPosition(0.25f, 0.03f, -0.12f);
+            shipNode->addChild(sceneNodeChild);
+
+            ss.str("");
+            ss << "EngineFire2_board" << i;
+            _engineEffect[1] = sceneManager->createParticleSystem(ss.str(), "EngineBig");
+            _engineEffect[1]->setRenderQueueGroup(Ogre::RENDER_QUEUE_OVERLAY + 2);
+            sceneNodeChild->attachObject(_engineEffect[1]);
         }
 
         // Adding blaster shots
@@ -90,6 +111,23 @@ namespace CoreEngine
         _sectorCruiser->GetNode()->setDirection(2.1f, 3.6f, 2.7f);
         _sectorCruiser->GetNode()->setPosition(0,0,100);
         _modelCruiser->SetRenderingQueue(-Ogre::RENDER_QUEUE_MAIN + Ogre::RENDER_QUEUE_OVERLAY + 2);
+
+        // Adding turret
+        auto turretNode = sceneManager->createSceneNode();
+        cruiserNode->addChild(turretNode);
+        _sectorTurret = new SceneSector(turretNode);
+        _modelTurret = new ModelDrawable(_sectorTurret, "CruiserTurret.mesh");
+        _modelTurret->SetScale(3);
+        _sectorTurret->GetNode()->setPosition(0,0,-0.7f);
+        _modelTurret->SetRenderingQueue(-Ogre::RENDER_QUEUE_MAIN + Ogre::RENDER_QUEUE_OVERLAY + 2);
+
+        // Adding cruiser engine
+        auto sceneNodeCruiserEngine = sceneManager->createSceneNode();
+        sceneNodeCruiserEngine->setPosition(0, -3.8f, 0);
+        cruiserNode->addChild(sceneNodeCruiserEngine);
+        _engineEffect[2] = sceneManager->createParticleSystem("CruiserEngine_storyboard", "EngineRightBig");
+        _engineEffect[2]->setRenderQueueGroup(Ogre::RENDER_QUEUE_OVERLAY + 2);
+        sceneNodeCruiserEngine->attachObject(_engineEffect[2]);
 
         // Adding circle
         auto circleNode = sceneManager->createSceneNode();

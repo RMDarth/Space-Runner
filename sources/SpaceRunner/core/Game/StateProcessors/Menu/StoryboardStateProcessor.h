@@ -18,6 +18,7 @@ namespace CoreEngine
 
         ModelDrawable* _modelShip[2];
         ModelDrawable* _modelCruiser;
+        ModelDrawable* _modelTurret;
         ModelDrawable* _modelMine[2];
         RectDrawable* _blaster[8];
 
@@ -30,12 +31,14 @@ namespace CoreEngine
 
         SceneSector* _sectorShip[2];
         SceneSector* _sectorCruiser;
+        SceneSector* _sectorTurret;
         SceneSector* _sectorMine[2];
         SceneSector* _sectorBlaster[8];
         SceneSector* _sectorCircle;
 
         SceneSector* _sector;
         ParticleSystem * _explosionEffect[2][4];
+        Ogre::ParticleSystem * _engineEffect[3];
 
         Ogre::TexturePtr _rttTexture;
         Ogre::TexturePtr _spriteSheet;
