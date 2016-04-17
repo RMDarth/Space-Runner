@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.4)
+cmake_minimum_required(VERSION 2.8)
 project(linux)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
@@ -61,8 +61,8 @@ set(SOURCE_FILES
     core/Game/Config.h
     core/Game/StateProcessors/Menu/CreditsStateProcessor.cpp
     core/Game/StateProcessors/Menu/CreditsStateProcessor.h
-        core/Game/StateProcessors/Race/Space/Mine.cpp
-        core/Game/StateProcessors/Race/Space/Mine.h
+    core/Game/StateProcessors/Race/Space/Mine.cpp
+    core/Game/StateProcessors/Race/Space/Mine.h
     core/Game/StateProcessors/Race/Space/EnergyOrb.cpp
     core/Game/StateProcessors/Race/Space/EnergyOrb.h
     core/Game/StateProcessors/Race/Space/Explosion.cpp
@@ -161,7 +161,9 @@ set(SOURCE_FILES
     core/Game/StateProcessors/Menu/StoryboardStateProcessor.cpp
     core/Game/StateProcessors/Menu/StoryboardStateProcessor.h
     core/ControlLibrary/SlidePanelControl.cpp
-    core/ControlLibrary/SlidePanelControl.h core/Game/StateProcessors/Race/LevelFileManager.cpp core/Game/StateProcessors/Race/LevelFileManager.h)
+    core/ControlLibrary/SlidePanelControl.h
+    core/Game/StateProcessors/Race/LevelFileManager.cpp
+    core/Game/StateProcessors/Race/LevelFileManager.h)
 
 add_executable(spacerush ${SOURCE_FILES})
 
@@ -175,3 +177,10 @@ include_directories(${Boost_INCLUDE_DIRS})
 target_link_libraries(spacerush ${Boost_LIBRARIES})
 
 target_link_libraries(spacerush Cg OIS pthread GL GLU freeimage openal audio zzip Xft dl)
+
+# add target that will increment build number
+add_custom_target( increment ALL
+        "${CMAKE_COMMAND}" -E chdir "${CMAKE_CURRENT_SOURCE_DIR}" "${CMAKE_COMMAND}" -P "increment.cmake"
+        )
+
+add_dependencies( spacerush increment )

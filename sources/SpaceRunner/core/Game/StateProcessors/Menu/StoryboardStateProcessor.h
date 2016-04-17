@@ -15,14 +15,12 @@ namespace CoreEngine
         ControlDocument * _document;
         int _changeState;
 
-        SceneSector* _sectorLevel;
-
         SceneSector* _sector;
-        RectDrawable * _levelEffect;
 
         float _alpha = 0;
-
         bool _moving;
+        int _moveShift;
+        bool _bigMove;
 
     public:
         StoryboardStateProcessor();

@@ -21,10 +21,7 @@ namespace CoreEngine
 
         _sector = new SceneSector(sceneNode);
 
-        auto rectNode = sceneManager->createSceneNode();
-        _sectorLevel = new SceneSector(rectNode);
-        _sectorLevel->GetNode()->setPosition(0,0, 20);
-
+        /*
         //_sectorLevel->GetNode()->setDirection(0,0,1);
         sceneNode->addChild(rectNode);
         std::vector<Vector3> pointList;
@@ -34,8 +31,15 @@ namespace CoreEngine
         pointList.push_back(Vector3(35, 25, 0));
         _levelEffect = new RectDrawable(_sectorLevel, "LevelEffectMaterial", pointList);
         _levelEffect->SetRenderingQueue(Ogre::RENDER_QUEUE_OVERLAY + 2);
-        rectNode->setScale(5, 5, 5);
+        rectNode->setScale(5, 5, 5);*/
 
+
+        for (auto i = 0; i < 10; i++)
+        {
+            std::stringstream ss;
+            ss << (i+1);
+            _document->GetControlByName(ss.str())->SetDefaultMaterial("LevelEffectMaterial");
+        }
         sceneNode->setPosition(Ogre::Vector3(0, 0, 0));
     }
 
@@ -69,12 +73,20 @@ namespace CoreEngine
     {
         _document->OnMouseDown(x, y);
         _moving = true;
+        _moveShift = x;
+        _bigMove = false;
     }
 
     void StoryboardStateProcessor::OnMouseUp(int x, int y)
     {
-        _document->OnMouseUp(x, y);
-        _moving = false;
+        if (_moving && _document->GetControlByName("panel")->OnMouseUp(x, y))
+        {
+            _moving  = false;
+            if (!_bigMove)
+                _document->OnMouseUp(x, y);
+        } else {
+            _document->OnMouseUp(x, y);
+        }
     }
 
     void StoryboardStateProcessor::OnMouseMove(int x, int y)
@@ -82,6 +94,9 @@ namespace CoreEngine
         int left, top, width, height;
         RenderProcessor::Instance()->GetViewport()->getActualDimensions(left, top, width, height);
         float aspect = (float) width / height;
+
+        if (abs(_moveShift - x) > width * 0.1)
+            _bigMove = true;
 
         _document->OnMouseMove(x, y, 0);
         if (_moving)
@@ -100,49 +115,19 @@ namespace CoreEngine
         {
             Game::Instance()->ChangeState(GameState::MainMenu);
         }
-
-       /* static float x = 0;
-        static float y = 0;
-        static float z = 0;
-        if (key == OIS::KC_RIGHT)
-        {
-            x += 0.1f;
-        }
-        if (key == OIS::KC_LEFT)
-        {
-            x -= 0.1f;
-        }
-        if (key == OIS::KC_UP)
-        {
-            y += 0.1f;
-        }
-        if (key == OIS::KC_DOWN)
-        {
-            y -= 0.1f;
-        }
-        if (key == OIS::KC_Z)
-        {
-            z += 0.1f;
-        }
-        if (key == OIS::KC_X)
-        {
-            z -= 0.1f;
-        }
-        _sectorShip->GetNode()->resetOrientation();
-        _sectorShip->GetNode()->setDirection(x, y, z);*/
     }
 
 
     void StoryboardStateProcessor::Hide()
     {
-        _sectorLevel->GetNode()->setVisible(false);
+        _sector->GetNode()->setVisible(false);
         _document->Hide();
         RenderProcessor::Instance()->GetCamera()->SetPerspective();
     }
 
     void StoryboardStateProcessor::Show()
     {
-        _sectorLevel->GetNode()->setVisible(true);
+        _sector->GetNode()->setVisible(true);
         _document->Show();
 
         SetLightAndCamera();

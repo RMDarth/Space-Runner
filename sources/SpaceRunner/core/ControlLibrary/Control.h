@@ -140,6 +140,7 @@ public:
 	virtual void AddChild(Control* control);
 	virtual std::shared_ptr<Control> GetChild(int id);
 	virtual int GetChildrenCount();
+	virtual void ParentMoved(int oldX, int oldY);
 
 private:
 	void Init();

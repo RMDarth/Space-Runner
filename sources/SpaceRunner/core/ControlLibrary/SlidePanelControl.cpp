@@ -1,5 +1,6 @@
 #include <RenderProcessor.h>
 #include "SlidePanelControl.h"
+#include <OgreOverlayContainer.h>
 
 SlidePanelControl::SlidePanelControl(SceneSector* sector, std::string name, float x, float y, float width, float height, Control * parent)
         : Control(sector, "Panel", name, x, y, width, height, "windows/untitled.png", parent)
@@ -21,8 +22,15 @@ bool SlidePanelControl::OnMouseMove(int x, int y, float deltaTime)
                 newX = _realWidth - _width;
             if (newX > _originalPos)
                 newX = _originalPos;
-            SetPos(newX, _y);
-            SetVisible(true);
+
+            auto oldX = _x;
+            _x = newX;
+            _container->setPosition((float)newX, (float)_y);
+
+            for (auto i = 0; i<_children.size(); i++)
+            {
+                _children[i]->ParentMoved(oldX, _y);
+            }
         }
         return true;
     }

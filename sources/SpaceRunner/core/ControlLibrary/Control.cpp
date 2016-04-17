@@ -66,6 +66,21 @@ Control::Control(SceneSector* sector, std::string type, std::string name, float 
 	SetRenderOrder(1);
 }
 
+void Control::ParentMoved(int oldX, int oldY)
+{
+	if (!_parent)
+		return;
+	int c_x, c_y;
+	_parent->GetPos(c_x, c_y);
+
+	auto shiftX = _x - oldX;
+	auto shiftY = _y - oldY;
+	_x = c_x + shiftX;
+	_y = c_y + shiftY;
+
+	_container->setPosition((float)_x, (float)_y);
+}
+
 Control::~Control()
 {
 	//delete overlay
@@ -284,6 +299,12 @@ void Control::SetCustomAttribute(std::string name, std::string value)
 	if (name == "pressedimage")
 	{
 		SetPushMaterial(value);
+	}
+	if (name == "singleimage" && value == "true")
+	{
+		_useHoverMaterial = false;
+		_usePushMaterial = false;
+		_useDisabledMaterial = false;
 	}
 	if (name == "image")
 	{
