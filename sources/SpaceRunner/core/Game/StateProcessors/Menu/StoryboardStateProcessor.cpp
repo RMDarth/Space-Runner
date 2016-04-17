@@ -34,7 +34,7 @@ namespace CoreEngine
         pointList.push_back(Vector3(35, 25, 0));
         _levelEffect = new RectDrawable(_sectorLevel, "LevelEffectMaterial", pointList);
         _levelEffect->SetRenderingQueue(Ogre::RENDER_QUEUE_OVERLAY + 2);
-        rectNode->setScale(4, 4, 4);
+        rectNode->setScale(5, 5, 5);
 
         sceneNode->setPosition(Ogre::Vector3(0, 0, 0));
     }
@@ -55,7 +55,7 @@ namespace CoreEngine
             return GameState::Level;
         }
 
-        _alpha += time * 1;
+        _alpha += time * 0.75;
         while (_alpha > 1.0f)
             _alpha -= 1.0f;
 

@@ -1,4 +1,5 @@
 #include <Game/StateProcessors/Race/PrefabManager.h>
+#include <Game/StateProcessors/Race/LevelFileManager.h>
 #include "Space.h"
 #include "SpaceDust.h"
 #include "Fence.h"
@@ -47,11 +48,19 @@ namespace CoreEngine
             _backgroundAsteroidList.push_back(asteroid);
         }
 
+        //GenerateLevel();
+
+        _currentLevel = unique_ptr<Level>(LevelFileManager::Instance()->LoadLevel(3));
+        //LevelFileManager::Instance()->SaveLevel(_currentLevel.get(), 2);
+    }
+
+    void Space::GenerateLevel()
+    {
         vector<ObstacleType> obstacleList;
         vector<PrefabInfo> prefabList;
         for (int i = 0; i < 50; i++)
         {
-            obstacleList.push_back(ObstacleType::Boss); continue;
+            //obstacleList.push_back(ObstacleType::Boss); continue;
             int type = rand() % 18;
             if (type < 2)
             {
@@ -71,7 +80,7 @@ namespace CoreEngine
             }
             else if (type < 10)
             {
-                int num = PrefabManager::Instance()->getPrefabList("normal").size();
+                int num = (int)PrefabManager::Instance()->getPrefabList("normal").size();
                 obstacleList.push_back(ObstacleType::Prefab);
                 PrefabInfo prefabInfo { "normal", rand() % num + 1 };
                 prefabList.push_back(std::move(prefabInfo));
@@ -81,6 +90,8 @@ namespace CoreEngine
                 obstacleList.push_back(ObstacleType::AsteroidsPack);
             }
         }
+        obstacleList.push_back(ObstacleType::Boss);
+
         _currentLevel = make_unique<Level>();
         _currentLevel->currentObstacle = 0;
         _currentLevel->currentPrefab = 0;
@@ -643,6 +654,7 @@ namespace CoreEngine
                 } else {
                     _boss->Destroy();
                     _explosionList.push_back(make_shared<Explosion>(_boss->getPos()));
+                    _currentObstacle.reset();
                 }
 
                 if (_bossCallback)

@@ -161,7 +161,7 @@ set(SOURCE_FILES
     core/Game/StateProcessors/Menu/StoryboardStateProcessor.cpp
     core/Game/StateProcessors/Menu/StoryboardStateProcessor.h
     core/ControlLibrary/SlidePanelControl.cpp
-    core/ControlLibrary/SlidePanelControl.h)
+    core/ControlLibrary/SlidePanelControl.h core/Game/StateProcessors/Race/LevelFileManager.cpp core/Game/StateProcessors/Race/LevelFileManager.h)
 
 add_executable(spacerush ${SOURCE_FILES})
 

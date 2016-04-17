@@ -29,6 +29,13 @@ namespace CoreEngine
         Last
     };
 
+    enum class LevelDifficulty
+    {
+        Easy = 0,
+        Normal = 1,
+        Hard = 2
+    };
+
     struct Obstacle
     {
         Obstacle(ObstacleType type, float timeLength, float timeStarted, int energyCount)
@@ -55,6 +62,7 @@ namespace CoreEngine
         int currentObstacle;
         std::vector<PrefabInfo> prefabList;
         int currentPrefab;
+        LevelDifficulty difficulty;
         int skyboxId;
         int energyToComplete;
         // int bossId;

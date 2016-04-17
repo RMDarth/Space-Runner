@@ -73,6 +73,7 @@ namespace CoreEngine
 		Level* GetCurrentLevel();
 	private:
 		void AddObstacles(float time);
+		void GenerateLevel();
 		
 		void ProcessAsteroids(float time);
 		void ProcessMine(float time);
