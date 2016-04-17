@@ -1,0 +1,87 @@
+material "MissileMaterial"
+{ 
+    technique
+    {
+        pass
+        {
+            illumination_stage per_light
+
+            vertex_program_ref simpletex_vs
+            {
+            }
+ 
+            fragment_program_ref simpletex_ps
+            {
+            }
+
+            texture_unit diffuseMap
+            {
+                texture textures/missile_diffuse.png
+                tex_address_mode wrap
+                colour_op modulate
+            }
+        }
+    }
+}
+
+material MissileSmokeMaterial
+{
+	technique
+	{
+		pass
+		{
+			illumination_stage per_light
+			cull_hardware none
+			scene_blend alpha_blend
+			transparent_sorting on
+			alpha_to_coverage off
+			depth_write off
+      
+			scene_blend_op add
+			
+			vertex_program_ref simpletex_vs 
+			{
+			}
+
+			fragment_program_ref simpletex_ps 
+			{
+			}
+
+			texture_unit diffuseMap
+			{
+				texture textures/missile_smoke.png
+			}
+		}
+	}
+}
+
+material MissileFireMaterial
+{
+	technique
+	{
+		pass
+		{
+			illumination_stage per_light
+			cull_hardware none
+			scene_blend alpha_blend
+			transparent_sorting on
+			alpha_to_coverage off
+			depth_write off
+      
+			scene_blend_op add
+			
+			vertex_program_ref simpletex_vs 
+			{
+			}
+
+			fragment_program_ref simpletex_ps 
+			{
+			}
+
+			texture_unit diffuseMap
+			{
+				texture textures/missile_fire.png
+			}
+		}
+	}
+}

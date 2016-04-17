@@ -1,0 +1,27 @@
+struct VIn
+{
+    float4 p    : POSITION;
+    float2 uv   : TEXCOORD0;
+};
+ 
+void appear_vs(VIn IN,
+    uniform float4x4 wvpMat,
+    uniform float2 appearRange,
+    out float4 oPos : POSITION,
+    out float2 oUV : TEXCOORD0,
+    out float alpha)
+{
+    oPos = mul(wvpMat, IN.p);
+    oUV = IN.uv;
+    alpha = smoothstep(appearRange.x, appearRange.y, oPos.z);
+}
+ 
+float4 appear_ps(
+    in float2 uv : TEXCOORD0,
+    in float alpha,
+    uniform float4 color : COLOR0,
+    uniform sampler2D diffuseMap): COLOR0
+{
+    float4 diff = tex2D(diffuseMap, uv);
+    return float4(diff.rgb, diff.a*(1-alpha)) * color;
+}

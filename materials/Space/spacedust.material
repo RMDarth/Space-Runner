@@ -16,11 +16,12 @@ material SpaceDust
 			alpha_to_coverage off
 			depth_write off
 
-			vertex_program_ref simpletex_vs 
+			vertex_program_ref appear_vs 
 			{
+				param_named appearRange float2 40 100
 			}
 
-			fragment_program_ref simpletex_ps
+			fragment_program_ref appear_ps
 			{
 			}
 

@@ -13,17 +13,18 @@ material FenceMaterial
       
 			scene_blend_op add
 			
-			vertex_program_ref simpletex_vs 
+			vertex_program_ref endlessLine_vs
 			{
 			}
 
-			fragment_program_ref simpletex_ps 
+			fragment_program_ref endlessLine_ps 
 			{
+				param_named tiles float 20
 			}
 
 			texture_unit diffuseMap
 			{
-				texture fence.png
+				texture beam2.png 2
 			}
 		}
 	}

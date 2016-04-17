@@ -1,0 +1,37 @@
+material "Cruiser"
+{ 
+    technique
+    {
+        pass
+        {
+            illumination_stage per_light
+
+            vertex_program_ref diffuse_vs
+            {
+            }
+ 
+            fragment_program_ref diffuse_ps
+            {
+            }
+
+            texture_unit diffuseMap
+            {
+                texture textures/cruiser_diffuse.png
+                tex_address_mode wrap
+                colour_op modulate
+            }
+            texture_unit specMap
+            {
+                texture textures/cruiser_specular.png
+                tex_address_mode wrap
+                colour_op modulate
+            }
+            texture_unit normalMap
+            {
+                texture textures/cruiser_normal.png
+                tex_address_mode wrap
+                colour_op modulate
+            }
+        }
+    }
+}

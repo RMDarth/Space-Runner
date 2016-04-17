@@ -1,0 +1,31 @@
+material MineMaterial
+{ 
+    technique
+    {
+        pass
+        {
+            illumination_stage per_light
+
+            vertex_program_ref diffuse_vs
+            {
+            }
+ 
+            fragment_program_ref diffuse_ps
+            {
+            }
+
+            texture_unit diffuseMap
+            {
+                texture textures/Mine_diffuse.png
+            }
+            texture_unit specMap
+            {
+                texture textures/Mine_specular.png
+            }
+            texture_unit normalMap
+            {
+                texture textures/Mine_normal.png
+            }
+        }
+    }
+}

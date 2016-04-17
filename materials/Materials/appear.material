@@ -1,0 +1,94 @@
+vertex_program appear_vs_CG cg
+{
+    source appear.cg
+    profiles vs_1_1 arbvp1
+    entry_point appear_vs
+ 
+    default_params
+    {
+        param_named_auto wvpMat worldviewproj_matrix
+    }
+}
+
+fragment_program appear_ps_CG cg
+{
+    source appear.cg
+    profiles ps_2_x arbfp1
+    entry_point appear_ps
+
+    default_params
+    {
+        param_named color float4 1 1 1 1
+    }
+}
+
+vertex_program appear_vs_GLSLES glsles
+{
+    source appear.vert
+    profiles glsles
+ 
+    default_params
+    {
+        param_named_auto wvpMat worldviewproj_matrix 
+    }
+}
+
+fragment_program appear_ps_GLSLES glsles
+{
+    source appear.frag
+    profiles glsles
+ 
+    default_params
+    {
+    	param_named color float4 1 1 1 1
+        param_named diffuseMap int 0
+    }
+}
+
+vertex_program appear_vs unified
+{
+    delegate appear_vs_GLSLES
+    delegate appear_vs_CG
+}
+
+fragment_program appear_ps unified
+{
+    delegate appear_ps_GLSLES
+    delegate appear_ps_CG
+}
+
+material AppearDefaultMaterial
+{
+    technique
+    {
+        pass
+        {
+            ambient 1 1 1 1
+            diffuse 1 1 1 1
+            specular 0 0 0 0 25.5
+            emissive 0 0 0 1
+
+            illumination_stage per_light
+            cull_hardware none
+            scene_blend alpha_blend
+            transparent_sorting on
+            alpha_to_coverage off
+            depth_write off
+
+            vertex_program_ref appear_vs 
+            {
+            }
+
+            fragment_program_ref appear_ps
+            {
+            }
+
+            texture_unit diffuseMap
+            {
+                texture empty.png
+            }
+        }
+
+    }
+
+}

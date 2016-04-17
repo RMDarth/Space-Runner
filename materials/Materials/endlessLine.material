@@ -19,6 +19,7 @@ fragment_program endlessLine_ps_CG cg
     default_params
     {
         param_named color float4 0 0 0 0
+        param_named tiles float 1
     }
 }
 
@@ -42,6 +43,7 @@ fragment_program endlessLine_ps_GLSLES glsles
     {
         param_named diffuseMap int 0
         param_named color float4 0 0 0 0
+        param_named tiles float 1
     }
 }
 

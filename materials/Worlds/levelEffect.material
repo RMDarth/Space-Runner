@@ -1,0 +1,33 @@
+material LevelEffectMaterial
+{
+  technique
+  {
+    pass
+    {
+        illumination_stage per_light
+        cull_hardware none
+        scene_blend alpha_blend
+        transparent_sorting on
+        alpha_to_coverage off
+        depth_write off
+
+        scene_blend_op add
+
+        vertex_program_ref spritesheetUniform_vs
+        {
+        }
+ 
+        fragment_program_ref spritesheetUniform_ps 
+        {
+            param_named color float4 1 1 1 1
+            param_named width float 8
+            param_named height float 5
+        }
+
+        texture_unit diffuseMap
+        {
+            texture levelEffect.png
+        }
+    }
+  }
+}

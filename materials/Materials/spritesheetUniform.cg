@@ -20,7 +20,7 @@ float4 spritesheetUniform_ps(in float2 uv : TEXCOORD0,
     uniform sampler2D diffuseMap): COLOR0
 {
     float size = width * height; 
-    float index = (1 - color.a) * size;
+    float index = (color.a) * size;
     float y = floor(index / width);
     float x = floor(index - width * y);
     

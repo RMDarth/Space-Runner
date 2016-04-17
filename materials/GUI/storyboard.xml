@@ -1,0 +1,15 @@
+<document>	
+	<SlidePanel name="panel" x="0" y="0.00" realwidth="1" width="-3.2" height="1" image="tempbg.jpg">
+		<Button name="1"  x="0.05" y="0.15" width="-1.33" height="0.25" image="buttons/back.png" singleimage="true" />
+		<Button name="2"  x="0.14" y="0.55" width="-1.33" height="0.25" image="buttons/back.png" singleimage="true" />
+		<Button name="3"  x="0.23" y="0.15" width="-1.33" height="0.25" image="buttons/back.png" singleimage="true" />
+		<Button name="4"  x="0.32" y="0.55" width="-1.33" height="0.25" image="buttons/back.png" singleimage="true" />
+		<Button name="5"  x="0.41" y="0.15" width="-1.33" height="0.25" image="buttons/back.png" singleimage="true" />
+		<Button name="6"  x="0.50" y="0.55" width="-1.33" height="0.25" image="buttons/back.png" singleimage="true" />
+		<Button name="7"  x="0.59" y="0.15" width="-1.33" height="0.25" image="buttons/back.png" singleimage="true" />
+		<Button name="8"  x="0.68" y="0.55" width="-1.33" height="0.25" image="buttons/back.png" singleimage="true" />
+		<Button name="9"  x="0.77" y="0.15" width="-1.33" height="0.25" image="buttons/back.png" singleimage="true" />
+		<Button name="10"  x="0.86" y="0.55" width="-1.33" height="0.25" image="buttons/back.png" singleimage="true" />
+	</SlidePanel>
+	<Button name="back"  x="0.05" y="0.85" width="0.08" height="-1" image="buttons/back.png" hoverimage="buttons/back_hover.png" pressedimage="buttons/back_pressed.png" />
+</document>
