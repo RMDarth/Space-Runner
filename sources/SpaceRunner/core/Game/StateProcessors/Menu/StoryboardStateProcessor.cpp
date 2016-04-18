@@ -159,7 +159,7 @@ namespace CoreEngine
         else if (control->GetName() != "panel")
         {
             LevelManager::Instance()->SetIsPuzzle(true);
-            LevelManager::Instance()->SetLevelNum(LevelManager::Instance()->GetWorld() * 20 + stoi(control->GetName()));
+            LevelManager::Instance()->SetLevelNum(stoi(control->GetName()));
             LevelManager::Instance()->SetStarted(false);
             _changeState = 1;
             _document->Hide();

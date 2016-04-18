@@ -21,6 +21,7 @@ namespace CoreEngine
         {
             auto categoryName = file.ReadSubstring(' ');
             auto categoryPrefabsCount = file.ReadInt();
+            file.ReadSubstring();
 
             for (auto prefabId = 0; prefabId < categoryPrefabsCount; prefabId++)
             {

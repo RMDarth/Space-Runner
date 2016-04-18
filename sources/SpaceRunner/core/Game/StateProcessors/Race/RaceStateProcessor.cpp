@@ -161,7 +161,6 @@ namespace CoreEngine
         {
             _shootSound = unique_ptr<Sound>(soundSystem->CreateSound("Sound/LaserSound2.wav"));
             _impactSound = unique_ptr<Sound>(soundSystem->CreateSound("Sound/ImpactSound.wav"));
-            //_hitSound = shared_ptr<Sound>(soundSystem->CreateSound("Sound/HitSound.wav"));
             _collectSound = unique_ptr<Sound>(soundSystem->CreateSound("Sound/HitDestroySound.wav"));
             _bombSound = unique_ptr<Sound>(soundSystem->CreateSound("Sound/BombSound.wav"));
             _successSound = unique_ptr<Sound>(soundSystem->CreateSound("Sound/SuccessSound.wav"));
@@ -261,12 +260,6 @@ namespace CoreEngine
             UpdateTurn();
         }
 
-        // Engine fire strength
-        auto multiplier = _speed * 0.8f;
-        if (multiplier > 1.1f) multiplier = 1.1f;
-        if (multiplier < 0.8f) multiplier = 0.8f;
-        //_engineFire->getEmitter(0)->setParticleVelocity(3.5f * multiplier);
-
         _space->Update(time, _speed);
         _sector->GetNode()->setPosition(10, 0, _pos);
 
@@ -279,7 +272,7 @@ namespace CoreEngine
             if ((intersectedObject == SpaceObjectType::Barrier || intersectedObject == SpaceObjectType::Missile)
                  && _shield)
             {
-                // play sound of dodging?
+                // TODO: play sound of dodging?
             }
             else
             {
@@ -325,7 +318,8 @@ namespace CoreEngine
             LevelManager::Instance()->SetTime((int)_totalTime);
             return true;
         }
-        if (_score >= _space->GetCurrentLevel()->energyToComplete)
+        if (!LevelManager::Instance()->IsPuzzle()
+            && _score >= _space->GetCurrentLevel()->energyToComplete)
         {
             if (Config::Instance()->IsSoundEnabled())
                 _successSound->Play();
@@ -335,6 +329,18 @@ namespace CoreEngine
             LevelManager::Instance()->SetVictory(true);
             return true;
         }
+
+        if (LevelManager::Instance()->IsPuzzle()
+                && _space->GetCurrentLevel()->currentObstacle == (int)_space->GetCurrentLevel()->obstacleList.size() - 1)
+        {
+            if (Config::Instance()->IsSoundEnabled())
+                _successSound->Play();
+            LevelManager::Instance()->SetScore(_score);
+            LevelManager::Instance()->SetTime((int)_totalTime);
+            LevelManager::Instance()->SetVictory(true);
+            return true;
+        }
+
         return false;
     }
 
@@ -361,9 +367,55 @@ namespace CoreEngine
 
             stream.str("");
             //stream << (int)(fps);
-            stream << (int)(_lives);
+            stream << _lives;
             static auto fpsControl = _document->GetControlByName("FPS");
             fpsControl->SetText(stream.str());
+        }
+
+        if (LevelManager::Instance()->GetLevelNum() == 1 && LevelManager::Instance()->IsPuzzle())
+            UpdateHelp();
+    }
+
+    void RaceStateProcessor::UpdateHelp()
+    {
+        static auto helpControl = _document->GetControlByName("help");
+
+        helpControl->SetVisible(false);
+        if (_totalTime > 2.5 && _totalTime < 4.5)
+        {
+            helpControl->SetVisible(true);
+            helpControl->SetDefaultMaterial("arrowleft.png", true);
+        }
+        if (_totalTime > 6 && _totalTime < 7.5)
+        {
+            helpControl->SetVisible(true);
+            helpControl->SetDefaultMaterial("arrowright.png", true);
+        }
+        if (_totalTime > 9 && _totalTime < 11)
+        {
+            helpControl->SetVisible(true);
+            helpControl->SetDefaultMaterial("arrowup.png", true);
+        }
+        if (_totalTime > 13.5 && _totalTime < 15)
+        {
+            helpControl->SetVisible(true);
+            helpControl->SetDefaultMaterial("arrowdown.png", true);
+        }
+        if (_totalTime > 16.5 && _totalTime < 18)
+        {
+            helpControl->SetVisible(true);
+            helpControl->SetDefaultMaterial("arrowright.png", true);
+        }
+        if (_totalTime > 16.5 && _totalTime < 18)
+        {
+            helpControl->SetVisible(true);
+            helpControl->SetDefaultMaterial("arrowright.png", true);
+        }
+
+        if (_totalTime > 18.5 && _totalTime < 21.5)
+        {
+            helpControl->SetVisible(true);
+            helpControl->SetDefaultMaterial("energyhelp.png", true);
         }
     }
 
@@ -550,6 +602,8 @@ namespace CoreEngine
             _document->GetControlByName("FPS")->SetVisible(false);
         }
 
+        _document->GetControlByName("help")->SetVisible(false);
+
         _document->GetControlByName("bosslifepanel")->SetVisible(false);
         _document->GetControlByName("bosslifebar")->SetVisible(false);
     }
@@ -577,7 +631,7 @@ namespace CoreEngine
         static auto bossLifePanel = _document->GetControlByName("bosslifepanel");
         static auto bossLifeBar = _document->GetControlByName("bosslifebar");
 
-        if (lives == 0)
+        if (lives <= 0)
         {
             bossLifePanel->SetVisible(false);
             bossLifeBar->SetVisible(false);
@@ -599,6 +653,5 @@ namespace CoreEngine
             bossLifeBar->SetVisible(true);
         }
     }
-
 
 }

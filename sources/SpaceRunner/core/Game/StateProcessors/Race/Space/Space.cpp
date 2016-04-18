@@ -1,5 +1,6 @@
 #include <Game/StateProcessors/Race/PrefabManager.h>
 #include <Game/StateProcessors/Race/LevelFileManager.h>
+#include <Game/StateProcessors/Level/LevelManager.h>
 #include "Space.h"
 #include "SpaceDust.h"
 #include "Fence.h"
@@ -49,8 +50,13 @@ namespace CoreEngine
         }
 
         //GenerateLevel();
+        if (LevelManager::Instance()->IsPuzzle())
+        {
+            _currentLevel = unique_ptr<Level>(LevelFileManager::Instance()->LoadLevel(LevelManager::Instance()->GetLevelNum()));
+        } else {
+            GenerateLevel();
+        }
 
-        _currentLevel = unique_ptr<Level>(LevelFileManager::Instance()->LoadLevel(3));
         //LevelFileManager::Instance()->SaveLevel(_currentLevel.get(), 2);
     }
 

@@ -20,12 +20,12 @@ namespace CoreEngine
     enum class ObstacleType
     {
         AsteroidsPack = 0,
-        EnemyFighter,
-        EnemyCruiser,
-        EnergyOrb,
-        EnergyBarrier,
-        Prefab,
-        Boss,
+        EnemyFighter = 1,
+        EnemyCruiser = 2,
+        EnergyOrb = 3,
+        EnergyBarrier = 4,
+        Prefab = 5,
+        Boss = 6,
         Last
     };
 

@@ -120,5 +120,6 @@ namespace CoreEngine
 
 		void SetLightAndCamera(float deltaTime);
 		void UpdateHUD();
+		void UpdateHelp();
 	};
 }
