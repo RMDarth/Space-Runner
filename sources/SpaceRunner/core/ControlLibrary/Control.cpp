@@ -68,6 +68,9 @@ Control::Control(SceneSector* sector, std::string type, std::string name, float 
 
 void Control::ParentMoved(int oldX, int oldY)
 {
+	int myOldX = _x;
+	int myOldY = _y;
+
 	if (!_parent)
 		return;
 	int c_x, c_y;
@@ -79,6 +82,11 @@ void Control::ParentMoved(int oldX, int oldY)
 	_y = c_y + shiftY;
 
 	_container->setPosition((float)_x, (float)_y);
+
+	for (auto i = 0; i < _children.size(); i++)
+	{
+		_children[i]->ParentMoved(myOldX, myOldY);
+	}
 }
 
 Control::~Control()

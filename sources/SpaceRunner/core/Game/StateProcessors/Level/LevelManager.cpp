@@ -14,6 +14,7 @@ namespace CoreEngine
 		_isEndless = false;
 		_time = -1;
 		_score = 0;
+		_world = 0;
 	}
 
 	LevelManager* LevelManager::Instance()

@@ -132,17 +132,21 @@ namespace CoreEngine
 
         SetLightAndCamera();
 
-        /*std::stringstream stream;
-        for (int i = 0; i < 20; i++)
-        {
-            stream.str("");
-            stream << (i+1);
-            auto control = _document->GetControlByName(stream.str());
 
-            stream.str("");
-            stream << Scores::Instance()->GetBestStars(i + 1 + LevelManager::Instance()->GetWorld() * 20);
-            control->SetCustomAttribute("stars", stream.str());
-        }*/;
+        for (int i = 0; i < 10; i++)
+        {
+            int stars = Scores::Instance()->GetBestStars(i + 1);
+            for (int r = 0; r < stars; r++)
+            {
+                auto control = _document->GetControlByName("star" + std::to_string(i+1) + "_" + std::to_string(r+1));
+                control->SetDefaultMaterial("Star.png");
+            }
+            for (int r = stars; r < 3; r++)
+            {
+                auto control = _document->GetControlByName("star" + std::to_string(i+1) + "_" + std::to_string(r+1));
+                control->SetDefaultMaterial("GrayStar.png");
+            }
+        };
     }
 
     void StoryboardStateProcessor::ProcessEvent(Control* control, IEventHandler::EventType type, int x, int y)

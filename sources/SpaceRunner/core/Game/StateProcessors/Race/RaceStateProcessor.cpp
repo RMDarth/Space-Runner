@@ -211,7 +211,7 @@ namespace CoreEngine
         _totalTime += time;
         _frames++;
 
-        SetLightAndCamera(time);
+        SetLightAndCamera();
         UpdateHUD();
 
         _speed += _speedAccel * time;
@@ -464,8 +464,8 @@ namespace CoreEngine
             {
                 for (auto i = 0; i < 4; i++)
                 {
-                    _space->AddShot(Vector3(12 - 3.0f*i, 0, _pos - 0.4), 80);
-                    _space->AddShot(Vector3(12 - 3.0f*i, 0, _pos + 0.4), 80);
+                    _space->AddShot(Vector3(12 - 3.0f*i, 0, _pos - 0.4f), 80);
+                    _space->AddShot(Vector3(12 - 3.0f*i, 0, _pos + 0.4f), 80);
                 }
                 if (Config::Instance()->IsSoundEnabled())
                     _shootSound->Play();
@@ -529,23 +529,16 @@ namespace CoreEngine
         }
     }
 
-    void RaceStateProcessor::GenerateLevel()
+    void RaceStateProcessor::SetLightAndCamera()
     {
-
-    }
-
-    void RaceStateProcessor::SetLightAndCamera(float deltaTime)
-    {
-        //_cameraTime += deltaTime * _direction;
         auto _cameraRadius = 21.0f;
-        auto _cameraTime = 0.0f;
-        auto camera = RenderProcessor::Instance()->GetCamera();
+
         Vector3 pos = Vector3(
-            _cameraRadius, //_cameraRadius * cos(_cameraTime * CAMERA_SPEED),
+            _cameraRadius,
             6.0f,
-            _pos);// *sin(_cameraTime * CAMERA_SPEED));
-        camera->SetPosition(pos);
-        camera->SetTarget(Vector3(0, 0, _pos));
+            _pos);
+        _camera->SetPosition(pos);
+        _camera->SetTarget(Vector3(0, 0, _pos));
 
         auto light = RenderProcessor::Instance()->GetLight(0);
         pos.y += 2.0f;

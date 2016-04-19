@@ -109,7 +109,7 @@ namespace CoreEngine
 	private:
 		void InitSound();
 		void InitSpaceShip();
-		void GenerateLevel();
+
 		void PreloadModels();
 		void UpdateTurn();
 		void StartExplosion();
@@ -118,7 +118,7 @@ namespace CoreEngine
 
 		void UpdateBossLifePanel(int lives, int maxlives);
 
-		void SetLightAndCamera(float deltaTime);
+		void SetLightAndCamera();
 		void UpdateHUD();
 		void UpdateHelp();
 	};

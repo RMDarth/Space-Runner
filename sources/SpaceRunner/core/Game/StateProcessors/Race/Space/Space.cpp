@@ -49,7 +49,6 @@ namespace CoreEngine
             _backgroundAsteroidList.push_back(asteroid);
         }
 
-        //GenerateLevel();
         if (LevelManager::Instance()->IsPuzzle())
         {
             _currentLevel = unique_ptr<Level>(LevelFileManager::Instance()->LoadLevel(LevelManager::Instance()->GetLevelNum()));
