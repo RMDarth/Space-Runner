@@ -14,112 +14,112 @@ class SceneSector;
 
 namespace Ogre
 {
-	class ParticleSystem;
+    class ParticleSystem;
 }
 
 namespace CoreEngine
 {
-	class Explosion;
+    class Explosion;
 
-	class RaceStateProcessor : public IStateProcessor, public IEventHandler
-	{
-		Camera* _camera;
-		
-		UPtr<ControlDocument> _document;
-		UPtr<Space> _space;
-		UPtr<SceneSector> _sector;
-		UPtr<SceneSector> _shipSector;
-		UPtr<SceneSector> _shieldSector;
-		UPtr<SceneSector> _shieldEffectSector;
+    class RaceStateProcessor : public IStateProcessor, public IEventHandler
+    {
+        Camera* _camera;
 
-		UPtr<ModelDrawable> _ship;
-		UPtr<ModelDrawable> _shipShield;
+        UPtr<ControlDocument> _document;
+        UPtr<Space> _space;
+        UPtr<SceneSector> _sector;
+        UPtr<SceneSector> _shipSector;
+        UPtr<SceneSector> _shieldSector;
+        UPtr<SceneSector> _shieldEffectSector;
 
-		Ogre::ParticleSystem * _engineFire[2];
-		Ogre::ParticleSystem * _shieldEffect;
+        UPtr<ModelDrawable> _ship;
+        UPtr<ModelDrawable> _shipShield;
+
+        Ogre::ParticleSystem * _engineFire[2];
+        Ogre::ParticleSystem * _shieldEffect;
 
 
-		UPtr<Explosion> _explosion;
+        UPtr<Explosion> _explosion;
 
-		// sounds
-		UPtr<Sound> _bombSound;
-		UPtr<Sound> _shootSound;
-		UPtr<Sound> _impactSound;
-		UPtr<Sound> _collectSound;
-		UPtr<Sound> _successSound;
-		bool _soundsLoaded;
+        // sounds
+        UPtr<Sound> _bombSound;
+        UPtr<Sound> _shootSound;
+        UPtr<Sound> _impactSound;
+        UPtr<Sound> _collectSound;
+        UPtr<Sound> _successSound;
+        bool _soundsLoaded;
 
-		int _score;
-		int _lives;
+        int _score;
+        int _lives;
 
-		float _totalTime;
-		int _frames;
-		
-		float _speed;
-		float _speedAccel;
-		float _speedMax;
+        float _totalTime;
+        int _frames;
 
-		float _angleHorizontal;
-		const float _angleHorizontalMax = 0.7f;
+        float _speed;
+        float _speedAccel;
+        float _speedMax;
 
-		float _pos;
-		
-		float _presetPos[3];
-		int _currentPosID;
-		int _targetPosID;
-		int _nextTargetPosID;
-		float _posChangingStarted;
-		const float _posChangingTime = 0.4f;
+        float _angleHorizontal;
+        const float _angleHorizontalMax = 0.7f;
 
-		bool _invincibility;
-		float _invincibilityStart;
-		const float _invincibilityTime = 3.0f;
+        float _pos;
 
-		bool _shield;
-		float _shieldStart;
-		const float _shieldTime = 1.5f;
+        float _presetPos[3];
+        int _currentPosID;
+        int _targetPosID;
+        int _nextTargetPosID;
+        float _posChangingStarted;
+        const float _posChangingTime = 0.4f;
 
-		float _shootingStarted;
-		const float _shootingTime = 1.5f;
+        bool _invincibility;
+        float _invincibilityStart;
+        const float _invincibilityTime = 3.0f;
 
-		float _startSlideX;
+        bool _shield;
+        float _shieldStart;
+        const float _shieldTime = 1.5f;
+
+        float _shootingStarted;
+        const float _shootingTime = 1.5f;
+
+        float _startSlideX;
         float _startSlideY;
 
-		bool _init;
+        bool _init;
 
-	public:
-		RaceStateProcessor();
+    public:
+        RaceStateProcessor();
 
-		void Init();
-		virtual GameState::State Update(float time);
+        void Init();
+        virtual GameState::State Update(float time);
 
-		virtual void OnMouseDown(int x, int y);
-		virtual void OnMouseUp(int x, int y);
-		virtual void OnMouseMove(int x, int y);
-		virtual void OnKeyPressed(OIS::KeyCode key);
-		virtual void OnKeyReleased(OIS::KeyCode key);
+        virtual void OnMouseDown(int x, int y);
+        virtual void OnMouseUp(int x, int y);
+        virtual void OnMouseMove(int x, int y);
+        virtual void OnKeyPressed(OIS::KeyCode key);
+        virtual void OnKeyReleased(OIS::KeyCode key);
 
-		virtual void Hide();
-		virtual void Show();
-		virtual bool IsOverlapping() { return false; }
+        virtual void Hide();
+        virtual void Show();
+        virtual bool IsOverlapping() { return false; }
 
-		// IEventProcessor interface //
-		virtual void ProcessEvent(Control* control, IEventHandler::EventType type, int x, int y);
+        // IEventProcessor interface //
+        virtual void ProcessEvent(Control* control, IEventHandler::EventType type, int x, int y);
 
-	private:
-		void InitSound();
-		void InitSpaceShip();
+    private:
+        void InitSound();
+        void InitSpaceShip();
 
-		void PreloadModels();
-		void UpdateTurn();
-		void StartExplosion();
-		
-		bool IsGameFinished();
+        void PreloadModels();
+        void UpdateTurn();
+        void StartExplosion();
 
-		void UpdateBossLifePanel(int lives, int maxlives);
+        bool IsGameFinished();
 
-		void SetLightAndCamera();
-		void UpdateHUD();
-		void UpdateHelp();
-	};
+        void UpdateBossLifePanel(int lives, int maxlives);
+
+        void SetLightAndCamera();
+        void UpdateHUD();
+        void UpdateHelp();
+    };
 }

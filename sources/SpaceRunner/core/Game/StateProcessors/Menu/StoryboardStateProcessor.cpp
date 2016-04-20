@@ -40,6 +40,14 @@ namespace CoreEngine
             ss << (i+1);
             _document->GetControlByName(ss.str())->SetDefaultMaterial("LevelEffectMaterial");
         }
+
+        auto *material = Ogre::MaterialManager::getSingleton().getByName("StarAnimatedMaterial").get();
+        for (auto i = 0; i < 3; i++)
+        {
+            _starMaterials[i] = material->clone("StarAnimatedMaterial_"+std::to_string(i));
+            _starTime[i] = (float)2-i;
+        }
+
         sceneNode->setPosition(Ogre::Vector3(0, 0, 0));
     }
 
@@ -65,6 +73,16 @@ namespace CoreEngine
 
         auto material = Ogre::MaterialManager::getSingleton().getByName("LevelEffectMaterial").get();
         material->getTechnique(0)->getPass(0)->getFragmentProgramParameters()->setNamedConstant("color", Ogre::ColourValue(1, 1, 1, _alpha));
+
+        for (auto i = 0; i < 3; i++)
+        {
+            _starTime[i] += time * ((i+1) * 0.4 + 1);
+            while (_starTime[i] > 3.0f)
+                _starTime[i] -= 3.0f;
+
+            auto program = _starMaterials[i]->getTechnique(0)->getPass(0)->getFragmentProgramParameters();
+            program->setNamedConstant("color",Ogre::ColourValue(1,1,1,_starTime[i] > 1.0f ? 1.0f : _starTime[i]));
+        }
 
         return GameState::Storyboard;
     }
@@ -139,7 +157,7 @@ namespace CoreEngine
             for (int r = 0; r < stars; r++)
             {
                 auto control = _document->GetControlByName("star" + std::to_string(i+1) + "_" + std::to_string(r+1));
-                control->SetDefaultMaterial("Star.png");
+                control->SetDefaultMaterial("StarAnimatedMaterial_"+std::to_string(r));
             }
             for (int r = stars; r < 3; r++)
             {

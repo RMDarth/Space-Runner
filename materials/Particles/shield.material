@@ -54,7 +54,7 @@ material GlowShieldMaterial
 
         texture_unit diffuseMap
         {
-            texture shieldRing.png
+            texture shieldRing2.png
         }
     }
   }

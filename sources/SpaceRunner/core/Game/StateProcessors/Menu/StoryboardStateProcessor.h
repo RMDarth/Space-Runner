@@ -18,9 +18,13 @@ namespace CoreEngine
         SceneSector* _sector;
 
         float _alpha = 0;
+        float _starTime[3];
+
         bool _moving;
         int _moveShift;
         bool _bigMove;
+
+        Ogre::MaterialPtr _starMaterials[3];
 
     public:
         StoryboardStateProcessor();

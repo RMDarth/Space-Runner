@@ -1,0 +1,26 @@
+particle_system ShieldAnim
+{
+    material            ShieldSpriteSheetMaterial
+    particle_width      0.9                
+    particle_height     0.9                 
+    cull_each           false
+    quota               1
+    billboard_type      point
+    sorted              true
+
+    emitter Point
+    {
+        angle 0
+        emission_rate 200
+        time_to_live 1.5
+        velocity 0
+        duration 1.5
+        repeat_delay 0.001
+        colour 1 1 1 0
+    }
+
+    affector ColourFader
+    {
+       alpha 0.75
+    }
+}

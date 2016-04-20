@@ -1,0 +1,32 @@
+material ShieldSpriteSheetMaterial
+{
+  technique
+  {
+    pass
+    {
+        illumination_stage per_light
+        cull_hardware none
+        scene_blend alpha_blend
+        transparent_sorting on
+        alpha_to_coverage off
+        depth_write off
+        
+        scene_blend_op add
+    
+        vertex_program_ref spritesheet_vs
+        {
+        }
+ 
+        fragment_program_ref spritesheet_ps 
+        {
+            param_named width float 5
+            param_named height float 4
+        }
+
+        texture_unit diffuseMap
+        {
+            texture shieldAnim.png
+        }
+    }
+  }
+}

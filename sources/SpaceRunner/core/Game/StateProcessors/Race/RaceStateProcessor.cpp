@@ -149,9 +149,10 @@ namespace CoreEngine
         _shieldEffectSector = make_unique<SceneSector>(sceneNodeShieldEffect);
         sceneNodeShieldEffect->setPosition(0.3f, 0.0f, 0.0f);
 
-        _shieldEffect = sceneManager->createParticleSystem("ShieldEffect", "Shield");
+        _shieldEffect = sceneManager->createParticleSystem("ShieldEffect", "ShieldAnim");
         _shieldEffect->setKeepParticlesInLocalSpace(true);
         sceneNodeShieldEffect->attachObject(_shieldEffect);
+
     }
 
     void RaceStateProcessor::InitSound()
@@ -481,6 +482,9 @@ namespace CoreEngine
 
                 _sector->GetNode()->addChild(_shieldSector->GetNode());
                 _sector->GetNode()->addChild(_shieldEffectSector->GetNode());
+                _shieldSector->GetNode()->setVisible(true);
+                _shieldEffectSector->GetNode()->setVisible(true);
+                _shieldEffect->clear();
 
                 //if (Config::Instance()->IsSoundEnabled())
                 //	_shootSound->Play();

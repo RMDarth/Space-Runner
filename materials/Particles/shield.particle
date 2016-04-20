@@ -1,8 +1,8 @@
 particle_system Shield
 {
     material            GlowShieldMaterial
-    particle_width      0.9                
-    particle_height     0.9                 
+    particle_width      0.75                
+    particle_height     0.75               
     cull_each           false
     quota               1
     billboard_type      oriented_common
