@@ -1,5 +1,4 @@
 #include "StoryboardStateProcessor.h"
-#include "RenderProcessor.h"
 #include "Game/Game.h"
 #include "Game/StateProcessors/Level/LevelManager.h"
 #include "Game/Scores.h"
@@ -20,19 +19,6 @@ namespace CoreEngine
         sceneManager->getRootSceneNode()->addChild(sceneNode);
 
         _sector = new SceneSector(sceneNode);
-
-        /*
-        //_sectorLevel->GetNode()->setDirection(0,0,1);
-        sceneNode->addChild(rectNode);
-        std::vector<Vector3> pointList;
-        pointList.push_back(Vector3(-35, 25, 0));
-        pointList.push_back(Vector3(-35, -25, 0));
-        pointList.push_back(Vector3(35, -25, 0));
-        pointList.push_back(Vector3(35, 25, 0));
-        _levelEffect = new RectDrawable(_sectorLevel, "LevelEffectMaterial", pointList);
-        _levelEffect->SetRenderingQueue(Ogre::RENDER_QUEUE_OVERLAY + 2);
-        rectNode->setScale(5, 5, 5);*/
-
 
         for (auto i = 0; i < 10; i++)
         {

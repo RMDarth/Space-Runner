@@ -5,6 +5,7 @@
 #include "SpaceDust.h"
 #include "Fence.h"
 #include "Asteroid.h"
+#include "AsteroidProcessor.h"
 #include "Mine.h"
 #include "Cruiser.h"
 #include "BlasterBurst.h"
@@ -19,8 +20,6 @@ using namespace std;
 
 namespace CoreEngine
 {
-    static const float presetPos[3] = { -BLOCK_SIZE * 1.1f, 0, BLOCK_SIZE * 1.1f };
-
     Space::Space()
     {
         _lastObstacleCreated = 0;
@@ -173,6 +172,8 @@ namespace CoreEngine
                         count * 4 + 1,
                         totalTime,
                         count);
+
+                    _asteroidProcessor = make_shared<AsteroidProcessor>(_asteroidList, _lastObstacleCreated, _currentLevel->difficulty);
                 }
                 break;
 
@@ -232,13 +233,13 @@ namespace CoreEngine
                     break;
                 }
 
-                case ObstacleType::Boss:
-                    _currentObstacle = make_unique<Obstacle>(
-                            ObstacleType::Boss,
-                            5000,
-                            totalTime,
-                            0);
-                    break;
+            case ObstacleType::Boss:
+                _currentObstacle = make_unique<Obstacle>(
+                        ObstacleType::Boss,
+                        5000,
+                        totalTime,
+                        0);
+                break;
             }
         }
         else
@@ -346,31 +347,7 @@ namespace CoreEngine
 
     void Space::ProcessAsteroids(float totalTime)
     {
-        if (totalTime > 3 && totalTime - _lastObstacleCreated > 4)
-        {
-            bool posUsed[3] = { false, false, false };
-
-            int count = rand() % 2 + 1;
-            for (int i = 0; i < count; i++)
-            {
-                int posIndex;
-                do{
-                    posIndex = rand() % 3;
-                } while (posUsed[posIndex]);
-                posUsed[posIndex] = true;
-
-                float deviation = (rand() % 10 - 5.0f) / 10.0f;
-                float pos = presetPos[posIndex] + deviation;
-
-                auto * asteroid = new Asteroid(
-                        Vector3(-ASTEROID_NUM * BLOCK_SIZE, 0, pos),
-                        Asteroid::getAsteroidName(rand() % 6 + 1),
-                        0.0f,
-                        5.0f);
-                _asteroidList.push_back(shared_ptr<Asteroid>(asteroid));
-            }
-            _lastObstacleCreated = totalTime;
-        }
+        _asteroidProcessor->Process(totalTime);
     }
 
     void Space::ProcessMine(float totalTime)
@@ -609,13 +586,13 @@ namespace CoreEngine
 
         for (auto& shot : _shotList)
         {
-            for (auto& fighter : _mineList)
+            for (auto& mine : _mineList)
             {
-                if (!fighter->IsDone() && shot->IsIntersected(fighter.get()))
+                if (!mine->IsDone() && shot->IsIntersected(mine.get()))
                 {
                     shot->Destroy();
-                    fighter->Destroy();
-                    _explosionList.push_back(make_shared<Explosion>(fighter->getPos()));
+                    mine->Destroy();
+                    _explosionList.push_back(make_shared<Explosion>(mine->getPos()));
                     if (_shotCallback)
                         _shotCallback(SpaceObjectType::Mine);
                 }

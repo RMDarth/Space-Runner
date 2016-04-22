@@ -163,7 +163,7 @@ set(SOURCE_FILES
     core/ControlLibrary/SlidePanelControl.cpp
     core/ControlLibrary/SlidePanelControl.h
     core/Game/StateProcessors/Race/LevelFileManager.cpp
-    core/Game/StateProcessors/Race/LevelFileManager.h)
+    core/Game/StateProcessors/Race/LevelFileManager.h core/Game/StateProcessors/Race/Space/AsteroidProcessor.cpp core/Game/StateProcessors/Race/Space/AsteroidProcessor.h)
 
 add_executable(spacerush ${SOURCE_FILES})
 

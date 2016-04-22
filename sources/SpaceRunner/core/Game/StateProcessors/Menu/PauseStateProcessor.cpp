@@ -43,6 +43,11 @@ namespace CoreEngine
 		{
 			Game::Instance()->ChangeState(GameState::Level);
 		}
+		if (key == OIS::KC_R)
+		{
+			LevelManager::Instance()->SetStarted(false);
+			Game::Instance()->ChangeState(GameState::Level);
+		}
 	}
 
 

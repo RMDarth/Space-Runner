@@ -61,13 +61,12 @@ namespace CoreEngine
                 if (Config::Instance()->IsSoundEnabled())
                 {
                     if (type == SpaceObjectType::Mine || type == SpaceObjectType::EnemyCruiser)
-                    {
                         _bombSound->Play();
-                        _score += 5;
-                    }
                     else
                         _impactSound->Play();
                 }
+                if (type == SpaceObjectType::Mine || type == SpaceObjectType::EnemyCruiser)
+                    _score += 5;
             });
 
         _space->RegisterBossEvent(
@@ -461,7 +460,7 @@ namespace CoreEngine
         }
         if (key == OIS::KC_UP)
         {
-            if (_totalTime - _shootingStarted > _shootingTime)
+            if (_totalTime - _shootingStarted > _shootingTime && !_explosion)
             {
                 for (auto i = 0; i < 4; i++)
                 {
@@ -475,7 +474,7 @@ namespace CoreEngine
         }
         if (key == OIS::KC_DOWN)
         {
-            if (_totalTime - _shieldStart > _shieldTime)
+            if (_totalTime - _shieldStart > _shieldTime && !_explosion)
             {
                 _shield = true;
                 _shieldStart = _totalTime;

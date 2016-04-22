@@ -11,6 +11,7 @@ namespace CoreEngine
 {
 	class SpaceLine;
 	class Asteroid;
+	class AsteroidProcessor;
 	class Mine;
 	class Cruiser;
 	class SpaceDust;
@@ -43,6 +44,8 @@ namespace CoreEngine
 		PtrList<Missile> _missileList;
 		PtrList<Explosion> _explosionList;
 		PtrList<Sparks> _sparksList;
+
+		Ptr<AsteroidProcessor> _asteroidProcessor;
 		
 		UPtr<SpaceDust> _spaceDust;
 		UPtr<Fence> _fence;
