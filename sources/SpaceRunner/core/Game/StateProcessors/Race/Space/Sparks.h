@@ -15,10 +15,10 @@ namespace CoreEngine
         ParticleSystem * _sparksEffect;
         ParticleSystem * _glowEffect;
 
-        bool _hasParent;
+        float _multiplier;
 
     public:
-        Sparks(Vector3 offset, SpaceObject* parent = nullptr);
+        Sparks(Vector3 offset, float multiplier = 0);
         ~Sparks();
         void Update(float time, float roadSpeed) override;
         bool IsDone() override;

@@ -5,23 +5,14 @@
 
 namespace CoreEngine
 {
-    Sparks::Sparks(Vector3 offset, SpaceObject* parent)
+    Sparks::Sparks(Vector3 offset, float speedMultiplier)
         : SpaceObject(offset, 0)
+        , _multiplier(speedMultiplier)
     {
         auto sceneManager = RenderProcessor::Instance()->GetSceneManager();
         auto sceneNode = sceneManager->createSceneNode();
 
-        if (parent != nullptr)
-        {
-            _hasParent = true;
-            sceneNode->setInheritScale(false);
-            sceneNode->setInheritOrientation(false);
-            parent->getSector()->GetNode()->addChild(sceneNode);
-        }
-        else
-        {
-            sceneManager->getRootSceneNode()->addChild(sceneNode);
-        }
+        sceneManager->getRootSceneNode()->addChild(sceneNode);
 
         _sector = new SceneSector(sceneNode);
         sceneNode->setPosition(VectorToOgre(offset));
@@ -41,11 +32,9 @@ namespace CoreEngine
 
     void Sparks::Update(float time, float roadSpeed)
     {
-        if (!_hasParent)
-        {
-            SpaceObject::Update(time, roadSpeed);
-            _sector->GetNode()->setPosition(VectorToOgre(_pos));
-        }
+        SpaceObject::Update(time, roadSpeed + roadSpeed * _multiplier);
+        _sector->GetNode()->setPosition(VectorToOgre(_pos));
+
         _sparksEffect->Update(time);
         _glowEffect->Update(time);
     }

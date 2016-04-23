@@ -635,7 +635,7 @@ namespace CoreEngine
                 {
                     auto pos = shot->getPos() - _boss->getPos();
 
-                    _sparksList.push_back(make_shared<Sparks>(Vector3(-0.3f, 0, -pos.z * 0.2f), _boss.get()));
+                    _sparksList.push_back(make_shared<Sparks>(shot->getPos(), -1.0f));
                 } else {
                     _boss->Destroy();
                     _explosionList.push_back(make_shared<Explosion>(_boss->getPos()));
