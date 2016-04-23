@@ -12,7 +12,6 @@ namespace CoreEngine
 {
 	class Explosion : public SpaceObject
 	{
-		SceneSector * _sector;
 		ParticleSystem * _explosionEffect[4];
 
 		static const float _explosionTime[4];

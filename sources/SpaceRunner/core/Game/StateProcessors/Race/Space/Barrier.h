@@ -18,7 +18,6 @@ namespace CoreEngine
 
 	class Barrier : public SpaceObject
 	{
-		SceneSector * _sector;
 		ModelDrawable * _modelList[4];
 		RectDrawable * _rectList[2];
 

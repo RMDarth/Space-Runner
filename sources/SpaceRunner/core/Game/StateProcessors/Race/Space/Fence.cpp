@@ -25,17 +25,17 @@ namespace CoreEngine
 	void Fence::Generate()
 	{
 		std::vector<Vector3> pointList;
-		pointList.push_back(Vector3(-BLOCK_SIZE * 70.01f, 0.0f, -BLOCK_SIZE * 1.5));
-		pointList.push_back(Vector3(-BLOCK_SIZE * 70.01f, 1.0f, -BLOCK_SIZE * 1.5));
-		pointList.push_back(Vector3(BLOCK_SIZE * 10.01f, 1.0f, -BLOCK_SIZE * 1.5));
-		pointList.push_back(Vector3(BLOCK_SIZE * 10.01f, 0.0f, -BLOCK_SIZE * 1.5));
+		pointList.push_back(Vector3(-BLOCK_SIZE * 70.01f, 0.0f, -BLOCK_SIZE * 1.5f));
+		pointList.push_back(Vector3(-BLOCK_SIZE * 70.01f, 1.0f, -BLOCK_SIZE * 1.5f));
+		pointList.push_back(Vector3(BLOCK_SIZE * 10.01f, 1.0f, -BLOCK_SIZE * 1.5f));
+		pointList.push_back(Vector3(BLOCK_SIZE * 10.01f, 0.0f, -BLOCK_SIZE * 1.5f));
 		_modelLeft = make_unique<RectDrawable>(_sector.get(), "FenceMaterial", pointList);
 
 		pointList.clear();
-        pointList.push_back(Vector3(-BLOCK_SIZE * 70.01f, 0.0f, BLOCK_SIZE * 1.5));
-        pointList.push_back(Vector3(-BLOCK_SIZE * 70.01f, 1.0f, BLOCK_SIZE * 1.5));
-        pointList.push_back(Vector3(BLOCK_SIZE * 10.01f, 1.0f, BLOCK_SIZE * 1.5));
-        pointList.push_back(Vector3(BLOCK_SIZE * 10.01f, 0.0f, BLOCK_SIZE * 1.5));
+        pointList.push_back(Vector3(-BLOCK_SIZE * 70.01f, 0.0f, BLOCK_SIZE * 1.5f));
+        pointList.push_back(Vector3(-BLOCK_SIZE * 70.01f, 1.0f, BLOCK_SIZE * 1.5f));
+        pointList.push_back(Vector3(BLOCK_SIZE * 10.01f, 1.0f, BLOCK_SIZE * 1.5f));
+        pointList.push_back(Vector3(BLOCK_SIZE * 10.01f, 0.0f, BLOCK_SIZE * 1.5f));
 		_modelRight = make_unique<RectDrawable>(_sector.get(), "FenceMaterial", pointList);
 
         _material = Ogre::MaterialManager::getSingleton().getByName("FenceMaterial").get();

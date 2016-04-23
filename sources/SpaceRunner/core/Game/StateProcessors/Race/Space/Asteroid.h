@@ -11,7 +11,6 @@ namespace CoreEngine
 {
 	class Asteroid : public SpaceObject
 	{
-		SceneSector * _sector;
 		ModelDrawable * _model;
 		float _scale;
         Vector3 _size;

@@ -12,7 +12,6 @@ namespace CoreEngine
 {
 	class BlasterBurst : public SpaceObject
 	{
-		SceneSector * _sector;
 		UPtr<RectDrawable> _rect;
 
 	public:

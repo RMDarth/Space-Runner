@@ -41,8 +41,11 @@ namespace CoreEngine
         {
             SpaceObject::Update(time, roadSpeed);
 
+            // roadSpeed = time * speed * 5;
+            float shipSpeed = roadSpeed / (time * 5);
+
             if (_pos.x > -40)
-                _speed = (1 - (_pos.x + 20) / -20) * 10.0f * 5.0f;
+                _speed = (1 - (_pos.x + 20) / -20) * (shipSpeed - 1) * 5.0f;
 
             if (_pos.x > -20.0f)
             {

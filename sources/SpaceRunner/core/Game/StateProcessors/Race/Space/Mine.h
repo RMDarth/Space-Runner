@@ -11,7 +11,6 @@ namespace CoreEngine
 {
 	class Mine : public SpaceObject
 	{
-		SceneSector * _sector;
 		ModelDrawable * _model;
 
 	public:

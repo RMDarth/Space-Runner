@@ -5,44 +5,62 @@
 
 namespace CoreEngine
 {
-	Sparks::Sparks(Vector3 offset, float speed)
-		: SpaceObject(offset, speed)
-	{
-		auto sceneManager = RenderProcessor::Instance()->GetSceneManager();
-		auto sceneNode = sceneManager->createSceneNode();
-		sceneManager->getRootSceneNode()->addChild(sceneNode);
-		_sector = new SceneSector(sceneNode);
-		sceneNode->setPosition(VectorToOgre(offset));
+    Sparks::Sparks(Vector3 offset, SpaceObject* parent)
+        : SpaceObject(offset, 0)
+    {
+        auto sceneManager = RenderProcessor::Instance()->GetSceneManager();
+        auto sceneNode = sceneManager->createSceneNode();
 
-		auto sceneNode2 = sceneManager->createSceneNode();
-		sceneNode->addChild(sceneNode2);
+        if (parent != nullptr)
+        {
+            _hasParent = true;
+            sceneNode->setInheritScale(false);
+            sceneNode->setInheritOrientation(false);
+            parent->getSector()->GetNode()->addChild(sceneNode);
+        }
+        else
+        {
+            sceneManager->getRootSceneNode()->addChild(sceneNode);
+        }
 
-		_glowEffect = new ParticleSystem(sceneNode, "ShotGlow_%d", "ShotGlow", 1.5f, 0, true);
-		_sparksEffect = new ParticleSystem(sceneNode2, "ShotSparks_%d", "ShotSparks", 1.5f, 0, true);
-	}
+        _sector = new SceneSector(sceneNode);
+        sceneNode->setPosition(VectorToOgre(offset));
 
-	Sparks::~Sparks()
-	{
-		delete _sparksEffect;
-		delete _glowEffect;
-	}
+        auto sceneNode2 = sceneManager->createSceneNode();
+        sceneNode->addChild(sceneNode2);
 
-	void Sparks::Update(float time, float roadSpeed)
-	{
-		SpaceObject::Update(time, roadSpeed);
-		_sector->GetNode()->setPosition(VectorToOgre(_pos));
-		_sparksEffect->Update(time);
-		_glowEffect->Update(time);
-	}
+        _glowEffect = new ParticleSystem(sceneNode, "ShotGlow_%d", "ShotGlow", 1.5f, 0, true);
+        _sparksEffect = new ParticleSystem(sceneNode2, "ShotSparks_%d", "ShotSparks", 1.5f, 0, true);
+    }
 
-	bool Sparks::IsDone()
-	{
-		return _sparksEffect->IsFinished();
-	}
+    Sparks::~Sparks()
+    {
+        delete _sparksEffect;
+        delete _glowEffect;
+    }
 
-	void Sparks::SetVisible(bool visible)
-	{
-		_sector->GetNode()->setVisible(visible);
-	}
+    void Sparks::Update(float time, float roadSpeed)
+    {
+        if (!_hasParent)
+        {
+            SpaceObject::Update(time, roadSpeed);
+            _sector->GetNode()->setPosition(VectorToOgre(_pos));
+        }
+        _sparksEffect->Update(time);
+        _glowEffect->Update(time);
+    }
+
+    bool Sparks::IsDone()
+    {
+        return _sparksEffect->IsFinished();
+    }
+
+    void Sparks::SetVisible(bool visible)
+    {
+        _sector->GetNode()->setVisible(visible);
+    }
+
+
+
 
 }

@@ -88,7 +88,7 @@ namespace CoreEngine
         }
 
         structure->currentPrefab = 0;
-        structure->currentObstacle = 0;
+        structure->currentObstacle = -1;
 
         file.Close();
         return structure;

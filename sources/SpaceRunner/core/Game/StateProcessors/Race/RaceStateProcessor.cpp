@@ -86,7 +86,21 @@ namespace CoreEngine
         _frames = 0;
         _speed = 1.0f;
         _speedAccel = 5.0f;
-        _speedMax = 11.0f;
+
+        switch(_space->GetCurrentLevel()->difficulty)
+        {
+            case LevelDifficulty::Easy:
+                _speedMax = 8.0f;
+                break;
+            case LevelDifficulty::Normal:
+                _speedMax = 10.0f;
+                break;
+            case LevelDifficulty::Hard:
+                _speedMax = 11.0f;
+                break;
+        }
+
+
         _pos = 0;
         _angleHorizontal = 0;
         _invincibility = false;
@@ -177,6 +191,10 @@ namespace CoreEngine
         PrefabManager::Instance()->LoadPrefabs();
     }
 
+    float RaceStateProcessor::GetCurrentSpeed()
+    {
+        return _speed;
+    }
 
     void RaceStateProcessor::UpdateTurn()
     {

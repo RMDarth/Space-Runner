@@ -22,12 +22,24 @@ namespace CoreEngine
             if (_lastRows.empty())
                 count = 0;
 
+            if (_difficulty == LevelDifficulty::Easy && _lastRows.size() > 0 && CountAsteroidNum(_lastRows.front()) > 1)
+                count = 1;
+
             for (int i = 0; i < count; i++)
             {
-                int posIndex;
-                do{
-                    posIndex = rand() % 3;
-                } while (posUsed[posIndex]);
+                int posIndex = 0;
+
+                if (_difficulty == LevelDifficulty::Easy)
+                {
+                    posIndex = GetOpenWayIndex();
+                }
+                else
+                {
+                    do
+                    {
+                        posIndex = rand() % 3;
+                    } while (posUsed[posIndex]);
+                }
 
                 posUsed[posIndex] = true;
                 curPoses |= 1 << posIndex;
@@ -37,7 +49,7 @@ namespace CoreEngine
                     break;
 
                 // Normal check
-                if (_difficulty <= LevelDifficulty::Normal && !isNormalMovePossible(curPoses))
+                if (i == 1 && _difficulty <= LevelDifficulty::Normal && !IsNormalMovePossible(curPoses))
                     break;
 
                 float deviation = (rand() % 10 - 5.0f) / 10.0f;
@@ -65,9 +77,7 @@ namespace CoreEngine
 
         for (auto i = 0; i < _lastRows.size(); i++)
         {
-            int aNum = 0;
-            for (auto r = 0; r < 3; r++)
-                if (_lastRows[i] & (1 << r)) aNum++;
+            int aNum = CountAsteroidNum(_lastRows[i]);
 
             if (aNum < 2 || !(_lastRows[i] & (1 << 1)))
                 break;
@@ -87,10 +97,34 @@ namespace CoreEngine
         return count;
     }
 
-    bool AsteroidProcessor::isNormalMovePossible(int8_t poses)
+    bool AsteroidProcessor::IsNormalMovePossible(int8_t poses)
     {
+        if (_lastRows.empty())
+            return true;
+
+        if ((poses & (1 << 1)) && _lastRows.front() & (1 << 1))
+        {
+            if (poses != _lastRows.front())
+                return false;
+        }
         return true;
     }
 
+    int AsteroidProcessor::GetOpenWayIndex()
+    {
+        if (_lastRows.empty() || CountAsteroidNum(_lastRows.front()) <= 1)
+            return rand() % 3;
+        for (auto r = 0; r < 3; r++)
+            if (! (_lastRows.front() & (1 << r)))
+                return r;
+    }
 
+    int AsteroidProcessor::CountAsteroidNum(int8_t poses)
+    {
+        int aNum = 0;
+        for (auto r = 0; r < 3; r++)
+            if (poses & (1 << r)) aNum++;
+
+        return aNum;
+    }
 }

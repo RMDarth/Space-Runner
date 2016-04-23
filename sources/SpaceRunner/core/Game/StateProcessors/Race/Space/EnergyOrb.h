@@ -12,7 +12,6 @@ namespace CoreEngine
 {
 	class EnergyOrb : public SpaceObject
 	{
-		SceneSector * _sector;
 		ParticleSystem * _sparksEffect;
 		ParticleSystem * _glowEffect;
 

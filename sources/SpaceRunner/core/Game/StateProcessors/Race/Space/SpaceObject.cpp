@@ -1,5 +1,6 @@
 #include "SpaceObject.h"
 #include "SpaceDefs.h"
+#include "Render/SceneSector.h"
 
 namespace CoreEngine
 {
@@ -57,5 +58,11 @@ namespace CoreEngine
 		static Vector3 standardSize(2, 2, 1.2f);
 		return standardSize;
 	}
+
+	SceneSector* SpaceObject::getSector()
+	{
+		return _sector;
+	}
+
 
 }

@@ -2,6 +2,8 @@
 #include "Basic.h"
 #include <string>
 
+class SceneSector;
+
 namespace CoreEngine
 {
 	class SpaceObject
@@ -10,6 +12,8 @@ namespace CoreEngine
 		float _speed;
 		Vector3 _pos;
 		bool _destroyed;
+
+		SceneSector * _sector;
 
 	public:
 		SpaceObject(Vector3 offset, float speed);
@@ -25,6 +29,7 @@ namespace CoreEngine
 		virtual void SetVisible(bool visible) = 0;
 
 		virtual const Vector3& getPos();
+		virtual SceneSector* getSector();
 
 	protected:
 		virtual const Vector3& getHalfSize();

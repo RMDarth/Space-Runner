@@ -12,7 +12,6 @@ namespace CoreEngine
 {
     class Missile : public SpaceObject
     {
-        SceneSector * _sector;
         ModelDrawable * _model;
         ParticleSystem * _smokeEffect;
         ParticleSystem * _fireEffect;

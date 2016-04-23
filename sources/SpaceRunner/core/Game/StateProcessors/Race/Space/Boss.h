@@ -11,7 +11,6 @@ namespace CoreEngine
 {
     class Boss : public SpaceObject
     {
-        SceneSector * _sector;
         ModelDrawable * _model;
 
         float _totalTime;

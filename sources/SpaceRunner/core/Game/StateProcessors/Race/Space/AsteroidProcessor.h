@@ -25,7 +25,9 @@ namespace CoreEngine
 
     private:
         int CountCentralDoubleBlocks();
-        bool isNormalMovePossible(int8_t poses);
+        bool IsNormalMovePossible(int8_t poses);
+        int GetOpenWayIndex();
+        int CountAsteroidNum(int8_t poses);
 
     };
 }

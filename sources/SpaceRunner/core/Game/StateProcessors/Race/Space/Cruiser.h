@@ -12,8 +12,7 @@ class ParticleSystem;
 namespace CoreEngine
 {
     class Cruiser : public SpaceObject
-    {
-        SceneSector * _sector;
+    { ;
         ModelDrawable * _model;
 
         ModelDrawable * _modelTurret[3];
