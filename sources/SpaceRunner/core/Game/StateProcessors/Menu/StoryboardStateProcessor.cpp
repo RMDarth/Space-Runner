@@ -50,7 +50,7 @@ namespace CoreEngine
         else if (_changeState == 2)
         {
             _changeState = 0;
-            return GameState::Level;
+            return GameState::ShipSelect;
         }
 
         _alpha += time * 0.75;
@@ -170,7 +170,7 @@ namespace CoreEngine
             LevelManager::Instance()->SetLevelNum(stoi(control->GetName()));
             LevelManager::Instance()->SetStarted(false);
             _changeState = 1;
-            _document->Hide();
+            //_document->Hide();
         }
     }
 

@@ -15,7 +15,7 @@ namespace CoreEngine
 			DifficultySelect,
 			HighScores,
 			Message,
-			ModelSelect,
+			ShipSelect,
 			Store,
 			Credits,
 			Achievements

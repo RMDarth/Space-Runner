@@ -216,7 +216,9 @@ namespace CoreEngine
         {
             if (control->GetName() == "start")
             {
-                Game::Instance()->ChangeState(GameState::DifficultySelect);
+                LevelManager::Instance()->SetIsPuzzle(false);
+                LevelManager::Instance()->SetLevelNum(1);
+                Game::Instance()->ChangeState(GameState::ShipSelect);
             }
 
             if (control->GetName() == "editor")
@@ -258,7 +260,7 @@ namespace CoreEngine
 
             if (control->GetName() == "graphics")
             {
-                Game::Instance()->ChangeState(GameState::ModelSelect);
+                Game::Instance()->ChangeState(GameState::ShipSelect);
             }
 
             if (control->GetName() == "config")
