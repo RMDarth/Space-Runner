@@ -15,6 +15,7 @@
 #include "Render/Drawables/ModelDrawable.h"
 
 #include <iomanip>
+#include <Game/SkinManager.h>
 
 using namespace std;
 
@@ -129,38 +130,43 @@ namespace CoreEngine
         auto sceneNode = sceneManager->createSceneNode();
         sceneManager->getRootSceneNode()->addChild(sceneNode);
         _sector = make_unique<SceneSector>(sceneNode);
-        sceneNode->setScale(5.0f, 5.0f, 5.0f);
+        float scale = SkinManager::Instance()->GetShipScale();
+        sceneNode->setScale(scale, scale, scale);
 
         auto sceneNodeShip = sceneManager->createSceneNode();
         sceneNode->addChild(sceneNodeShip);
         _shipSector = make_unique<SceneSector>(sceneNodeShip);
-        _ship = make_unique<ModelDrawable>(_shipSector.get(), "ship.mesh");
+        _ship = make_unique<ModelDrawable>(_shipSector.get(), SkinManager::Instance()->GetShipModelName());
 
         auto sceneNodeShieldModel = sceneManager->createSceneNode();
         //sceneNode->addChild(sceneNodeShieldModel);
         _shieldSector = make_unique<SceneSector>(sceneNodeShieldModel);
-        _shipShield = make_unique<ModelDrawable>(_shieldSector.get(), "ship.mesh");
+        _shipShield = make_unique<ModelDrawable>(_shieldSector.get(), SkinManager::Instance()->GetShipModelName());
         _shipShield->SetMaterial("ShieldMaterial");
         _shipShield->SetScale(1.2f);
 
         auto sceneNodeChild = sceneManager->createSceneNode();
-        sceneNodeChild->setPosition(0.25f, 0.03f, 0.12f);
+        sceneNodeChild->setPosition(VectorToOgre(SkinManager::Instance()->GetEngineOffset(0)));
         sceneNode->addChild(sceneNodeChild);
 
         _engineFire[0] = sceneManager->createParticleSystem("EngineFire", "Engine");
         sceneNodeChild->attachObject(_engineFire[0]);
 
-        sceneNodeChild = sceneManager->createSceneNode();
-        sceneNodeChild->setPosition(0.25f, 0.03f, -0.12f);
-        sceneNode->addChild(sceneNodeChild);
+        if (SkinManager::Instance()->GetEngineCount() > 1)
+        {
+            sceneNodeChild = sceneManager->createSceneNode();
+            sceneNodeChild->setPosition(VectorToOgre(SkinManager::Instance()->GetEngineOffset(1)));
+            sceneNode->addChild(sceneNodeChild);
 
-        _engineFire[1] = sceneManager->createParticleSystem("EngineFire2", "Engine");
-        sceneNodeChild->attachObject(_engineFire[1]);
-
+            _engineFire[1] = sceneManager->createParticleSystem("EngineFire2", "Engine");
+            sceneNodeChild->attachObject(_engineFire[1]);
+        }
 
         auto sceneNodeShieldEffect = sceneManager->createSceneNode();
         _shieldEffectSector = make_unique<SceneSector>(sceneNodeShieldEffect);
-        sceneNodeShieldEffect->setPosition(0.3f, 0.0f, 0.0f);
+        sceneNodeShieldEffect->setPosition(VectorToOgre(SkinManager::Instance()->GetShieldOffset()));
+        sceneNodeShieldEffect->setInheritScale(false);
+        sceneNodeShieldEffect->setScale(5.0f, 5.0f, 5.0f);
 
         _shieldEffect = sceneManager->createParticleSystem("ShieldEffect", "ShieldAnim");
         _shieldEffect->setKeepParticlesInLocalSpace(true);

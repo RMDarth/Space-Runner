@@ -90,8 +90,8 @@ Game::Game()
     {
         SoundSystem::Instance()->StartBackgroundMusic();
     }
-    SkinManager::Instance()->SetSkinID(Config::Instance()->GetSelectedModel());
-    SkinManager::Instance()->SetQuality(Config::Instance()->GetSelectedQuality());
+    //SkinManager::Instance()->SetSkinID(Config::Instance()->GetSelectedModel());
+    SkinManager::Instance()->SetSkinID(1);
 
 }
 
@@ -143,7 +143,7 @@ void Game::OnKeyReleased(OIS::KeyCode key)
 
 void Game::ChangeState(GameState::State state)
 {
-    if (StateProcessorFactory::Instance()->GetProcessor(state)->IsOverlapping() == false)
+    if (!StateProcessorFactory::Instance()->GetProcessor(state)->IsOverlapping())
     {
         StateProcessorFactory::Instance()->GetProcessor(_state)->Hide();
 

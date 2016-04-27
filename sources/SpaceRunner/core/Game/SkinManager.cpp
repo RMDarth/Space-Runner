@@ -2,142 +2,104 @@
 
 namespace CoreEngine
 {
-	SkinManager* SkinManager::_instance = nullptr;
+    SkinManager* SkinManager::_instance = nullptr;
 
-	SkinManager::SkinManager()
-	{
-		_skinID = 0;
-		_quality = 0;
+    SkinManager::SkinManager()
+    {
+        _skinID = 0;
 
-		_colorModelNames.push_back("lod0-ball.mesh");
-		_colorModelNames.push_back("lo-classic.mesh");
-		_colorModelNames.push_back("lo-easter.mesh");
-		_colorModelNames.push_back("lo-fruit_ball.mesh");
-		_colorModelNames.push_back("lo-halloween.mesh");
+        _shipModelNames.push_back("ship.mesh");
+        _shipModelNames.push_back("ship2.mesh");
+        _shipScales.push_back(5.0f);
+        _shipScales.push_back(0.5f);
 
-		_basisModelNames.push_back("lo-fly.mesh");
-		_basisModelNames.push_back("lo-fly.mesh");
-		_basisModelNames.push_back("lo-fly.mesh");
-		_basisModelNames.push_back("lo-fly.mesh");
-		_basisModelNames.push_back("lo-fly.mesh");
+        OffsetList ship1Engines;
+        ship1Engines.push_back(Vector3(0.25f, 0.03f, 0.12f));
+        ship1Engines.push_back(Vector3(0.25f, 0.03f, -0.12f));
+        _engineOffsets.push_back(ship1Engines);
 
-		_steelModelNames.push_back("lo-steel.mesh");
-		_steelModelNames.push_back("lo-classic.mesh");
-		_steelModelNames.push_back("lo-easter.mesh");
-		_steelModelNames.push_back("lo-fruit_bomb.mesh");
-		_steelModelNames.push_back("lo-halloween.mesh");
+        OffsetList ship2Engines;
+        ship2Engines.push_back(Vector3(0.28f * 10, -0.02f * 10, 0.0f * 10));
+        _engineOffsets.push_back(ship2Engines);
 
-		_bombModelNames.push_back("lo-bomb.mesh");
-		_bombModelNames.push_back("lo-classic.mesh");
-		_bombModelNames.push_back("lo-easter.mesh");
-		_bombModelNames.push_back("lo-fruit_bomb.mesh");
-		_bombModelNames.push_back("lo-halloween.mesh");
+        _shieldOffsets.push_back(Vector3(0.3f, 0.0f, 0.0f));
+        _shieldOffsets.push_back(Vector3(4.2f, 0.6f, 0.0f));
+    }
 
-		_materialPrefixes.push_back("ball");
-		_materialPrefixes.push_back("classicball");
-		_materialPrefixes.push_back("easterball");
-		_materialPrefixes.push_back("fruitball");
-		_materialPrefixes.push_back("halloweenball");
+    SkinManager* SkinManager::Instance()
+    {
+        if (_instance == NULL)
+        {
+            _instance = new SkinManager();
+        }
+        return _instance;
+    }
 
-		_connectorUsageList.push_back(1);
-		_connectorUsageList.push_back(1);
-		_connectorUsageList.push_back(0);
-		_connectorUsageList.push_back(0);
-		_connectorUsageList.push_back(0);
-	}
+    void SkinManager::SetSkinID(int skinID)
+    {
+        _skinID = skinID;
+    }
 
-	SkinManager* SkinManager::Instance()
-	{
-		if (_instance == NULL)
-		{
-			_instance = new SkinManager();
-		}
-		return _instance;
-	}
+    int SkinManager::GetSkinID()
+    {
+        return _skinID;
+    }
 
-	void SkinManager::SetSkinID(int skinID)
-	{
-		_skinID = skinID;
-	}
+    int SkinManager::GetSkinCount()
+    {
+        return SKIN_COUNT;
+    }
 
-	int SkinManager::GetSkinID()
-	{
-		return _skinID;
-	}
+    std::string SkinManager::GetShipModelName()
+    {
+        return _shipModelNames[_skinID];
+    }
 
-	int SkinManager::GetSkinCount()
-	{
-		return SKIN_COUNT;
-	}
+    std::string SkinManager::GetShipModelName(int id)
+    {
+        return _shipModelNames[id];
+    }
 
-	std::string SkinManager::GetColorModelName()
-	{
-		return _colorModelNames[_skinID];
-	}
+    float SkinManager::GetShipScale()
+    {
+        return _shipScales[_skinID];
+    }
 
-	std::string SkinManager::GetColorModelName(int id)
-	{
-		return _colorModelNames[id];
-	}
+    float SkinManager::GetShipScale(int id)
+    {
+        return _shipScales[id];
+    }
 
-	std::string SkinManager::GetBasisModelName()
-	{
-		return _basisModelNames[_skinID];
-	}
+    int SkinManager::GetEngineCount()
+    {
+        return (int)_engineOffsets[_skinID].size();
+    }
 
-	std::string SkinManager::GetBasisModelName(int id)
-	{
-		return _basisModelNames[id];
-	}
+    int SkinManager::GetEngineCount(int id)
+    {
+        return (int)_engineOffsets[id].size();
+    }
 
-	std::string SkinManager::GetBombModelName()
-	{
-		return _bombModelNames[_skinID];
-	}
+    Vector3 SkinManager::GetEngineOffset(int num)
+    {
+        return _engineOffsets[_skinID][num];
+    }
 
-	std::string SkinManager::GetBombModelName(int id)
-	{
-		return _bombModelNames[id];
-	}
+    Vector3 SkinManager::GetEngineOffset(int num, int id)
+    {
+        return _engineOffsets[id][num];
+    }
 
-	std::string SkinManager::GetSteelModelName()
-	{
-		return _steelModelNames[_skinID];
-	}
+    Vector3 SkinManager::GetShieldOffset()
+    {
+        return _shieldOffsets[_skinID];
+    }
 
-	std::string SkinManager::GetSteelModelName(int id)
-	{
-		return _steelModelNames[id];
-	}
-
-	bool SkinManager::GetConnectorsUsage()
-	{
-		return _connectorUsageList[_skinID] != 0;
-	}
-
-	bool SkinManager::GetConnectorsUsage(int id)
-	{
-		return _connectorUsageList[id] != 0;
-	}
+    Vector3 SkinManager::GetShieldOffset(int id)
+    {
+        return _shieldOffsets[id];
+    }
 
 
-	std::string SkinManager::GetMaterialPrefix()
-	{
-		return _quality == 0 ? _materialPrefixes[_skinID] : _materialPrefixes[_skinID] + "simple";
-	}
-
-	std::string SkinManager::GetMaterialPrefix(int id, int quality)
-	{
-		return quality == 0 ? _materialPrefixes[id] : _materialPrefixes[id] + "simple";
-	}
-
-	int SkinManager::GetQuality()
-	{
-		return _quality;
-	}
-	void SkinManager::SetQuality(int quality)
-	{
-		_quality = quality;
-	}
 }
 

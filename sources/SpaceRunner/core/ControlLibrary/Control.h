@@ -101,6 +101,7 @@ public:
 	
 	virtual void SetMaterial(std::string material);
 	virtual void SetRenderOrder(int order);
+	virtual int GetRenderOrder();
 
 	virtual void SetRenderType(RenderType type);
 	virtual void SetText(std::string text);

@@ -206,6 +206,11 @@ void Control::SetRenderOrder(int order)
 	//_rect->setRenderQueueGroup(Ogre::RENDER_QUEUE_OVERLAY - order);
 }
 
+int Control::GetRenderOrder()
+{
+	return _overlay->getZOrder();
+}
+
 void Control::SetPushMaterial(std::string image)
 {
 	_usePushMaterial = true;
@@ -538,3 +543,6 @@ int Control::GetChildrenCount()
 {
 	return _children.size();
 }
+
+
+

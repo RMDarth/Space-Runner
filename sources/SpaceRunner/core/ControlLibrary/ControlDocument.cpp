@@ -225,3 +225,12 @@ bool ControlDocument::OnMouseUp(int x, int y)
 
 	return result;
 }
+
+void ControlDocument::RaisePriority(int level)
+{
+	for (auto i = _controlList.begin(); i != _controlList.end(); i++)
+	{
+		(*i)->SetRenderOrder((*i)->GetRenderOrder() + level);
+	}
+}
+

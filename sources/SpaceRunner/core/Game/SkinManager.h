@@ -1,48 +1,46 @@
 #include <vector>
 #include <string>
+#include <Basic.h>
 
-#define SKIN_COUNT 5
+#define SKIN_COUNT 2
 
 namespace CoreEngine
 {
-	class SkinManager
-	{
-		static SkinManager* _instance;
-		int _skinID;
-		int _quality;
+    class SkinManager
+    {
+        using OffsetList = std::vector<Vector3>;
 
-		std::vector<std::string> _colorModelNames;
-		std::vector<std::string> _basisModelNames;
-		std::vector<std::string> _bombModelNames;
-		std::vector<std::string> _steelModelNames;
-		std::vector<std::string> _materialPrefixes;
-		std::vector<int> _connectorUsageList;
+        static SkinManager* _instance;
+        int _skinID;
 
-		SkinManager();
-	public:
-		
-		static SkinManager* Instance();
+        std::vector<std::string> _shipModelNames;
+        std::vector<float> _shipScales;
+        std::vector<OffsetList> _engineOffsets;
+        OffsetList _shieldOffsets;
 
-		void SetSkinID(int skinID);
-		int GetSkinID();
+        SkinManager();
+    public:
 
-		int GetQuality();
-		void SetQuality(int quality);
+        static SkinManager* Instance();
 
-		int GetSkinCount();
+        void SetSkinID(int skinID);
+        int GetSkinID();
 
-		std::string GetColorModelName();
-		std::string GetColorModelName(int id);
-		std::string GetBasisModelName();
-		std::string GetBasisModelName(int id);
-		std::string GetBombModelName();
-		std::string GetBombModelName(int id);
-		std::string GetSteelModelName();
-		std::string GetSteelModelName(int id);
-		bool GetConnectorsUsage();
-		bool GetConnectorsUsage(int id);
-		
-		std::string GetMaterialPrefix();
-		std::string GetMaterialPrefix(int id, int quality);
-	};
+        int GetSkinCount();
+
+        std::string GetShipModelName();
+        std::string GetShipModelName(int id);
+
+        float GetShipScale();
+        float GetShipScale(int id);
+
+        int GetEngineCount();
+        int GetEngineCount(int id);
+
+        Vector3 GetEngineOffset(int num);
+        Vector3 GetEngineOffset(int num, int id);
+
+        Vector3 GetShieldOffset();
+        Vector3 GetShieldOffset(int id);
+    };
 }

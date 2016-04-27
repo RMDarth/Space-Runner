@@ -9,9 +9,9 @@ namespace CoreEngine
 	class MenuStateProcessor : public IStateProcessor,  public IEventHandler
 	{
 		ModelDrawable* _model;
-		SceneSector* _sector;
-		SceneSector* _sectorBike;
 
+		SceneSector* _sector;
+		SceneSector* _sectorShip;
 
 		ControlDocument * _document;
 

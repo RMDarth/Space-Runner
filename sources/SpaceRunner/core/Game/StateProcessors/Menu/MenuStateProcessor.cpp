@@ -24,9 +24,11 @@ namespace CoreEngine
         auto sceneManager = RenderProcessor::Instance()->GetSceneManager();
         auto sceneNode = sceneManager->createSceneNode();
         sceneManager->getRootSceneNode()->addChild(sceneNode);
-        _sectorBike = new SceneSector(sceneNode);
-        _model = new ModelDrawable(_sectorBike, "ship.mesh");
-        _model->SetScale(5);
+        _sectorShip = new SceneSector(sceneNode);
+
+        _model = new ModelDrawable(_sectorShip, "ship.mesh");
+        _model->SetScale(5.0);
+
         sceneNode->setPosition(Ogre::Vector3(0, 3, 0));
 
         // Engine fire
@@ -195,14 +197,14 @@ namespace CoreEngine
     void MenuStateProcessor::Hide()
     {
         _sector->GetNode()->setVisible(false);
-        _sectorBike->GetNode()->setVisible(false);
+        _sectorShip->GetNode()->setVisible(false);
         _document->Hide();
     }
 
     void MenuStateProcessor::Show()
     {
         _sector->GetNode()->setVisible(true);
-        _sectorBike->GetNode()->setVisible(true);
+        _sectorShip->GetNode()->setVisible(true);
         _document->Show();
         ChangeSettingsPanelVisibility();
         //UpdateGooglePlayIcon(_document->GetControlByName("googleplay").get());

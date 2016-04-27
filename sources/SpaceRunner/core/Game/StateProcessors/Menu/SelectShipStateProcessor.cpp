@@ -11,7 +11,7 @@ namespace CoreEngine
         _document->SetMouseUpHandler(this);
         _document->Hide();
 
-        _document->GetControlByName("panel")->SetRenderOrder(1);
+        _document->RaisePriority(2);
     }
 
 

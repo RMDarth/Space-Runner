@@ -43,6 +43,8 @@ public:
 	virtual bool OnMouseDown(int x, int y);
 	virtual bool OnMouseUp(int x, int y);
 
+	void RaisePriority(int level);
+
 private:
 	void AddChildren(Control* parent, tinyxml2::XMLElement* element);
 	void SetCustomAttributes(Control * control, tinyxml2::XMLElement* element);
