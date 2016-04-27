@@ -80,6 +80,8 @@ namespace CoreEngine
         //RenderProcessor::Instance()->SetSkybox(rand() % SKYBOX_NUM + 1);
         if (!_sector)
             InitSpaceShip();
+        else
+            ResetSpaceShip();
 
         _totalTime = 0;
         _score = 0;
@@ -124,6 +126,55 @@ namespace CoreEngine
         _init = true;
     }
 
+    void RaceStateProcessor::ResetSpaceShip()
+    {
+        auto * sceneNode = _sector->GetNode();
+        auto * sceneManager = RenderProcessor::Instance()->GetSceneManager();
+
+        // update ship
+        float scale = SkinManager::Instance()->GetShipScale();
+        _sector->GetNode()->setScale(scale, scale, scale);
+        _ship.reset();
+        _ship = make_unique<ModelDrawable>(_shipSector.get(), SkinManager::Instance()->GetShipModelName());
+
+        // update shield
+        _shipShield = make_unique<ModelDrawable>(_shieldSector.get(), SkinManager::Instance()->GetShipModelName());
+        _shipShield->SetMaterial("ShieldMaterial");
+        _shipShield->SetScale(1.2f);
+        _shieldEffectSector->GetNode()->setPosition(VectorToOgre(SkinManager::Instance()->GetShieldOffset()));
+
+        // clean old engines
+        sceneNode->removeChild(_engineFire[0]->getParentNode());
+        _engineFire[0]->detachFromParent();
+        sceneManager->destroyParticleSystem(_engineFire[0]);
+        if (_engineFire[1])
+        {
+            sceneNode->removeChild(_engineFire[1]->getParentNode());
+            _engineFire[1]->detachFromParent();
+            sceneManager->destroyParticleSystem(_engineFire[1]);
+        }
+
+        // Create new engines
+        auto sceneNodeChild = sceneManager->createSceneNode();
+        sceneNodeChild->setPosition(VectorToOgre(SkinManager::Instance()->GetEngineOffset(0)));
+        sceneNode->addChild(sceneNodeChild);
+
+        _engineFire[0] = sceneManager->createParticleSystem("EngineFire", "Engine");
+        sceneNodeChild->attachObject(_engineFire[0]);
+
+        if (SkinManager::Instance()->GetEngineCount() > 1)
+        {
+            sceneNodeChild = sceneManager->createSceneNode();
+            sceneNodeChild->setPosition(VectorToOgre(SkinManager::Instance()->GetEngineOffset(1)));
+            sceneNode->addChild(sceneNodeChild);
+
+            _engineFire[1] = sceneManager->createParticleSystem("EngineFire2", "Engine");
+            sceneNodeChild->attachObject(_engineFire[1]);
+        } else {
+            _engineFire[1] = nullptr;
+        }
+    }
+
     void RaceStateProcessor::InitSpaceShip()
     {
         auto sceneManager = RenderProcessor::Instance()->GetSceneManager();
@@ -160,6 +211,8 @@ namespace CoreEngine
 
             _engineFire[1] = sceneManager->createParticleSystem("EngineFire2", "Engine");
             sceneNodeChild->attachObject(_engineFire[1]);
+        } else {
+            _engineFire[1] = nullptr;
         }
 
         auto sceneNodeShieldEffect = sceneManager->createSceneNode();

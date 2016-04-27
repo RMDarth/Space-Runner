@@ -111,6 +111,8 @@ namespace CoreEngine
         void InitSound();
         void InitSpaceShip();
 
+        void ResetSpaceShip();
+
         void PreloadModels();
         void UpdateTurn();
         void StartExplosion();
