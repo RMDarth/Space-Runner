@@ -15,6 +15,7 @@
 #include "EnergyOrb.h"
 #include "Barrier.h"
 #include "Boss.h"
+#include "BigBoss.h"
 
 using namespace std;
 
@@ -64,7 +65,7 @@ namespace CoreEngine
         vector<PrefabInfo> prefabList;
         for (int i = 0; i < 50; i++)
         {
-            //obstacleList.push_back(ObstacleType::Boss); continue;
+            //obstacleList.push_back(ObstacleType::BigBoss); continue;
             int type = rand() % 18;
             if (type < 2)
             {
@@ -241,6 +242,14 @@ namespace CoreEngine
                         totalTime,
                         0);
                 break;
+
+            case ObstacleType::BigBoss:
+                _currentObstacle = make_unique<Obstacle>(
+                        ObstacleType::BigBoss,
+                        5000,
+                        totalTime,
+                        0);
+                break;
             }
         }
         else
@@ -273,6 +282,10 @@ namespace CoreEngine
 
                 case ObstacleType::Boss:
                     ProcessBoss(totalTime);
+                    break;
+
+                case ObstacleType::BigBoss:
+                    ProcessBigBoss(totalTime);
                     break;
             }
         }
@@ -581,6 +594,29 @@ namespace CoreEngine
         }
     }
 
+    void Space::ProcessBigBoss(float totalTime)
+    {
+        if (totalTime > 3 && totalTime - _lastObstacleCreated > 9 && !_boss)
+        {
+            _boss = make_shared<BigBoss>(Vector3(-ASTEROID_NUM * BLOCK_SIZE, 0, presetPos[1]));
+            _bossCallback(50, 50);
+
+            _lastObstacleCreated = totalTime + 10;
+        }
+
+        if (_boss && totalTime - _lastObstacleCreated > 1.5f * 10)
+        {
+            Vector3 missilePos = _boss->getPos();
+            missilePos.z = presetPos[rand() % 3];
+            missilePos.x += 0.1f;
+
+            // rocket speed can be difficulty
+            auto missile = make_shared<Missile>(missilePos, 25, 0.25f);
+            _missileList.push_back(missile);
+            _lastObstacleCreated = totalTime;
+        }
+    }
+
     void Space::UpdateShots(float time, float roadOffset)
     {
         for_each(_shotList.begin(), _shotList.end(), bind(&BlasterBurst::Update, placeholders::_1, time, roadOffset));
@@ -633,12 +669,18 @@ namespace CoreEngine
                 _boss->Hit();
                 if (!_boss->IsDone())
                 {
-                    auto pos = shot->getPos() - _boss->getPos();
-
                     _sparksList.push_back(make_shared<Sparks>(shot->getPos(), -1.0f));
                 } else {
                     _boss->Destroy();
-                    _explosionList.push_back(make_shared<Explosion>(_boss->getPos()));
+                    if (_boss->GetType() == Boss::Type::Small)
+                    {
+                        _explosionList.push_back(make_shared<Explosion>(_boss->getPos()));
+                    } else {
+                        for (float offset = presetPos[0]; offset <= presetPos[2] + 1; offset += presetPos[2]/2)
+                        {
+                            _explosionList.push_back(make_shared<Explosion>(Vector3(_boss->getPos().x, _boss->getPos().y, offset)));
+                        }
+                    }
                     _currentObstacle.reset();
                 }
 
@@ -730,8 +772,4 @@ namespace CoreEngine
         }
         return SpaceObjectType::None;
     }
-
-
-
-
 }

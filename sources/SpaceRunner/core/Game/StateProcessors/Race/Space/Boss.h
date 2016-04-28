@@ -2,6 +2,7 @@
 #include "Basic.h"
 #include "SpaceDefs.h"
 #include "SpaceObject.h"
+#include "BossInterface.h"
 #include <string>
 
 class SceneSector;
@@ -9,7 +10,7 @@ class ModelDrawable;
 
 namespace CoreEngine
 {
-    class Boss : public SpaceObject
+    class Boss : public BossInterface
     {
         ModelDrawable * _model;
 
@@ -31,8 +32,9 @@ namespace CoreEngine
         void Update(float time, float roadSpeed) override;
         void SetVisible(bool visible) override;
 
-        void Hit();
-        int GetLives();
+        void Hit() override;
+        int GetLives() override;
+        Type GetType() override { return Type::Small; }
 
         bool IsDone() override;
 

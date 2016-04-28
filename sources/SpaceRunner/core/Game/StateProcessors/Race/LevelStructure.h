@@ -26,6 +26,7 @@ namespace CoreEngine
         EnergyBarrier = 4,
         Prefab = 5,
         Boss = 6,
+        BigBoss = 7,
         Last
     };
 
