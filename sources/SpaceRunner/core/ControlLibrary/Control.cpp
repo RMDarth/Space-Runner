@@ -15,7 +15,6 @@ Control::Control(SceneSector* sector, std::string type, std::string name, float 
 	_sector = sector;
 	_type = type;
 
-
 	int c_x, c_y, c_width, c_height;
 	if (parent == nullptr)
 	{

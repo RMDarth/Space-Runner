@@ -164,8 +164,10 @@ set(SOURCE_FILES
     core/ControlLibrary/SlidePanelControl.h
     core/Game/StateProcessors/Race/LevelFileManager.cpp
     core/Game/StateProcessors/Race/LevelFileManager.h
-        core/Game/StateProcessors/Race/Space/AsteroidProcessor.cpp
-        core/Game/StateProcessors/Race/Space/AsteroidProcessor.h core/Game/StateProcessors/Menu/SelectShipStateProcessor.cpp core/Game/StateProcessors/Menu/SelectShipStateProcessor.h)
+    core/Game/StateProcessors/Race/Space/AsteroidProcessor.cpp
+    core/Game/StateProcessors/Race/Space/AsteroidProcessor.h
+    core/Game/StateProcessors/Menu/SelectShipStateProcessor.cpp
+    core/Game/StateProcessors/Menu/SelectShipStateProcessor.h)
 
 add_executable(spacerush ${SOURCE_FILES})
 

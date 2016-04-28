@@ -126,7 +126,6 @@ namespace CoreEngine
     {
         _sector->GetNode()->setVisible(false);
         _document->Hide();
-        RenderProcessor::Instance()->GetCamera()->SetPerspective();
     }
 
     void StoryboardStateProcessor::Show()
@@ -137,9 +136,21 @@ namespace CoreEngine
         SetLightAndCamera();
 
 
+        bool previous = true;
         for (int i = 0; i < 10; i++)
         {
             int stars = Scores::Instance()->GetBestStars(i + 1);
+
+            if (stars > 0)
+            {
+                previous = true;
+                _document->GetControlByName("lock" + std::to_string(i+1))->SetVisible(false);
+            } else if (previous)
+            {
+                previous = false;
+                _document->GetControlByName("lock" + std::to_string(i+1))->SetVisible(false);
+            }
+
             for (int r = 0; r < stars; r++)
             {
                 auto control = _document->GetControlByName("star" + std::to_string(i+1) + "_" + std::to_string(r+1));
@@ -164,12 +175,16 @@ namespace CoreEngine
             Scores::Instance()->Reset();
             Show();
         }
-        else if (control->GetName() != "panel")
+        else if (control->GetClassType() == "Button")
         {
-            LevelManager::Instance()->SetIsPuzzle(true);
-            LevelManager::Instance()->SetLevelNum(stoi(control->GetName()));
-            LevelManager::Instance()->SetStarted(false);
-            _changeState = 1;
+            int levelNum = stoi(control->GetName());
+            if (!_document->GetControlByName("lock" + std::to_string(levelNum))->IsVisible())
+            {
+                LevelManager::Instance()->SetIsPuzzle(true);
+                LevelManager::Instance()->SetLevelNum(levelNum);
+                LevelManager::Instance()->SetStarted(false);
+                _changeState = 1;
+            }
             //_document->Hide();
         }
     }
@@ -177,7 +192,6 @@ namespace CoreEngine
     void StoryboardStateProcessor::SetLightAndCamera()
     {
         auto camera = RenderProcessor::Instance()->GetCamera();
-        camera->SetOrthogonal();
         Vector3 pos = Vector3(
                 0,
                 0,

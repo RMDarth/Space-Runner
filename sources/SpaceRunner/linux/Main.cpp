@@ -22,6 +22,11 @@ void msleep(unsigned long milisec)
 int main()
 {
 	OgreApplication::Instance()->Init();
+	if (OgreApplication::Instance()->IsExit())
+	{
+		return 0;
+	}
+
 	Config::Instance()->Load();
 	bool soundEnabled = SoundSystem::Instance()->Init();
 	if (!soundEnabled)

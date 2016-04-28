@@ -124,7 +124,7 @@ namespace CoreEngine
 
     bool SelectShipStateProcessor::IsOverlapping()
     {
-        return false;//Game::Instance()->GetState() != GameState::MainMenu;
+        return Game::Instance()->GetState() != GameState::MainMenu;
     }
 
     void SelectShipStateProcessor::SetLightAndCamera()
