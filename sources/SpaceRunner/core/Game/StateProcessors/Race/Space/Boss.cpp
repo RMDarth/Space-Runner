@@ -7,8 +7,8 @@ namespace CoreEngine
 {
     static const float presetPos[3] = { -BLOCK_SIZE * 1.1f, 0, BLOCK_SIZE * 1.1f };
 
-    Boss::Boss(Vector3 offset, int lives)
-            : BossInterface(offset)
+    Boss::Boss(Vector3 offset, int lives, Difficulty difficulty)
+            : BossInterface(offset, difficulty)
             , _lives(lives)
     {
         auto sceneManager = RenderProcessor::Instance()->GetSceneManager();

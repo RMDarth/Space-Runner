@@ -26,7 +26,7 @@ namespace CoreEngine
         int _lives = 50;
 
     public:
-        BigBoss(Vector3 offset, int lives = 50);
+        BigBoss(Vector3 offset, int lives = 50, Difficulty difficulty = Difficulty::Easy);
         ~BigBoss();
         void Update(float time, float roadSpeed) override;
         void SetVisible(bool visible) override;

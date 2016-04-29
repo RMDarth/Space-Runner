@@ -27,7 +27,7 @@ namespace CoreEngine
         int _lives = 50;
 
     public:
-        Boss(Vector3 offset, int lives = 50);
+        Boss(Vector3 offset, int lives = 50, Difficulty difficulty = Difficulty::Easy);
         ~Boss();
         void Update(float time, float roadSpeed) override;
         void SetVisible(bool visible) override;

@@ -18,13 +18,26 @@ namespace CoreEngine
             Big
         };
 
-        BossInterface(Vector3 offset)
+        enum class Difficulty
+        {
+            Easy,
+            Normal,
+            Hard
+        };
+
+        BossInterface(Vector3 offset, Difficulty difficulty)
             : SpaceObject(offset, 0)
+            , _difficulty(difficulty)
         {
         }
 
         virtual void Hit() = 0;
         virtual int GetLives() = 0;
         virtual Type GetType() = 0;
+
+        virtual Difficulty GetDifficulty() { return _difficulty; }
+
+    protected:
+        Difficulty _difficulty;
     };
 }

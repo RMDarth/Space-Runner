@@ -577,18 +577,30 @@ namespace CoreEngine
     {
         if (totalTime > 3 && totalTime - _lastObstacleCreated > 9 && !_boss)
         {
-            _boss = make_shared<Boss>(Vector3(-ASTEROID_NUM * BLOCK_SIZE, 0, presetPos[1]));
+            _boss = make_shared<Boss>(
+                    Vector3(-ASTEROID_NUM * BLOCK_SIZE, 0, presetPos[1]),
+                    50,
+                    (Boss::Difficulty)_currentLevel->difficulty);
             _bossCallback(50, 50);
 
             _lastObstacleCreated = totalTime + 10;
         }
 
-        if (_boss && totalTime - _lastObstacleCreated > 1.5f * 10)
+        float period = _boss && _boss->GetDifficulty() != Boss::Difficulty::Hard ? 1.5f : 0.4f;
+        if (_boss && totalTime - _lastObstacleCreated > period * 10)
         {
             Vector3 missilePos = _boss->getPos();
             missilePos.x += 0.1f;
 
-            auto missile = make_shared<Missile>(missilePos, -12.0f - rand()%6 , 0.25f);
+            float speed;
+            if (_boss->GetDifficulty() == BigBoss::Difficulty::Easy)
+            {
+                speed = 0;
+            } else {
+                speed = -18.0f - rand()%6;
+            }
+
+            auto missile = make_shared<Missile>(missilePos, speed, 0.25f);
             _missileList.push_back(missile);
             _lastObstacleCreated = totalTime;
         }
@@ -598,21 +610,50 @@ namespace CoreEngine
     {
         if (totalTime > 3 && totalTime - _lastObstacleCreated > 9 && !_boss)
         {
-            _boss = make_shared<BigBoss>(Vector3(-ASTEROID_NUM * BLOCK_SIZE, 0, presetPos[1]));
+            _boss = make_shared<BigBoss>(
+                    Vector3(-ASTEROID_NUM * BLOCK_SIZE, 0, presetPos[1]),
+                    50,
+                    (BigBoss::Difficulty)_currentLevel->difficulty);
             _bossCallback(50, 50);
 
             _lastObstacleCreated = totalTime + 10;
         }
 
-        if (_boss && totalTime - _lastObstacleCreated > 1.5f * 10)
+        float period = _boss && _boss->GetDifficulty() == BigBoss::Difficulty::Easy ? 1.5f : 1.0f;
+        if (_boss && totalTime - _lastObstacleCreated > period * 10)
         {
-            Vector3 missilePos = _boss->getPos();
-            missilePos.z = presetPos[rand() % 3];
-            missilePos.x += 0.1f;
+            float speed;
+            if (_boss->GetDifficulty() == BigBoss::Difficulty::Easy)
+            {
+                speed = 15;
+            } else {
+                speed = -10;
+            }
 
-            // rocket speed can be difficulty
-            auto missile = make_shared<Missile>(missilePos, 25, 0.25f);
-            _missileList.push_back(missile);
+            if (_boss->GetDifficulty() == BigBoss::Difficulty::Hard)
+            {
+                int rocketPos = rand() % 4 + 3;
+                for (auto r = 0; r < 3; r++)
+                {
+                    if (rocketPos & (1<<r))
+                    {
+                        Vector3 missilePos = _boss->getPos();
+                        missilePos.z = presetPos[r];
+                        missilePos.x += 0.1f;
+                        auto missile = make_shared<Missile>(missilePos, speed, 0.25f);
+                        _missileList.push_back(missile);
+                    }
+                }
+            }
+            else
+            {
+                Vector3 missilePos = _boss->getPos();
+                missilePos.z = presetPos[rand() % 3];
+                missilePos.x += 0.1f;
+
+                auto missile = make_shared<Missile>(missilePos, speed, 0.25f);
+                _missileList.push_back(missile);
+            }
             _lastObstacleCreated = totalTime;
         }
     }

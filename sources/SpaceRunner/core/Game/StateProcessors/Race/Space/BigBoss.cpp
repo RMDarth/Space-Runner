@@ -6,8 +6,8 @@
 
 namespace CoreEngine
 {
-    BigBoss::BigBoss(Vector3 offset, int lives)
-            : BossInterface(offset)
+    BigBoss::BigBoss(Vector3 offset, int lives, Difficulty difficulty)
+            : BossInterface(offset, difficulty)
             , _lives(lives)
     {
         auto sceneManager = RenderProcessor::Instance()->GetSceneManager();
