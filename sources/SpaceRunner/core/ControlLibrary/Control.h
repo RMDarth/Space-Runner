@@ -85,13 +85,25 @@ protected:
 	int _x, _y;
 	int _width, _height;
 
+	float _fontSize;
+
 	float _diffuseColor[4];
 
 	std::vector<IEventHandler*> _mouseDownHandlerList;
 	std::vector<IEventHandler*> _mouseUpHandlerList;
 	std::vector<IEventHandler*> _mouseMoveHandlerList;
 public:
-	Control(SceneSector* sector, std::string type, std::string name, float x, float y, float width, float height, std::string defaultImage, Control* parent = nullptr, RenderType renderType = RenderType::Image);
+	Control(SceneSector* sector,
+			std::string type,
+			std::string name,
+			float x,
+			float y,
+			float width,
+			float height,
+			std::string defaultImage,
+			Control* parent = nullptr,
+			RenderType renderType = RenderType::Image,
+			float fontSize = 30);
 	virtual ~Control();
 
 	virtual void SetDefaultMaterial(std::string image, bool create = true);
@@ -114,6 +126,7 @@ public:
 	virtual void SetCustomAttribute(std::string name, std::string value);
 	virtual void SetDiffuseColor(float* rgbaColor);
 	virtual void SetFontColor(float* rgbaColor);
+	virtual void SetFontSize(float size);
 
 	virtual RenderType GetRenderType();
 	virtual std::string GetText();

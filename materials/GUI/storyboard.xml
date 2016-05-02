@@ -2,83 +2,103 @@
 	<SlidePanel name="panel" x="0" y="0.00" realwidth="1" width="-3.2" height="1" image="tempbg.jpg">
 		<Button name="1"  x="0.05" y="0.15" width="-1.33" height="0.25" image="buttons/back.png" singleimage="true">
 			<Label name="line1" x="0.68" y="0.71" width="1.1" height="0.185" image="levelLine.png" /> 
-			<Label name="name1" text="Level 1" x="0.77" y="0.58" width="1.1" height="0.1" font-color="0.7 0.7 0.7 1.0"/> 
+			<Label name="name1" text="Level 1" x="0.72" y="0.58" width="1.1" height="0.1" font-size="20" font-color="0.7 0.7 0.7 1.0" /> 
 
 			<Image name="star1_1" image="Star.png" x="1.1" y="0.775" width="-1" height="0.15" />
 			<Image name="star1_2" image="Star.png" x="1.22" y="0.775" width="-1" height="0.15" />
 			<Image name="star1_3" image="Star.png" x="1.34" y="0.775" width="-1" height="0.15" />
+
+			<Image name="lock1" image="Lock.png" alignment="center" y="0.1" width="0.6" height="-1" />
 		</Button>
 		<Button name="2"  x="0.14" y="0.55" width="-1.33" height="0.25" image="buttons/back.png" singleimage="true">
 			<Label name="line2" x="0.68" y="0.71" width="1.1" height="0.185" image="levelLine.png" /> 
-			<Label name="name2" text="Level 2" x="0.77" y="0.58" width="1.1" height="0.1" font-color="0.7 0.7 0.7 1.0"/> 
+			<Label name="name2" text="Level 2" x="0.72" y="0.58" width="1.1" height="0.1" font-size="20" font-color="0.7 0.7 0.7 1.0"/> 
 
 			<Image name="star2_1" image="Star.png" x="1.1" y="0.775" width="-1" height="0.15" />
 			<Image name="star2_2" image="Star.png" x="1.22" y="0.775" width="-1" height="0.15" />
 			<Image name="star2_3" image="Star.png" x="1.34" y="0.775" width="-1" height="0.15" />
+
+			<Image name="lock2" image="Lock.png" alignment="center" y="0.1" width="0.6" height="-1" />
 		</Button>
 		<Button name="3"  x="0.23" y="0.15" width="-1.33" height="0.25" image="buttons/back.png" singleimage="true">
 			<Label name="line3" x="0.68" y="0.71" width="1.1" height="0.185" image="levelLine.png" /> 
-			<Label name="name3" text="Level 3" x="0.77" y="0.58" width="1.1" height="0.1" font-color="0.7 0.7 0.7 1.0"/> 
+			<Label name="name3" text="Level 3" x="0.72" y="0.58" width="1.1" height="0.1" font-size="20" font-color="0.7 0.7 0.7 1.0"/> 
 
 			<Image name="star3_1" image="Star.png" x="1.1" y="0.775" width="-1" height="0.15" />
 			<Image name="star3_2" image="Star.png" x="1.22" y="0.775" width="-1" height="0.15" />
 			<Image name="star3_3" image="Star.png" x="1.34" y="0.775" width="-1" height="0.15" />
+
+			<Image name="lock3" image="Lock.png" alignment="center" y="0.1" width="0.6" height="-1" />
 		</Button>
 		<Button name="4"  x="0.32" y="0.55" width="-1.33" height="0.25" image="buttons/back.png" singleimage="true">
 			<Label name="line4" x="0.68" y="0.71" width="1.1" height="0.185" image="levelLine.png" /> 
-			<Label name="name4" text="Level 4" x="0.77" y="0.58" width="1.1" height="0.1" font-color="0.7 0.7 0.7 1.0"/> 
+			<Label name="name4" text="Level 4" x="0.72" y="0.58" width="1.1" height="0.1" font-size="20" font-color="0.7 0.7 0.7 1.0"/> 
 
 			<Image name="star4_1" image="Star.png" x="1.1" y="0.775" width="-1" height="0.15" />
 			<Image name="star4_2" image="Star.png" x="1.22" y="0.775" width="-1" height="0.15" />
 			<Image name="star4_3" image="Star.png" x="1.34" y="0.775" width="-1" height="0.15" />
+
+			<Image name="lock4" image="Lock.png" alignment="center" y="0.1" width="0.6" height="-1" />
 		</Button>
 		<Button name="5"  x="0.41" y="0.15" width="-1.33" height="0.25" image="buttons/back.png" singleimage="true">
 			<Label name="line5" x="0.68" y="0.71" width="1.1" height="0.185" image="levelLine.png" /> 
-			<Label name="name5" text="Level 5" x="0.77" y="0.58" width="1.1" height="0.1" font-color="0.7 0.7 0.7 1.0"/> 
+			<Label name="name5" text="Level 5" x="0.72" y="0.58" width="1.1" height="0.1" font-size="20" font-color="0.7 0.7 0.7 1.0"/> 
 
 			<Image name="star5_1" image="Star.png" x="1.1" y="0.775" width="-1" height="0.15" />
 			<Image name="star5_2" image="Star.png" x="1.22" y="0.775" width="-1" height="0.15" />
 			<Image name="star5_3" image="Star.png" x="1.34" y="0.775" width="-1" height="0.15" />
+
+			<Image name="lock5" image="Lock.png" alignment="center" y="0.1" width="0.6" height="-1" />
 		</Button>
 		<Button name="6"  x="0.50" y="0.55" width="-1.33" height="0.25" image="buttons/back.png" singleimage="true">
 			<Label name="line6" x="0.68" y="0.71" width="1.1" height="0.185" image="levelLine.png" /> 
-			<Label name="name6" text="Level 6" x="0.77" y="0.58" width="1.1" height="0.1" font-color="0.7 0.7 0.7 1.0"/> 
+			<Label name="name6" text="Level 6" x="0.72" y="0.58" width="1.1" height="0.1" font-size="20" font-color="0.7 0.7 0.7 1.0"/> 
 
 			<Image name="star6_1" image="Star.png" x="1.1" y="0.775" width="-1" height="0.15" />
 			<Image name="star6_2" image="Star.png" x="1.22" y="0.775" width="-1" height="0.15" />
 			<Image name="star6_3" image="Star.png" x="1.34" y="0.775" width="-1" height="0.15" />
+
+			<Image name="lock6" image="Lock.png" alignment="center" y="0.1" width="0.6" height="-1" />
 		</Button>
 		<Button name="7"  x="0.59" y="0.15" width="-1.33" height="0.25" image="buttons/back.png" singleimage="true">
 			<Label name="line7" x="0.68" y="0.71" width="1.1" height="0.185" image="levelLine.png" /> 
-			<Label name="name7" text="Level 7" x="0.77" y="0.58" width="1.1" height="0.1" font-color="0.7 0.7 0.7 1.0" /> 
+			<Label name="name7" text="Level 7" x="0.72" y="0.58" width="1.1" height="0.1" font-size="20" font-color="0.7 0.7 0.7 1.0" /> 
 
 			<Image name="star7_1" image="Star.png" x="1.1" y="0.775" width="-1" height="0.15" />
 			<Image name="star7_2" image="Star.png" x="1.22" y="0.775" width="-1" height="0.15" />
 			<Image name="star7_3" image="Star.png" x="1.34" y="0.775" width="-1" height="0.15" />
+
+			<Image name="lock7" image="Lock.png" alignment="center" y="0.1" width="0.6" height="-1" />
 		</Button>
 		<Button name="8"  x="0.68" y="0.55" width="-1.33" height="0.25" image="buttons/back.png" singleimage="true">
 			<Label name="line8" x="0.68" y="0.71" width="1.1" height="0.185" image="levelLine.png" /> 
-			<Label name="name8" text="Level 8" x="0.77" y="0.58" width="1.1" height="0.1" font-color="0.7 0.7 0.7 1.0"/> 
+			<Label name="name8" text="Level 8" x="0.72" y="0.58" width="1.1" height="0.1" font-size="20" font-color="0.7 0.7 0.7 1.0"/> 
 
 			<Image name="star8_1" image="Star.png" x="1.1" y="0.775" width="-1" height="0.15" />
 			<Image name="star8_2" image="Star.png" x="1.22" y="0.775" width="-1" height="0.15" />
 			<Image name="star8_3" image="Star.png" x="1.34" y="0.775" width="-1" height="0.15" />
+
+			<Image name="lock8" image="Lock.png" alignment="center" y="0.1" width="0.6" height="-1" />
 		</Button>
-		<Button name="9"  x="0.77" y="0.15" width="-1.33" height="0.25" image="buttons/back.png" singleimage="true">
+		<Button name="9"  x="0.72" y="0.15" width="-1.33" height="0.25" image="buttons/back.png" singleimage="true">
 			<Label name="line9" x="0.68" y="0.71" width="1.1" height="0.185" image="levelLine.png" /> 
-			<Label name="name9" text="Level 9" x="0.77" y="0.58" width="1.1" height="0.1" font-color="0.7 0.7 0.7 1.0"/> 
+			<Label name="name9" text="Level 9" x="0.72" y="0.58" width="1.1" height="0.1" font-size="20" font-color="0.7 0.7 0.7 1.0"/> 
 
 			<Image name="star9_1" image="Star.png" x="1.1" y="0.775" width="-1" height="0.15" />
 			<Image name="star9_2" image="Star.png" x="1.22" y="0.775" width="-1" height="0.15" />
 			<Image name="star9_3" image="Star.png" x="1.34" y="0.775" width="-1" height="0.15" />
+
+			<Image name="lock9" image="Lock.png" alignment="center" y="0.1" width="0.6" height="-1" />
 		</Button>
 		<Button name="10"  x="0.86" y="0.55" width="-1.33" height="0.25" image="buttons/back.png" singleimage="true">
 			<Label name="line10" x="0.68" y="0.71" width="1.1" height="0.185" image="levelLine.png" /> 
-			<Label name="name10" text="Level 10" x="0.77" y="0.58" width="1.1" height="0.1" font-color="0.7 0.7 0.7 1.0"/> 
+			<Label name="name10" text="Level 10" x="0.72" y="0.58" width="1.1" height="0.1" font-size="20" font-color="0.7 0.7 0.7 1.0"/> 
 
 			<Image name="star10_1" image="GrayStar.png" x="1.1" y="0.775" width="-1" height="0.15" />
 			<Image name="star10_2" image="Star.png" x="1.22" y="0.775" width="-1" height="0.15" />
 			<Image name="star10_3" image="Star.png" x="1.34" y="0.775" width="-1" height="0.15" />
+
+			<Image name="lock10" image="Lock.png" alignment="center" y="0.1" width="0.6" height="-1" />
 		</Button>
 	</SlidePanel>
 	<Button name="back"  x="0.05" y="0.85" width="0.08" height="-1" image="buttons/back.png" hoverimage="buttons/back_hover.png" pressedimage="buttons/back_pressed.png" />
