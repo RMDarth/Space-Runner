@@ -41,7 +41,7 @@ namespace CoreEngine
             }
             auto posY = (rand() % (int)(BLOCK_SIZE * 40.0f * 10)) / 10.0f - BLOCK_SIZE * 20.0f;
 
-            int num = rand()%6 + 1;
+            int num = rand() % 6 + 1;
             auto asteroid = make_shared<Asteroid>(Vector3(-i*BLOCK_SIZE * 10, posY, posX), Asteroid::getAsteroidName(num), 0.0f, 90.0);
             std::stringstream ss;
             ss << "asteroid" << num << "_Dark";
@@ -53,13 +53,13 @@ namespace CoreEngine
         {
             _currentLevel = unique_ptr<Level>(LevelFileManager::Instance()->LoadLevel(LevelManager::Instance()->GetLevelNum()));
         } else {
-            GenerateLevel();
+            GenerateLevel(LevelDifficulty::Hard);
         }
 
-        //LevelFileManager::Instance()->SaveLevel(_currentLevel.get(), 2);
+        //LevelFileManager::Instance()->SaveLevel(_currentLevel.get(), 11);
     }
 
-    void Space::GenerateLevel()
+    void Space::GenerateLevel(LevelDifficulty difficulty)
     {
         vector<ObstacleType> obstacleList;
         vector<PrefabInfo> prefabList;
@@ -85,9 +85,23 @@ namespace CoreEngine
             }
             else if (type < 10)
             {
-                int num = (int)PrefabManager::Instance()->getPrefabList("normal").size();
+                string difficultyStr;
+                switch (difficulty)
+                {
+                    case LevelDifficulty::Easy:
+                        difficultyStr = "easy";
+                        break;
+                    case LevelDifficulty::Normal:
+                        difficultyStr = "normal";
+                        break;
+                    case LevelDifficulty::Hard:
+                        difficultyStr = "hard";
+                        break;
+                }
+
+                int num = (int)PrefabManager::Instance()->getPrefabList(difficultyStr).size();
                 obstacleList.push_back(ObstacleType::Prefab);
-                PrefabInfo prefabInfo { "normal", rand() % num + 1 };
+                PrefabInfo prefabInfo { difficultyStr, rand() % num + 1 };
                 prefabList.push_back(std::move(prefabInfo));
             }
             else
@@ -103,7 +117,8 @@ namespace CoreEngine
         _currentLevel->obstacleList = obstacleList;
         _currentLevel->prefabList = prefabList;
         _currentLevel->skyboxId = 0;
-        _currentLevel->difficulty = LevelDifficulty::Hard;
+        _currentLevel->difficulty = difficulty;
+        _currentLevel->bossDifficulty = BossInterface::Difficulty::Normal;
         _currentLevel->energyToComplete = 100;
     }
 
@@ -389,7 +404,14 @@ namespace CoreEngine
 
             bool posUsed[3] = { false, false, false };
 
-            int count = rand() % 3 + 1;
+            int count;
+            if (_currentLevel->difficulty == LevelDifficulty::Easy)
+                count = rand() % 2;
+            else if (_currentLevel->difficulty == LevelDifficulty::Normal)
+                count = rand() % 2 + 1;
+            else
+                count = rand() % 3 + 1;
+
             for (int i = 0; i < count; i++)
             {
                 int posIndex;
@@ -580,7 +602,7 @@ namespace CoreEngine
             _boss = make_shared<Boss>(
                     Vector3(-ASTEROID_NUM * BLOCK_SIZE, 0, presetPos[1]),
                     50,
-                    (Boss::Difficulty)_currentLevel->difficulty);
+                    _currentLevel->bossDifficulty);
             _bossCallback(50, 50);
 
             _lastObstacleCreated = totalTime + 10;
@@ -613,7 +635,7 @@ namespace CoreEngine
             _boss = make_shared<BigBoss>(
                     Vector3(-ASTEROID_NUM * BLOCK_SIZE, 0, presetPos[1]),
                     50,
-                    (BigBoss::Difficulty)_currentLevel->difficulty);
+                    _currentLevel->bossDifficulty);
             _bossCallback(50, 50);
 
             _lastObstacleCreated = totalTime + 10;

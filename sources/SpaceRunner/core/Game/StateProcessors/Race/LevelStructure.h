@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include <string>
+#include <Game/StateProcessors/Race/Space/BossInterface.h>
 
 namespace CoreEngine
 {
@@ -27,7 +28,6 @@ namespace CoreEngine
         Prefab = 5,
         Boss = 6,
         BigBoss = 7,
-        Last
     };
 
     enum class LevelDifficulty
@@ -64,6 +64,7 @@ namespace CoreEngine
         std::vector<PrefabInfo> prefabList;
         int currentPrefab;
         LevelDifficulty difficulty;
+        BossInterface::Difficulty bossDifficulty;
         int skyboxId;
         int energyToComplete;
         // int bossId;

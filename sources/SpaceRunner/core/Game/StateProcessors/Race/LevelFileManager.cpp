@@ -27,6 +27,7 @@ namespace CoreEngine
         FileOutputRef file(filename);
 
         file.WriteInt((int)level->difficulty);
+        file.WriteInt((int)level->bossDifficulty);
         file.WriteInt(level->energyToComplete);
         file.WriteInt(level->skyboxId);
 
@@ -69,6 +70,7 @@ namespace CoreEngine
         Level * structure = new Level();
 
         structure->difficulty = (LevelDifficulty)file.ReadInt();
+        structure->bossDifficulty = (BossInterface::Difficulty)file.ReadInt();
         structure->energyToComplete = file.ReadInt();
         structure->skyboxId = file.ReadInt();
         int obstacleNum = file.ReadInt();
