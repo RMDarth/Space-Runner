@@ -53,7 +53,7 @@ namespace CoreEngine
 
 	void MessageStateProcessor::Show()
 	{
-		_document->GetControlByName("text")->SetText(LevelManager::Instance()->GetHelp());
+		_document->GetControlByName("text")->SetText("Message Text");
 
 		_document->Show();
 	}

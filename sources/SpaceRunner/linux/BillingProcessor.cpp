@@ -62,7 +62,7 @@ void BillingProcessor::ShowLeaderboard()
 
 }
 
-void BillingProcessor::UpdateEndlessScore(int score)
+void BillingProcessor::UpdateScore(int score)
 {
 
 }

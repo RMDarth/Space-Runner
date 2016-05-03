@@ -29,7 +29,8 @@ namespace CoreEngine
         file.WriteInt((int)level->difficulty);
         file.WriteInt((int)level->bossDifficulty);
         file.WriteInt(level->energyToComplete);
-        file.WriteInt(level->skyboxId);
+        file.WriteInt(level->minMissingEnergy);
+        file.WriteInt(level->avgMissingEnergy);
 
         file.WriteInt((int)level->obstacleList.size());
         for (auto i = 0; i < level->obstacleList.size(); i++)
@@ -72,6 +73,8 @@ namespace CoreEngine
         structure->difficulty = (LevelDifficulty)file.ReadInt();
         structure->bossDifficulty = (BossInterface::Difficulty)file.ReadInt();
         structure->energyToComplete = file.ReadInt();
+        structure->minMissingEnergy = file.ReadInt();
+        structure->avgMissingEnergy = file.ReadInt();
         structure->skyboxId = file.ReadInt();
         int obstacleNum = file.ReadInt();
         for (int i = 0; i < obstacleNum; i++)

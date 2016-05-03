@@ -1,6 +1,5 @@
 ﻿#include "ScoreStateProcessor.h"
 #include "BillingProcessor.h"
-#include "WorldSelectionStateProcessor.h"
 #include "Game/StateProcessors/Level/LevelManager.h"
 #include "SoundSystem.h"
 #include "Game/Scores.h"
@@ -184,7 +183,7 @@ namespace CoreEngine
 				Game::Instance()->ChangeState(GameState::Storyboard);
 			}
 			else {
-				Game::Instance()->ChangeState(GameState::DifficultySelect);
+				Game::Instance()->ChangeState(GameState::MainMenu);
 			}
 		}
 	}
@@ -213,7 +212,7 @@ namespace CoreEngine
 		//_achievementTime = 0;
 
 		
-		if (levelManager->IsVictory() || levelManager->IsEndless())
+		if (levelManager->IsVictory())
 		{
 			if (levelManager->IsVictory())
 			{
@@ -224,6 +223,8 @@ namespace CoreEngine
 				auto restartBtn = _document->GetControlByName("restart");
 				restartBtn->SetPos(_restartX, _restartY);
 				restartBtn->SetVisible(true);
+
+				Scores::Instance()->UpdateTotalEnergy(levelManager->GetScore());
 			}
 			else
 			{
@@ -234,11 +235,11 @@ namespace CoreEngine
 
 			if (levelManager->IsPuzzle())
 			{
-				highscore = scores->UpdatePuzzleScore(levelManager->GetLevelNum(), levelManager->GetTime(), levelManager->GetScore());
+				highscore = scores->UpdatePuzzleScore(levelManager->GetLevelNum(), levelManager->GetMissed());
 
-				stars = scores->GetStars(levelManager->GetLevelNum(), levelManager->GetTime());
+				stars = scores->GetStars(levelManager->GetLevelNum(), levelManager->GetMissed());
 			} else {
-				highscore = scores->UpdateArcadeScore(levelManager->GetLevelNum(), levelManager->GetTime(), levelManager->GetScore());
+				highscore = scores->UpdateArcadeScore(levelManager->GetTime(), levelManager->GetScore());
 
 				if (highscore) 
 					stars = 3;
@@ -248,8 +249,8 @@ namespace CoreEngine
 
 			UpdateAchievements();
 
-			if (highscore && levelManager->IsEndless())
-				BillingProcessor::Instance()->UpdateEndlessScore(levelManager->GetScore());
+			if (highscore && !levelManager->IsPuzzle())
+				BillingProcessor::Instance()->UpdateScore(levelManager->GetScore());
 
 			if (highscore)
 			{
@@ -269,12 +270,12 @@ namespace CoreEngine
 		stringstream ss;
 
 		if (LevelManager::Instance()->IsPuzzle())
-			ss << "Level " << LevelManager::Instance()->GetWorld() + 1 << "-" << ((LevelManager::Instance()->GetLevelNum() - 1) % 20) + 1;
+			ss << "Level " << LevelManager::Instance()->GetLevelNum();
 		else
 			ss << "Difficulty " << LevelManager::Instance()->GetLevelNum();
 
 	/*	if (LevelManager::Instance()->IsPuzzle())
-			ss << "级别 " << LevelManager::Instance()->GetWorld() + 1 << "-" << ((LevelManager::Instance()->GetLevelNum() - 1) % 20) + 1;
+			ss << "级别 " << LevelManager::Instance()->GetLevelNum();
 		else
 			ss << "困难 " << LevelManager::Instance()->GetLevelNum();*/
 
@@ -375,7 +376,7 @@ namespace CoreEngine
 		if (!Config::Instance()->IsAchievementCompleted(3))
 		{
 			bool found = false;
-			for (i = 0; i < WORLD_NUM; i++)
+			/*for (i = 0; i < WORLD_NUM; i++)
 			{
 				for (r = i * 20; r < (i + 1) * 20; r++)
 				{
@@ -393,7 +394,7 @@ namespace CoreEngine
 					break;
 				}
 				found = false;
-			}
+			}*/
 		} else { achievementsCompleted++; }
 
 		if (!Config::Instance()->IsAchievementCompleted(4))
@@ -404,7 +405,7 @@ namespace CoreEngine
 				Config::Instance()->SetAchievementCompleted(4);
 				achievementsCompleted++;
 			}
-			else if (Scores::Instance()->GetBestArcadeScore(6) > 0)
+			else if (Scores::Instance()->GetBestArcadeScore() > 0)
 			{
 				ShowAchievement(4);
 				Config::Instance()->SetAchievementCompleted(4);
@@ -451,8 +452,8 @@ namespace CoreEngine
 			int levelNum = 0;
 			for (i = 0; i < 6; i++)
 			{
-				if (Scores::Instance()->GetBestArcadeScore(i + 1) > 0)
-					levelNum++;
+				//if (Scores::Instance()->GetBestArcadeScore(i + 1) > 0)
+				//	levelNum++;
 			}
 			if (levelNum == 6)
 			{
@@ -466,7 +467,7 @@ namespace CoreEngine
 
 		if (!Config::Instance()->IsAchievementCompleted(11))
 		{
-			if (Scores::Instance()->GetBestArcadeTime(7) >= 300)
+			if (Scores::Instance()->GetBestArcadeTime() >= 300)
 			{
 				ShowAchievement(11);
 				Config::Instance()->SetAchievementCompleted(11);
@@ -572,7 +573,7 @@ namespace CoreEngine
 				Game::Instance()->ChangeState(GameState::Storyboard);
 			}
 			else {
-				Game::Instance()->ChangeState(GameState::DifficultySelect);
+				Game::Instance()->ChangeState(GameState::MainMenu);
 			}
 		}
 	}

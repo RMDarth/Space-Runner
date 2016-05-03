@@ -25,6 +25,7 @@ namespace CoreEngine
 		virtual bool IsIntersected(SpaceObject * other);
 
 		virtual bool IsDone();
+		virtual bool Passed();
 		virtual void Destroy();
 		virtual void SetVisible(bool visible) = 0;
 

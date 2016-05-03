@@ -1,3 +1,4 @@
+#include <Game/Scores.h>
 #include "MenuStateProcessor.h"
 #include "Render/SceneSector.h"
 #include "Render/Drawables/ModelDrawable.h"
@@ -208,6 +209,7 @@ namespace CoreEngine
         _document->Show();
         ChangeSettingsPanelVisibility();
         //UpdateGooglePlayIcon(_document->GetControlByName("googleplay").get());
+        _document->GetControlByName("totalenergy")->SetText(std::to_string(Scores::Instance()->GetTotalEnergy()));
     }
 
     void MenuStateProcessor::ProcessEvent(Control* control, IEventHandler::EventType type, int x, int y)
@@ -231,10 +233,6 @@ namespace CoreEngine
             if (control->GetName() == "story")
             {
                 Game::Instance()->ChangeState(GameState::Storyboard);
-            }
-            if (control->GetName() == "scores")
-            {
-                Game::Instance()->ChangeState(GameState::HighScores);
             }
 
             if (control->GetName() == "sound")

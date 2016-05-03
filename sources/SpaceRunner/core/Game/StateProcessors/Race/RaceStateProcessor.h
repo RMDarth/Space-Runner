@@ -91,7 +91,6 @@ namespace CoreEngine
         RaceStateProcessor();
 
         void Init();
-        float GetCurrentSpeed();
         virtual GameState::State Update(float time);
 
         virtual void OnMouseDown(int x, int y);

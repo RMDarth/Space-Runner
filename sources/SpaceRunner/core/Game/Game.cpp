@@ -5,8 +5,6 @@
 #include "Game/StateProcessors/Menu/PauseStateProcessor.h"
 #include "Game/StateProcessors/Menu/ScoreStateProcessor.h"
 #include "Game/StateProcessors/Menu/StoryboardStateProcessor.h"
-#include "Game/StateProcessors/Menu/ArcadeDifficultyStateProcessor.h"
-#include "Game/StateProcessors/Menu/HighScoresStateProcessor.h"
 #include "Game/StateProcessors/Menu/MessageStateProcessor.h"
 #include "Game/StateProcessors/Menu/StoreStateProcessor.h"
 #include "Game/StateProcessors/Menu/CreditsStateProcessor.h"
@@ -42,8 +40,6 @@ Game::Game()
     ScoreStateProcessor * score = new ScoreStateProcessor();
     StoryboardStateProcessor * storyboard = new StoryboardStateProcessor();
 
-    ArcadeDifficultyStateProcessor *arcade = new ArcadeDifficultyStateProcessor();
-    HighScoresStateProcessor *highScores = new HighScoresStateProcessor();
     MessageStateProcessor* message = new MessageStateProcessor();
 #if OGRE_PLATFORM != OGRE_PLATFORM_WINRT
     StoreStateProcessor* store = new StoreStateProcessor();
@@ -63,8 +59,6 @@ Game::Game()
     StateProcessorFactory::Instance()->RegisterProcessor(achievement, GameState::Achievements);
 #endif
     StateProcessorFactory::Instance()->RegisterProcessor(storyboard, GameState::Storyboard);
-    StateProcessorFactory::Instance()->RegisterProcessor(arcade, GameState::DifficultySelect);
-    StateProcessorFactory::Instance()->RegisterProcessor(highScores, GameState::HighScores);
     StateProcessorFactory::Instance()->RegisterProcessor(message, GameState::Message);
 #if OGRE_PLATFORM != OGRE_PLATFORM_WINRT
     StateProcessorFactory::Instance()->RegisterProcessor(store, GameState::Store);

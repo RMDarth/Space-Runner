@@ -1,196 +1,176 @@
 #include "Scores.h"
 #include "FileSystem.h"
+#include "Game/StateProcessors/Race/LevelFileManager.h"
 #include <climits>
 
 Scores* Scores::_instance = nullptr;
 
 Scores::Scores()
 {
-	Load();
-	LoadLevelInfo();
+    Load();
+    LoadLevelInfo();
 }
 
 Scores* Scores::Instance()
 {
-	if (_instance == nullptr)
-	{
-		_instance = new Scores();
-	}
-	return _instance;
+    if (_instance == nullptr)
+    {
+        _instance = new Scores();
+    }
+    return _instance;
 }
 
-bool Scores::UpdatePuzzleScore(int level, int time, int score)
+bool Scores::UpdatePuzzleScore(int level, int missedEnergy)
 {
-	level--;
-	bool result = false;
-	if (bestPuzzleTime[level] > time)
-	{
-		result = true;
-		bestPuzzleTime[level] = time;
+    level--;
+    bool result = false;
+    if (bestPuzzleMisses[level] > missedEnergy)
+    {
+        result = true;
+        bestPuzzleMisses[level] = missedEnergy;
 
-		bestPuzzleStars[level] = 1;
-		if (time <= averagePuzzleTime[level])
-		{
-			bestPuzzleStars[level] = 2;
-		}
-		if (time <= minPuzzleTime[level])
-		{
-			bestPuzzleStars[level] = 3;
-		}
-	}
-	if (bestPuzzleScore[level] < score)
-	{
-		result = true;
-		bestPuzzleScore[level] = score;
-	}
+        bestPuzzleStars[level] = 1;
+        if (missedEnergy <= averageMissingEnergy[level])
+        {
+            bestPuzzleStars[level] = 2;
+        }
+        if (missedEnergy <= minMissingEnergy[level])
+        {
+            bestPuzzleStars[level] = 3;
+        }
+    }
 
-	if (result)
-		SavePuzzle();
+    if (result)
+        Save();
 
-	return result;
+    return result;
 }
 
-bool Scores::UpdateArcadeScore(int level, int time, int score)
+bool Scores::UpdateArcadeScore(int time, int score)
 {
-	level--;
-	bool result = false;
-	if (bestArcadeScore[level] < score)
-	{
-		result = true;
-		bestArcadeScore[level] = score;
-	}
+    bool result = false;
+    if (bestArcadeScore < score)
+    {
+        result = true;
+        bestArcadeScore = score;
+    }
 
-	if (level < 6 && bestArcadeTime[level] > time)
-	{
-		result = true;
-		bestArcadeTime[level] = time;
-	}
+    if (bestArcadeTime < time)
+    {
+        result = true;
+        bestArcadeTime = time;
+    }
 
-	// Endless
-	if (level == 6 && (bestArcadeTime[level] < time || bestArcadeTime[level] == INT_MAX))
-	{
-		result = true;
-		bestArcadeTime[level] = time;
-	}
+    if (result)
+        Save();
 
-	if (result)
-		SaveArcade();
+    return result;
+}
 
-	return result;
+void Scores::UpdateTotalEnergy(int collected)
+{
+    totalEnergy += collected;
+    Save();
 }
 
 void Scores::Reset()
 {
-	CreateDefault();
+    CreateDefault();
 }
 
-int Scores::GetBestArcadeScore(int level)
+int Scores::GetTotalEnergy()
 {
-	return bestArcadeScore[level-1];
+    return totalEnergy;
 }
 
-int Scores::GetBestArcadeTime(int level)
+int Scores::GetBestArcadeScore()
 {
-	return bestArcadeTime[level-1];
+    return bestArcadeScore;
+}
+
+int Scores::GetBestArcadeTime()
+{
+    return bestArcadeTime;
 }
 
 int Scores::GetBestStars(int level)
 {
-	return bestPuzzleStars[level-1];
+    return bestPuzzleStars[level-1];
 }
 
-int Scores::GetStars(int level, int time)
+int Scores::GetStars(int level, int missedEnergy)
 {
-	if (time <= minPuzzleTime[level-1])
-		return 3;
-	if (time <= averagePuzzleTime[level-1])
-		return 2;
-	return 1;
+    if (missedEnergy <= minMissingEnergy[level-1])
+        return 3;
+    if (missedEnergy <= averageMissingEnergy[level-1])
+        return 2;
+    return 1;
 }
 
-int Scores::GetBestPuzzleTime(int level)
+int Scores::GetBestPuzzleMissingEnergy(int level)
 {
-	return bestPuzzleTime[level - 1];
+    return bestPuzzleMisses[level - 1];
 }
 
 void Scores::Load()
 {
-	int i;
+    SecureFileInputRef* scoresFile = new SecureFileInputRef("scores.dat");
+    if (!scoresFile->IsOpened())
+    {
+        delete scoresFile;
+        CreateDefault();
 
-	SecureFileInputRef *puzzlesFile = new SecureFileInputRef("puzzles.dat");
-	if (!puzzlesFile->IsOpened())
-	{
-		delete puzzlesFile;
-		CreateDefault();
+        scoresFile = new SecureFileInputRef("scores.dat");
+    }
+    totalEnergy = scoresFile->ReadInt();
+    bestArcadeTime = scoresFile->ReadInt();
+    bestArcadeScore = scoresFile->ReadInt();
+    for (int i = 0; i < LEVELNUM; i++)
+    {
+        bestPuzzleMisses[i] = scoresFile->ReadInt();
+        bestPuzzleStars[i] = scoresFile->ReadInt();
+    }
+    scoresFile->Close();
 
-		puzzlesFile = new SecureFileInputRef("puzzles.dat");
-	}
-	for (i = 0; i < LEVELNUM; i++)
-	{
-		bestPuzzleTime[i] = puzzlesFile->ReadInt();
-		bestPuzzleScore[i] = puzzlesFile->ReadInt();
-		bestPuzzleStars[i] = puzzlesFile->ReadInt();
-	}
-	puzzlesFile->Close();
-
-	SecureFileInputRef * arcadeFile = new SecureFileInputRef("arcade.dat");
-	for (i = 0; i < MAXARCADE; i++)
-	{
-		bestArcadeTime[i] = arcadeFile->ReadInt();
-		bestArcadeScore[i] = arcadeFile->ReadInt();
-	}
-	arcadeFile->Close();
-
-	delete puzzlesFile;
-	delete arcadeFile;
+    delete scoresFile;
 }
 
 void Scores::LoadLevelInfo()
 {
+    for (int i = 0; i < LEVELNUM; i++)
+    {
+        auto level = CoreEngine::LevelFileManager::Instance()->LoadLevel(i + 1);
+        minMissingEnergy[i] = level->minMissingEnergy;
+        averageMissingEnergy[i] = level->avgMissingEnergy;
 
+        delete level;
+    }
 }
 
-void Scores::SavePuzzle()
+void Scores::Save()
 {
-	SecureFileOutputRef puzzlesFile("puzzles.dat");
-	for (int i = 0; i < LEVELNUM; i++)
-	{
-		puzzlesFile.WriteInt(bestPuzzleTime[i]);
-		puzzlesFile.WriteInt(bestPuzzleScore[i]);
-		puzzlesFile.WriteInt(bestPuzzleStars[i]);
-	}
+    SecureFileOutputRef scoresFile("scores.dat");
+    scoresFile.WriteInt(totalEnergy);
+    scoresFile.WriteInt(bestArcadeTime);
+    scoresFile.WriteInt(bestArcadeScore);
+    for (int i = 0; i < LEVELNUM; i++)
+    {
+        scoresFile.WriteInt(bestPuzzleMisses[i]);
+        scoresFile.WriteInt(bestPuzzleStars[i]);
+    }
 
-	puzzlesFile.Close();
-}
-
-void Scores::SaveArcade()
-{
-	SecureFileOutputRef arcadeFile("arcade.dat");
-	for (int i = 0; i < MAXARCADE; i++)
-	{
-		arcadeFile.WriteInt(bestArcadeTime[i]);
-		arcadeFile.WriteInt(bestArcadeScore[i]);
-	}
-
-	arcadeFile.Close();
+    scoresFile.Close();
 }
 
 void Scores::CreateDefault()
 {
-	int i;
-	for (i = 0; i < LEVELNUM; i++)
-	{
-		bestPuzzleTime[i] = INT_MAX;
-		bestPuzzleScore[i] = 0;
-		bestPuzzleStars[i] = 0;
-	}
-	SavePuzzle();
-
-	for (i = 0; i < MAXARCADE; i++)
-	{
-		bestArcadeScore[i] = 0;
-		bestArcadeTime[i] = INT_MAX;
-	}
-	bestArcadeTime[6] = 0;
-	SaveArcade();
+    for (int i = 0; i < LEVELNUM; i++)
+    {
+        bestPuzzleMisses[i] = INT_MAX;
+        bestPuzzleStars[i] = 0;
+    }
+    bestArcadeScore = 0;
+    bestArcadeTime = 0;
+    totalEnergy = 0;
+    Save();
 }

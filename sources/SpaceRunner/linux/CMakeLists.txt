@@ -43,8 +43,6 @@ set(SOURCE_FILES
     core/tinyxml/tinyxml2.h
     core/Game/StateProcessors/Menu/AchievementsStateProcessor.cpp
     core/Game/StateProcessors/Menu/AchievementsStateProcessor.h
-    core/Game/StateProcessors/Menu/ArcadeDifficultyStateProcessor.cpp
-    core/Game/StateProcessors/Menu/ArcadeDifficultyStateProcessor.h
     core/Game/StateProcessors/Race/Space/Asteroid.cpp
     core/Game/StateProcessors/Race/Space/Asteroid.h
     core/Game/StateProcessors/Race/Space/Barrier.cpp
@@ -75,15 +73,11 @@ set(SOURCE_FILES
     core/Game/GameState.h
     core/Game/Gun.cpp
     core/Game/Gun.h
-    core/Game/StateProcessors/Menu/HighScoresStateProcessor.cpp
-    core/Game/StateProcessors/Menu/HighScoresStateProcessor.h
     core/Render/Drawables/IDrawable.h
     core/Input/IInputListener.h
     core/Game/StateProcessors/IStateProcessor.h
     core/Game/StateProcessors/Level/LevelManager.cpp
     core/Game/StateProcessors/Level/LevelManager.h
-    core/Game/StateProcessors/Menu/LevelSelectionStateProcessor.cpp
-    core/Game/StateProcessors/Menu/LevelSelectionStateProcessor.h
     core/Game/StateProcessors/Race/LevelStructure.h
     core/Render/Light.cpp
     core/Render/Light.h
@@ -132,8 +126,6 @@ set(SOURCE_FILES
     core/Game/StateProcessorFactory.h
     core/Game/StateProcessors/Menu/StoreStateProcessor.cpp
     core/Game/StateProcessors/Menu/StoreStateProcessor.h
-    core/Game/StateProcessors/Menu/WorldSelectionStateProcessor.cpp
-    core/Game/StateProcessors/Menu/WorldSelectionStateProcessor.h
     OpenAL/OpenAL.cpp
     OpenAL/OpenAL.h
     BillingProcessor.cpp
@@ -167,7 +159,10 @@ set(SOURCE_FILES
     core/Game/StateProcessors/Race/Space/AsteroidProcessor.cpp
     core/Game/StateProcessors/Race/Space/AsteroidProcessor.h
     core/Game/StateProcessors/Menu/SelectShipStateProcessor.cpp
-    core/Game/StateProcessors/Menu/SelectShipStateProcessor.h core/Game/StateProcessors/Race/Space/BigBoss.cpp core/Game/StateProcessors/Race/Space/BigBoss.h core/Game/StateProcessors/Race/Space/BossInterface.h)
+    core/Game/StateProcessors/Menu/SelectShipStateProcessor.h
+    core/Game/StateProcessors/Race/Space/BigBoss.cpp
+    core/Game/StateProcessors/Race/Space/BigBoss.h
+    core/Game/StateProcessors/Race/Space/BossInterface.h)
 
 add_executable(spacerush ${SOURCE_FILES})
 

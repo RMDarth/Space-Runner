@@ -23,7 +23,7 @@ public:
 
 	void ShowAchievements();
 	void ShowLeaderboard();
-	void UpdateEndlessScore(int score);
+	void UpdateScore(int score);
 	void SyncAchievements();
 	void RateApp();
 

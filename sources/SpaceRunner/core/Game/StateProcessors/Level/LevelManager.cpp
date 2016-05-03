@@ -10,11 +10,10 @@ namespace CoreEngine
 		_isPuzzle = false;
 		_isStarted = false;
 		_isVictory = false;
-		_isEasterEgg = false;
-		_isEndless = false;
+
 		_time = -1;
 		_score = 0;
-		_world = 0;
+		_missed = 0;
 	}
 
 	LevelManager* LevelManager::Instance()
@@ -31,11 +30,6 @@ namespace CoreEngine
 		return _level;
 	}
 
-	int LevelManager::GetWorld()
-	{
-		return _world;
-	}
-
 	int LevelManager::GetScore()
 	{
 		return _score;
@@ -44,11 +38,6 @@ namespace CoreEngine
 	int LevelManager::GetTime()
 	{
 		return _time;
-	}
-
-	std::string LevelManager::GetHelp()
-	{
-		return _help;
 	}
 
 	bool LevelManager::IsPuzzle()
@@ -65,30 +54,10 @@ namespace CoreEngine
 	{
 		return _isVictory;
 	}
-	
-	bool LevelManager::IsEasterEgg()
-	{
-		return _isEasterEgg;
-	}
-
-	bool LevelManager::IsEndless()
-	{
-		return _isEndless;
-	}
-
-	bool LevelManager::ContainsHelp()
-	{
-		return !_help.empty();
-	}
 
 	void LevelManager::SetLevelNum(int num)
 	{
 		_level = num;
-	}
-
-	void LevelManager::SetWorld(int world)
-	{
-		_world = world;
 	}
 
 	void LevelManager::SetScore(int score)
@@ -116,19 +85,16 @@ namespace CoreEngine
 		_isVictory = victory;
 	}
 
-	void LevelManager::SetEasterEgg(bool easterEgg)
+	int LevelManager::GetMissed()
 	{
-		_isEasterEgg = easterEgg;
+		return _missed;
 	}
 
-	void LevelManager::SetEndless(bool endless)
+	void LevelManager::SetMissed(int missed)
 	{
-		_isEndless = endless;
+		_missed = missed;
 	}
 
-	void LevelManager::SetHelp(std::string text)
-	{
-		_help = text;
-	}
+
 }
 

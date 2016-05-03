@@ -1,43 +1,44 @@
 #pragma once
-#define LEVELNUM 100
-#define MAXARCADE 7
+#define LEVELNUM 11
 
 class Scores
 {
-	static Scores* _instance;
-	
-	int minPuzzleTime[LEVELNUM];
-	int averagePuzzleTime[LEVELNUM];
-	
-	int bestPuzzleTime[LEVELNUM];
-	int bestPuzzleScore[LEVELNUM];
-	int bestPuzzleStars[LEVELNUM];
-	
-	int bestArcadeTime[MAXARCADE];
-	int bestArcadeScore[MAXARCADE];
+    static Scores* _instance;
+
+    int minMissingEnergy[LEVELNUM];
+    int averageMissingEnergy[LEVELNUM];
+
+    int bestPuzzleStars[LEVELNUM];
+    int bestPuzzleMisses[LEVELNUM];
+
+    int bestArcadeTime;
+    int bestArcadeScore;
+
+    int totalEnergy;
 
 public:
-	static Scores* Instance();
+    static Scores* Instance();
 
-	// returns true if new highscore
-	bool UpdatePuzzleScore(int level, int time, int score);
-	bool UpdateArcadeScore(int level, int time, int score);
-	void Reset();
-	
-	int GetBestArcadeScore(int level);
-	int GetBestArcadeTime(int level);
-	int GetBestStars(int level);
-	int GetBestPuzzleTime(int level);
-	int GetStars(int level, int time);
+    // returns true if new high scores
+    bool UpdatePuzzleScore(int level, int missedEnergy);
+    bool UpdateArcadeScore(int time, int score);
+    void UpdateTotalEnergy(int collected);
+    void Reset();
+
+    int GetTotalEnergy();
+    int GetBestArcadeScore();
+    int GetBestArcadeTime();
+    int GetBestStars(int level);
+    int GetStars(int level, int missedEnergy);
+    int GetBestPuzzleMissingEnergy(int level);
 
 private:
-	Scores();
-	
-	void LoadLevelInfo();
-	void Load();
-	void SaveArcade();
-	void SavePuzzle();
+    Scores();
 
-	void CreateDefault();
+    void LoadLevelInfo();
+    void Load();
+    void Save();
+
+    void CreateDefault();
 };
 

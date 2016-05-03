@@ -250,11 +250,6 @@ namespace CoreEngine
         PrefabManager::Instance()->LoadPrefabs();
     }
 
-    float RaceStateProcessor::GetCurrentSpeed()
-    {
-        return _speed;
-    }
-
     void RaceStateProcessor::UpdateTurn()
     {
         if (_currentPosID != _targetPosID)
@@ -326,6 +321,14 @@ namespace CoreEngine
             if (_explosion->IsDone())
             {
                 _explosion.reset();
+
+                if (LevelManager::Instance()->GetLevelNum() == 1 && LevelManager::Instance()->IsPuzzle())
+                {
+                    LevelManager::Instance()->SetStarted(false);
+                    Show();
+                    return Game::Instance()->GetState();
+                }
+
                 _invincibility = true;
                 _invincibilityStart = _totalTime;
                 _speedAccel = 5.0f;
@@ -455,41 +458,44 @@ namespace CoreEngine
 
     void RaceStateProcessor::UpdateHelp()
     {
+        if (_explosion)
+            return;
+
         static auto helpControl = _document->GetControlByName("help");
 
         helpControl->SetVisible(false);
-        if (_totalTime > 2.5 && _totalTime < 4.5)
+        if (_totalTime > 2.5 * 1.375 && _totalTime < 4.5 * 1.375)
         {
             helpControl->SetVisible(true);
             helpControl->SetDefaultMaterial("arrowleft.png", true);
         }
-        if (_totalTime > 6 && _totalTime < 7.5)
+        if (_totalTime > 6 * 1.375 && _totalTime < 7.5 * 1.375)
         {
             helpControl->SetVisible(true);
             helpControl->SetDefaultMaterial("arrowright.png", true);
         }
-        if (_totalTime > 9 && _totalTime < 11)
+        if (_totalTime > 9 * 1.375 && _totalTime < 11 * 1.375)
         {
             helpControl->SetVisible(true);
             helpControl->SetDefaultMaterial("arrowup.png", true);
         }
-        if (_totalTime > 13.5 && _totalTime < 15)
+        if (_totalTime > 13.5 * 1.375 && _totalTime < 15 * 1.375)
         {
             helpControl->SetVisible(true);
             helpControl->SetDefaultMaterial("arrowdown.png", true);
         }
-        if (_totalTime > 16.5 && _totalTime < 18)
+        if (_totalTime > 16.5 * 1.375 && _totalTime < 18 * 1.375)
         {
             helpControl->SetVisible(true);
             helpControl->SetDefaultMaterial("arrowright.png", true);
         }
-        if (_totalTime > 16.5 && _totalTime < 18)
+        if (_totalTime > 16.5 * 1.375 && _totalTime < 18 * 1.375)
         {
             helpControl->SetVisible(true);
             helpControl->SetDefaultMaterial("arrowright.png", true);
         }
 
-        if (_totalTime > 18.5 && _totalTime < 21.5)
+        if (_totalTime > 18.5 * 1.375 && _totalTime < 21.5 * 1.375)
         {
             helpControl->SetVisible(true);
             helpControl->SetDefaultMaterial("energyhelp.png", true);

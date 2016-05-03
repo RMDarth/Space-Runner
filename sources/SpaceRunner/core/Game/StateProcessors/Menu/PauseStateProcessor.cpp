@@ -80,7 +80,7 @@ namespace CoreEngine
 				Game::Instance()->ChangeState(GameState::Storyboard);
 			}
 			else {
-				Game::Instance()->ChangeState(GameState::DifficultySelect);
+				Game::Instance()->ChangeState(GameState::MainMenu);
 			}
 		}
 	}

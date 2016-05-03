@@ -60,6 +60,7 @@ namespace CoreEngine
         float _totalTime;
         float _lastObstacleCreated;
         int _lastObstaclePos;
+        int _missedOrbs;
         float _lastPosChange;
     public:
         Space();

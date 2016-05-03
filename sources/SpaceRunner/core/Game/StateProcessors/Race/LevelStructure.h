@@ -67,7 +67,9 @@ namespace CoreEngine
         BossInterface::Difficulty bossDifficulty;
         int skyboxId;
         int energyToComplete;
-        // int bossId;
+
+        int minMissingEnergy;
+        int avgMissingEnergy;
     };
 
 }

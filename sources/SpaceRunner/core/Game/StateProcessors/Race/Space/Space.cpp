@@ -27,6 +27,8 @@ namespace CoreEngine
         _spaceDust = make_unique<SpaceDust>("SpaceDust");
         _fence = make_unique<Fence>();
         _totalTime = 0;
+        _missedOrbs = 0;
+        LevelManager::Instance()->SetMissed(_missedOrbs);
         _lastObstaclePos = 0;
     }
 
@@ -155,6 +157,12 @@ namespace CoreEngine
         _sparksList.erase(remove_if(_sparksList.begin(), _sparksList.end(), bind(&Sparks::IsDone, placeholders::_1)), _sparksList.end());
 
         for_each(_orbList.begin(), _orbList.end(), bind(&EnergyOrb::Update, placeholders::_1, time, roadOffset));
+        auto missedOrbs = count_if(_orbList.begin(), _orbList.end(), bind(&EnergyOrb::Passed, placeholders::_1));
+        if (missedOrbs > 0)
+        {
+            _missedOrbs += missedOrbs;
+            LevelManager::Instance()->SetMissed(_missedOrbs);
+        }
         _orbList.erase(remove_if(_orbList.begin(), _orbList.end(), bind(&EnergyOrb::IsDone, placeholders::_1)), _orbList.end());
 
         for_each(_barrierList.begin(), _barrierList.end(), bind(&Barrier::Update, placeholders::_1, time, roadOffset));

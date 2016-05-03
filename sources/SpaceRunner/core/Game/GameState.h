@@ -12,8 +12,6 @@ namespace CoreEngine
 			Score,
 			Editor,
 			Storyboard,
-			DifficultySelect,
-			HighScores,
 			Message,
 			ShipSelect,
 			Store,
