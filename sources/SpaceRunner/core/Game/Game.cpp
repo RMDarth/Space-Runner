@@ -1,19 +1,19 @@
-#include <Game/StateProcessors/Menu/SelectShipStateProcessor.h>
 #include "Game.h"
 #include "StateProcessorFactory.h"
+#include "SoundSystem.h"
+#include "BillingProcessor.h"
+#include "Config.h"
+#include "SkinManager.h"
 #include "Game/StateProcessors/Menu/MenuStateProcessor.h"
 #include "Game/StateProcessors/Menu/PauseStateProcessor.h"
 #include "Game/StateProcessors/Menu/ScoreStateProcessor.h"
 #include "Game/StateProcessors/Menu/StoryboardStateProcessor.h"
 #include "Game/StateProcessors/Menu/MessageStateProcessor.h"
 #include "Game/StateProcessors/Menu/StoreStateProcessor.h"
+#include "Game/StateProcessors/Menu/SelectShipStateProcessor.h"
 #include "Game/StateProcessors/Menu/CreditsStateProcessor.h"
 #include "Game/StateProcessors/Menu/AchievementsStateProcessor.h"
 #include "Game/StateProcessors/Race/RaceStateProcessor.h"
-#include "SoundSystem.h"
-#include "BillingProcessor.h"
-#include "Config.h"
-#include "SkinManager.h"
 using namespace CoreEngine;
 
 Game* Game::_game = NULL;

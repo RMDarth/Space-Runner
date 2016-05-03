@@ -151,5 +151,10 @@ namespace CoreEngine
         _currentShip->SetRenderingQueue(-Ogre::RENDER_QUEUE_MAIN + Ogre::RENDER_QUEUE_OVERLAY + 5);
     }
 
+    void SelectShipStateProcessor::UpdateHUD()
+    {
+
+    }
+
 
 }

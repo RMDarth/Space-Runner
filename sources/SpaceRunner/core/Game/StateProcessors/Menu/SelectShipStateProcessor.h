@@ -40,6 +40,7 @@ namespace CoreEngine
     private:
         void SetLightAndCamera();
         void UpdateModel();
+        void UpdateHUD();
 
     };
 }

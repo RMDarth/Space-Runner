@@ -20,7 +20,7 @@ namespace CoreEngine
 
         _sector = new SceneSector(sceneNode);
 
-        for (auto i = 0; i < 10; i++)
+        for (auto i = 0; i < LEVELNUM; i++)
         {
             std::stringstream ss;
             ss << (i+1);
@@ -137,7 +137,7 @@ namespace CoreEngine
 
 
         bool previous = true;
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < LEVELNUM; i++)
         {
             int stars = Scores::Instance()->GetBestStars(i + 1);
 
