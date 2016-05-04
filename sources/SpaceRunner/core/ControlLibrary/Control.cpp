@@ -129,6 +129,7 @@ void Control::Init()
 
 void Control::InitOverlay()
 {
+    int zorder = -1000;
     std::stringstream stream;
     int left, top, width, height;
     RenderProcessor::Instance()->GetViewport()->getActualDimensions(left, top, width, height);
@@ -137,6 +138,7 @@ void Control::InitOverlay()
     auto overlayManager = Ogre::OverlayManager::getSingletonPtr();
     if (_overlay != nullptr)
     {
+        zorder = _overlay->getZOrder();
         _overlay->remove2D(_container);
         overlayManager->destroyOverlayElement(_overlayText);
         overlayManager->destroyOverlayElement(_overlayTextShadow);
@@ -198,6 +200,11 @@ void Control::InitOverlay()
     _container->addChild(_overlayTextShadow);
 
     _useText = true;
+
+    if (zorder != -1000)
+    {
+        _overlay->setZOrder(zorder);
+    }
 }
 
 void Control::CreateMaterial(std::string image)

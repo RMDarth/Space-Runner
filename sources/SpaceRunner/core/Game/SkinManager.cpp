@@ -24,6 +24,14 @@ namespace CoreEngine
 
         _shieldOffsets.push_back(Vector3(0.3f, 0.0f, 0.0f));
         _shieldOffsets.push_back(Vector3(4.2f, 0.6f, 0.0f));
+
+        Features features1;
+        _featuresList.push_back(features1);
+        Features features2 { "Faster shooting" };
+        _featuresList.push_back(features2);
+
+        _priceList.push_back(0);
+        _priceList.push_back(2500);
     }
 
     SkinManager* SkinManager::Instance()
@@ -98,6 +106,26 @@ namespace CoreEngine
     Vector3 SkinManager::GetShieldOffset(int id)
     {
         return _shieldOffsets[id];
+    }
+
+    const std::vector<std::string> &SkinManager::GetFeaturesList()
+    {
+        return _featuresList[_skinID];
+    }
+
+    const std::vector<std::string> &SkinManager::GetFeaturesList(int id)
+    {
+        return _featuresList[id];
+    }
+
+    int SkinManager::GetPrice()
+    {
+        return _priceList[_skinID];
+    }
+
+    int SkinManager::GetPrice(int id)
+    {
+        return _priceList[id];
     }
 
 

@@ -9,6 +9,7 @@ namespace CoreEngine
     class SkinManager
     {
         using OffsetList = std::vector<Vector3>;
+        using Features = std::vector<std::string>;
 
         static SkinManager* _instance;
         int _skinID;
@@ -17,6 +18,9 @@ namespace CoreEngine
         std::vector<float> _shipScales;
         std::vector<OffsetList> _engineOffsets;
         OffsetList _shieldOffsets;
+
+        std::vector<Features> _featuresList;
+        std::vector<int> _priceList;
 
         SkinManager();
     public:
@@ -42,5 +46,11 @@ namespace CoreEngine
 
         Vector3 GetShieldOffset();
         Vector3 GetShieldOffset(int id);
+
+        const std::vector<std::string>& GetFeaturesList();
+        const std::vector<std::string>& GetFeaturesList(int id);
+
+        int GetPrice();
+        int GetPrice(int id);
     };
 }

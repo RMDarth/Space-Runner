@@ -2,62 +2,60 @@
 
 namespace CoreEngine
 {
-	class Config
-	{
-		bool _soundEnabled;
-		bool _musicEnabled;
-		int _selectedModel;
-		int _selectedQuality;
-		bool _signedGoogle;
-		bool _hiddenEnabled;
-		bool _showFPS;
-		int _language;
+    class Config
+    {
+        bool _soundEnabled;
+        bool _musicEnabled;
+        int _selectedModel;
+        bool _signedGoogle;
+        bool _showFPS;
+        int _language;
 
-		bool _achievements[20];
-		int _achievementData[20];
-		bool _firstRun;
+        bool _achievements[20];
+        int _achievementData[20];
 
-		static Config* _instance;
+        bool _modelBought[5];
 
-		void CreateDefault();
+        bool _firstRun;
 
-		Config();
-	public:
-		static Config* Instance();
+        static Config* _instance;
 
-		void Load();
-		void Save();
+        void CreateDefault();
 
-		void SetSoundEnabled(bool enabled);
-		bool IsSoundEnabled();
+        Config();
+    public:
+        static Config* Instance();
 
-		void SetHiddenBallsEnabled(bool enabled);
-		bool IsHiddenBallsEnabled();
+        void Load();
+        void Save();
 
-		void SetMusicEnabled(bool enabled);
-		bool IsMusicEnabled();
+        void SetSoundEnabled(bool enabled);
+        bool IsSoundEnabled();
 
-		void SetSignedGoogle(bool value);
-		bool IsSignedGoogle();
+        void SetMusicEnabled(bool enabled);
+        bool IsMusicEnabled();
 
-		void SetAchievementCompleted(int id);
-		bool IsAchievementCompleted(int id);
+        void SetSignedGoogle(bool value);
+        bool IsSignedGoogle();
 
-		void SetAchievementData(int id, int data);
-		int GetAchievementData(int id);
+        bool IsModelBought(int id);
+        void SetModelBought(int id);
 
-		void SetSelectedModel(int id);
-		int GetSelectedModel();
+        void SetAchievementCompleted(int id);
+        bool IsAchievementCompleted(int id);
 
-		void SetSelectedQuality(int id);
-		int GetSelectedQuality();
+        void SetAchievementData(int id, int data);
+        int GetAchievementData(int id);
 
-		void SetShowFPS(bool value);
-		bool IsShowFPS();
+        void SetSelectedModel(int id);
+        int GetSelectedModel();
 
-		void SetLanguage(int id);
-		int GetLanguage();
+        void SetShowFPS(bool value);
+        bool IsShowFPS();
 
-		bool IsFirstRun();
-	};
+        void SetLanguage(int id);
+        int GetLanguage();
+
+        bool IsFirstRun();
+    };
 }

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <Render/ParticleSystem.h>
 #include "Game/GameDefs.h"
 #include "Game/StateProcessors/IStateProcessor.h"
 #include "ControlLibrary/ControlDocument.h"
@@ -12,9 +13,12 @@ namespace CoreEngine
     class SelectShipStateProcessor : public IStateProcessor, public IEventHandler
     {
         ControlDocument * _document;
+        ControlDocument * _query;
+        bool _queryVisible;
 
         SceneSector* _sector;
         UPtr<ModelDrawable> _currentShip;
+        ParticleSystem *_sparksEffect;
 
         float _totalTime;
 
@@ -41,6 +45,7 @@ namespace CoreEngine
         void SetLightAndCamera();
         void UpdateModel();
         void UpdateHUD();
+        void InitSparks();
 
     };
 }

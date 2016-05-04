@@ -209,7 +209,6 @@ namespace CoreEngine
         _document->Show();
         ChangeSettingsPanelVisibility();
         //UpdateGooglePlayIcon(_document->GetControlByName("googleplay").get());
-        _document->GetControlByName("totalenergy")->SetText(std::to_string(Scores::Instance()->GetTotalEnergy()));
     }
 
     void MenuStateProcessor::ProcessEvent(Control* control, IEventHandler::EventType type, int x, int y)
