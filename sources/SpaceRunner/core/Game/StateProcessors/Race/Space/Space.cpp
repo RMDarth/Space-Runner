@@ -75,7 +75,7 @@ namespace CoreEngine
             }
             else if (type < 4)
             {
-                obstacleList.push_back(ObstacleType::EnemyFighter);
+                obstacleList.push_back(ObstacleType::Mine);
             }
             else if (type < 6)
             {
@@ -202,9 +202,9 @@ namespace CoreEngine
                 }
                 break;
 
-            case ObstacleType::EnemyFighter:
+            case ObstacleType::Mine:
                 _currentObstacle = make_unique<Obstacle>(
-                    ObstacleType::EnemyFighter,
+                    ObstacleType::Mine,
                     25,
                     totalTime,
                     0);
@@ -287,7 +287,7 @@ namespace CoreEngine
                     ProcessEnergyOrbs(totalTime);
                     break;
 
-                case ObstacleType::EnemyFighter:
+                case ObstacleType::Mine:
                     ProcessMine(totalTime);
                     break;
 
@@ -316,7 +316,7 @@ namespace CoreEngine
 
     void Space::AddShot(Vector3 pos, float speed)
     {
-        auto shot = make_shared<BlasterBurst>(pos, "BlasterShotMaterial", 0, speed);
+        auto shot = make_shared<BlasterBurst>(pos, "BlasterShotMaterial", speed);
         _shotList.push_back(shot);
     }
 
@@ -341,7 +341,7 @@ namespace CoreEngine
         auto* boss = new Boss(zero);
         delete boss;
 
-        auto * blasterBurst = new BlasterBurst(zero, "BlasterShotMaterial", 0, 80);
+        auto * blasterBurst = new BlasterBurst(zero, "BlasterShotMaterial", 80);
         blasterBurst->Destroy();
         blasterBurst->SetVisible(false);
         _shotList.push_back(shared_ptr<BlasterBurst>(blasterBurst));
@@ -394,7 +394,7 @@ namespace CoreEngine
             int posIndex = rand() % 3;
             float pos = presetPos[posIndex];
 
-            auto mine = make_shared<Mine>(Vector3(-ASTEROID_NUM * BLOCK_SIZE, 0, pos), 0.2f, 8.0f);
+            auto mine = make_shared<Mine>(Vector3(-ASTEROID_NUM * BLOCK_SIZE, 0, pos), 0.2f);
             _mineList.push_back(mine);
 
             _lastObstacleCreated = totalTime + 10;
@@ -513,8 +513,8 @@ namespace CoreEngine
                     }
                     case SpaceObjectType::Mine:
                     {
-                        auto fighter = make_shared<Mine>(pos, row.objects[i].speed, 8.0f);
-                        _mineList.push_back(std::move(fighter));
+                        auto mine = make_shared<Mine>(pos, row.objects[i].speed);
+                        _mineList.push_back(std::move(mine));
                         break;
                     }
                     case SpaceObjectType::EnemyCruiser:

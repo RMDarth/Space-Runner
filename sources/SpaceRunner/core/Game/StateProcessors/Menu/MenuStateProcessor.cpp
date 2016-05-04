@@ -47,6 +47,7 @@ namespace CoreEngine
         auto engineFire2 = sceneManager->createParticleSystem("EngineFire13", "Engine");
         sceneNodeChild->attachObject(engineFire2);
 
+        // Document
         _document = new ControlDocument("GUI/startmenu.xml");
         _document->SetMouseUpHandler(this);
 

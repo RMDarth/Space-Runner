@@ -6,15 +6,17 @@
 
 class SceneSector;
 class ModelDrawable;
+class ParticleSystem;
 
 namespace CoreEngine
 {
 	class Mine : public SpaceObject
 	{
 		ModelDrawable * _model;
+		ParticleSystem * _glowEffects[6];
 
 	public:
-		Mine(Vector3 offset, float speed, float scale = 1.0f);
+		Mine(Vector3 offset, float speed);
 		~Mine();
 		void Update(float time, float roadSpeed) override;
 		void SetVisible(bool visible) override;

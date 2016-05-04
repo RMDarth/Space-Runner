@@ -1,0 +1,26 @@
+particle_system MineGlowEffect
+{
+    material            MineGlowMaterial
+    particle_width      4                
+    particle_height     4                 
+    cull_each           false
+    quota               1
+    billboard_type      oriented_common
+    billboard_rotation_type vertex
+    sorted              true
+
+    emitter Point
+    {
+        angle 180
+        emission_rate 100
+        time_to_live 0.2
+        duration 0
+        velocity 0
+        colour 0.952 0.2 0.2 1
+    }
+
+    affector ColourFader
+    {
+        alpha -4.0
+    }
+}

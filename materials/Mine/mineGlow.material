@@ -1,0 +1,30 @@
+material MineGlowMaterial
+{
+  technique
+  {
+    pass
+    {
+        illumination_stage per_light
+        cull_hardware none
+        scene_blend alpha_blend
+        transparent_sorting on
+        alpha_to_coverage off
+        depth_write off
+        
+        scene_blend_op add
+    
+        vertex_program_ref simpletex2_vs 
+        {
+        }
+ 
+        fragment_program_ref simpletex2_ps 
+        {
+        }
+
+        texture_unit diffuseMap
+        {
+            texture Glow.png
+        }
+    }
+  }
+}

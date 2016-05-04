@@ -1,0 +1,21 @@
+particle_system BlasterGlowEffect
+{
+    material            BlasterGlowMaterial
+    particle_width      4                
+    particle_height     4                 
+    cull_each           false
+    quota               1
+    billboard_type      oriented_common
+    billboard_rotation_type vertex
+    sorted              true
+
+    emitter Point
+    {
+        angle 180
+        emission_rate 100
+        time_to_live 10
+        duration 0
+        velocity 0
+        colour 0.4 0.4 0.9 1
+    }
+}

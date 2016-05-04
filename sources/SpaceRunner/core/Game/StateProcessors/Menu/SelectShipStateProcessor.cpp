@@ -270,7 +270,7 @@ namespace CoreEngine
         sceneNodeChild->setInheritScale(false);
         sceneNodeChild->setScale(1, 1, 1);
         sceneNode->addChild(sceneNodeChild);
-        _sparksEffect = new ParticleSystem(sceneNodeChild, "Storysparks_%d", "Blast4", 2, 15, true);
+        _sparksEffect = new ParticleSystem(sceneNodeChild, "BuySparks_%d", "Blast4", 2, 15, true);
     }
 
 

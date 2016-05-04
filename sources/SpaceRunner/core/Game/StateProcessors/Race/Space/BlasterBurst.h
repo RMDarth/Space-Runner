@@ -7,6 +7,7 @@
 class SceneSector;
 class ModelDrawable;
 class RectDrawable;
+class ParticleSystem;
 
 namespace CoreEngine
 {
@@ -14,8 +15,10 @@ namespace CoreEngine
 	{
 		UPtr<RectDrawable> _rect;
 
+		ParticleSystem * _glowEffect;
+
 	public:
-		BlasterBurst(Vector3 offset, std::string material, int count, float speed, float size = 1.0f);
+		BlasterBurst(Vector3 offset, std::string material, float speed);
 		~BlasterBurst();
 		void Update(float time, float roadSpeed) override;
 		
