@@ -771,6 +771,81 @@ namespace CoreEngine
         _shotList.erase(remove_if(_shotList.begin(), _shotList.end(), bind(&BlasterBurst::IsDone, placeholders::_1)), _shotList.end());
     }
 
+    void Space::DestroyEverything(bool near)
+    {
+        for (auto& asteroid : _asteroidList)
+        {
+            if (near && asteroid->getPos().x < -90)
+                continue;
+            asteroid->Destroy();
+            _explosionList.push_back(make_shared<Explosion>(asteroid->getPos()));
+        }
+        for (auto& mine : _mineList)
+        {
+            if (near && mine->getPos().x < -90)
+                continue;
+
+            mine->Destroy();
+            _explosionList.push_back(make_shared<Explosion>(mine->getPos()));
+        }
+
+        for (auto& cruiser : _cruiserList)
+        {
+            if (near && cruiser->getPos().x < -90)
+                continue;
+
+            cruiser->Destroy();
+            for (float offset = presetPos[0]; offset <= presetPos[2] + 1; offset += presetPos[2]/2)
+            {
+                _explosionList.push_back(make_shared<Explosion>(Vector3(cruiser->getPos().x, cruiser->getPos().y, offset)));
+            }
+        }
+
+        for_each(_shotList.begin(), _shotList.end(), bind(&SpaceObject::Destroy, placeholders::_1));
+        for_each(_missileList.begin(), _missileList.end(), bind(&SpaceObject::Destroy, placeholders::_1));
+        //for_each(_orbList.begin(), _orbList.end(), bind(&EnergyOrb::SetVisible, placeholders::_1, visible));
+        //for_each(_explosionList.begin(), _explosionList.end(), bind(&Explosion::SetVisible, placeholders::_1, visible));
+
+        for (auto& barrier : _barrierList)
+        {
+            if (near && barrier->getPos().x < -90)
+                continue;
+
+            barrier->Destroy();
+            _explosionList.push_back(make_shared<Explosion>(Vector3(barrier->getPos().x, barrier->getPos().y, presetPos[0] - presetPos[2]/2)));
+            _explosionList.push_back(make_shared<Explosion>(Vector3(barrier->getPos().x, barrier->getPos().y, presetPos[2] + presetPos[2]/2)));
+        }
+
+        if (_boss && near)
+        {
+            for (auto i = 0; i < 12; i++)
+                _boss->Hit();
+
+            if (!_boss->IsDone())
+            {
+                _sparksList.push_back(make_shared<Sparks>(_boss->getPos(), -1.0f));
+            } else {
+                _boss->Destroy();
+                if (_boss->GetType() == Boss::Type::Small)
+                {
+                    _explosionList.push_back(make_shared<Explosion>(_boss->getPos()));
+                } else {
+                    for (float offset = presetPos[0]; offset <= presetPos[2] + 1; offset += presetPos[2]/2)
+                    {
+                        _explosionList.push_back(make_shared<Explosion>(Vector3(_boss->getPos().x, _boss->getPos().y, offset)));
+                    }
+                }
+                _currentObstacle.reset();
+            }
+
+            if (_bossCallback)
+                _bossCallback(_boss->GetLives(), 50);
+        }
+
+        //for_each(_backgroundAsteroidList.begin(), _backgroundAsteroidList.end(), bind(&Asteroid::SetVisible, placeholders::_1, visible));
+    }
+
+
     void Space::SetVisible(bool visible)
     {
         for_each(_asteroidList.begin(), _asteroidList.end(), bind(&Asteroid::SetVisible, placeholders::_1, visible));
@@ -843,4 +918,5 @@ namespace CoreEngine
         }
         return SpaceObjectType::None;
     }
+
 }

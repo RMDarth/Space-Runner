@@ -29,7 +29,7 @@ namespace CoreEngine
 		virtual void Destroy();
 		virtual void SetVisible(bool visible) = 0;
 
-		virtual const Vector3& getPos();
+		virtual const Vector3& getPos() const;
 		virtual SceneSector* getSector();
 
 	protected:

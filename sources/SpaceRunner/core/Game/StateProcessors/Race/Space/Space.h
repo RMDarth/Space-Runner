@@ -69,6 +69,7 @@ namespace CoreEngine
         void SetVisible(bool visible);
         SpaceObjectType IsIntersected(float turn);
         void AddShot(Vector3 pos, float speed);
+        void DestroyEverything(bool near = false);
 
         void PreloadModels();
 

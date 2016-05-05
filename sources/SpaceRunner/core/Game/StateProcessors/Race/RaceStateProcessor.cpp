@@ -13,6 +13,7 @@
 #include "PrefabManager.h"
 
 #include "Render/Drawables/ModelDrawable.h"
+#include "Render/Drawables/RectDrawable.h"
 
 #include <iomanip>
 #include <Game/SkinManager.h>
@@ -340,6 +341,9 @@ namespace CoreEngine
             UpdateTurn();
         }
 
+        if (_bigBomb)
+            UpdateBomb(time * 5);
+
         _space->Update(time, _speed);
         _sector->GetNode()->setPosition(10, 0, _pos);
 
@@ -502,6 +506,44 @@ namespace CoreEngine
         }
     }
 
+    void RaceStateProcessor::InitBomb()
+    {
+        if (_bigBomb)
+        {
+            _sector->GetNode()->removeChild(_bombSector->GetNode());
+            _bigBomb.reset();
+        }
+        _space->DestroyEverything(true);
+        auto sceneNodeBomb = RenderProcessor::Instance()->GetSceneManager()->createSceneNode();
+        _sector->GetNode()->addChild(sceneNodeBomb);
+        sceneNodeBomb->setInheritOrientation(false);
+        _bombSector = make_unique<SceneSector>(sceneNodeBomb);
+        std::vector<Vector3> pointList;
+        pointList.push_back(Vector3(-1.0f, 0, -1.0));
+        pointList.push_back(Vector3(1.0f, 0, -1.0f));
+        pointList.push_back(Vector3(1.0f, 0,  1.0f));
+        pointList.push_back(Vector3(-1.0f, 0, 1.0f));
+        _bigBomb = make_unique<RectDrawable>(_bombSector.get(), "ExplosionRingMaterial", pointList);
+        _bombScale = 0.1f;
+    }
+
+    void RaceStateProcessor::UpdateBomb(float time)
+    {
+        _bombScale += time;
+
+        _bombSector->GetNode()->setScale(_bombScale*_bombScale, _bombScale*_bombScale, _bombScale*_bombScale);
+
+        if (_bombScale > 5)
+        {
+            _space->DestroyEverything();
+        }
+        if (_bombScale > 10)
+        {
+            _sector->GetNode()->removeChild(_bombSector->GetNode());
+            _bigBomb.reset();
+        }
+    }
+
     void RaceStateProcessor::OnMouseDown(int x, int y)
     {
         if (_document->OnMouseDown(x, y))
@@ -543,6 +585,9 @@ namespace CoreEngine
         }
         if (key == OIS::KC_UP)
         {
+            // temp
+            InitBomb();
+
             if (_totalTime - _shootingStarted > _shootingTime && !_explosion)
             {
                 for (auto i = 0; i < 4; i++)

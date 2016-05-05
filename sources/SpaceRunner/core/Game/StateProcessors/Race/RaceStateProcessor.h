@@ -11,6 +11,7 @@ class Sound;
 
 class ModelDrawable;
 class SceneSector;
+class RectDrawable;
 
 namespace Ogre
 {
@@ -31,6 +32,7 @@ namespace CoreEngine
         UPtr<SceneSector> _shipSector;
         UPtr<SceneSector> _shieldSector;
         UPtr<SceneSector> _shieldEffectSector;
+        UPtr<SceneSector> _bombSector;
 
         UPtr<ModelDrawable> _ship;
         UPtr<ModelDrawable> _shipShield;
@@ -38,7 +40,7 @@ namespace CoreEngine
         Ogre::ParticleSystem * _engineFire[2];
         Ogre::ParticleSystem * _shieldEffect;
 
-
+        UPtr<RectDrawable> _bigBomb;
         UPtr<Explosion> _explosion;
 
         // sounds
@@ -61,6 +63,8 @@ namespace CoreEngine
 
         float _angleHorizontal;
         const float _angleHorizontalMax = 0.7f;
+
+        float _bombScale = 0.1f;
 
         float _pos;
 
@@ -123,5 +127,8 @@ namespace CoreEngine
         void SetLightAndCamera();
         void UpdateHUD();
         void UpdateHelp();
+
+        void InitBomb();
+        void UpdateBomb(float time);
     };
 }

@@ -53,7 +53,7 @@ namespace CoreEngine
         _destroyed = true;
     }
 
-    const Vector3& SpaceObject::getPos()
+    const Vector3& SpaceObject::getPos() const
     {
         return _pos;
     }
