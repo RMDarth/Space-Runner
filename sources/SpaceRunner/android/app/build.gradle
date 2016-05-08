@@ -66,7 +66,6 @@ model {
         cppFlags.add("-DGL_GLEXT_PROTOTYPES=1")
         cppFlags.add("-I${file("../../core")}".toString())
 
-        cppFlags.add("-I${file("deps/Ogre/include/Build")}".toString())
         cppFlags.add("-I${file("deps/Ogre/include")}".toString())
         cppFlags.add("-I${file("deps/Ogre/include/RenderSystems/GLES2")}".toString())
         cppFlags.add("-I${file("deps/Ogre/include/RenderSystems/GLES2/GLES2")}".toString())

@@ -1,6 +1,6 @@
 #pragma once
 #include "PrecompileHeaders.h"
-#include "IInputListener.h"
+#include "Input/IInputListener.h"
 #include <android/input.h>
 
 class Input

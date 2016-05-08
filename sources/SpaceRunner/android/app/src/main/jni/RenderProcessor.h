@@ -1,8 +1,9 @@
 #pragma once
+
+#include <Render/Drawables/IDrawable.h>
 #include "PrecompileHeaders.h"
-#include "IDrawable.h"
-#include "Camera.h"
-#include "Light.h"
+#include "Render/Camera.h"
+#include "Render/Light.h"
 #include "OgreOverlaySystem.h"
 #include "AndroidDefs.h"
 #define SKYBOX_NUM 5

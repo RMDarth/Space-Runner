@@ -21,7 +21,7 @@ public:
 	void LogOutGoogle();
 	bool IsLoggedGoogle();
 
-	void UpdateEndlessScore(int score);
+	void UpdateScore(int score);
 	void SyncAchievements();
 
 	void ShowAchievements();

@@ -22,8 +22,8 @@
 #include "RenderProcessor.h"
 #include "SoundSystem.h"
 #include "BillingProcessor.h"
-#include "Game.h"
-#include "Config.h"
+#include "Game/Game.h"
+#include "Game/Config.h"
 #include "Input.h"
 #include "FileSystem.h"
 
@@ -37,6 +37,11 @@
 
 #define LOGI(...) ((void)__android_log_print(ANDROID_LOG_INFO, "SpaceRunner", __VA_ARGS__))
 #define LOGW(...) ((void)__android_log_print(ANDROID_LOG_WARN, "SpaceRunner", __VA_ARGS__))
+
+
+#if defined(__GLIBCXX__)
+#include <string>
+#endif
 
 
 static Ogre::RenderWindow* gRenderWnd = NULL;
@@ -334,17 +339,17 @@ void SetAds(GameState::State state, GameState::State stateNew)
 			hideAds();
 		else if (stateNew == GameState::Pause)
 			showAds(GRAVITY_BOTTOM);
-		else if (stateNew == GameState::DifficultySelect)
+		else if (stateNew == GameState::ShipSelect)
 		{
 			hideAds();
 			showAds(GRAVITY_BOTTOMRIGHT);
 		}
-		else if (state == GameState::DifficultySelect)
+		else if (state == GameState::ShipSelect)
 		{
 			hideAds();
 			showAds(GRAVITY_TOP);
 		}
-		else if (stateNew == GameState::LevelSelect)
+		else if (stateNew == GameState::Storyboard)
 		{
 			hideAds();
 			showAds(GRAVITY_BOTTOM);
@@ -354,17 +359,12 @@ void SetAds(GameState::State state, GameState::State stateNew)
 			hideAds();
 			showAds(GRAVITY_BOTTOM);
 		}
-		else if (stateNew == GameState::WorldSelect)
-		{
-			hideAds();
-			showAds(GRAVITY_TOP);
-		}
-		else if (stateNew == GameState::HighScores || stateNew == GameState::Credits)
+		else if (stateNew == GameState::Credits)
 		{
 			hideAds();
 			showAds(GRAVITY_BOTTOMRIGHT);
 		}
-		else if (state == GameState::HighScores || state == GameState::Credits)
+		else if (state == GameState::Credits)
 		{
 			hideAds();
 			showAds(GRAVITY_TOP);
@@ -450,8 +450,8 @@ static void handleCmd(struct android_app* app, int32_t cmd)
 
 				gConfig->SetLanguage(getLanguageId());
 
-				if (getRAMSize() < 700 && gConfig->IsFirstRun())
-					gConfig->SetSelectedQuality(1);
+				//if (getRAMSize() < 700 && gConfig->IsFirstRun())
+				//	gConfig->SetSelectedQuality(1);
 
 				gGame = Game::Instance();
 

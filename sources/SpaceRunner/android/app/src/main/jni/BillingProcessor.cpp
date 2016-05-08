@@ -1,5 +1,5 @@
 #include "BillingProcessor.h"
-#include "Config.h"
+#include "Game/Config.h"
 #include <android_native_app_glue.h>
 
 BillingProcessor* BillingProcessor::_instance = nullptr;
@@ -207,7 +207,7 @@ void BillingProcessor::ShowLeaderboard()
 }
 
 
-void BillingProcessor::UpdateEndlessScore(int score)
+void BillingProcessor::UpdateScore(int score)
 {
 #ifdef CHINA_SHOP
 	return;

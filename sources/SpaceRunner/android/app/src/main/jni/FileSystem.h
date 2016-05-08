@@ -27,6 +27,7 @@ public:
 	float ReadFloat();
 	double ReadDouble();
 	string ReadString();
+	string ReadSubstring(char delim = '\n');
 	char ReadChar();
 	string ReadToEnd();
 
