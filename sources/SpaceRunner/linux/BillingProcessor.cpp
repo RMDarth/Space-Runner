@@ -81,3 +81,9 @@ void BillingProcessor::RateApp()
 {
 
 }
+
+bool BillingProcessor::BuyEnergy(int packId)
+{
+	return true;
+}
+

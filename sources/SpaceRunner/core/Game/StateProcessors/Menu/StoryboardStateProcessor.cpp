@@ -2,6 +2,7 @@
 #include "Game/Game.h"
 #include "Game/StateProcessors/Level/LevelManager.h"
 #include "Game/Scores.h"
+using namespace std;
 
 namespace CoreEngine
 {
@@ -30,7 +31,7 @@ namespace CoreEngine
         auto *material = Ogre::MaterialManager::getSingleton().getByName("StarAnimatedMaterial").get();
         for (auto i = 0; i < 3; i++)
         {
-            _starMaterials[i] = material->clone("StarAnimatedMaterial_"+std::to_string(i));
+            _starMaterials[i] = material->clone("StarAnimatedMaterial_" + to_string(i));
             _starTime[i] = (float)2-i;
         }
 
@@ -144,21 +145,21 @@ namespace CoreEngine
             if (stars > 0)
             {
                 previous = true;
-                _document->GetControlByName("lock" + std::to_string(i+1))->SetVisible(false);
+                _document->GetControlByName("lock" + to_string(i+1))->SetVisible(false);
             } else if (previous)
             {
                 previous = false;
-                _document->GetControlByName("lock" + std::to_string(i+1))->SetVisible(false);
+                _document->GetControlByName("lock" + to_string(i+1))->SetVisible(false);
             }
 
             for (int r = 0; r < stars; r++)
             {
-                auto control = _document->GetControlByName("star" + std::to_string(i+1) + "_" + std::to_string(r+1));
-                control->SetDefaultMaterial("StarAnimatedMaterial_"+std::to_string(r));
+                auto control = _document->GetControlByName("star" + to_string(i+1) + "_" + to_string(r+1));
+                control->SetDefaultMaterial("StarAnimatedMaterial_" + to_string(r));
             }
             for (int r = stars; r < 3; r++)
             {
-                auto control = _document->GetControlByName("star" + std::to_string(i+1) + "_" + std::to_string(r+1));
+                auto control = _document->GetControlByName("star" + to_string(i+1) + "_" + to_string(r+1));
                 control->SetDefaultMaterial("GrayStar.png");
             }
         };
@@ -178,7 +179,7 @@ namespace CoreEngine
         else if (control->GetClassType() == "Button")
         {
             int levelNum = stoi(control->GetName());
-            if (!_document->GetControlByName("lock" + std::to_string(levelNum))->IsVisible())
+            if (!_document->GetControlByName("lock" + to_string(levelNum))->IsVisible())
             {
                 LevelManager::Instance()->SetIsPuzzle(true);
                 LevelManager::Instance()->SetLevelNum(levelNum);

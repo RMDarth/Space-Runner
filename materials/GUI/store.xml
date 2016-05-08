@@ -1,24 +1,56 @@
 <document>
-	<Panel name="panel" x="0.1" y="0.1" width="0.8" height="0.8" >
-		<!-- Label name="DifficultyLabel" text="Select difficulty" alignment="center" y="0.01" width="0.6" height="0.05" /-->
-		<Label name="levelstext" text="Unlock all" x="0.1" y="0.05" width="0.35" height="0.10" />
-		<Label name="levelstext2" text="campaigns" x="0.1" y="0.10" width="0.35" height="0.10" />
-		<Label name="levelstext3" text="+ no ads" x="0.1" y="0.15" width="0.35" height="0.10" />
-		<Label name="modelstext" text="Unlock all" x="0.55" y="0.05" width="0.35" height="0.10" />
-		<Label name="modelstext2" text="models" x="0.55" y="0.10" width="0.35" height="0.10" />
-		<Label name="modelstext3" text="+ no ads" x="0.55" y="0.15" width="0.35" height="0.10" />
-		<Panel name="levelspanel" text="" x="0.1" y="0.05" width="0.35" height="0.75"/>
-		<Panel name="levelspanel" text="" x="0.55" y="0.05" width="0.35" height="0.75" />
-		<Panel name="levelsimage" text="" x="0.15" y="0.15" width="0.25" height="-1.36" image="BuyLevels.png" />
-		<Panel name="modelsimage" text="" x="0.6" y="0.15" width="0.25" height="-1.36" image="BuyModels.png"/>
 
-		<Label name="levelsprice" text="0.99$" x="0.1" y="0.7" width="0.35" height="0.10" />
-		<Label name="modelsprice" text="0.99$" x="0.55" y="0.7" width="0.35" height="0.10" />
-		
-		<Button name="buylevels" text="Buy" x="0.2" y="0.8" width="0.15" height="0.09" />
-		<Label name="boughtlevels" text="Bought" x="0.1" y="0.8" width="0.35" height="0.09" />
-		<Button name="buymodels" text="Buy" x="0.65" y="0.8" width="0.15" height="0.09"  />	
-		<Label name="boughtmodels" text="Bought" x=".55" y="0.8" width="0.35" height="0.09" />
+	<Panel name="panel" x="0.1" y="0.05" width="0.8" height="0.9" image="windows/titled.png" >
+		<Label name="SelectLabel" text="Store" alignment="center" y="0.05" width="0.6" height="0.05" />
+
+		<Button name="energy" text="Energy" x="0.25" y="0.15" width="0.26" height="0.12" />	
+		<Button name="bonuses" text="Bonuses" x="0.49" y="0.15" width="0.25" height="0.12" />	
+
+
+		<Panel name="energyPanel" x="0.1" y="0.2" width="0.8" height="0.7" image="windows/untitled.png" >
+			<Label name="energypack1" text="1500 Energy pack" font-size="20" font-color="0.8 0.3 0.8 0.8" x="0.15" y="0.2" width="0" height="0.05" />
+			<Button name="buyenergypack1" text="$0.99"  font-size="20" font-color="0.9 0.88 0.4 0.8" pressed-font-color="0.8 0.7 0.3 0.8" x="0.55" y="0.15" width="0.3" height="0.14" />	
+
+			<Label name="energypack2" text="5000 Energy pack" font-size="20" font-color="0.8 0.3 0.8 0.8" x="0.15" y="0.35" width="0" height="0.05" />
+			<Button name="buyenergypack2" text="$2.49"  font-size="20" font-color="0.9 0.88 0.4 0.8" pressed-font-color="0.8 0.7 0.3 0.8" x="0.55" y="0.30" width="0.3" height="0.14" />	
+
+			<Label name="energypack3" text="10000 Energy pack" font-size="20" font-color="0.8 0.3 0.8 0.8" x="0.15" y="0.50" width="0" height="0.05" />
+			<Button name="buyenergypack3" text="$3.95"  font-size="20" font-color="0.9 0.88 0.4 0.8" pressed-font-color="0.8 0.7 0.3 0.8" x="0.55" y="0.45" width="0.3" height="0.14" />	
+
+			<Label name="energypack4" text="50000 Energy pack" font-size="20" font-color="0.8 0.3 0.8 0.8" x="0.15" y="0.65" width="0" height="0.05" />
+			<Button name="buyenergypack4" text="$9.95"  font-size="20" font-color="0.9 0.88 0.4 0.8" pressed-font-color="0.8 0.7 0.3 0.8" x="0.55" y="0.60" width="0.3" height="0.14" />
+
+			<Label name="energypack5" text="100000 Energy pack" font-size="20" font-color="0.8 0.3 0.8 0.8" x="0.15" y="0.80" width="0" height="0.05" />
+			<Button name="buyenergypack5" text="$14.95"  font-size="20" font-color="0.9 0.88 0.4 0.8" pressed-font-color="0.8 0.7 0.3 0.8" x="0.55" y="0.75" width="0.3" height="0.14" />	
+
+			<!--Button name="restore1" text="Restore" font-size="20" x="0.3" y="0.85" width="0.4" height="0.13" /-->	
+		</Panel>
+		<Panel name="bonusesPanel" x="0.1" y="0.2" width="0.8" height="0.7" image="windows/untitled.png" >
+			<Label name="bomb" text="Bomb" font-size="20" font-color="0.8 0.3 0.8 0.8" x="0.15" y="0.18" width="0" height="0.05" />
+			<Label name="bombcount" text="You have: 1" font-size="15" font-color="0.8 0.3 0.8 0.8" x="0.15" y="0.23" width="0" height="0.05" />
+			<Button name="buybomb1" text="§1200"  font-size="20" font-color="0.9 0.88 0.4 0.8" pressed-font-color="0.8 0.7 0.3 0.8" x="0.55" y="0.15" width="0.3" height="0.14" />	
+
+			<Label name="bomb2" text="5 Bomb pack" font-size="20" font-color="0.8 0.3 0.8 0.8" x="0.15" y="0.33" width="0" height="0.05" />
+			<Label name="bombcount2" text="You have: 1" font-size="15" font-color="0.8 0.3 0.8 0.8" x="0.15" y="0.38" width="0" height="0.05" />
+			<Button name="buybomb5" text="§5000"  font-size="20" font-color="0.9 0.88 0.4 0.8" pressed-font-color="0.8 0.7 0.3 0.8" x="0.55" y="0.30" width="0.3" height="0.14" />	
+
+			<Label name="multiplier" text="x2 Multiplier" font-size="20" font-color="0.8 0.3 0.8 0.8" x="0.15" y="0.50" width="0" height="0.05" />
+			<Button name="buymultiplier" text="§3000"  font-size="20" font-color="0.9 0.88 0.4 0.8" pressed-font-color="0.8 0.7 0.3 0.8" x="0.55" y="0.45" width="0.3" height="0.14" />	
+			<Label name="boughtmultiplier" text="Bought"  font-size="20" font-color="0.9 0.88 0.4 0.8" x="0.55" y="0.45" width="0.3" height="0.14" />	
+
+			<Label name="resurrect" text="Revive item" font-size="20" font-color="0.8 0.3 0.8 0.8" x="0.15" y="0.63" width="0" height="0.05" />
+			<Label name="resurrectcount" text="You have: 1" font-size="15" font-color="0.8 0.3 0.8 0.8" x="0.15" y="0.68" width="0" height="0.05" />
+			<Button name="buyresurrect1" text="§5000"  font-size="20" font-color="0.9 0.88 0.4 0.8" pressed-font-color="0.8 0.7 0.3 0.8" x="0.55" y="0.60" width="0.3" height="0.14" />
+
+			<Label name="resurrect2" text="5 Revive items" font-size="20" font-color="0.8 0.3 0.8 0.8" x="0.15" y="0.78" width="0" height="0.05" />
+			<Label name="resurrectcount2" text="You have: 1" font-size="15" font-color="0.8 0.3 0.8 0.8" x="0.15" y="0.83" width="0" height="0.05" />
+			<Button name="buyresurrect5" text="§20000"  font-size="20" font-color="0.9 0.88 0.4 0.8" pressed-font-color="0.8 0.7 0.3 0.8" x="0.55" y="0.75" width="0.3" height="0.14" />	
+
+			<!--Button name="restore2" text="Restore" font-size="20" x="0.80" y="0.08" width="0.17" height="0.08" /-->	
+		</Panel>
+		<Image name="bankImg" image="energybar.png" x="0.5" y="0.90" width="0.25" height="-0.41" >
+			<Label name="bank" text="123456" font-size="20" font-color="0.9 0.88 0.4 0.8" x="0.246" y="0.458" width="0.68" height="0.36" />
+		</Image>
 	</Panel>
-	<Button name="back"  x="0.3" y="0.83" width="0.08" height="-1" image="buttons/back.png" hoverimage="buttons/back_hover.png" pressedimage="buttons/back_pressed.png" />
+	<Button name="back"  x="0.3" y="0.87" width="0.08" height="-1" image="buttons/back.png" hoverimage="buttons/back_hover.png" pressedimage="buttons/back_pressed.png" />
 </document>

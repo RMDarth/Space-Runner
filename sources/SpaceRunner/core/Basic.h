@@ -2,11 +2,22 @@
 #include <cmath>
 #include <cstdlib>
 #include <string>
+#include <sstream>
 
 #ifdef ANDROID
 inline int stoi(std::string str)
 {
 	return atoi(str.c_str());
+}
+
+template <typename T>
+std::string to_string(T value)
+{
+    std::ostringstream os ;
+
+    os << value ;
+
+    return os.str() ;
 }
 #endif
 

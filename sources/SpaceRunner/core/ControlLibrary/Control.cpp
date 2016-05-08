@@ -168,7 +168,10 @@ void Control::InitOverlay()
     _overlayText->setPosition(0, -fontSize/2);
 
 
-    std::string fontSizeStr = std::to_string(_fontSize / 400.0f);
+    stream.str("");
+    stream << _fontSize / 400.0f;
+    std::string fontSizeStr = stream.str();
+
     _overlayText->setParameter("font_name", "GUIfont");
     _overlayText->setParameter("char_height", fontSizeStr);
     _overlayText->setParameter("horz_align", "center");
@@ -182,7 +185,8 @@ void Control::InitOverlay()
     _container->addChild(_overlayText);
 
     // init shadow
-    stream << "_shadow";
+    stream.str("Text_");
+    stream << _myID << "_shadow";
     _overlayTextShadow = overlayManager->createOverlayElement("TextArea", stream.str());
 
     _overlayTextShadow->setMetricsMode(Ogre::GMM_RELATIVE);
@@ -331,6 +335,15 @@ void Control::SetVisible(bool visible)
         else
             _overlay->hide();
         _visible = visible;
+    }
+}
+
+void Control::SetVisibleRecursive(bool visible)
+{
+    SetVisible(visible);
+    for (auto &child : _children)
+    {
+        child->SetVisibleRecursive(visible);
     }
 }
 

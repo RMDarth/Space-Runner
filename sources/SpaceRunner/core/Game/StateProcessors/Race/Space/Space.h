@@ -2,7 +2,7 @@
 #include <vector>
 #include <memory>
 #include <functional>
-#include "core/Game/StateProcessors/Race/LevelStructure.h"
+#include "Game/StateProcessors/Race/LevelStructure.h"
 #include "SpaceDefs.h"
 #include "Basic.h"
 #define VISIBLE_NUM 15

@@ -39,6 +39,10 @@ namespace CoreEngine
             _modelBought[i] = (configFile->ReadInt() == 1);
         }
 
+        _multiplierBought = (configFile->ReadInt() == 1);
+        _bombCount = configFile->ReadInt();
+        _resurrectCount = configFile->ReadInt();
+
         for (int i = 0; i < 20; i++)
         {
             _achievements[i] = (configFile->ReadInt() == 1);
@@ -63,6 +67,10 @@ namespace CoreEngine
             arcadeFile.WriteInt(_modelBought[i] ? 1 : 0);
         }
 
+        arcadeFile.WriteInt(_multiplierBought ? 1 : 0);
+        arcadeFile.WriteInt(_bombCount);
+        arcadeFile.WriteInt(_resurrectCount);
+
         for (int i = 0; i < 20; i++)
         {
             arcadeFile.WriteInt(_achievements[i] ? 1 : 0);
@@ -81,6 +89,10 @@ namespace CoreEngine
         _selectedModel = 0;
         _language = 0;
         _firstRun = false;
+
+        _multiplierBought = false;
+        _bombCount = 0;
+        _resurrectCount = 0;
 
         for (int i = 1; i < 5; i++)
             _modelBought[i] = false;
@@ -105,6 +117,10 @@ namespace CoreEngine
         {
             configFile.WriteInt(0); // models are not bought
         }
+
+        configFile.WriteInt(0); // multiplier not bought;
+        configFile.WriteInt(0); // bomb count;
+        configFile.WriteInt(0); // resurrect count;
 
         for (int i = 0; i < 20; i++)
         {
@@ -216,4 +232,39 @@ namespace CoreEngine
     {
         return _firstRun;
     }
+
+    int Config::GetBombCount()
+    {
+        return _bombCount;
+    }
+
+    void Config::SetBombCount(int count)
+    {
+        _bombCount = count;
+        Save();
+    }
+
+    int Config::GetResurrectCount()
+    {
+        return _resurrectCount;
+    }
+
+    void Config::SetResurrectCount(int count)
+    {
+        _resurrectCount = count;
+        Save();
+    }
+
+    bool Config::IsMultiplierBought()
+    {
+        return _multiplierBought;
+    }
+
+    void Config::SetMultiplierBought()
+    {
+        _multiplierBought = true;
+        Save();
+    }
+
+
 }

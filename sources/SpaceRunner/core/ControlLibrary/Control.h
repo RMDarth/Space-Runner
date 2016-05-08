@@ -118,6 +118,7 @@ public:
 	virtual void SetRenderType(RenderType type);
 	virtual void SetText(std::string text);
 	virtual void SetVisible(bool visible);
+	virtual void SetVisibleRecursive(bool visible);
 	virtual void SetEnabled(bool enabled);
 	virtual void SetMouseTransparent(bool mouseTransparent);
 	virtual void SetSize(int width, int height);

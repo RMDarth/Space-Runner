@@ -7,6 +7,7 @@
 #include "SelectShipStateProcessor.h"
 #include "Game/StateProcessors/Level/LevelManager.h"
 #include "Game/Game.h"
+using namespace std;
 
 #define SIZE 2.5f
 #define CAMERA_RADIUS 8
@@ -214,7 +215,7 @@ namespace CoreEngine
 
     void SelectShipStateProcessor::UpdateHUD()
     {
-        _document->GetControlByName("bank")->SetText(std::to_string(Scores::Instance()->GetTotalEnergy()));
+        _document->GetControlByName("bank")->SetText(to_string(Scores::Instance()->GetTotalEnergy()));
 
         // update features;
         auto features = SkinManager::Instance()->GetFeaturesList(_skinId);
@@ -244,7 +245,7 @@ namespace CoreEngine
             _document->GetControlByName("costlogo")->SetVisible(true);
             auto costControl = _document->GetControlByName("cost");
             costControl->SetVisible(true);
-            costControl->SetText(std::to_string(SkinManager::Instance()->GetPrice(_skinId)));
+            costControl->SetText(to_string(SkinManager::Instance()->GetPrice(_skinId)));
         } else {
             _document->GetControlByName("costlogo")->SetVisible(false);
             _document->GetControlByName("cost")->SetVisible(false);

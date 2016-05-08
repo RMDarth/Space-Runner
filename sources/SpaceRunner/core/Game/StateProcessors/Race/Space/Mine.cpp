@@ -1,6 +1,7 @@
 #include "Mine.h"
 #include "Render/Drawables/ModelDrawable.h"
 #include "Render/ParticleSystem.h"
+using namespace std;
 
 namespace CoreEngine
 {
@@ -35,7 +36,7 @@ namespace CoreEngine
             sceneNodeChild->setPosition(posList[i]);
             sceneNode->addChild(sceneNodeChild);
 
-            _glowEffects[i] = new ParticleSystem(sceneNodeChild, "GlowMine" + std::to_string(i) + "_%d", "MineGlowEffect", 200, 0, true);
+            _glowEffects[i] = new ParticleSystem(sceneNodeChild, "GlowMine" + to_string(i) + "_%d", "MineGlowEffect", 200, 0, true);
         }
 	}
 

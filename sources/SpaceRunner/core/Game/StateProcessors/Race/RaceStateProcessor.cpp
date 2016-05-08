@@ -585,9 +585,6 @@ namespace CoreEngine
         }
         if (key == OIS::KC_UP)
         {
-            // temp
-            InitBomb();
-
             if (_totalTime - _shootingStarted > _shootingTime && !_explosion)
             {
                 for (auto i = 0; i < 4; i++)

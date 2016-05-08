@@ -16,6 +16,10 @@ namespace CoreEngine
 
         bool _modelBought[5];
 
+        bool _multiplierBought;
+        int _bombCount;
+        int _resurrectCount;
+
         bool _firstRun;
 
         static Config* _instance;
@@ -40,6 +44,15 @@ namespace CoreEngine
 
         bool IsModelBought(int id);
         void SetModelBought(int id);
+
+        int GetBombCount();
+        void SetBombCount(int count);
+
+        int GetResurrectCount();
+        void SetResurrectCount(int count);
+
+        bool IsMultiplierBought();
+        void SetMultiplierBought();
 
         void SetAchievementCompleted(int id);
         bool IsAchievementCompleted(int id);

@@ -8,6 +8,8 @@ namespace CoreEngine
 	{
 		ControlDocument * _document;
 
+		bool _bonusesState;
+
 		void UpdateButtons();
 
 	public:
