@@ -116,6 +116,7 @@ namespace CoreEngine
     private:
         void InitSound();
         void InitSpaceShip();
+        void InitMaxSpeed();
 
         void ResetSpaceShip();
 

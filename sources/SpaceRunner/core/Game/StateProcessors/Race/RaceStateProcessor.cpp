@@ -102,19 +102,7 @@ namespace CoreEngine
         _speed = 1.0f;
         _speedAccel = 5.0f;
 
-        switch(_space->GetCurrentLevel()->difficulty)
-        {
-            case LevelDifficulty::Easy:
-                _speedMax = 8.0f;
-                break;
-            case LevelDifficulty::Normal:
-                _speedMax = 10.0f;
-                break;
-            case LevelDifficulty::Hard:
-                _speedMax = 11.0f;
-                break;
-        }
-
+        InitMaxSpeed();
 
         _pos = 0;
         _angleHorizontal = 0;
@@ -236,7 +224,22 @@ namespace CoreEngine
         _shieldEffect = sceneManager->createParticleSystem("ShieldEffect", "ShieldAnim");
         _shieldEffect->setKeepParticlesInLocalSpace(true);
         sceneNodeShieldEffect->attachObject(_shieldEffect);
+    }
 
+    void RaceStateProcessor::InitMaxSpeed()
+    {
+        switch(_space->GetCurrentLevel()->difficulty)
+        {
+            case LevelDifficulty::Easy:
+                _speedMax = 8.0f;
+                break;
+            case LevelDifficulty::Normal:
+                _speedMax = 10.0f;
+                break;
+            case LevelDifficulty::Hard:
+                _speedMax = 11.0f;
+                break;
+        }
     }
 
     void RaceStateProcessor::InitSound()
@@ -313,7 +316,7 @@ namespace CoreEngine
             {
                 auto invisTime = _totalTime - _invincibilityStart;
                 auto koef = static_cast<int>(invisTime * 10);
-                _ship->SetVisible(koef % 2 ? true : false);
+                _ship->SetVisible(koef % 2 != 0);
             }
         }
 
@@ -396,6 +399,12 @@ namespace CoreEngine
             return GameState::Score;
         }
 
+        if (!LevelManager::Instance()->IsPuzzle()
+            && _space->GetCurrentLevel()->currentObstacle == 0)
+        {
+            InitMaxSpeed();
+        }
+
         return Game::Instance()->GetState();
     }
 
@@ -412,17 +421,15 @@ namespace CoreEngine
         {
             LevelManager::Instance()->SetScore(_score);
             LevelManager::Instance()->SetTime((int)_totalTime);
-            return true;
-        }
-        if (!LevelManager::Instance()->IsPuzzle()
-            && _score >= _space->GetCurrentLevel()->energyToComplete)
-        {
-            if (Config::Instance()->IsSoundEnabled())
-                _successSound->Play();
 
-            LevelManager::Instance()->SetScore(_score);
-            LevelManager::Instance()->SetTime((int)_totalTime);
-            LevelManager::Instance()->SetVictory(true);
+            if (!LevelManager::Instance()->IsPuzzle()
+                && _score >= _space->GetCurrentLevel()->energyToComplete)
+            {
+                if (Config::Instance()->IsSoundEnabled())
+                    _successSound->Play();
+                LevelManager::Instance()->SetVictory(true);
+            }
+
             return true;
         }
 
@@ -535,7 +542,7 @@ namespace CoreEngine
         sceneNodeBomb->setInheritOrientation(false);
         _bombSector = make_unique<SceneSector>(sceneNodeBomb);
         std::vector<Vector3> pointList;
-        pointList.push_back(Vector3(-1.0f, 0, -1.0));
+        pointList.push_back(Vector3(-1.0f, 0, -1.0f));
         pointList.push_back(Vector3(1.0f, 0, -1.0f));
         pointList.push_back(Vector3(1.0f, 0,  1.0f));
         pointList.push_back(Vector3(-1.0f, 0, 1.0f));
@@ -598,7 +605,7 @@ namespace CoreEngine
         _document->OnMouseMove(x, y, 0);
     }
 
-    void RaceStateProcessor::OnMouseDoubleClick(int x, int y)
+    void RaceStateProcessor::OnMouseDoubleClick(int /*x*/, int /*y*/)
     {
         if (Config::Instance()->GetBombCount() > 0)
         {

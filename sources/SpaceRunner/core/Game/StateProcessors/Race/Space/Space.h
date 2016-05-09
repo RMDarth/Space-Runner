@@ -57,6 +57,8 @@ namespace CoreEngine
         EventCallback _shotCallback;
         BossCallback _bossCallback;
 
+        LevelDifficulty _currentLevelDifficulty;
+
         float _totalTime;
         float _lastObstacleCreated;
         int _lastObstaclePos;
@@ -78,7 +80,7 @@ namespace CoreEngine
         Level* GetCurrentLevel();
     private:
         void AddObstacles(float time);
-        void GenerateLevel(LevelDifficulty difficulty);
+        void GenerateLevel(LevelDifficulty difficulty, int count = 50);
 
         void ProcessAsteroids(float time);
         void ProcessMine(float time);

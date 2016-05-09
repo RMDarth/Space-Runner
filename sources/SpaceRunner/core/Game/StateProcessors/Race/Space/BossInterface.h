@@ -20,9 +20,9 @@ namespace CoreEngine
 
         enum class Difficulty
         {
-            Easy,
-            Normal,
-            Hard
+            Easy = 0,
+            Normal = 1,
+            Hard = 2
         };
 
         BossInterface(Vector3 offset, Difficulty difficulty)

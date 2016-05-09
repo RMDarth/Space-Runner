@@ -55,17 +55,18 @@ namespace CoreEngine
         {
             _currentLevel = unique_ptr<Level>(LevelFileManager::Instance()->LoadLevel(LevelManager::Instance()->GetLevelNum()));
         } else {
-            GenerateLevel(LevelDifficulty::Hard);
+            _currentLevelDifficulty = LevelDifficulty::Easy;
+            GenerateLevel(LevelDifficulty::Easy, 15);
         }
 
         //LevelFileManager::Instance()->SaveLevel(_currentLevel.get(), 11);
     }
 
-    void Space::GenerateLevel(LevelDifficulty difficulty)
+    void Space::GenerateLevel(LevelDifficulty difficulty, int count)
     {
         vector<ObstacleType> obstacleList;
         vector<PrefabInfo> prefabList;
-        for (int i = 0; i < 50; i++)
+        for (int i = 0; i < count; i++)
         {
             //obstacleList.push_back(ObstacleType::BigBoss); continue;
             int type = rand() % 18;
@@ -111,7 +112,10 @@ namespace CoreEngine
                 obstacleList.push_back(ObstacleType::AsteroidsPack);
             }
         }
-        obstacleList.push_back(ObstacleType::Boss);
+        if (_currentLevelDifficulty == LevelDifficulty::Normal)
+            obstacleList.push_back(ObstacleType::BigBoss);
+        else if (_currentLevelDifficulty == LevelDifficulty::Hard)
+            obstacleList.push_back(rand() % 2 ? ObstacleType::Boss : ObstacleType::BigBoss);
 
         _currentLevel = make_unique<Level>();
         _currentLevel->currentObstacle = 0;
@@ -120,7 +124,11 @@ namespace CoreEngine
         _currentLevel->prefabList = prefabList;
         _currentLevel->skyboxId = 0;
         _currentLevel->difficulty = difficulty;
-        _currentLevel->bossDifficulty = BossInterface::Difficulty::Normal;
+        if (_currentLevelDifficulty == LevelDifficulty::Normal)
+            _currentLevel->bossDifficulty = static_cast<BossInterface::Difficulty>(rand() % 2);
+        else
+            _currentLevel->bossDifficulty = static_cast<BossInterface::Difficulty>(rand() % 3);
+
         _currentLevel->energyToComplete = 100;
     }
 
@@ -183,7 +191,19 @@ namespace CoreEngine
             // create new obstacle
             _currentLevel->currentObstacle++;
             if (_currentLevel->currentObstacle == _currentLevel->obstacleList.size())
+            {
                 _currentLevel->currentObstacle = 0;
+                if (!LevelManager::Instance()->IsPuzzle())
+                {
+                    if (_currentLevelDifficulty != LevelDifficulty::Hard)
+                        _currentLevelDifficulty = static_cast<LevelDifficulty>((int)_currentLevelDifficulty + 1);
+                    int count = 30;
+                    if (_currentLevelDifficulty == LevelDifficulty::Hard)
+                        count = rand() % 15 + 30;
+
+                    GenerateLevel(_currentLevelDifficulty, count);
+                }
+            }
 
             switch (_currentLevel->obstacleList[_currentLevel->currentObstacle])
             {
