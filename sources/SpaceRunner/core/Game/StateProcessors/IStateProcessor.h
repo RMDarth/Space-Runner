@@ -10,6 +10,7 @@ namespace CoreEngine
 	public:
 		virtual void OnMouseDown(int x, int y) { };
 		virtual void OnMouseUp(int x, int y) { };
+		virtual void OnMouseDoubleClick(int x, int y) { };
 		virtual void OnKeyPressed(OIS::KeyCode key) { };
 
 		// PC only

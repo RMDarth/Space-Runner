@@ -50,6 +50,12 @@ namespace CoreEngine
         _document->SetMouseUpHandler(this);
         _document->Hide();
 
+
+        int c_x, c_y, c_width, c_height;
+        RenderProcessor::Instance()->GetViewport()->getActualDimensions(c_x, c_y, c_width, c_height);
+        _minSlideX = c_width * 0.01f;
+        _minSlideY = c_height * 0.01f;
+
         _init = false;
     }
 
@@ -84,9 +90,14 @@ namespace CoreEngine
         else
             ResetSpaceShip();
 
+        if (_bigBomb)
+        {
+            _sector->GetNode()->removeChild(_bombSector->GetNode());
+            _bigBomb.reset();
+        }
+
         _totalTime = 0;
         _score = 0;
-        _lives = 0;
         _frames = 0;
         _speed = 1.0f;
         _speedAccel = 5.0f;
@@ -326,6 +337,7 @@ namespace CoreEngine
                 if (LevelManager::Instance()->GetLevelNum() == 1 && LevelManager::Instance()->IsPuzzle())
                 {
                     LevelManager::Instance()->SetStarted(false);
+                    LevelManager::Instance()->SetLives(1);
                     Show();
                     return Game::Instance()->GetState();
                 }
@@ -365,7 +377,7 @@ namespace CoreEngine
                 StartExplosion();
                 _sector->GetNode()->setVisible(false);
 
-                _lives++;
+                LevelManager::Instance()->DecreaseLive();
             }
         }
 
@@ -396,7 +408,7 @@ namespace CoreEngine
 
     bool RaceStateProcessor::IsGameFinished()
     {
-        if (_lives == 2)
+        if (LevelManager::Instance()->GetLives() < 0)
         {
             LevelManager::Instance()->SetScore(_score);
             LevelManager::Instance()->SetTime((int)_totalTime);
@@ -435,23 +447,27 @@ namespace CoreEngine
         static auto timeControl = _document->GetControlByName("time");
         timeControl->SetText(stream.str());
 
-        stream.str("");
-        stream << _score;
         static auto scoreControl = _document->GetControlByName("score");
-        scoreControl->SetText(stream.str());
+        scoreControl->SetText(to_string(_score));
 
-        stream.str("");
-        stream << _speed;
         static auto nameControl = _document->GetControlByName("name");
-        nameControl->SetText(stream.str());
+        nameControl->SetText(to_string(_speed));
+
+        static auto bombControl = _document->GetControlByName("bombcount");
+        bombControl->SetText(to_string(Config::Instance()->GetBombCount()));
+
+        static auto livesControl = _document->GetControlByName("shipcount");
+        if (LevelManager::Instance()->GetLives() >= 0)
+        {
+            livesControl->SetText(to_string(LevelManager::Instance()->GetLives()));
+        }
 
         //if (Config::Instance()->IsShowFPS())
         {
             float fps = OgreApplication::Instance()->GetWindow()->getAverageFPS();
 
             stream.str("");
-            //stream << (int)(fps);
-            stream << _lives;
+            stream << (int)(fps);
             static auto fpsControl = _document->GetControlByName("FPS");
             fpsControl->SetText(stream.str());
         }
@@ -558,6 +574,11 @@ namespace CoreEngine
         if (_document->OnMouseUp(x, y))
             return;
 
+        if (abs(x - _startSlideX) < _minSlideX && abs(y - _startSlideY) < _minSlideY)
+        {
+            return;
+        }
+
         if (abs(x - _startSlideX) > abs(y - _startSlideY))
         {
             if (_startSlideX > x)
@@ -576,6 +597,16 @@ namespace CoreEngine
     {
         _document->OnMouseMove(x, y, 0);
     }
+
+    void RaceStateProcessor::OnMouseDoubleClick(int x, int y)
+    {
+        if (Config::Instance()->GetBombCount() > 0)
+        {
+            InitBomb();
+            Config::Instance()->SetBombCount(Config::Instance()->GetBombCount() - 1);
+        }
+    }
+
 
     void RaceStateProcessor::OnKeyPressed(OIS::KeyCode key)
     {
@@ -640,6 +671,14 @@ namespace CoreEngine
             {
                 if (_targetPosID > 0)
                     _nextTargetPosID--;
+            }
+        }
+        if (key == OIS::KC_SPACE)
+        {
+            if (Config::Instance()->GetBombCount() > 0)
+            {
+                InitBomb();
+                Config::Instance()->SetBombCount(Config::Instance()->GetBombCount() - 1);
             }
         }
     }

@@ -14,6 +14,7 @@ namespace CoreEngine
 		_time = -1;
 		_score = 0;
 		_missed = 0;
+		_lives = 2;
 	}
 
 	LevelManager* LevelManager::Instance()
@@ -94,6 +95,22 @@ namespace CoreEngine
 	{
 		_missed = missed;
 	}
+
+	int LevelManager::GetLives()
+	{
+		return _lives;
+	}
+
+	void LevelManager::SetLives(int lives)
+	{
+		_lives = lives;
+	}
+
+	void LevelManager::DecreaseLive()
+	{
+		_lives--;
+	}
+
 
 
 }

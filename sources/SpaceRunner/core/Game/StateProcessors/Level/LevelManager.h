@@ -3,41 +3,45 @@
 
 namespace CoreEngine
 {
-	class LevelManager
-	{
-		static LevelManager* _instance;
+    class LevelManager
+    {
+        static LevelManager* _instance;
 
-		int _level;
-		int _score;
-		int _missed;
-		int _time;
+        int _level;
+        int _score;
+        int _missed;
+        int _time;
+        int _lives;
 
-		bool _isPuzzle;
-		bool _isVictory;
-		bool _isStarted;
+        bool _isPuzzle;
+        bool _isVictory;
+        bool _isStarted;
 
-	public:
-		static LevelManager* Instance();
+    public:
+        static LevelManager* Instance();
 
-		int GetLevelNum();
-		int GetScore();
-		int GetMissed();
-		int GetTime();
+        int GetLevelNum();
+        int GetScore();
+        int GetMissed();
+        int GetTime();
+        int GetLives();
 
-		bool IsPuzzle();
-		bool IsStarted();
-		bool IsVictory();
+        bool IsPuzzle();
+        bool IsStarted();
+        bool IsVictory();
 
-		void SetLevelNum(int num);
-		void SetScore(int score);
-		void SetMissed(int missed);
-		void SetTime(int time);
-		void SetIsPuzzle(bool puzzle);
-		void SetStarted(bool started);
-		void SetVictory(bool victory);
+        void SetLevelNum(int num);
+        void SetScore(int score);
+        void SetMissed(int missed);
+        void SetTime(int time);
+        void SetIsPuzzle(bool puzzle);
+        void SetStarted(bool started);
+        void SetVictory(bool victory);
+        void SetLives(int lives);
+        void DecreaseLive();
 
-	private:
-		LevelManager();
-	};
+    private:
+        LevelManager();
+    };
 }
 

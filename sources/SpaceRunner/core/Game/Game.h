@@ -21,6 +21,7 @@ namespace CoreEngine
 		bool OnMouseMove(int xRel, int yRel, float deltaTime);
 		bool OnMouseDown(int x, int y);
 		bool OnMouseUp(int x, int y);
+		bool OnMouseDoubleClick(int x, int y) override;
 		void OnKeyPressed(OIS::KeyCode key);
 		void OnKeyReleased(OIS::KeyCode key);
 

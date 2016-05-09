@@ -46,6 +46,7 @@ namespace CoreEngine
 		if (key == OIS::KC_R)
 		{
 			LevelManager::Instance()->SetStarted(false);
+			LevelManager::Instance()->SetLives(1);
 			Game::Instance()->ChangeState(GameState::Level);
 		}
 	}

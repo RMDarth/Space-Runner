@@ -130,6 +130,7 @@ namespace CoreEngine
             {
                 SkinManager::Instance()->SetSkinID(_skinId);
                 LevelManager::Instance()->SetStarted(false);
+                LevelManager::Instance()->SetLives(1);
                 Game::Instance()->ChangeState(GameState::Level);
             } else {
                 auto price = SkinManager::Instance()->GetPrice(_skinId);

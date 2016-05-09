@@ -52,7 +52,6 @@ namespace CoreEngine
         bool _soundsLoaded;
 
         int _score;
-        int _lives;
 
         float _totalTime;
         int _frames;
@@ -88,6 +87,8 @@ namespace CoreEngine
 
         float _startSlideX;
         float _startSlideY;
+        float _minSlideX;
+        float _minSlideY;
 
         bool _init;
 
@@ -97,11 +98,13 @@ namespace CoreEngine
         void Init();
         virtual GameState::State Update(float time);
 
-        virtual void OnMouseDown(int x, int y);
-        virtual void OnMouseUp(int x, int y);
-        virtual void OnMouseMove(int x, int y);
-        virtual void OnKeyPressed(OIS::KeyCode key);
-        virtual void OnKeyReleased(OIS::KeyCode key);
+        virtual void OnMouseDown(int x, int y) override;
+        virtual void OnMouseUp(int x, int y) override;
+        virtual void OnMouseMove(int x, int y) override;
+        virtual void OnMouseDoubleClick(int x, int y) override;
+
+        virtual void OnKeyPressed(OIS::KeyCode key) override;
+        virtual void OnKeyReleased(OIS::KeyCode key) override;
 
         virtual void Hide();
         virtual void Show();

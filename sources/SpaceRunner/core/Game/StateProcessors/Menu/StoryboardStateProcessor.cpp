@@ -184,6 +184,7 @@ namespace CoreEngine
                 LevelManager::Instance()->SetIsPuzzle(true);
                 LevelManager::Instance()->SetLevelNum(levelNum);
                 LevelManager::Instance()->SetStarted(false);
+                LevelManager::Instance()->SetLives(1);
                 _changeState = 1;
             }
             //_document->Hide();

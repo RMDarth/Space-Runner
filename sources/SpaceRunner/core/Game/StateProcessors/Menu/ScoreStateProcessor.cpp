@@ -186,6 +186,12 @@ namespace CoreEngine
 				Game::Instance()->ChangeState(GameState::MainMenu);
 			}
 		}
+		if (key == OIS::KC_R)
+		{
+            LevelManager::Instance()->SetStarted(false);
+			LevelManager::Instance()->SetLives(1);
+            Game::Instance()->ChangeState(GameState::Level);
+		}
 	}
 
 
@@ -564,6 +570,7 @@ namespace CoreEngine
 		if (control->GetName() == "restart")
 		{
 			LevelManager::Instance()->SetStarted(false);
+            LevelManager::Instance()->SetLives(1);
 			Game::Instance()->ChangeState(GameState::Level);
 		}
 		if (control->GetName() == "tomenu")

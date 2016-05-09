@@ -123,6 +123,14 @@ bool Game::OnMouseUp(int x, int y)
     return false;
 }
 
+bool Game::OnMouseDoubleClick(int x, int y)
+{
+    IStateProcessor* processor = StateProcessorFactory::Instance()->GetProcessor(_state);
+    processor->OnMouseDoubleClick(x, y);
+
+    return false;
+}
+
 void Game::OnKeyPressed(OIS::KeyCode key)
 {
     IStateProcessor* processor = StateProcessorFactory::Instance()->GetProcessor(_state);
@@ -156,3 +164,4 @@ GameState::State Game::GetState()
 {
     return _state;
 }
+

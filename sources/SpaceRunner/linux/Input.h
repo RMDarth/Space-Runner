@@ -10,6 +10,14 @@ class Input : OIS::KeyListener
 
 	bool _mousePressed;
 
+	float _timeMousePressed;
+	float _timeMouseReleased;
+	float _totalTime;
+
+	int _lastPressed[2];
+	int _lastReleased[2];
+	int _minMove[2];
+
 	std::vector<IInputListener*> _listenerList;
 
 public:
@@ -22,6 +30,9 @@ public:
 
 	bool keyPressed(const OIS::KeyEvent &arg);
 	bool keyReleased(const OIS::KeyEvent &arg);
+
+private:
+	bool isSame(int* point1, int* point2);
 
 };
 
