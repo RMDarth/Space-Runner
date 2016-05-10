@@ -12,7 +12,7 @@ varying vec2 oUv0;
 void main()
 {
     float size = width * height; 
-    float index = (1.0 - color.a) * size;
+    float index = (color.a) * size;
     float y = floor(index / width);
     float x = floor(index - width * y);
     

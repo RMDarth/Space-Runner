@@ -342,3 +342,8 @@ void BillingProcessor::OpenLink(std::string link)
 	env->CallVoidMethod(activity->clazz, methodID, jStr);
 	jvm->DetachCurrentThread();
 }
+
+bool BillingProcessor::BuyEnergy(int packId)
+{
+	return true;
+}

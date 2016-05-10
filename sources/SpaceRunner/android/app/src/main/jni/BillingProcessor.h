@@ -15,6 +15,9 @@ public:
 
 	void BuyItem(std::string id);
 	bool IsItemBought(std::string id);
+
+	bool BuyEnergy(int packId);
+
 	void Init(struct android_app* state);
 
 	void LogInGoogle();

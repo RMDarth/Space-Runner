@@ -43,7 +43,7 @@ fragment_program spritesheetUniform_ps_GLSLES glsles
     default_params
     {
         param_named diffuseMap int 0
-        param_named color float4 1 1 1 1
+        param_named color float4 0 0 0 0
         param_named width float 1
         param_named height float 1
     }
@@ -57,7 +57,7 @@ vertex_program spritesheetUniform_vs unified
 
 fragment_program spritesheetUniform_ps unified
 {
-    delegate spritesheetUniform_vs_GLSLES
+    delegate spritesheetUniform_ps_GLSLES
     delegate spritesheetUniform_ps_CG
 }
 

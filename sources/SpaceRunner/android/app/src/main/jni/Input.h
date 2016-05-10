@@ -10,6 +10,14 @@ class Input
 
 	bool _mousePressed;
 
+	float _timeMousePressed;
+	float _timeMouseReleased;
+	float _totalTime;
+
+	int _lastPressed[2];
+	int _lastReleased[2];
+	int _minMove[2];
+
 	std::vector<IInputListener*> _listenerList;
 
 public:
@@ -22,5 +30,9 @@ public:
 
 	void HandleInput( AInputEvent* event);
 	void HandleInput( OIS::KeyCode code);
+
+private:
+	bool isSame(int* point1, int* point2);
+
 };
 
