@@ -185,6 +185,7 @@ namespace CoreEngine
                 LevelManager::Instance()->SetLevelNum(levelNum);
                 LevelManager::Instance()->SetStarted(false);
                 LevelManager::Instance()->SetLives(1);
+                LevelManager::Instance()->ResetMovies();
                 _changeState = 1;
             }
             //_document->Hide();

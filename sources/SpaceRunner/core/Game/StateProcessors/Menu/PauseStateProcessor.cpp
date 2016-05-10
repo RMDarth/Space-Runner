@@ -47,6 +47,7 @@ namespace CoreEngine
 		{
 			LevelManager::Instance()->SetStarted(false);
 			LevelManager::Instance()->SetLives(1);
+			LevelManager::Instance()->ResetMovies();
 			Game::Instance()->ChangeState(GameState::Level);
 		}
 	}

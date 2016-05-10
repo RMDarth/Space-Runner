@@ -367,6 +367,13 @@ void Control::SetCustomAttribute(std::string name, std::string value)
     {
         SetDefaultMaterial(value);
     }
+    if (name == "order")
+    {
+        std::stringstream str(value);
+        int order;
+        str >> order;
+        this->SetRenderOrder(order);
+    }
     if (name == "background-color")
     {
         std::stringstream str(value);

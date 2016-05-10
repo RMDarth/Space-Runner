@@ -9,6 +9,7 @@ namespace CoreEngine
 			MainMenu,
 			Level,
 			Pause,
+			SaveMe,
 			Score,
 			Editor,
 			Storyboard,

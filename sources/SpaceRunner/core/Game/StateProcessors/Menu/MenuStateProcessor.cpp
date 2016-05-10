@@ -223,6 +223,7 @@ namespace CoreEngine
                 LevelManager::Instance()->SetIsPuzzle(false);
                 LevelManager::Instance()->SetLevelNum(1);
                 LevelManager::Instance()->SetLives(1);
+                LevelManager::Instance()->ResetMovies();
                 Game::Instance()->ChangeState(GameState::ShipSelect);
             }
 

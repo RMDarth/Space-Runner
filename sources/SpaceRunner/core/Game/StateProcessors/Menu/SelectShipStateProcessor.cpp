@@ -131,6 +131,7 @@ namespace CoreEngine
                 SkinManager::Instance()->SetSkinID(_skinId);
                 LevelManager::Instance()->SetStarted(false);
                 LevelManager::Instance()->SetLives(1);
+                LevelManager::Instance()->ResetMovies();
                 Game::Instance()->ChangeState(GameState::Level);
             } else {
                 auto price = SkinManager::Instance()->GetPrice(_skinId);
@@ -171,6 +172,11 @@ namespace CoreEngine
                 _skinId = 0;
             UpdateModel();
             UpdateHUD();
+        }
+
+        if (control->GetName() == "store")
+        {
+            Game::Instance()->ChangeState(GameState::Store);
         }
         if (control->GetName() == "back")
         {

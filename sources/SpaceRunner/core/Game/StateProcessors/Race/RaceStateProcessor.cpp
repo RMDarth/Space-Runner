@@ -50,7 +50,6 @@ namespace CoreEngine
         _document->SetMouseUpHandler(this);
         _document->Hide();
 
-
         int c_x, c_y, c_width, c_height;
         RenderProcessor::Instance()->GetViewport()->getActualDimensions(c_x, c_y, c_width, c_height);
         _minSlideX = c_width * 0.01f;
@@ -307,6 +306,7 @@ namespace CoreEngine
 
         if (_invincibility)
         {
+            _sector->GetNode()->setVisible(true);
             if (_totalTime > _invincibilityStart + _invincibilityTime)
             {
                 _invincibility = false;
@@ -348,7 +348,7 @@ namespace CoreEngine
                 _invincibility = true;
                 _invincibilityStart = _totalTime;
                 _speedAccel = 5.0f;
-                _sector->GetNode()->setVisible(true);
+                //_sector->GetNode()->setVisible(true);
             }
         }
         else
@@ -394,9 +394,12 @@ namespace CoreEngine
 
         if (IsGameFinished())
         {
-            //for_each(particleList.begin(), particleList.end(), bind(&ParticleSystem::Update, placeholders::_1, 10.0f));
             _document->Hide();
-            return GameState::Score;
+
+            if (LevelManager::Instance()->IsVictory())
+                return GameState::Score;
+            else
+                return GameState::SaveMe;
         }
 
         if (!LevelManager::Instance()->IsPuzzle()
@@ -417,18 +420,11 @@ namespace CoreEngine
 
     bool RaceStateProcessor::IsGameFinished()
     {
-        if (LevelManager::Instance()->GetLives() < 0)
+        if (LevelManager::Instance()->GetLives() < 0 && _invincibility)
         {
             LevelManager::Instance()->SetScore(_score);
             LevelManager::Instance()->SetTime((int)_totalTime);
-
-            if (!LevelManager::Instance()->IsPuzzle()
-                && _score >= _space->GetCurrentLevel()->energyToComplete)
-            {
-                if (Config::Instance()->IsSoundEnabled())
-                    _successSound->Play();
-                LevelManager::Instance()->SetVictory(true);
-            }
+            LevelManager::Instance()->SetVictory(false);
 
             return true;
         }

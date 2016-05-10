@@ -27,6 +27,7 @@ namespace CoreEngine
         Camera* _camera;
 
         UPtr<ControlDocument> _document;
+
         UPtr<Space> _space;
         UPtr<SceneSector> _sector;
         UPtr<SceneSector> _shipSector;

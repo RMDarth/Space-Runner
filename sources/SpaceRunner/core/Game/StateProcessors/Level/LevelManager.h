@@ -16,6 +16,7 @@ namespace CoreEngine
         bool _isPuzzle;
         bool _isVictory;
         bool _isStarted;
+        bool _isMoviesLeft;
 
     public:
         static LevelManager* Instance();
@@ -29,6 +30,7 @@ namespace CoreEngine
         bool IsPuzzle();
         bool IsStarted();
         bool IsVictory();
+        bool IsMoviesLeft();
 
         void SetLevelNum(int num);
         void SetScore(int score);
@@ -39,6 +41,10 @@ namespace CoreEngine
         void SetVictory(bool victory);
         void SetLives(int lives);
         void DecreaseLive();
+        void IncreaseLive();
+        void ResetMovies();
+        void DecreaseMovies();
+
 
     private:
         LevelManager();

@@ -1,0 +1,8 @@
+<document>
+	<Panel name="panel"  x="0.12" y="0.12" width="0.76" height="0.4" image="windows/pause.png" >
+		<Label name="storeLabel" text="Not enough items" font-size="25" alignment="center" y="0.16" width="0.6" height="0.05" />
+		<Label name="storeLabel2" text="Do you want to buy more resurrect items?" font-size="20" alignment="center" y="0.45" width="0.6" height="0.05" />
+	</Panel>
+	<Button name="buy" text="Buy for $2.50" font-size="20" x="0.15" y="0.34" width="0.35" height="0.12" />	
+	<Button name="return" text="Return" font-size="20" x="0.5" y="0.34" width="0.35" height="0.12"/>	
+</document>

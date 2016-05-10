@@ -111,6 +111,25 @@ namespace CoreEngine
 		_lives--;
 	}
 
+	void LevelManager::IncreaseLive()
+	{
+		_lives++;
+	}
+
+	void LevelManager::ResetMovies()
+	{
+		_isMoviesLeft = true;
+	}
+
+	void LevelManager::DecreaseMovies()
+	{
+		_isMoviesLeft = false;
+	}
+
+	bool LevelManager::IsMoviesLeft()
+	{
+		return _isMoviesLeft;
+	}
 
 
 }

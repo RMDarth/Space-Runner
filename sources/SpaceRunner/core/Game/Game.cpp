@@ -13,6 +13,7 @@
 #include "Game/StateProcessors/Menu/SelectShipStateProcessor.h"
 #include "Game/StateProcessors/Menu/CreditsStateProcessor.h"
 #include "Game/StateProcessors/Menu/AchievementsStateProcessor.h"
+#include "Game/StateProcessors/Menu/SaveMeStateProcessor.h"
 #include "Game/StateProcessors/Race/RaceStateProcessor.h"
 using namespace CoreEngine;
 
@@ -32,6 +33,7 @@ Game::Game()
     MenuStateProcessor * menu = new MenuStateProcessor();
     RaceStateProcessor * race = new RaceStateProcessor();
     PauseStateProcessor * pause = new PauseStateProcessor();
+    SaveMeStateProcessor * saveme = new SaveMeStateProcessor();
     SelectShipStateProcessor * selectShip = new SelectShipStateProcessor();
 
 #if OGRE_PLATFORM == OGRE_PLATFORM_WINRT || defined(CHINA_SHOP)
@@ -52,6 +54,7 @@ Game::Game()
     StateProcessorFactory::Instance()->RegisterProcessor(race, GameState::Level);
     StateProcessorFactory::Instance()->RegisterProcessor(menu, GameState::MainMenu);
     StateProcessorFactory::Instance()->RegisterProcessor(pause, GameState::Pause);
+    StateProcessorFactory::Instance()->RegisterProcessor(saveme, GameState::SaveMe);
     StateProcessorFactory::Instance()->RegisterProcessor(selectShip, GameState::ShipSelect);
     StateProcessorFactory::Instance()->RegisterProcessor(score, GameState::Score);
 
