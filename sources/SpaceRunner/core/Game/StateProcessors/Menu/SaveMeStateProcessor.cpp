@@ -1,6 +1,7 @@
 #include <Game/Config.h>
 #include <Game/Scores.h>
 #include <BillingProcessor.h>
+#include <Game/SkinManager.h>
 #include "SaveMeStateProcessor.h"
 #include "Game/StateProcessors/Level/LevelManager.h"
 #include "Game/Game.h"
@@ -79,7 +80,7 @@ namespace CoreEngine
         if (key == OIS::KC_R)
         {
             LevelManager::Instance()->SetStarted(false);
-            LevelManager::Instance()->SetLives(1);
+            LevelManager::Instance()->SetLives(SkinManager::Instance()->LivesCount());
             LevelManager::Instance()->ResetMovies();
             Game::Instance()->ChangeState(GameState::Level);
         }

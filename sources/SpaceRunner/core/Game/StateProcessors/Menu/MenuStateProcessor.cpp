@@ -1,4 +1,5 @@
 #include <Game/Scores.h>
+#include <Game/SkinManager.h>
 #include "MenuStateProcessor.h"
 #include "Render/SceneSector.h"
 #include "Render/Drawables/ModelDrawable.h"
@@ -216,7 +217,7 @@ namespace CoreEngine
             {
                 LevelManager::Instance()->SetIsPuzzle(false);
                 LevelManager::Instance()->SetLevelNum(1);
-                LevelManager::Instance()->SetLives(1);
+                LevelManager::Instance()->SetLives(SkinManager::Instance()->LivesCount());
                 LevelManager::Instance()->ResetMovies();
                 Game::Instance()->ChangeState(GameState::ShipSelect);
             }

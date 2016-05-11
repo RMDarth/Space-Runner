@@ -1,3 +1,4 @@
+#include <Game/SkinManager.h>
 #include "StoryboardStateProcessor.h"
 #include "Game/Game.h"
 #include "Game/StateProcessors/Level/LevelManager.h"
@@ -184,7 +185,7 @@ namespace CoreEngine
                 LevelManager::Instance()->SetIsPuzzle(true);
                 LevelManager::Instance()->SetLevelNum(levelNum);
                 LevelManager::Instance()->SetStarted(false);
-                LevelManager::Instance()->SetLives(1);
+                LevelManager::Instance()->SetLives(SkinManager::Instance()->LivesCount());
                 LevelManager::Instance()->ResetMovies();
                 _changeState = 1;
             }

@@ -9,6 +9,7 @@
 #include <iomanip>
 #include <OgreLog.h>
 #include <OgreLogManager.h>
+#include <Game/SkinManager.h>
 
 using namespace std;
 
@@ -192,7 +193,7 @@ namespace CoreEngine
 		if (key == OIS::KC_R)
 		{
             LevelManager::Instance()->SetStarted(false);
-			LevelManager::Instance()->SetLives(1);
+			LevelManager::Instance()->SetLives(SkinManager::Instance()->LivesCount());
 			LevelManager::Instance()->ResetMovies();
             Game::Instance()->ChangeState(GameState::Level);
 		}
@@ -574,7 +575,7 @@ namespace CoreEngine
 		if (control->GetName() == "restart")
 		{
 			LevelManager::Instance()->SetStarted(false);
-            LevelManager::Instance()->SetLives(1);
+            LevelManager::Instance()->SetLives(SkinManager::Instance()->LivesCount());
 			LevelManager::Instance()->ResetMovies();
 			Game::Instance()->ChangeState(GameState::Level);
 		}

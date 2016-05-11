@@ -130,7 +130,7 @@ namespace CoreEngine
             {
                 SkinManager::Instance()->SetSkinID(_skinId);
                 LevelManager::Instance()->SetStarted(false);
-                LevelManager::Instance()->SetLives(1);
+                LevelManager::Instance()->SetLives(SkinManager::Instance()->LivesCount());
                 LevelManager::Instance()->ResetMovies();
                 Game::Instance()->ChangeState(GameState::Level);
             } else {

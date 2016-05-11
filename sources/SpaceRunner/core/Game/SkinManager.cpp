@@ -38,6 +38,9 @@ namespace CoreEngine
 
         _shootingSpeedList.push_back(1.5f);
         _shootingSpeedList.push_back(1.0f);
+
+        _shieldQueue.push_back(false);
+        _shieldQueue.push_back(false);
     }
 
     SkinManager* SkinManager::Instance()

@@ -340,7 +340,7 @@ namespace CoreEngine
                 if (LevelManager::Instance()->GetLevelNum() == 1 && LevelManager::Instance()->IsPuzzle())
                 {
                     LevelManager::Instance()->SetStarted(false);
-                    LevelManager::Instance()->SetLives(1);
+                    LevelManager::Instance()->SetLives(SkinManager::Instance()->LivesCount());
                     Show();
                     return Game::Instance()->GetState();
                 }
@@ -619,7 +619,7 @@ namespace CoreEngine
         }
         if (key == OIS::KC_UP)
         {
-            if (_totalTime - _shootingStarted > _shootingTime && !_explosion)
+            if (_totalTime - _shootingStarted > SkinManager::Instance()->ShootingCooldown() && !_explosion)
             {
                 for (auto i = 0; i < 4; i++)
                 {
