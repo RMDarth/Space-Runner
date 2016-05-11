@@ -20,7 +20,8 @@ Control::Control(SceneSector* sector,
                  std::string defaultImage,
                  Control* parent,
                  Control::RenderType renderType,
-                 float fontSize)
+                 float fontSize,
+                 Control* parent2)
 {
     _sector = sector;
     _type = type;
@@ -42,6 +43,19 @@ Control::Control(SceneSector* sector,
     _y = c_y + (int)(y * c_height);
     _width = (int)(width * c_width);
     _height = (int)(height * c_height);
+
+    if (parent2 != nullptr)
+    {
+        parent2->GetPos(c_x, c_y);
+        c_width = parent2->GetWidth();
+        c_height = parent2->GetHeight();
+        auto x = c_x + int(width * c_width);
+        auto y = c_y + int(height * c_height);
+        _width = abs(x - _x);
+        _height = abs(y - _y);
+        _x = std::min(x, _x);
+        _y = std::min(y, _y);
+    }
 
     if (height < 0)
         _height = (int)(-_width * height);

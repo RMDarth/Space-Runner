@@ -374,12 +374,12 @@ public class SpaceRunnerActivity extends NativeActivity
         return true;
     }
 
-    void UpdateScore(int score)
+    public void UpdateScore(int score)
     {
 
     }
 
-    void UnlockAchievement(int id)
+    public void UnlockAchievement(int id)
     {
 
     }

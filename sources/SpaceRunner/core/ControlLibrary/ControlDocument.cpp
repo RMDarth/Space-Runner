@@ -70,6 +70,8 @@ void ControlDocument::AddChildren(Control* parent, tinyxml2::XMLElement* element
 	{
 		float x;
 		float y;
+		string parent2Name;
+		shared_ptr<Control> parent2;
 
 		if (control->Attribute("padding") != nullptr)
 		{
@@ -90,6 +92,12 @@ void ControlDocument::AddChildren(Control* parent, tinyxml2::XMLElement* element
 			y = control->FloatAttribute("y");
 		} else {
 			y = next_y;
+		}
+
+		if (control->Attribute("parent2") != nullptr)
+		{
+			parent2Name = control->Attribute("parent2");
+			parent2 = this->GetControlByName(parent2Name);
 		}
 
 		float width = control->FloatAttribute("width");
@@ -116,7 +124,7 @@ void ControlDocument::AddChildren(Control* parent, tinyxml2::XMLElement* element
 			_sector,
 			control->Name(),
 			control->Attribute("name"),
-			x,	y,	width,	height, parent);
+			x,	y,	width,	height, parent, parent2.get());
 
 		if (control->Attribute("text") != nullptr)
 		{

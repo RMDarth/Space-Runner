@@ -26,8 +26,8 @@ namespace CoreEngine
         _query->SetMouseUpHandler(this);
         _query->Hide();
 
-        _document->RaisePriority(3);
-        _query->RaisePriority(6);
+        _document->RaisePriority(4);
+        _query->RaisePriority(7);
 
         auto sceneManager = RenderProcessor::Instance()->GetSceneManager();
         auto sceneNode = sceneManager->createSceneNode();

@@ -7,6 +7,9 @@
 #include "Game/Config.h"
 #include <sstream>
 #include <iomanip>
+#include <OgreLog.h>
+#include <OgreLogManager.h>
+
 using namespace std;
 
 namespace CoreEngine
@@ -218,7 +221,7 @@ namespace CoreEngine
 		_soundsPlayed = 0;
 		//_achievementTime = 0;
 
-		
+
 		if (levelManager->IsVictory())
 		{
 			if (levelManager->IsVictory())

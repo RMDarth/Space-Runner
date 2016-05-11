@@ -26,7 +26,7 @@ ControlFactory::ControlFactory()
 
 }
 
-Control* ControlFactory::CreateControl(SceneSector* sector, std::string type, std::string name, float x, float y, float width, float height, Control * parent)
+Control* ControlFactory::CreateControl(SceneSector* sector, std::string type, std::string name, float x, float y, float width, float height, Control * parent, Control * parent2)
 {
     if (type == "Button")
     {
@@ -54,7 +54,7 @@ Control* ControlFactory::CreateControl(SceneSector* sector, std::string type, st
     }
     if (type == "Image")
     {
-        return new ImageControl(sector, name, x, y, width, height, parent);
+        return new ImageControl(sector, name, x, y, width, height, parent, parent2);
     }
     if (type == "Container")
     {

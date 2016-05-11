@@ -21,6 +21,9 @@ namespace CoreEngine
 
         std::vector<Features> _featuresList;
         std::vector<int> _priceList;
+        std::vector<int> _livesList;
+        std::vector<float> _shootingSpeedList;
+        std::vector<bool> _shieldQueue;
 
         SkinManager();
     public:
@@ -40,6 +43,15 @@ namespace CoreEngine
 
         int GetEngineCount();
         int GetEngineCount(int id);
+
+        int LivesCount();
+        int LivesCount(int id);
+
+        float ShootingCooldown();
+        float ShootingCooldown(int id);
+
+        bool ShieldQueue();
+        bool ShieldQueue(int id);
 
         Vector3 GetEngineOffset(int num);
         Vector3 GetEngineOffset(int num, int id);

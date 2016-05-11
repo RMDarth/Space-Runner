@@ -39,11 +39,6 @@
 #define LOGW(...) ((void)__android_log_print(ANDROID_LOG_WARN, "SpaceRunner", __VA_ARGS__))
 
 
-#if defined(__GLIBCXX__)
-#include <string>
-#endif
-
-
 static Ogre::RenderWindow* gRenderWnd = NULL;
 static Ogre::Root* gRoot = NULL;
 static Ogre::StaticPluginLoader* gStaticPluginLoader = NULL;

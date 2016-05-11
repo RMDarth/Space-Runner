@@ -44,7 +44,7 @@ namespace CoreEngine
             auto posY = (rand() % (int)(BLOCK_SIZE * 40.0f * 10)) / 10.0f - BLOCK_SIZE * 20.0f;
 
             int num = rand() % 6 + 1;
-            auto asteroid = make_shared<Asteroid>(Vector3(-i*BLOCK_SIZE * 10, posY, posX), Asteroid::getAsteroidName(num), 0.0f, 90.0);
+            auto asteroid = make_shared<Asteroid>(Vector3(-i*BLOCK_SIZE * 10, posY, posX), Asteroid::getAsteroidName(num), 0.0f, 90.0, false);
             std::stringstream ss;
             ss << "asteroid" << num << "_Dark";
             asteroid->SetMaterial(ss.str());

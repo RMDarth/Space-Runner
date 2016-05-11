@@ -32,6 +32,12 @@ namespace CoreEngine
 
         _priceList.push_back(0);
         _priceList.push_back(2500);
+
+        _livesList.push_back(1);
+        _livesList.push_back(1);
+
+        _shootingSpeedList.push_back(1.5f);
+        _shootingSpeedList.push_back(1.0f);
     }
 
     SkinManager* SkinManager::Instance()
@@ -126,6 +132,36 @@ namespace CoreEngine
     int SkinManager::GetPrice(int id)
     {
         return _priceList[id];
+    }
+
+    int SkinManager::LivesCount()
+    {
+        return _livesList[_skinID];
+    }
+
+    int SkinManager::LivesCount(int id)
+    {
+        return _livesList[id];
+    }
+
+    float SkinManager::ShootingCooldown()
+    {
+        return _shootingSpeedList[_skinID];
+    }
+
+    float SkinManager::ShootingCooldown(int id)
+    {
+        return _shootingSpeedList[id];
+    }
+
+    bool SkinManager::ShieldQueue()
+    {
+        return _shieldQueue[_skinID];
+    }
+
+    bool SkinManager::ShieldQueue(int id)
+    {
+        return _shieldQueue[id];
     }
 
 

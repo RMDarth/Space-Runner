@@ -48,6 +48,7 @@ protected:
 
 	std::vector<std::shared_ptr<Control> > _children;
 	std::shared_ptr<Control> _parent;
+	std::shared_ptr<Control> _parent2;
 
 	// Text
 	Ogre::Overlay* _overlay;
@@ -103,7 +104,8 @@ public:
 			std::string defaultImage,
 			Control* parent = nullptr,
 			RenderType renderType = RenderType::Image,
-			float fontSize = 30);
+			float fontSize = 30,
+			Control* parent2 = nullptr);
 	virtual ~Control();
 
 	virtual void SetDefaultMaterial(std::string image, bool create = true);

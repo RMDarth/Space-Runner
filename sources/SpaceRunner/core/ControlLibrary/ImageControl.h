@@ -4,7 +4,7 @@
 class ImageControl : public Control
 {
 public:
-	ImageControl(SceneSector* sector, std::string name, float x, float y, float width, float height, Control * parent = nullptr);
+	ImageControl(SceneSector* sector, std::string name, float x, float y, float width, float height, Control * parent = nullptr, Control * parent2 = nullptr);
 
 	virtual void SetImage(std::string image);
 	virtual void SetCustomAttribute(std::string name, std::string value);

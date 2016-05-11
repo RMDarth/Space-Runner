@@ -54,17 +54,12 @@ namespace CoreEngine
         auto configpanel = _document->GetControlByName("configpanel");
         int x, y;
         configpanel->GetPos(x, y);
-        y = y - (int)(configpanel->GetWidth() * 3.448f);
+        y = y - (int)(configpanel->GetWidth() * 2.548f);
         configpanel->SetPos(x, y);
-        configpanel->SetSize(configpanel->GetWidth(), (int)(configpanel->GetWidth() * 4.348f));
+        configpanel->SetSize(configpanel->GetWidth(), (int)(configpanel->GetWidth() * 3.26));
         configpanel->SetRenderOrder(0);
 
         x = x + (int)(configpanel->GetWidth() * 0.05f);
-        auto pigbutton = _document->GetControlByName("graphics");
-        pigbutton->SetPos(x, y);
-        pigbutton->SetSize(pigbutton->GetWidth(), pigbutton->GetWidth());
-
-        y = y + (int)(pigbutton->GetWidth() * 0.95f);
         auto soundbutton = _document->GetControlByName("sound");
         soundbutton->SetPos(x, y);
         soundbutton->SetSize(soundbutton->GetWidth(), soundbutton->GetWidth());
@@ -82,7 +77,6 @@ namespace CoreEngine
         Show();
 
         configpanel->SetVisible(false);
-        pigbutton->SetVisible(false);
         soundbutton->SetVisible(false);
         musicbutton->SetVisible(false);
         infobutton->SetVisible(false);
@@ -260,11 +254,6 @@ namespace CoreEngine
                 Game::Instance()->ChangeState(GameState::Credits);
             }
 
-            if (control->GetName() == "graphics")
-            {
-                Game::Instance()->ChangeState(GameState::ShipSelect);
-            }
-
             if (control->GetName() == "config")
             {
                 ChangeSettingsPanelVisibility();
@@ -307,7 +296,6 @@ namespace CoreEngine
         auto cp = _document->GetControlByName("configpanel");
         bool visibility = !cp->IsVisible();
         cp->SetVisible(visibility);
-        _document->GetControlByName("graphics")->SetVisible(visibility);
         _document->GetControlByName("sound")->SetVisible(visibility);
         _document->GetControlByName("music")->SetVisible(visibility);
         _document->GetControlByName("info")->SetVisible(visibility);

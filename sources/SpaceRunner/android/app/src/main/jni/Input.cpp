@@ -13,8 +13,8 @@ Input::Input(Ogre::RenderWindow * win)
         _lastPressed[i] = 0;
         _lastReleased[i] = 0;
     }
-    _minMove[0] = (int)(width * 0.01f);
-    _minMove[1] = (int)(height * 0.01f);
+    _minMove[0] = (int)(width * 0.1f);
+    _minMove[1] = (int)(height * 0.1f);
 
     _totalTime = 0;
 }

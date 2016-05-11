@@ -14,9 +14,12 @@ namespace CoreEngine
 		ModelDrawable * _model;
 		float _scale;
         Vector3 _size;
+		Vector3 _rotationVector;
+		bool _rotate;
+		float _totalTime;
 
 	public:
-		Asteroid(Vector3 offset, std::string model, float speed, float scale = 1.0f);
+		Asteroid(Vector3 offset, std::string model, float speed, float scale = 1.0f, bool rotate = true);
 		~Asteroid();
 		void Update(float time, float roadSpeed) override;
 		void TryReset();

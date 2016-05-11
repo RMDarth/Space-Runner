@@ -1,7 +1,7 @@
 #include "ImageControl.h"
 
-ImageControl::ImageControl(SceneSector* sector, std::string name, float x, float y, float width, float height, Control * parent)
-	: Control(sector, "Image", name, x, y, width, height, "empty.png", parent)
+ImageControl::ImageControl(SceneSector* sector, std::string name, float x, float y, float width, float height, Control * parent, Control * parent2)
+	: Control(sector, "Image", name, x, y, width, height, "empty.png", parent, RenderType::Image, 30, parent2)
 {
 
 }

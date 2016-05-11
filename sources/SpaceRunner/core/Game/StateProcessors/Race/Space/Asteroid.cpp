@@ -3,7 +3,7 @@
 
 namespace CoreEngine
 {
-	Asteroid::Asteroid(Vector3 offset, std::string model, float speed, float scale)
+	Asteroid::Asteroid(Vector3 offset, std::string model, float speed, float scale, bool rotate)
 		: SpaceObject(offset, speed)
 	{
 		auto sceneManager = RenderProcessor::Instance()->GetSceneManager();
@@ -20,6 +20,11 @@ namespace CoreEngine
 
 		const auto& size = SpaceObject::getHalfSize();
 		_size = size * _scale * 0.2f;
+		_rotationVector = Vector3(rand() % 100, rand() % 100, rand() % 100);
+		_rotationVector.Normalize();
+
+		_rotate = rotate;
+		_totalTime = 0;
 	}
 
 	Asteroid::~Asteroid()
@@ -30,8 +35,12 @@ namespace CoreEngine
 
 	void Asteroid::Update(float time, float roadSpeed)
 	{
+		_totalTime += time;
 		SpaceObject::Update(time, roadSpeed);
 		_sector->GetNode()->setPosition(VectorToOgre(_pos));
+
+		if (_rotate)
+			_sector->GetNode()->setOrientation(Ogre::Quaternion(Ogre::Degree((int(_totalTime*200) % 3600) * 0.1f ), VectorToOgre(_rotationVector)));
 	}
 
 	void Asteroid::TryReset()
@@ -47,6 +56,9 @@ namespace CoreEngine
 			auto posY = (rand() % (int)(BLOCK_SIZE * 40.0f * 10)) / 10.0f - BLOCK_SIZE * 20.0f;
 			_pos = Vector3(-ASTEROID_NUM * BLOCK_SIZE * 10, posY, posX);
 			_sector->GetNode()->setPosition(VectorToOgre(_pos));
+
+			_rotationVector = Vector3(rand() % 100, rand() % 100, rand() % 100);
+			_rotationVector.Normalize();
 			//_model->SetScale((rand() % 15 + 5) / 10.0f);
 		}
 	}

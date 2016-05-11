@@ -16,6 +16,7 @@ namespace CoreEngine
         bool _queryVisible;
 
 		Ptr<Sound> _successSound;
+		bool _soundsLoaded;
 
 	public:
 		SaveMeStateProcessor();
@@ -33,6 +34,9 @@ namespace CoreEngine
 
 		// IEventProcessor interface //
 		virtual void ProcessEvent(Control* control, IEventHandler::EventType type, int x, int y);
+
+	private:
+		void InitSound();
 	};
 }
 

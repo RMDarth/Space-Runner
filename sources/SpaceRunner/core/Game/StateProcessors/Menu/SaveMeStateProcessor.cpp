@@ -22,6 +22,8 @@ namespace CoreEngine
         _query->RaisePriority(6);
 
         _queryVisible = false;
+
+        InitSound();
     }
 
 
@@ -32,6 +34,16 @@ namespace CoreEngine
     GameState::State SaveMeStateProcessor::Update(float time)
     {
         return GameState::SaveMe;
+    }
+
+    void SaveMeStateProcessor::InitSound()
+    {
+        auto soundSystem = SoundSystem::Instance();
+        if (soundSystem->IsLoaded() && !_soundsLoaded)
+        {
+            _successSound = std::shared_ptr<Sound>(soundSystem->CreateSound("Sound/SuccessSound.wav"));
+            _soundsLoaded = true;
+        }
     }
 
     void SaveMeStateProcessor::OnMouseDown(int x, int y)

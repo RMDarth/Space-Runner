@@ -7,7 +7,7 @@ class ControlFactory
 public:
 	static ControlFactory* Instance();
 
-	Control* CreateControl(SceneSector* sector, std::string type, std::string name, float x, float y, float width, float height, Control * parent);
+	Control* CreateControl(SceneSector* sector, std::string type, std::string name, float x, float y, float width, float height, Control * parent, Control * parent2 = nullptr);
 
 private:
 	ControlFactory();
