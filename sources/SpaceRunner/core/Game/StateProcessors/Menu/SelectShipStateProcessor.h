@@ -46,7 +46,7 @@ namespace CoreEngine
         void UpdateModel();
         void UpdateHUD();
         void InitSparks();
-
+        void UpdateAchievements();
     };
 }
 

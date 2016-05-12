@@ -2,6 +2,7 @@
 #include <Game/SkinManager.h>
 #include <Game/Scores.h>
 #include <Game/Config.h>
+#include <BillingProcessor.h>
 #include "Render/SceneSector.h"
 #include "Render/Drawables/ModelDrawable.h"
 #include "SelectShipStateProcessor.h"
@@ -148,6 +149,8 @@ namespace CoreEngine
                     InitSparks();
                     Config::Instance()->SetModelBought(_skinId);
                     UpdateHUD();
+
+                    UpdateAchievements();
                 }
             }
         }
@@ -279,6 +282,31 @@ namespace CoreEngine
         sceneNodeChild->setScale(1, 1, 1);
         sceneNode->addChild(sceneNodeChild);
         _sparksEffect = new ParticleSystem(sceneNodeChild, "BuySparks_%d", "Blast4", 2, 15, true);
+    }
+
+    void SelectShipStateProcessor::UpdateAchievements()
+    {
+        if (!Config::Instance()->IsAchievementCompleted(13))
+        {
+            int shipsBought = 0;
+            for (auto i = 0; i < 5; i++)
+            {
+                if (Config::Instance()->IsModelBought(i))
+                    shipsBought++;
+            }
+            if (shipsBought > 1)
+            {
+                Config::Instance()->SetAchievementCompleted(10);
+            }
+            if (shipsBought >= 5)
+            {
+                Config::Instance()->SetAchievementCompleted(13);
+            }
+
+            Config::Instance()->SetAchievementData(13, shipsBought);
+        }
+
+        BillingProcessor::Instance()->SyncAchievements();
     }
 
 

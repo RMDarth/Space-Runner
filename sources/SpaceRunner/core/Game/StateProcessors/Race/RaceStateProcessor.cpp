@@ -17,6 +17,7 @@
 
 #include <iomanip>
 #include <Game/SkinManager.h>
+#include <BillingProcessor.h>
 
 using namespace std;
 
@@ -545,6 +546,12 @@ namespace CoreEngine
         pointList.push_back(Vector3(-5.0f, 0, 5.0f));
         _bigBomb = make_unique<RectDrawable>(_bombSector.get(), "ExplosionRingMaterial", pointList);
         _bombScale = 0.1f;
+
+        if (!Config::Instance()->IsAchievementCompleted(11))
+        {
+            Config::Instance()->SetAchievementCompleted(11);
+            BillingProcessor::Instance()->SyncAchievements();
+        }
     }
 
     void RaceStateProcessor::UpdateBomb(float time)

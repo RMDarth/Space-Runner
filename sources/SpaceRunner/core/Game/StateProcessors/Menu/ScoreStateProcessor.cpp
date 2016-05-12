@@ -420,10 +420,6 @@ namespace CoreEngine
 		}
 		else { achievementsCompleted++; }
 
-		if (Config::Instance()->IsAchievementCompleted(10)) // buy ship
-		{
-			achievementsCompleted++;
-		}
 		if (Config::Instance()->IsAchievementCompleted(11)) // use bomb
 		{
 			achievementsCompleted++;
@@ -448,10 +444,31 @@ namespace CoreEngine
 			achievementsCompleted += 2;
 		}
 
-		if (Config::Instance()->IsAchievementCompleted(13)) // buy all ships
+		if (!Config::Instance()->IsAchievementCompleted(13))
 		{
-			achievementsCompleted++;
-		}
+            int shipsBought = 0;
+            for (auto i = 0; i < 5; i++)
+            {
+                if (Config::Instance()->IsModelBought(i))
+                    shipsBought++;
+            }
+            if (shipsBought > 1)
+            {
+                ShowAchievement(10);
+                Config::Instance()->SetAchievementCompleted(10);
+                achievementsCompleted++;
+            }
+            if (shipsBought >= 5)
+            {
+                ShowAchievement(13);
+                Config::Instance()->SetAchievementCompleted(13);
+                achievementsCompleted++;
+            }
+
+            Config::Instance()->SetAchievementData(13, shipsBought);
+		} else {
+            achievementsCompleted += 2;
+        }
 
 		if (!Config::Instance()->IsAchievementCompleted(14))
 		{
