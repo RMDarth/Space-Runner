@@ -536,12 +536,13 @@ namespace CoreEngine
         auto sceneNodeBomb = RenderProcessor::Instance()->GetSceneManager()->createSceneNode();
         _sector->GetNode()->addChild(sceneNodeBomb);
         sceneNodeBomb->setInheritOrientation(false);
+        sceneNodeBomb->setInheritScale(false);
         _bombSector = make_unique<SceneSector>(sceneNodeBomb);
         std::vector<Vector3> pointList;
-        pointList.push_back(Vector3(-1.0f, 0, -1.0f));
-        pointList.push_back(Vector3(1.0f, 0, -1.0f));
-        pointList.push_back(Vector3(1.0f, 0,  1.0f));
-        pointList.push_back(Vector3(-1.0f, 0, 1.0f));
+        pointList.push_back(Vector3(-5.0f, 0, -5.0f));
+        pointList.push_back(Vector3(5.0f, 0, -5.0f));
+        pointList.push_back(Vector3(5.0f, 0,  5.0f));
+        pointList.push_back(Vector3(-5.0f, 0, 5.0f));
         _bigBomb = make_unique<RectDrawable>(_bombSector.get(), "ExplosionRingMaterial", pointList);
         _bombScale = 0.1f;
     }
