@@ -47,20 +47,20 @@ namespace CoreEngine
 	void ScoreStateProcessor::InitAchievementNames()
 	{
 		_achievementName.push_back("Newcomer");
-		_achievementName.push_back("Bubble Shooter");
-		_achievementName.push_back("Level Smasher");
+		_achievementName.push_back("Space pilot");
+		_achievementName.push_back("Energizer");
 		_achievementName.push_back("Conqueror");
-		_achievementName.push_back("Unstoppable");
-		_achievementName.push_back("Star Collector");
-		_achievementName.push_back("Star Shooter");
-		_achievementName.push_back("Super Star");
-		_achievementName.push_back("Puzzle Lover");
-		_achievementName.push_back("Puzzle Hero");
-		_achievementName.push_back("Arcade Smasher");
-		_achievementName.push_back("Endless Destroyer");
-		_achievementName.push_back("Hard Worker");
-		_achievementName.push_back("Deep Diver");
+		_achievementName.push_back("Star Hero");
+		_achievementName.push_back("Space Virtuoso");
 		_achievementName.push_back("Mission Accomplished");
+		_achievementName.push_back("Unstoppable");
+		_achievementName.push_back("Immortal");
+		_achievementName.push_back("Elite pilot");
+		_achievementName.push_back("Merchant");
+		_achievementName.push_back("Bomberman");
+		_achievementName.push_back("Collector");
+		_achievementName.push_back("Fleet Commander");
+		_achievementName.push_back("Star Ace");
 		_achievementName.push_back("Superhuman");
 
 		/*_achievementName.push_back("新来的人");
@@ -311,7 +311,7 @@ namespace CoreEngine
 	void ScoreStateProcessor::InitSound()
 	{
 		auto soundSystem = SoundSystem::Instance();
-		if (soundSystem->IsLoaded() && _soundsLoaded == false)
+		if (soundSystem->IsLoaded() && !_soundsLoaded)
 		{
 #ifdef __ANDROID_API__
 			_starSound = shared_ptr<Sound>(soundSystem->CreateSound("Sound/Bell.wav"));
@@ -341,7 +341,7 @@ namespace CoreEngine
 
 		if (!Config::Instance()->IsAchievementCompleted(1))
 		{
-			if (!isPuzzle && isVictory)
+			if (isPuzzle && isVictory && LevelManager::Instance()->GetLevelNum() > 1)
 			{
 				ShowAchievement(1);
 				Config::Instance()->SetAchievementCompleted(1);
@@ -349,178 +349,115 @@ namespace CoreEngine
 			}
 		} else { achievementsCompleted++; }
 
-		if (!Config::Instance()->IsAchievementCompleted(9))
+		if (!Config::Instance()->IsAchievementCompleted(6))
 		{
 			int levelNum = 0;
+			int levelNumMax = 0;
 			for (i = 0; i < LEVELNUM; i++)
 			{
-				if (Scores::Instance()->GetBestStars(i + 1) > 0)
+				auto stars = Scores::Instance()->GetBestStars(i + 1);
+				if (stars > 0)
 					levelNum++;
+				if (stars == 3)
+					levelNumMax++;
+
 			}
 			if (levelNum >= 5)
 			{
-				ShowAchievement(2);
-				Config::Instance()->SetAchievementCompleted(2);
+				ShowAchievement(3);
+				Config::Instance()->SetAchievementCompleted(3);
 				achievementsCompleted++;
 			}
-			if (levelNum >= 40)
-			{
-				ShowAchievement(8);
-				Config::Instance()->SetAchievementCompleted(8);
-				achievementsCompleted++;
-			}
-			if (levelNum >= 100)
-			{
-				ShowAchievement(9);
-				Config::Instance()->SetAchievementCompleted(9);
-				achievementsCompleted++;
-			}
-			Config::Instance()->SetAchievementData(2, levelNum);
-			Config::Instance()->SetAchievementData(8, levelNum);
-			Config::Instance()->SetAchievementData(9, levelNum);
-		}
-		else
-		{
-			achievementsCompleted += 3;
-		}
-
-		if (!Config::Instance()->IsAchievementCompleted(3))
-		{
-			bool found = false;
-			/*for (i = 0; i < WORLD_NUM; i++)
-			{
-				for (r = i * 20; r < (i + 1) * 20; r++)
-				{
-					if (Scores::Instance()->GetBestStars(r + 1) == 0)
-					{
-						found = true;
-						break;
-					}
-				}
-				if (!found)
-				{
-					ShowAchievement(3);
-					Config::Instance()->SetAchievementCompleted(3);
-					achievementsCompleted++;
-					break;
-				}
-				found = false;
-			}*/
-		} else { achievementsCompleted++; }
-
-		if (!Config::Instance()->IsAchievementCompleted(4))
-		{
-			if (!isPuzzle && isVictory && LevelManager::Instance()->GetLevelNum() == 6)
+			if (levelNum >= 11)
 			{
 				ShowAchievement(4);
 				Config::Instance()->SetAchievementCompleted(4);
 				achievementsCompleted++;
 			}
-			else if (Scores::Instance()->GetBestArcadeScore() > 0)
-			{
-				ShowAchievement(4);
-				Config::Instance()->SetAchievementCompleted(4);
-				achievementsCompleted++;
-			}	
-		}
-		else { achievementsCompleted++; }
-
-		if (!Config::Instance()->IsAchievementCompleted(7))
-		{
-			int stars = 0;
-			for (i = 0; i < LEVELNUM; i++)
-			{
-				stars += Scores::Instance()->GetBestStars(i + 1);
-			}
-			if (stars >= 15)
+			if (levelNumMax >= 5)
 			{
 				ShowAchievement(5);
 				Config::Instance()->SetAchievementCompleted(5);
 				achievementsCompleted++;
 			}
-			if (stars >= 40)
+			if (levelNumMax >= 11)
 			{
 				ShowAchievement(6);
 				Config::Instance()->SetAchievementCompleted(6);
 				achievementsCompleted++;
 			}
-			if (stars >= 100)
+			Config::Instance()->SetAchievementData(3, levelNum);
+			Config::Instance()->SetAchievementData(4, levelNum);
+			Config::Instance()->SetAchievementData(5, levelNumMax);
+			Config::Instance()->SetAchievementData(6, levelNumMax);
+		} else {
+			achievementsCompleted += 4;
+		}
+
+		if (!Config::Instance()->IsAchievementCompleted(8))
+		{
+			auto energy = LevelManager::Instance()->GetScore();
+			if (energy >= 500)
 			{
 				ShowAchievement(7);
 				Config::Instance()->SetAchievementCompleted(7);
 				achievementsCompleted++;
 			}
-			Config::Instance()->SetAchievementData(5, stars);
-			Config::Instance()->SetAchievementData(6, stars);
-			Config::Instance()->SetAchievementData(7, stars);
+			if (energy >= 1000)
+			{
+				ShowAchievement(8);
+				Config::Instance()->SetAchievementCompleted(8);
+				achievementsCompleted++;
+			}
 		}
 		else {
-			achievementsCompleted += 3;
+			achievementsCompleted += 2;
 		}
 
-		if (!Config::Instance()->IsAchievementCompleted(10))
+		if (!Config::Instance()->IsAchievementCompleted(9))
 		{
-			int levelNum = 0;
-			for (i = 0; i < 6; i++)
-			{
-				//if (Scores::Instance()->GetBestArcadeScore(i + 1) > 0)
-				//	levelNum++;
-			}
-			if (levelNum == 6)
-			{
-				ShowAchievement(10);
-				Config::Instance()->SetAchievementCompleted(10);
-				achievementsCompleted++;
-			}
-			Config::Instance()->SetAchievementData(10, levelNum);
+			// TODO: check if top-10 score (weekly or alltime)
 		}
 		else { achievementsCompleted++; }
 
-		if (!Config::Instance()->IsAchievementCompleted(11))
+		if (Config::Instance()->IsAchievementCompleted(10)) // buy ship
 		{
-			if (Scores::Instance()->GetBestArcadeTime() >= 300)
+			achievementsCompleted++;
+		}
+		if (Config::Instance()->IsAchievementCompleted(11)) // use bomb
+		{
+			achievementsCompleted++;
+		}
+
+		if (!Config::Instance()->IsAchievementCompleted(12))
+		{
+			auto totalEnergy = Scores::Instance()->GetTotalEnergy();
+			if (totalEnergy >= 300)
 			{
-				ShowAchievement(11);
-				Config::Instance()->SetAchievementCompleted(11);
+				ShowAchievement(3);
+				Config::Instance()->SetAchievementCompleted(3);
 				achievementsCompleted++;
 			}
-		}
-		else { achievementsCompleted++; }
-
-		if (!Config::Instance()->IsAchievementCompleted(14))
-		{
-			int levelNum = 0;
-			for (i = 0; i < LEVELNUM; i++)
-			{
-				if (Scores::Instance()->GetBestStars(i + 1) == 3)
-					levelNum++;
-			}
-			if (levelNum >= 25)
+			if (totalEnergy >= 10000)
 			{
 				ShowAchievement(12);
 				Config::Instance()->SetAchievementCompleted(12);
 				achievementsCompleted++;
 			}
-			if (levelNum >= 60)
-			{
-				ShowAchievement(13);
-				Config::Instance()->SetAchievementCompleted(13);
-				achievementsCompleted++;
-			}
-			if (levelNum >= 100)
-			{
-				ShowAchievement(14);
-				Config::Instance()->SetAchievementCompleted(14);
-				achievementsCompleted++;
-			}
-			Config::Instance()->SetAchievementData(12, levelNum);
-			Config::Instance()->SetAchievementData(13, levelNum);
-			Config::Instance()->SetAchievementData(14, levelNum);
+		} else {
+			achievementsCompleted += 2;
 		}
-		else
+
+		if (Config::Instance()->IsAchievementCompleted(13)) // buy all ships
 		{
-			achievementsCompleted += 3;
+			achievementsCompleted++;
 		}
+
+		if (!Config::Instance()->IsAchievementCompleted(14))
+		{
+			// TODO: check if all challenges are completed when they are implemented
+		}
+		else { achievementsCompleted++; }
 
 		if (!Config::Instance()->IsAchievementCompleted(15))
 		{
@@ -566,9 +503,7 @@ namespace CoreEngine
 					Game::Instance()->ChangeState(GameState::Storyboard);
 				}
 			} else {
-				int level = LevelManager::Instance()->GetLevelNum();
-				if (level < 6) level++;
-				LevelManager::Instance()->SetLevelNum(level);
+				// TODO: This button should show scores
 				Game::Instance()->ChangeState(GameState::Level);
 			}
 		}
