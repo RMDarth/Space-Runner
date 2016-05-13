@@ -4,8 +4,6 @@
 #include "SpaceDefs.h"
 #include <string>
 
-#define SPACE_DUST_NUM 100
-
 namespace Ogre
 {
     class Material;

@@ -39,7 +39,7 @@ namespace CoreEngine
 		{
 			auto sceneNode = sceneManager->createSceneNode();
 			_sector1->GetNode()->addChild(sceneNode);
-			auto posX = (rand() % (int)(BLOCK_SIZE * 5.0f * 10)) / 10.0f - BLOCK_SIZE * 2.5f;
+			auto posX = (rand() % (int)(BLOCK_SIZE * 6.0f * 10)) / 10.0f - BLOCK_SIZE * 3.0f;
 			auto posY = (rand() % (int)(BLOCK_SIZE * 5.0f * 10)) / 10.0f - BLOCK_SIZE * 2.5f;
 			auto posZ = (rand() % BLOCK_SIZE * 15);
 			sceneNode->setPosition(Ogre::Vector3(-posZ, posY, posX));
@@ -50,7 +50,7 @@ namespace CoreEngine
 		{
 			auto sceneNode = sceneManager->createSceneNode();
 			_sector2->GetNode()->addChild(sceneNode);
-			auto posX = (rand() % (int)(BLOCK_SIZE * 5.0f * 10)) / 10.0f - BLOCK_SIZE * 2.5f;
+			auto posX = (rand() % (int)(BLOCK_SIZE * 6.0f * 10)) / 10.0f - BLOCK_SIZE * 3.0f;
 			auto posY = (rand() % (int)(BLOCK_SIZE * 5.0f * 10)) / 10.0f - BLOCK_SIZE * 2.5f;
 			auto posZ = (rand() % BLOCK_SIZE * 15);
 			sceneNode->setPosition(Ogre::Vector3(-posZ, posY, posX));

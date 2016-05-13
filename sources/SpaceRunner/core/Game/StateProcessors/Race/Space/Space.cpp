@@ -53,10 +53,13 @@ namespace CoreEngine
 
         if (LevelManager::Instance()->IsPuzzle())
         {
-            _currentLevel = unique_ptr<Level>(LevelFileManager::Instance()->LoadLevel(LevelManager::Instance()->GetLevelNum()));
+            auto levelNum = LevelManager::Instance()->GetLevelNum();
+            _currentLevel = unique_ptr<Level>(LevelFileManager::Instance()->LoadLevel(levelNum));
+            RenderProcessor::Instance()->SetSkybox(levelNum % SKYBOX_NUM + 1);
         } else {
             _currentLevelDifficulty = LevelDifficulty::Easy;
             GenerateLevel(LevelDifficulty::Easy, 15);
+            RenderProcessor::Instance()->SetSkybox(rand() % SKYBOX_NUM + 1);
         }
 
         //LevelFileManager::Instance()->SaveLevel(_currentLevel.get(), 11);
@@ -360,6 +363,9 @@ namespace CoreEngine
 
         auto* boss = new Boss(zero);
         delete boss;
+
+        auto* bigBoss = new BigBoss(zero);
+        delete bigBoss;
 
         auto * blasterBurst = new BlasterBurst(zero, "BlasterShotMaterial", 80);
         blasterBurst->Destroy();
@@ -877,6 +883,9 @@ namespace CoreEngine
         for_each(_explosionList.begin(), _explosionList.end(), bind(&Explosion::SetVisible, placeholders::_1, visible));
         for_each(_barrierList.begin(), _barrierList.end(), bind(&Barrier::SetVisible, placeholders::_1, visible));
         for_each(_backgroundAsteroidList.begin(), _backgroundAsteroidList.end(), bind(&Asteroid::SetVisible, placeholders::_1, visible));
+        if (_boss)
+            _boss->SetVisible(visible);
+
         _fence->SetVisible(visible);
         _spaceDust->SetVisible(visible);
     }

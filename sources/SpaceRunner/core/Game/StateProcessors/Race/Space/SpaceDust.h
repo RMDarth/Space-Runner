@@ -5,7 +5,7 @@
 #include "SpaceDefs.h"
 #include <string>
 
-#define SPACE_DUST_NUM 100
+#define SPACE_DUST_NUM 120
 
 class SceneSector;
 class ModelDrawable;

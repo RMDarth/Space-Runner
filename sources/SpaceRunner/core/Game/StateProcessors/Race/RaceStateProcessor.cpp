@@ -84,7 +84,6 @@ namespace CoreEngine
                 }
         );
 
-        //RenderProcessor::Instance()->SetSkybox(rand() % SKYBOX_NUM + 1);
         if (!_sector)
             InitSpaceShip();
         else
