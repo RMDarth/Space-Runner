@@ -948,4 +948,10 @@ namespace CoreEngine
         return SpaceObjectType::None;
     }
 
+    int Space::GetMissedOrbsCount()
+    {
+        return _missedOrbs;
+    }
+
+
 }

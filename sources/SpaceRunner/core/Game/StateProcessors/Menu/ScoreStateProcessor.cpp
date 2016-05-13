@@ -514,6 +514,8 @@ namespace CoreEngine
 				{
 					level++;
 					LevelManager::Instance()->SetLevelNum(level);
+					LevelManager::Instance()->SetLives(SkinManager::Instance()->LivesCount());
+					LevelManager::Instance()->ResetMovies();
 					Game::Instance()->ChangeState(GameState::Level);
 				}
 				else {

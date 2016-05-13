@@ -78,6 +78,7 @@ namespace CoreEngine
         void RegisterShotEvent(EventCallback callback);
         void RegisterBossEvent(BossCallback callback);
         Level* GetCurrentLevel();
+        int GetMissedOrbsCount();
     private:
         void AddObstacles(float time);
         void GenerateLevel(LevelDifficulty difficulty, int count = 50);

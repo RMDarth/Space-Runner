@@ -456,6 +456,9 @@ namespace CoreEngine
         static auto nameControl = _document->GetControlByName("name");
         nameControl->SetText(to_string(_speed));
 
+        static auto missingControl = _document->GetControlByName("missing");
+        missingControl->SetText(to_string(_space->GetMissedOrbsCount()));
+
         static auto bombControl = _document->GetControlByName("bombcount");
         bombControl->SetText(to_string(Config::Instance()->GetBombCount()));
 
