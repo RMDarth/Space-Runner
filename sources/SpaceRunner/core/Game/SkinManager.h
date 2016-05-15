@@ -2,15 +2,17 @@
 #include <string>
 #include <Basic.h>
 
-#define SKIN_COUNT 2
+#define SKIN_COUNT 5
 
 namespace CoreEngine
 {
     class SkinManager
     {
+    public:
         using OffsetList = std::vector<Vector3>;
         using Features = std::vector<std::string>;
 
+    private:
         static SkinManager* _instance;
         int _skinID;
 

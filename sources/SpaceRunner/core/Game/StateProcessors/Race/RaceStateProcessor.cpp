@@ -107,6 +107,7 @@ namespace CoreEngine
         _angleHorizontal = 0;
         _invincibility = false;
         _shield = false;
+        _sparks = false;
         _shootingStarted = 0;
         _shieldStart = 0;
 
@@ -141,6 +142,9 @@ namespace CoreEngine
         _shipShield->SetMaterial("ShieldMaterial");
         _shipShield->SetScale(1.2f);
         _shieldEffectSector->GetNode()->setPosition(VectorToOgre(SkinManager::Instance()->GetShieldOffset()));
+
+        // update sparks
+        _sparksSector->GetNode()->setPosition(-1.65f/scale,0,0);
 
         // clean old engines
         sceneNode->removeChild(_engineFire[0]->getParentNode());
@@ -223,6 +227,16 @@ namespace CoreEngine
         _shieldEffect = sceneManager->createParticleSystem("ShieldEffect", "ShieldAnim");
         _shieldEffect->setKeepParticlesInLocalSpace(true);
         sceneNodeShieldEffect->attachObject(_shieldEffect);
+
+        auto sceneNodeSparks = sceneManager->createSceneNode();
+        _sparksSector = make_unique<SceneSector>(sceneNodeSparks);
+        sceneNodeSparks->setInheritScale(false);
+        sceneNodeSparks->setScale(2.0f, 2.0f, 2.0f);
+        _sparksSector->GetNode()->setPosition(-1.65f/scale,0,0);
+
+        _sparksEffect = sceneManager->createParticleSystem("ShieldSparks", "ShotSparksReverse");
+        _sparksEffect->setKeepParticlesInLocalSpace(true);
+        sceneNodeSparks->attachObject(_sparksEffect);
     }
 
     void RaceStateProcessor::InitMaxSpeed()
@@ -330,6 +344,15 @@ namespace CoreEngine
             }
         }
 
+        if (_sparks)
+        {
+            if (_totalTime > _sparksStart + _sparksTime)
+            {
+                _sparks = false;
+                _sector->GetNode()->removeChild(_sparksSector->GetNode());
+            }
+        }
+
         if (_explosion)
         {
             _explosion->Update(time, _speed * time * 5.0f);
@@ -368,10 +391,30 @@ namespace CoreEngine
         auto intersectedObject = _space->IsIntersected(_pos);
         if (!_invincibility && !_explosion && intersectedObject != SpaceObjectType::None && intersectedObject != SpaceObjectType::EnergyOrb)
         {
-            if ((intersectedObject == SpaceObjectType::Barrier || intersectedObject == SpaceObjectType::Missile)
-                 && _shield)
+            if (intersectedObject == SpaceObjectType::Missile && _shield)
+            {
+                if (!_sparks)
+                {
+                    _sector->GetNode()->addChild(_sparksSector->GetNode());
+                    _sparksSector->GetNode()->setVisible(true);
+                    _sparksEffect->clear();
+                    _sparks = true;
+                    _sparksStart = _totalTime;
+                }
+            }
+            else if (intersectedObject == SpaceObjectType::Barrier && _shield)
             {
                 // TODO: play sound of dodging?
+
+                // FIXME: temp
+                if (!_sparks)
+                {
+                    _sector->GetNode()->addChild(_sparksSector->GetNode());
+                    _sparksSector->GetNode()->setVisible(true);
+                    _sparksEffect->clear();
+                    _sparks = true;
+                    _sparksStart = _totalTime;
+                }
             }
             else
             {

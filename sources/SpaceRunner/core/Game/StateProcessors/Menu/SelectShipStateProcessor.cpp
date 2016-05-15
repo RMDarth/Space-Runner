@@ -35,7 +35,7 @@ namespace CoreEngine
         sceneManager->getRootSceneNode()->addChild(sceneNode);
         _sector = new SceneSector(sceneNode);
 
-        sceneNode->setPosition(Ogre::Vector3(0, 4, 0));
+        sceneNode->setPosition(Ogre::Vector3(0, 3.75f, 0));
         sceneNode->setDirection(Ogre::Vector3(-0.3f, 0.1f, 0.4f));
 
         _skinId = SkinManager::Instance()->GetSkinID();
@@ -229,15 +229,16 @@ namespace CoreEngine
 
         // update features;
         auto features = SkinManager::Instance()->GetFeaturesList(_skinId);
-        std::shared_ptr<Control> featuresControl[3] =
+        std::shared_ptr<Control> featuresControl[4] =
                 {
                         _document->GetControlByName("features1"),
                         _document->GetControlByName("features2"),
-                        _document->GetControlByName("features3")
+                        _document->GetControlByName("features3"),
+                        _document->GetControlByName("features4")
                 };
         if (features.empty())
         {
-            for (auto i = 0; i < 3; i++)
+            for (auto i = 0; i < 4; i++)
                 featuresControl[i]->SetVisible(false);
         } else {
             featuresControl[0]->SetVisible(true);
@@ -246,6 +247,8 @@ namespace CoreEngine
                 featuresControl[i+1]->SetVisible(true);
                 featuresControl[i+1]->SetText(features[i]);
             }
+            for (auto i = features.size() + 1; i < 4; i++)
+                featuresControl[i]->SetVisible(false);
         }
 
         // Update price

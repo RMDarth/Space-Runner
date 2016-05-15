@@ -4,6 +4,7 @@
 #include "Game/StateProcessors/Race/Space/Space.h"
 #include <vector>
 #include <memory>
+#include <Render/SceneSector.h>
 
 class Camera;
 class ParticleSystem;
@@ -33,6 +34,7 @@ namespace CoreEngine
         UPtr<SceneSector> _shipSector;
         UPtr<SceneSector> _shieldSector;
         UPtr<SceneSector> _shieldEffectSector;
+        UPtr<SceneSector> _sparksSector;
         UPtr<SceneSector> _bombSector;
 
         UPtr<ModelDrawable> _ship;
@@ -40,6 +42,7 @@ namespace CoreEngine
 
         Ogre::ParticleSystem * _engineFire[2];
         Ogre::ParticleSystem * _shieldEffect;
+        Ogre::ParticleSystem * _sparksEffect;
 
         UPtr<RectDrawable> _bigBomb;
         UPtr<Explosion> _explosion;
@@ -82,6 +85,10 @@ namespace CoreEngine
         bool _shield;
         float _shieldStart;
         const float _shieldTime = 1.5f;
+
+        bool _sparks;
+        float _sparksStart;
+        const float _sparksTime = 0.5f;
 
         float _shootingStarted;
 
