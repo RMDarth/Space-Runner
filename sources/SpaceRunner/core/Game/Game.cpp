@@ -8,6 +8,7 @@
 #include "Game/StateProcessors/Menu/PauseStateProcessor.h"
 #include "Game/StateProcessors/Menu/ScoreStateProcessor.h"
 #include "Game/StateProcessors/Menu/StoryboardStateProcessor.h"
+#include "Game/StateProcessors/Menu/ChallengesStateProcessor.h"
 #include "Game/StateProcessors/Menu/MessageStateProcessor.h"
 #include "Game/StateProcessors/Menu/StoreStateProcessor.h"
 #include "Game/StateProcessors/Menu/SelectShipStateProcessor.h"
@@ -35,6 +36,7 @@ Game::Game()
     PauseStateProcessor * pause = new PauseStateProcessor();
     SaveMeStateProcessor * saveme = new SaveMeStateProcessor();
     SelectShipStateProcessor * selectShip = new SelectShipStateProcessor();
+    ChallengesStateProcessor * challenges = new ChallengesStateProcessor();
 
 #if OGRE_PLATFORM == OGRE_PLATFORM_WINRT || defined(CHINA_SHOP)
     AchievementsStateProcessor *achievement = new AchievementsStateProcessor();
@@ -62,6 +64,7 @@ Game::Game()
     StateProcessorFactory::Instance()->RegisterProcessor(achievement, GameState::Achievements);
 #endif
     StateProcessorFactory::Instance()->RegisterProcessor(storyboard, GameState::Storyboard);
+    StateProcessorFactory::Instance()->RegisterProcessor(challenges, GameState::Challenges);
     StateProcessorFactory::Instance()->RegisterProcessor(message, GameState::Message);
 #if OGRE_PLATFORM != OGRE_PLATFORM_WINRT
     StateProcessorFactory::Instance()->RegisterProcessor(store, GameState::Store);

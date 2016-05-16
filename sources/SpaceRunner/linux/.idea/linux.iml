@@ -23,12 +23,12 @@
       <sourceFolder url="file://$MODULE_DIR$/core/Render/Light.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/core/Render/Drawables/RectDrawable.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/core/Render/Drawables/IDrawable.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/core/Render/Drawables/ModelAnimation.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/core/Render/Drawables/LineDrawable.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/core/Render/Drawables/CircleDrawable.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/Render/Drawables/LineDrawable.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/core/Render/Drawables/ModelDrawable.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/core/Render/Drawables/ModelAnimation.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/core/Render/Drawables/RectDrawable.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/Render/Drawables/ModelAnimation.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/core/Render/Drawables/ModelDrawable.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/core/Render/Drawables/CircleDrawable.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/core/Render/Drawables/LineDrawable.h" isTestSource="false" />
@@ -55,26 +55,26 @@
       <sourceFolder url="file://$MODULE_DIR$/core/Game/StateProcessors/Race/RaceStateProcessor.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/core/Game/StateProcessors/Race/Prefab.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/core/Game/StateProcessors/Race/Space/AsteroidProcessor.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/core/Game/StateProcessors/Race/Space/SpaceObject.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/Game/StateProcessors/Race/Space/Barrier.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/core/Game/StateProcessors/Race/Space/BlasterBurst.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/core/Game/StateProcessors/Race/Space/Asteroid.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/core/Game/StateProcessors/Race/Space/Mine.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/core/Game/StateProcessors/Race/Space/Mine.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/core/Game/StateProcessors/Race/Space/Cruiser.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/core/Game/StateProcessors/Race/Space/BossInterface.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/Game/StateProcessors/Race/Space/Missile.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/Game/StateProcessors/Race/Space/Fence.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/core/Game/StateProcessors/Race/Space/BlasterBurst.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/core/Game/StateProcessors/Race/Space/Sparks.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/core/Game/StateProcessors/Race/Space/Space.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/core/Game/StateProcessors/Race/Space/Sparks.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/core/Game/StateProcessors/Race/Space/Fence.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/Game/StateProcessors/Race/Space/SpaceDefs.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/core/Game/StateProcessors/Race/Space/Boss.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/core/Game/StateProcessors/Race/Space/BigBoss.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/core/Game/StateProcessors/Race/Space/Barrier.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/core/Game/StateProcessors/Race/Space/Fence.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/core/Game/StateProcessors/Race/Space/SpaceObject.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/core/Game/StateProcessors/Race/Space/EnergyOrb.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/core/Game/StateProcessors/Race/Space/Space.cpp" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/core/Game/StateProcessors/Race/Space/SpaceDefs.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/Game/StateProcessors/Race/Space/SpaceObject.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/Game/StateProcessors/Race/Space/BossInterface.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/core/Game/StateProcessors/Race/Space/Boss.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/core/Game/StateProcessors/Race/Space/Barrier.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/core/Game/StateProcessors/Race/Space/Explosion.cpp" isTestSource="false" />
@@ -82,7 +82,7 @@
       <sourceFolder url="file://$MODULE_DIR$/core/Game/StateProcessors/Race/Space/BigBoss.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/core/Game/StateProcessors/Race/Space/AsteroidProcessor.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/core/Game/StateProcessors/Race/Space/SpaceDust.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/core/Game/StateProcessors/Race/Space/Missile.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/Game/StateProcessors/Race/Space/Space.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/core/Game/StateProcessors/Race/Space/Asteroid.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/core/Game/StateProcessors/Race/Space/SpaceDust.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/core/Game/StateProcessors/Race/Space/Cruiser.cpp" isTestSource="false" />
@@ -96,7 +96,7 @@
       <sourceFolder url="file://$MODULE_DIR$/core/Game/StateProcessors/Menu/MessageStateProcessor.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/core/Game/StateProcessors/Menu/StoreStateProcessor.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/core/Game/StateProcessors/Menu/MenuStateProcessor.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/core/Game/StateProcessors/Menu/SaveMeStateProcessor.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/Game/StateProcessors/Menu/ChallengesStateProcessor.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/core/Game/StateProcessors/Menu/ScoreStateProcessor.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/core/Game/StateProcessors/Menu/SelectShipStateProcessor.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/core/Game/StateProcessors/Menu/SaveMeStateProcessor.cpp" isTestSource="false" />
@@ -111,7 +111,9 @@
       <sourceFolder url="file://$MODULE_DIR$/core/Game/StateProcessors/Menu/StoryboardStateProcessor.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/core/Game/StateProcessors/Menu/SelectShipStateProcessor.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/core/Game/StateProcessors/Menu/CreditsStateProcessor.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/Game/StateProcessors/Menu/ChallengesStateProcessor.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/core/Game/StateProcessors/Menu/ScoreStateProcessor.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/Game/StateProcessors/Menu/SaveMeStateProcessor.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/core/Game/StateProcessors/Level/LevelManager.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/core/Game/StateProcessors/Level/LevelManager.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/core/Game/StateProcessors/IStateProcessor.h" isTestSource="false" />

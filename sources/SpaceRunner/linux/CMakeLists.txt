@@ -163,7 +163,7 @@ set(SOURCE_FILES
     core/ControlLibrary/ContainerControl.cpp
     core/ControlLibrary/ButtonControl.h
     core/ControlLibrary/ButtonControl.cpp
-        core/Game/StateProcessors/Menu/SaveMeStateProcessor.cpp core/Game/StateProcessors/Menu/SaveMeStateProcessor.h)
+        core/Game/StateProcessors/Menu/SaveMeStateProcessor.cpp core/Game/StateProcessors/Menu/SaveMeStateProcessor.h core/Game/StateProcessors/Menu/ChallengesStateProcessor.cpp core/Game/StateProcessors/Menu/ChallengesStateProcessor.h)
 
 add_executable(spacerush ${SOURCE_FILES})
 

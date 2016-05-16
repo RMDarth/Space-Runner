@@ -177,6 +177,12 @@ namespace CoreEngine
             Scores::Instance()->Reset();
             Show();
         }
+        else if (control->GetName() == "challenges")
+        {
+            _document->GetControlByName("back")->SetVisible(false);
+            _document->GetControlByName("challenges")->SetVisible(false);
+            Game::Instance()->ChangeState(GameState::Challenges);
+        }
         else if (control->GetClassType() == "Button")
         {
             int levelNum = stoi(control->GetName());
