@@ -134,7 +134,8 @@ int getDaysTillNow()
 
     time(&timer);  /* get current time; same as: timer = time(NULL)  */
 
-    return (int)difftime(timer,mktime(&y2k)) / (60 * 60 * 24);
+    auto days = difftime(timer,mktime(&y2k)) / (60 * 60 * 24);
+    return (int)days;
 }
 
 void Scores::SetDailyChallengeCompleted(int num)

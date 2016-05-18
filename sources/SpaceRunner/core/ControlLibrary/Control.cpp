@@ -615,3 +615,9 @@ int Control::GetChildrenCount()
 {
     return _children.size();
 }
+
+void Control::Update(float time)
+{
+
+}
+

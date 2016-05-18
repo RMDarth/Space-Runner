@@ -114,6 +114,7 @@ namespace CoreEngine
         _document->Show();
         _query->Hide();
         _queryVisible = false;
+        _skinId = SkinManager::Instance()->GetSkinID();
         UpdateModel();
         UpdateHUD();
         _sector->GetNode()->resetOrientation();

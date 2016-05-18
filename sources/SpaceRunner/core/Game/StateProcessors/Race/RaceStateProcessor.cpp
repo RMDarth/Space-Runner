@@ -653,7 +653,7 @@ namespace CoreEngine
 
     void RaceStateProcessor::OnMouseDoubleClick(int /*x*/, int /*y*/)
     {
-        if (Config::Instance()->GetBombCount() > 0)
+        if (Config::Instance()->GetBombCount() > 0 && LevelManager::Instance()->GetLevelType() != LevelType::Challenge)
         {
             InitBomb();
             Config::Instance()->SetBombCount(Config::Instance()->GetBombCount() - 1);

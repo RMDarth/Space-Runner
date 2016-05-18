@@ -72,6 +72,8 @@ namespace CoreEngine
             program->setNamedConstant("color",Ogre::ColourValue(1,1,1,_starTime[i] > 1.0f ? 1.0f : _starTime[i]));
         }
 
+        _document->GetControlByName("panel")->Update(time);
+
         return GameState::Storyboard;
     }
 
@@ -136,7 +138,6 @@ namespace CoreEngine
         _document->Show();
 
         SetLightAndCamera();
-
 
         bool previous = true;
         for (int i = 0; i < LEVELNUM; i++)

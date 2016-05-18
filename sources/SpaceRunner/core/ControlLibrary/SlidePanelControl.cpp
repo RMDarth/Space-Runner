@@ -17,20 +17,9 @@ bool SlidePanelControl::OnMouseMove(int x, int y, float deltaTime)
     {
         if (_moving)
         {
-            int newX = _curPos + x - _storedX;
-            if (-newX + _realWidth > _width)
-                newX = _realWidth - _width;
-            if (newX > _originalPos)
-                newX = _originalPos;
-
-            auto oldX = _x;
-            _x = newX;
-            _container->setPosition((float)newX, (float)_y);
-
-            for (auto i = 0; i<_children.size(); i++)
-            {
-                _children[i]->ParentMoved(oldX, _y);
-            }
+            _speed = (x - _prevX) * 0.5;
+            _prevX = x;
+            Move(x);
         }
         return true;
     }
@@ -43,7 +32,9 @@ bool SlidePanelControl::OnMouseDown(int x, int y)
     if (Control::OnMouseDown(x, y))
     {
         _storedX = x;
+        _prevX = x;
         _moving = true;
+        _stopping = false;
         return true;
     }
 
@@ -54,8 +45,16 @@ bool SlidePanelControl::OnMouseUp(int x, int y)
 {
     if (Control::OnMouseUp(x, y))
     {
+        if (_moving)
+        {
+            _stopping = true;
+            _stoppingTime = 0;
+            _storedX = 0;
+        }
+
         _moving = false;
         _curPos = _x;
+
         return true;
     }
 
@@ -98,6 +97,47 @@ void SlidePanelControl::SetCustomAttribute(std::string name, std::string value)
         Control::SetCustomAttribute(name, value);
     }
 }
+
+void SlidePanelControl::Update(float time)
+{
+    _stoppingTime += time;
+    Control::Update(time);
+
+    if (_stopping)
+    {
+        if (_stoppingTime > 0.3f)
+        {
+            _stopping = false;
+        }
+        else
+        {
+            Move((1.0f - _stoppingTime) * _speed);
+            _curPos = _x;
+        }
+    }
+}
+
+void SlidePanelControl::Move(int x)
+{
+    int newX = _curPos + x - _storedX;
+    if (-newX + _realWidth > _width)
+        newX = _realWidth - _width;
+    if (newX > _originalPos)
+        newX = _originalPos;
+
+    auto oldX = _x;
+    _x = newX;
+    _container->setPosition((float)newX, (float)_y);
+
+    for (auto i = 0; i<_children.size(); i++)
+    {
+        _children[i]->ParentMoved(oldX, _y);
+    }
+}
+
+
+
+
 
 
 

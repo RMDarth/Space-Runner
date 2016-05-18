@@ -108,6 +108,8 @@ public:
 			Control* parent2 = nullptr);
 	virtual ~Control();
 
+	virtual void Update(float time);
+
 	virtual void SetDefaultMaterial(std::string image, bool create = true);
 	virtual void SetPushMaterial(std::string image);
 	virtual void SetHoverMaterial(std::string image);

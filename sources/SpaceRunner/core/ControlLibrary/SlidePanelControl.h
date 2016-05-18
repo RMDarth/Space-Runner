@@ -7,6 +7,10 @@ class SlidePanelControl : public Control
     int _diff;
     bool _moving = false;
 
+    int _prevX;
+    int _speed;
+    float _stoppingTime;
+    bool _stopping = false;
 
     int _realWidth;
     int _curPos;
@@ -16,10 +20,15 @@ class SlidePanelControl : public Control
 public:
 	SlidePanelControl(SceneSector* sector, std::string name, float x, float y, float width, float height, Control * parent = nullptr);
 
+	void Update(float time) override;
+
 	bool OnMouseMove(int x, int y, float deltaTime) override;
 	bool OnMouseDown(int x, int y) override;
 	bool OnMouseUp(int x, int y) override;
 
     std::string GetCustomAttribute(std::string name) override;
     void SetCustomAttribute(std::string name, std::string value) override;
+
+private:
+    void Move(int x);
 };
