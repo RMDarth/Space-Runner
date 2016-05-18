@@ -7,7 +7,6 @@
 	<Button name="config" text="" x="0.05" y="0.85" width="0.08" height="-1" image="buttons/config.png" hoverimage="buttons/config_hover.png" pressedimage="buttons/config_pressed.png" />
 	
 	<Panel name="configpanel" x="0.055" y="0.85" width="0.07" height="0.12" image="buttons/config_panel.png" >
-		<Button name="graphics" text="" x="0.05" y="0" width="0.9" height="0.2" image="buttons/skins.png" hoverimage="buttons/skins.png" pressedimage="buttons/skins.png" />
 		<Button name="sound" text="" x="0.05" y="0.2" width="0.9" height="0.2" image="buttons/Sound.png" hoverimage="buttons/Sound.png" pressedimage="buttons/NoSound.png" />
 		<Button name="music" text="" x="0.05" y="0.4" width="0.9" height="0.2" image="buttons/Music.png" hoverimage="buttons/Music.png" pressedimage="buttons/NoMusic.png" />
 		<Button name="info" text="" x="0.05" y="0.6" width="0.9" height="0.2" image="buttons/Info.png" hoverimage="buttons/Info.png" pressedimage="buttons/Info.png" />

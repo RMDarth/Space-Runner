@@ -1,0 +1,42 @@
+material Ship3EngineMaterial 
+{ 
+    technique
+    {
+        pass
+        {
+            illumination_stage per_light
+
+            vertex_program_ref diffuse_vs
+            {
+            }
+ 
+            fragment_program_ref diffuse_ps
+            {
+            }
+
+            ambient 1 1 1 1
+            diffuse 1 1 1 1
+            specular 0.5 0.5 0.5 1.0 12.5
+            emissive 0.0 0.0 0.0 1.0
+
+            texture_unit diffuseMap
+            {
+                texture textures/BaseMaterial_diffuse2_engine.tga
+                tex_address_mode wrap
+                colour_op modulate
+            }
+            texture_unit specMap
+            {
+                texture textures/BaseMaterial_specular_engine.tga
+                tex_address_mode wrap
+                colour_op modulate
+            }
+            texture_unit normalMap
+            {
+                texture textures/BaseMaterial_normal_engine.tga
+                tex_address_mode wrap
+                colour_op modulate
+            }
+        }
+    }
+}

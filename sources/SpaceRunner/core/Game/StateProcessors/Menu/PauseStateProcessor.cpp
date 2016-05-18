@@ -47,8 +47,9 @@ namespace CoreEngine
 		if (key == OIS::KC_R)
 		{
 			LevelManager::Instance()->SetStarted(false);
-			LevelManager::Instance()->SetLives(SkinManager::Instance()->LivesCount());
-			LevelManager::Instance()->ResetMovies();
+            LevelManager::Instance()->SetLives(
+                    LevelManager::Instance()->GetLevelType() == LevelType::Challenge ? 0 : SkinManager::Instance()->LivesCount());
+            LevelManager::Instance()->ResetMovies();
 			Game::Instance()->ChangeState(GameState::Level);
 		}
 	}
@@ -73,17 +74,20 @@ namespace CoreEngine
 		if (control->GetName() == "restart")
 		{
 			LevelManager::Instance()->SetStarted(false);
+			LevelManager::Instance()->SetLives(
+					LevelManager::Instance()->GetLevelType() == LevelType::Challenge ? 0 : SkinManager::Instance()->LivesCount());
+			LevelManager::Instance()->ResetMovies();
 			Game::Instance()->ChangeState(GameState::Level);
 		}
 		if (control->GetName() == "tomenu")
 		{
 			LevelManager::Instance()->SetStarted(false);
-			if (LevelManager::Instance()->IsPuzzle())
+			if (LevelManager::Instance()->GetLevelType() == LevelType::Rush)
 			{
-				Game::Instance()->ChangeState(GameState::Storyboard);
+				Game::Instance()->ChangeState(GameState::MainMenu);
 			}
 			else {
-				Game::Instance()->ChangeState(GameState::MainMenu);
+				Game::Instance()->ChangeState(GameState::Storyboard);
 			}
 		}
 	}

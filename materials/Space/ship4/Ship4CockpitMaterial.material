@@ -1,0 +1,32 @@
+// Ship4CockpitMaterial genrated by blender2ogre 0.6.0
+
+material Ship4CockpitMaterial 
+{
+  technique
+  {
+    pass
+    {
+        illumination_stage per_light
+        cull_hardware none
+        scene_blend alpha_blend
+        transparent_sorting on
+        alpha_to_coverage off
+        depth_write off
+        
+        scene_blend_op add
+    
+        vertex_program_ref simpletex_vs 
+        {
+        }
+ 
+        fragment_program_ref simpletex_ps 
+        {
+        }
+
+        texture_unit diffuseMap
+        {
+            texture textures/cockpit.png
+        }
+    }
+  }
+}

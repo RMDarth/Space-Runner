@@ -22,6 +22,30 @@ particle_system ShotSparks
     }
 }
 
+particle_system ShotSparksReverse
+{
+    material            SparksExplosionMaterial
+    particle_width      0.03                
+    particle_height     0.3                 
+    cull_each           false
+    quota               20
+    billboard_type      oriented_self
+    billboard_rotation_type vertex
+    sorted              false
+
+    emitter Point
+    {
+        angle 360
+        emission_rate 50
+        time_to_live_min 0.5
+        time_to_live_max 1.5
+        //duration 2.6
+        velocity_min 2
+        velocity_max 4
+        colour 0.952 0.6137 0.2 1
+    }
+}
+
 particle_system ShotGlow
 {
     material            GlowExplosionMaterial

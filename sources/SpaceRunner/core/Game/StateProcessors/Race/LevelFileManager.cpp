@@ -31,6 +31,7 @@ namespace CoreEngine
         file.WriteInt(level->energyToComplete);
         file.WriteInt(level->minMissingEnergy);
         file.WriteInt(level->avgMissingEnergy);
+        file.WriteInt(level->skyboxId);
 
         file.WriteInt((int)level->obstacleList.size());
         for (auto i = 0; i < level->obstacleList.size(); i++)
@@ -60,6 +61,14 @@ namespace CoreEngine
     {
         std::stringstream stream;
         stream << "Levels/level_" << level << ".lvl";
+
+        return LoadLevel(stream.str());
+    }
+
+    Level *LevelFileManager::LoadChallenge(int num)
+    {
+        std::stringstream stream;
+        stream << "Levels/Challenges/challenge_" << num << ".lvl";
 
         return LoadLevel(stream.str());
     }

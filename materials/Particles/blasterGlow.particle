@@ -1,8 +1,8 @@
 particle_system BlasterGlowEffect
 {
     material            BlasterGlowMaterial
-    particle_width      4                
-    particle_height     4                 
+    particle_width      2                
+    particle_height     2                 
     cull_each           false
     quota               1
     billboard_type      oriented_common

@@ -18,6 +18,7 @@
 #include <iomanip>
 #include <Game/SkinManager.h>
 #include <BillingProcessor.h>
+#include <Game/Scores.h>
 
 using namespace std;
 
@@ -360,7 +361,7 @@ namespace CoreEngine
             {
                 _explosion.reset();
 
-                if (LevelManager::Instance()->GetLevelNum() == 1 && LevelManager::Instance()->IsPuzzle())
+                if (LevelManager::Instance()->GetLevelNum() == 1 && LevelManager::Instance()->GetLevelType() == LevelType::Puzzle)
                 {
                     LevelManager::Instance()->SetStarted(false);
                     LevelManager::Instance()->SetLives(SkinManager::Instance()->LivesCount());
@@ -406,15 +407,6 @@ namespace CoreEngine
             {
                 // TODO: play sound of dodging?
 
-                // FIXME: temp
-                if (!_sparks)
-                {
-                    _sector->GetNode()->addChild(_sparksSector->GetNode());
-                    _sparksSector->GetNode()->setVisible(true);
-                    _sparksEffect->clear();
-                    _sparks = true;
-                    _sparksStart = _totalTime;
-                }
             }
             else
             {
@@ -439,13 +431,14 @@ namespace CoreEngine
         {
             _document->Hide();
 
-            if (LevelManager::Instance()->IsVictory())
+            if (LevelManager::Instance()->IsVictory()
+                || LevelManager::Instance()->GetLevelType() == LevelType::Challenge)
                 return GameState::Score;
             else
                 return GameState::SaveMe;
         }
 
-        if (!LevelManager::Instance()->IsPuzzle()
+        if (LevelManager::Instance()->GetLevelType() == LevelType::Rush
             && _space->GetCurrentLevel()->currentObstacle == 0)
         {
             InitMaxSpeed();
@@ -472,11 +465,15 @@ namespace CoreEngine
             return true;
         }
 
-        if (LevelManager::Instance()->IsPuzzle()
+        if (LevelManager::Instance()->GetLevelType() != LevelType::Rush
                 && _space->GetCurrentLevel()->currentObstacle == (int)_space->GetCurrentLevel()->obstacleList.size() - 1)
         {
             if (Config::Instance()->IsSoundEnabled())
                 _successSound->Play();
+            if (LevelManager::Instance()->GetLevelType() == LevelType::Challenge
+                && !Scores::Instance()->IsChallengeCompleted(LevelManager::Instance()->GetLevelNum()))
+                _score += 300;
+
             LevelManager::Instance()->SetScore(_score);
             LevelManager::Instance()->SetTime((int)_totalTime);
             LevelManager::Instance()->SetVictory(true);
@@ -521,7 +518,7 @@ namespace CoreEngine
             fpsControl->SetText(stream.str());
         }
 
-        if (LevelManager::Instance()->GetLevelNum() == 1 && LevelManager::Instance()->IsPuzzle())
+        if (LevelManager::Instance()->GetLevelNum() == 1 && LevelManager::Instance()->GetLevelType() == LevelType::Puzzle)
             UpdateHelp();
     }
 

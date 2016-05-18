@@ -112,6 +112,43 @@ int Scores::GetBestPuzzleMissingEnergy(int level)
     return bestPuzzleMisses[level - 1];
 }
 
+void Scores::SetChallengeCompleted(int num)
+{
+    challengeCompleted[num - 1] = true;
+    Save();
+}
+
+bool Scores::IsChallengeCompleted(int num)
+{
+    return challengeCompleted[num - 1];
+}
+
+int getDaysTillNow()
+{
+    time_t timer;
+    struct tm y2k = {0};
+    double seconds;
+
+    y2k.tm_hour = 0;   y2k.tm_min = 0; y2k.tm_sec = 0;
+    y2k.tm_year = 110; y2k.tm_mon = 0; y2k.tm_mday = 1;
+
+    time(&timer);  /* get current time; same as: timer = time(NULL)  */
+
+    return (int)difftime(timer,mktime(&y2k)) / (60 * 60 * 24);
+}
+
+void Scores::SetDailyChallengeCompleted(int num)
+{
+    dailyChallengeLastCompleted[num] = getDaysTillNow();
+    Save();
+}
+
+bool Scores::IsDailyChallengeCompleted(int id)
+{
+    int days = getDaysTillNow();
+    return dailyChallengeLastCompleted[id] >= days;
+}
+
 void Scores::Load()
 {
     SecureFileInputRef* scoresFile = new SecureFileInputRef("scores.dat");
@@ -130,6 +167,15 @@ void Scores::Load()
         bestPuzzleMisses[i] = scoresFile->ReadInt();
         bestPuzzleStars[i] = scoresFile->ReadInt();
     }
+
+    for (int i = 0; i < CHALLENGENUM; i++)
+    {
+        challengeCompleted[i] = scoresFile->ReadInt() == 1;
+    }
+
+    dailyChallengeLastCompleted[0] = scoresFile->ReadInt();
+    dailyChallengeLastCompleted[1] = scoresFile->ReadInt();
+
     scoresFile->Close();
 
     delete scoresFile;
@@ -159,6 +205,14 @@ void Scores::Save()
         scoresFile.WriteInt(bestPuzzleStars[i]);
     }
 
+    for (int i = 0; i < CHALLENGENUM; i++)
+    {
+        scoresFile.WriteInt(challengeCompleted[i] ? 1 : 0);
+    }
+
+    scoresFile.WriteInt(dailyChallengeLastCompleted[0]);
+    scoresFile.WriteInt(dailyChallengeLastCompleted[1]);
+
     scoresFile.Close();
 }
 
@@ -169,8 +223,24 @@ void Scores::CreateDefault()
         bestPuzzleMisses[i] = INT_MAX;
         bestPuzzleStars[i] = 0;
     }
+    for (auto i = 0; i < CHALLENGENUM; i++)
+    {
+        challengeCompleted[i] = false;
+    }
+    dailyChallengeLastCompleted[0] = 0;
+    dailyChallengeLastCompleted[1] = 0;
+
     bestArcadeScore = 0;
     bestArcadeTime = 0;
     totalEnergy = 0;
     Save();
 }
+
+
+
+
+
+
+
+
+

@@ -13,6 +13,7 @@ namespace CoreEngine
         static LevelFileManager* Instance();
 
 
+        Level* LoadChallenge(int num);
         Level* LoadLevel(int level);
         Level* LoadLevel(std::string file);
 

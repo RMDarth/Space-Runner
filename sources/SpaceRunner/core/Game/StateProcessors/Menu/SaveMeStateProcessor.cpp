@@ -116,7 +116,7 @@ namespace CoreEngine
     {
         if (control->GetName() == "back")
         {
-            if (!LevelManager::Instance()->IsPuzzle()
+            if (LevelManager::Instance()->GetLevelType() == LevelType::Rush
                 && LevelManager::Instance()->GetScore() >= 100)
             {
                 if (Config::Instance()->IsSoundEnabled())

@@ -14,6 +14,8 @@ namespace CoreEngine
 
         virtual GameState::State Update(float time);
 
+        void UpdateHUD();
+
         virtual void OnMouseDown(int x, int y);
         virtual void OnMouseUp(int x, int y);
         virtual void OnMouseMove(int x, int y);

@@ -184,19 +184,19 @@ namespace CoreEngine
         if (control->GetName() == "back")
         {
             LevelManager::Instance()->SetStarted(false);
-            if (LevelManager::Instance()->IsPuzzle())
+            if (LevelManager::Instance()->GetLevelType() == LevelType::Rush)
             {
-                Game::Instance()->ChangeState(GameState::Storyboard);
+                Game::Instance()->ChangeState(GameState::MainMenu);
             }
             else {
-                Game::Instance()->ChangeState(GameState::MainMenu);
+                Game::Instance()->ChangeState(GameState::Storyboard);
             }
         }
     }
 
     bool SelectShipStateProcessor::IsOverlapping()
     {
-        return Game::Instance()->GetState() != GameState::MainMenu;
+        return Game::Instance()->GetState() == GameState::Storyboard;
     }
 
     void SelectShipStateProcessor::SetLightAndCamera()

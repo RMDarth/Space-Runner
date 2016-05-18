@@ -188,7 +188,7 @@ namespace CoreEngine
             int levelNum = stoi(control->GetName());
             if (!_document->GetControlByName("lock" + to_string(levelNum))->IsVisible())
             {
-                LevelManager::Instance()->SetIsPuzzle(true);
+                LevelManager::Instance()->SetLevelTypes(LevelType::Puzzle);
                 LevelManager::Instance()->SetLevelNum(levelNum);
                 LevelManager::Instance()->SetStarted(false);
                 LevelManager::Instance()->SetLives(SkinManager::Instance()->LivesCount());

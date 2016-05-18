@@ -215,7 +215,7 @@ namespace CoreEngine
         {
             if (control->GetName() == "start")
             {
-                LevelManager::Instance()->SetIsPuzzle(false);
+                LevelManager::Instance()->SetLevelTypes(LevelType::Rush);
                 LevelManager::Instance()->SetLevelNum(1);
                 LevelManager::Instance()->SetLives(SkinManager::Instance()->LivesCount());
                 LevelManager::Instance()->ResetMovies();

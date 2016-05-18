@@ -1,5 +1,6 @@
 #pragma once
 #define LEVELNUM 11
+#define CHALLENGENUM 6
 
 class Scores
 {
@@ -10,6 +11,9 @@ class Scores
 
     int bestPuzzleStars[LEVELNUM];
     int bestPuzzleMisses[LEVELNUM];
+
+    bool challengeCompleted[CHALLENGENUM];
+    int dailyChallengeLastCompleted[2];
 
     int bestArcadeTime;
     int bestArcadeScore;
@@ -22,6 +26,8 @@ public:
     // returns true if new high scores
     bool UpdatePuzzleScore(int level, int missedEnergy);
     bool UpdateArcadeScore(int time, int score);
+    void SetChallengeCompleted(int num);
+    void SetDailyChallengeCompleted(int num);
     void UpdateTotalEnergy(int collected);
     void Reset();
 
@@ -31,6 +37,8 @@ public:
     int GetBestStars(int level);
     int GetStars(int level, int missedEnergy);
     int GetBestPuzzleMissingEnergy(int level);
+    bool IsChallengeCompleted(int num);
+    bool IsDailyChallengeCompleted(int id);
 
 private:
     Scores();

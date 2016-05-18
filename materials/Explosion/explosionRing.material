@@ -1,0 +1,31 @@
+material ExplosionRingMaterial
+{
+    technique
+    {
+        pass
+        {
+            illumination_stage per_light
+            cull_hardware none
+            scene_blend alpha_blend
+            transparent_sorting on
+            alpha_to_coverage off
+            depth_write off
+      
+            scene_blend_op add
+            
+            vertex_program_ref simpletex_vs 
+            {
+            }
+
+            fragment_program_ref simpletex_ps 
+            {
+                param_named color float4 0.82 0.52 0.13 1
+            }
+
+            texture_unit diffuseMap
+            {
+                texture explosionRing.png
+            }
+        }
+    }
+}

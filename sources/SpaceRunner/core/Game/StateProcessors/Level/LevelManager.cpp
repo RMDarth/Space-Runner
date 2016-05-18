@@ -41,11 +41,6 @@ namespace CoreEngine
 		return _time;
 	}
 
-	bool LevelManager::IsPuzzle()
-	{
-		return _isPuzzle;
-	}
-
 	bool LevelManager::IsStarted()
 	{
 		return _isStarted;
@@ -69,11 +64,6 @@ namespace CoreEngine
 	void LevelManager::SetTime(int time)
 	{
 		_time = time;
-	}
-
-	void LevelManager::SetIsPuzzle(bool isPuzzle)
-	{
-		_isPuzzle = isPuzzle;
 	}
 
 	void LevelManager::SetStarted(bool started)
@@ -129,6 +119,16 @@ namespace CoreEngine
 	bool LevelManager::IsMoviesLeft()
 	{
 		return _isMoviesLeft;
+	}
+
+	LevelType LevelManager::GetLevelType()
+	{
+		return _levelType;
+	}
+
+	void LevelManager::SetLevelTypes(LevelType levelType)
+	{
+		_levelType = levelType;
 	}
 
 

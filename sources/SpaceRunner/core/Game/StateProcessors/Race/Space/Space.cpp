@@ -51,14 +51,22 @@ namespace CoreEngine
             _backgroundAsteroidList.push_back(asteroid);
         }
 
-        if (LevelManager::Instance()->IsPuzzle())
+        if (LevelManager::Instance()->GetLevelType() == LevelType::Puzzle)
         {
             auto levelNum = LevelManager::Instance()->GetLevelNum();
             _currentLevel = unique_ptr<Level>(LevelFileManager::Instance()->LoadLevel(levelNum));
             RenderProcessor::Instance()->SetSkybox(levelNum % SKYBOX_NUM + 1);
-        } else {
+        }
+        else if (LevelManager::Instance()->GetLevelType() == LevelType::Rush)
+        {
             _currentLevelDifficulty = LevelDifficulty::Easy;
             GenerateLevel(LevelDifficulty::Easy, 15);
+            RenderProcessor::Instance()->SetSkybox(rand() % SKYBOX_NUM + 1);
+        } else
+        {
+            _currentLevelDifficulty = LevelDifficulty::Hard;
+            auto levelNum = LevelManager::Instance()->GetLevelNum();
+            _currentLevel = unique_ptr<Level>(LevelFileManager::Instance()->LoadChallenge(levelNum));
             RenderProcessor::Instance()->SetSkybox(rand() % SKYBOX_NUM + 1);
         }
 
@@ -196,7 +204,7 @@ namespace CoreEngine
             if (_currentLevel->currentObstacle == _currentLevel->obstacleList.size())
             {
                 _currentLevel->currentObstacle = 0;
-                if (!LevelManager::Instance()->IsPuzzle())
+                if (LevelManager::Instance()->GetLevelType() == LevelType::Rush)
                 {
                     if (_currentLevelDifficulty != LevelDifficulty::Hard)
                         _currentLevelDifficulty = static_cast<LevelDifficulty>((int)_currentLevelDifficulty + 1);

@@ -1,3 +1,4 @@
+#include <Game/StateProcessors/Level/LevelManager.h>
 #include "SkinManager.h"
 
 namespace CoreEngine
@@ -111,6 +112,9 @@ namespace CoreEngine
 
     std::string SkinManager::GetShipModelName()
     {
+        if (LevelManager::Instance()->GetLevelType() == LevelType::Challenge)
+            return _shipModelNames[0];
+
         return _shipModelNames[_skinID];
     }
 
@@ -121,6 +125,9 @@ namespace CoreEngine
 
     float SkinManager::GetShipScale()
     {
+        if (LevelManager::Instance()->GetLevelType() == LevelType::Challenge)
+            return _shipScales[0];
+
         return _shipScales[_skinID];
     }
 
@@ -131,6 +138,9 @@ namespace CoreEngine
 
     int SkinManager::GetEngineCount()
     {
+        if (LevelManager::Instance()->GetLevelType() == LevelType::Challenge)
+            return (int)_engineOffsets[0].size();
+
         return (int)_engineOffsets[_skinID].size();
     }
 
@@ -141,6 +151,9 @@ namespace CoreEngine
 
     Vector3 SkinManager::GetEngineOffset(int num)
     {
+        if (LevelManager::Instance()->GetLevelType() == LevelType::Challenge)
+            return _engineOffsets[0][num];
+
         return _engineOffsets[_skinID][num];
     }
 
@@ -151,6 +164,9 @@ namespace CoreEngine
 
     Vector3 SkinManager::GetShieldOffset()
     {
+        if (LevelManager::Instance()->GetLevelType() == LevelType::Challenge)
+            return _shieldOffsets[0];
+
         return _shieldOffsets[_skinID];
     }
 
@@ -191,6 +207,9 @@ namespace CoreEngine
 
     float SkinManager::ShootingCooldown()
     {
+        if (LevelManager::Instance()->GetLevelType() == LevelType::Challenge)
+            return _shootingSpeedList[0];
+
         return _shootingSpeedList[_skinID];
     }
 
@@ -201,6 +220,9 @@ namespace CoreEngine
 
     bool SkinManager::ShieldQueue()
     {
+        if (LevelManager::Instance()->GetLevelType() == LevelType::Challenge)
+            return _shieldQueue[0];
+
         return _shieldQueue[_skinID];
     }
 
