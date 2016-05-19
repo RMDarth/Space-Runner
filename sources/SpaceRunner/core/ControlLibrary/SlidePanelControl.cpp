@@ -17,8 +17,13 @@ bool SlidePanelControl::OnMouseMove(int x, int y, float deltaTime)
     {
         if (_moving)
         {
-            _speed = (x - _prevX) * 0.5;
-            _prevX = x;
+            _lastX = x;
+            if (_stepDuration > 0.1f)
+            {
+                _stepDuration = 0;
+                _prevX[1] = _prevX[0];
+                _prevX[0] = x;
+            }
             Move(x);
         }
         return true;
@@ -32,9 +37,12 @@ bool SlidePanelControl::OnMouseDown(int x, int y)
     if (Control::OnMouseDown(x, y))
     {
         _storedX = x;
-        _prevX = x;
         _moving = true;
+
         _stopping = false;
+        _stepDuration = 0;
+        _prevX[0] = x;
+        _prevX[1] = -1;
         return true;
     }
 
@@ -50,6 +58,13 @@ bool SlidePanelControl::OnMouseUp(int x, int y)
             _stopping = true;
             _stoppingTime = 0;
             _storedX = 0;
+
+            if (_prevX[1] == -1)
+            {
+                _prevX[1] = _prevX[0];
+                _prevX[0] = _lastX;
+            }
+            _speed = (_prevX[0] - _prevX[1]) * 5;
         }
 
         _moving = false;
@@ -103,6 +118,10 @@ void SlidePanelControl::Update(float time)
     _stoppingTime += time;
     Control::Update(time);
 
+    if (_moving)
+    {
+        _stepDuration += time;
+    }
     if (_stopping)
     {
         if (_stoppingTime > 0.3f)
@@ -111,7 +130,8 @@ void SlidePanelControl::Update(float time)
         }
         else
         {
-            Move((1.0f - _stoppingTime) * _speed);
+            auto curspeed = _speed * (0.3 - _stoppingTime) * 3;
+            Move(curspeed * time);
             _curPos = _x;
         }
     }

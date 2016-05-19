@@ -7,9 +7,11 @@ class SlidePanelControl : public Control
     int _diff;
     bool _moving = false;
 
-    int _prevX;
+    int _prevX[2];
+	int _lastX;
     int _speed;
     float _stoppingTime;
+	float _stepDuration;
     bool _stopping = false;
 
     int _realWidth;
