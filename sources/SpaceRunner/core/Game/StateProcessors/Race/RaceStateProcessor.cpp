@@ -108,6 +108,7 @@ namespace CoreEngine
         _angleHorizontal = 0;
         _invincibility = false;
         _shield = false;
+        _shieldQueued = false;
         _sparks = false;
         _shootingStarted = 0;
         _shieldStart = 0;
@@ -342,6 +343,11 @@ namespace CoreEngine
                 _shield = false;
                 _sector->GetNode()->removeChild(_shieldSector->GetNode());
                 _sector->GetNode()->removeChild(_shieldEffectSector->GetNode());
+                if (_shieldQueued)
+                {
+                    OnKeyPressed(OIS::KC_DOWN);
+                    _shieldQueued = false;
+                }
             }
         }
 
@@ -696,6 +702,10 @@ namespace CoreEngine
 
                 //if (Config::Instance()->IsSoundEnabled())
                 //	_shootSound->Play();
+            } else if (!_explosion)
+            {
+                if (SkinManager::Instance()->ShieldQueue())
+                    _shieldQueued = true;
             }
         }
         if (key == OIS::KC_LEFT)
@@ -776,6 +786,7 @@ namespace CoreEngine
                     _sector->GetNode()->removeChild(_shieldSector->GetNode());
                     _sector->GetNode()->removeChild(_shieldEffectSector->GetNode());
                     _shield = false;
+                    _shieldQueued = false;
                 }
                 _space->SetVisible(false);
             }

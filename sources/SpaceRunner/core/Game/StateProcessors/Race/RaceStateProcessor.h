@@ -83,6 +83,7 @@ namespace CoreEngine
         const float _invincibilityTime = 3.0f;
 
         bool _shield;
+        bool _shieldQueued;
         float _shieldStart;
         const float _shieldTime = 1.5f;
 

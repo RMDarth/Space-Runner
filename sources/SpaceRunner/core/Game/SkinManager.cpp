@@ -44,7 +44,7 @@ namespace CoreEngine
         ship5Engines.push_back(Vector3(0.37f * 1111, 0.034f * 1111, -0.005f * 1111));
         _engineOffsets.push_back(ship5Engines);
 
-        _shieldOffsets.push_back(Vector3(0.3f, 0.0f, 0.0f));
+        _shieldOffsets.push_back(Vector3(0.45f, 0.1f, 0.0f));
         _shieldOffsets.push_back(Vector3(4.2f, 0.6f, 0.0f));
         _shieldOffsets.push_back(Vector3(4.2f, 0.6f, 0.0f));
         _shieldOffsets.push_back(Vector3(700, 100.6f, 0.0f));

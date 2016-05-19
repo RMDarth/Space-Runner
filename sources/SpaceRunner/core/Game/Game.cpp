@@ -90,8 +90,8 @@ Game::Game()
     {
         SoundSystem::Instance()->StartBackgroundMusic();
     }
-    //SkinManager::Instance()->SetSkinID(Config::Instance()->GetSelectedModel());
-    SkinManager::Instance()->SetSkinID(1);
+    SkinManager::Instance()->SetSkinID(Config::Instance()->GetSelectedModel());
+    //SkinManager::Instance()->SetSkinID(0);
 
 }
 

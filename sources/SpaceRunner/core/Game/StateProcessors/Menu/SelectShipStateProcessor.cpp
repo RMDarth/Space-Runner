@@ -131,6 +131,7 @@ namespace CoreEngine
             if (bought)
             {
                 SkinManager::Instance()->SetSkinID(_skinId);
+                Config::Instance()->SetSelectedModel(_skinId);
                 LevelManager::Instance()->SetStarted(false);
                 LevelManager::Instance()->SetLives(SkinManager::Instance()->LivesCount());
                 LevelManager::Instance()->ResetMovies();
