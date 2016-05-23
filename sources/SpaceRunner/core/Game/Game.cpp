@@ -74,7 +74,7 @@ Game::Game()
     _state = GameState::MainMenu;
 
 #ifdef __ANDROID_API__
-    SoundSystem::Instance()->InitBackgroundMusic("Sound/Music.wav");
+    SoundSystem::Instance()->InitBackgroundMusic("Sound/Music.ogg");
 #else
     SoundSystem::Instance()->InitBackgroundMusic("Sound/Music.wav");
 #endif

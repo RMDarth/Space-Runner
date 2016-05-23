@@ -37,7 +37,7 @@ import android.view.ViewGroup.MarginLayoutParams;
 
 /*import com.facebook.*;
 import com.facebook.model.*;
-import com.facebook.widget.FacebookDialog;
+import com.facebook.widget.FacebookDialog;*/
 import com.google.android.gms.ads.*;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
@@ -46,45 +46,44 @@ import com.google.android.gms.games.Games;
 import com.google.android.gms.games.achievement.Achievement;
 import com.google.android.gms.games.achievement.AchievementBuffer;
 import com.google.android.gms.games.achievement.Achievements.LoadAchievementsResult;
-import com.turbulent.bubbleshooter3d.Consts;
-import com.turbulent.bubbleshooter3d.Consts.PurchaseState;
-import com.turbulent.bubbleshooter3d.Consts.ResponseCode;
-import com.turbulent.bubbleshooter3d.util.IabHelper;
-import com.turbulent.bubbleshooter3d.util.IabResult;
-import com.turbulent.bubbleshooter3d.util.Inventory;
-import com.turbulent.bubbleshooter3d.util.Purchase;*/
+import com.turbulent.spacerush.Consts;
+import com.turbulent.spacerush.Consts.PurchaseState;
+import com.turbulent.spacerush.Consts.ResponseCode;
+import com.turbulent.spacerush.utils.IabHelper;
+import com.turbulent.spacerush.utils.IabResult;
+import com.turbulent.spacerush.utils.Inventory;
+import com.turbulent.spacerush.utils.Purchase;
 
 
-public class SpaceRunnerActivity extends NativeActivity
+public class SpaceRunnerActivity extends NativeActivity implements GameHelper.GameHelperListener, ResultCallback<LoadAchievementsResult>
 {
     static {
         System.loadLibrary("SpaceRunner");
     }
 
-    private static final String TAG = "SpaceRunner";
+    private static final String TAG = "SpaceRush";
 
-    private static final int REQUEST_ACHIEVEMENTS = 12634236;
-    private static final String LEADERBOARD_ID = "CgkI7a-1w_UEEAIQEQ";
-    private static final int REQUEST_LEADERBOARD = 2134351;
+    private static final int REQUEST_ACHIEVEMENTS = 12633536;
+    private static final String LEADERBOARD_ID = "CgkIjqW0l9sVEAIQAQ";
+    private static final int REQUEST_LEADERBOARD = 2134231;
     private String[] achievementList =
             {
-                    "CgkI7a-1w_UEEAIQAQ",
-                    "CgkI7a-1w_UEEAIQAg",
-                    "CgkI7a-1w_UEEAIQAw",
-                    "CgkI7a-1w_UEEAIQBA",
-                    "CgkI7a-1w_UEEAIQBQ",
-                    "CgkI7a-1w_UEEAIQBg",
-                    "CgkI7a-1w_UEEAIQBw",
-                    "CgkI7a-1w_UEEAIQCA",
-                    "CgkI7a-1w_UEEAIQCQ",
-                    "CgkI7a-1w_UEEAIQCg",
-                    "CgkI7a-1w_UEEAIQCw",
-                    "CgkI7a-1w_UEEAIQDA",
-                    "CgkI7a-1w_UEEAIQDQ",
-                    "CgkI7a-1w_UEEAIQDg",
-                    "CgkI7a-1w_UEEAIQDw",
-                    "CgkI7a-1w_UEEAIQEA",
-                    "CgkI7a-1w_UEEAIQEQ"
+                    "CgkIjqW0l9sVEAIQAg",
+                    "CgkIjqW0l9sVEAIQAw",
+                    "CgkIjqW0l9sVEAIQBA",
+                    "CgkIjqW0l9sVEAIQBQ",
+                    "CgkIjqW0l9sVEAIQBg",
+                    "CgkIjqW0l9sVEAIQBw",
+                    "CgkIjqW0l9sVEAIQCA",
+                    "CgkIjqW0l9sVEAIQCQ",
+                    "CgkIjqW0l9sVEAIQCg",
+                    "CgkIjqW0l9sVEAIQCw",
+                    "CgkIjqW0l9sVEAIQDA",
+                    "CgkIjqW0l9sVEAIQDQ",
+                    "CgkIjqW0l9sVEAIQDg",
+                    "CgkIjqW0l9sVEAIQDw",
+                    "CgkIjqW0l9sVEAIQEA",
+                    "CgkIjqW0l9sVEAIQEQ"
             };
 
     private boolean[] _achievementUnlockedStatus = new boolean[20];
@@ -93,10 +92,11 @@ public class SpaceRunnerActivity extends NativeActivity
 
     private SoundPool mSoundPool;
 
+    //facebook
     //private UiLifecycleHelper uiHelper;
 
     // Ads
-    //AdView adView;
+    AdView adView;
     PopupWindow popUp;
     SpaceRunnerActivity _activity;
     LinearLayout layout;
@@ -109,6 +109,17 @@ public class SpaceRunnerActivity extends NativeActivity
 
     /// Google services
 
+    // The game helper object. This class is mainly a wrapper around this object.
+    protected GameHelper mHelper;
+
+    // We expose these constants here because we don't want users of this class
+    // to have to know about GameHelper at all.
+    public static final int CLIENT_GAMES = GameHelper.CLIENT_GAMES;
+
+    // Requested clients. By default, that's just the games client.
+    protected int mRequestedClients = CLIENT_GAMES;
+
+
     /// InApp purchases
     /**
      * The SharedPreferences key for recording whether we initialized the
@@ -116,8 +127,32 @@ public class SpaceRunnerActivity extends NativeActivity
      * to get all the purchases for this user.
      */
     // The helper object
+    private IabHelper mPurchaseHelper;
     private Set<String> mOwnedItems = new HashSet<String>();
     static final int RC_REQUEST = 43171;
+
+
+    /**
+     * Sets the requested clients. The preferred way to set the requested clients is
+     * via the constructor, but this method is available if for some reason your code
+     * cannot do this in the constructor. This must be called before onCreate or getGameHelper()
+     * in order to have any effect. If called after onCreate()/getGameHelper(), this method
+     * is a no-op.
+     *
+     * @param requestedClients A combination of the flags CLIENT_GAMES, CLIENT_PLUS
+     *         and CLIENT_APPSTATE, or CLIENT_ALL to request all available clients.
+     */
+    protected void setRequestedClients(int requestedClients) {
+        mRequestedClients = requestedClients;
+    }
+
+    public GameHelper getGameHelper() {
+        if (mHelper == null) {
+            mHelper = new GameHelper(this, mRequestedClients);
+            mHelper.enableDebugLog(Consts.DEBUG);
+        }
+        return mHelper;
+    }
 
 
     public int GetRAMSize()
@@ -169,11 +204,89 @@ public class SpaceRunnerActivity extends NativeActivity
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        //facebook
+        //uiHelper = new UiLifecycleHelper(this, null);
+       // uiHelper.onCreate(savedInstanceState);
+
+        // rate
+        //AppRater.app_launched(this);
+        //AppRater.showRateDialog(this, null);
+
+
         // sound
         mSoundPool = new SoundPool(5, AudioManager.STREAM_MUSIC, 0);
         //mSoundPool.setOnLoadCompleteListener(this);
 
+        /// google services
+        if (mHelper == null) {
+            getGameHelper();
+        }
+        mHelper.setup(this);
+
+
+        /// Ads
+        // Make your custom init here
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        _activity = this;
+        // Create our ad view here
+        adView = new AdView(this);
+        adView.setAdSize(AdSize.BANNER);
+        //adView.setAdUnitId("ca-app-pub-4708479882450965/2339704886");
+        adView.setAdUnitId("ca-app-pub-3940256099942544/6300978111");
+
+        MarginLayoutParams params = new MarginLayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+        adView.setLayoutParams(params);
+
+        // inapp
+        String base64EncodedPublicKey = SecurityConsts.PUBLIC_KEY;
+        mPurchaseHelper = new IabHelper(this, base64EncodedPublicKey);
+        mPurchaseHelper.startSetup(new IabHelper.OnIabSetupFinishedListener() {
+            public void onIabSetupFinished(IabResult result) {
+
+                if (!result.isSuccess()) {
+                    // Oh noes, there was a problem.
+                    Log.i(TAG, "Failed to initialize billing system.");
+                    return;
+                }
+
+                // Have we been disposed of in the meantime? If so, quit.
+                if (mPurchaseHelper == null) return;
+                mPurchaseHelper.queryInventoryAsync(mGotInventoryListener);
+            }
+        });
     }
+
+    // Listener that's called when we finish querying the items and subscriptions we own
+    IabHelper.QueryInventoryFinishedListener mGotInventoryListener = new IabHelper.QueryInventoryFinishedListener() {
+        public void onQueryInventoryFinished(IabResult result, Inventory inventory) {
+            // Have we been disposed of in the meantime? If so, quit.
+            if (mPurchaseHelper == null) return;
+
+            // Is it a failure?
+            if (result.isFailure()) {
+                Log.i(TAG, "[Billing] Failed to query inventory: " + result);
+                return;
+            }
+
+            /*
+             * Check for items we own. Notice that for each purchase, we check
+             * the developer payload to see if it's correct! See
+             * verifyDeveloperPayload().
+             */
+
+            List<String> skuList = inventory.getAllOwnedSkus();
+            for (Iterator<String> sku = skuList.iterator(); sku.hasNext();)
+            {
+                mOwnedItems.add(sku.next());
+            }
+
+
+            //Purchase premiumPurchase = inventory.getPurchase(SKU_PREMIUM);
+            //mIsPremium = (premiumPurchase != null && verifyDeveloperPayload(premiumPurchase));
+
+
+        }
+    };
 
     /**
      * Called when this activity becomes visible.
@@ -188,16 +301,21 @@ public class SpaceRunnerActivity extends NativeActivity
     protected void onResume()
     {
         super.onResume();
+       // uiHelper.onResume();
+       // AppEventsLogger.activateApp(this);
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+        //uiHelper.onSaveInstanceState(outState);
     }
 
     @Override
     public void onPause() {
         super.onPause();
+        //uiHelper.onPause();
+        //AppEventsLogger.deactivateApp(this);
     }
 
     public int LoadSound(String name)
@@ -218,6 +336,7 @@ public class SpaceRunnerActivity extends NativeActivity
     public void LogInGoogle()
     {
         googleSignedFinished = false;
+        mHelper.onStart(this);
     }
 
     public void LogOutGoogle()
@@ -233,12 +352,18 @@ public class SpaceRunnerActivity extends NativeActivity
 
     public void ShowLeaderboards()
     {
-
+        if (isSignedIn())
+            startActivityForResult(Games.Leaderboards.getLeaderboardIntent(getApiClient(), LEADERBOARD_ID), REQUEST_LEADERBOARD);
+        else
+            beginUserInitiatedSignIn();
     }
 
     public void ShowAchievements()
     {
-
+        if (isSignedIn())
+            startActivityForResult(Games.Achievements.getAchievementsIntent(getApiClient()), REQUEST_ACHIEVEMENTS);
+        else
+            beginUserInitiatedSignIn();
     }
 
 
@@ -246,8 +371,26 @@ public class SpaceRunnerActivity extends NativeActivity
     public void BuyItem(String itemId)
     {
         String payload = "";
+
+        mPurchaseHelper.launchPurchaseFlow(this, itemId, RC_REQUEST,
+                mPurchaseFinishedListener, payload);
     }
 
+    // Callback for when a purchase is finished
+    IabHelper.OnIabPurchaseFinishedListener mPurchaseFinishedListener = new IabHelper.OnIabPurchaseFinishedListener() {
+        public void onIabPurchaseFinished(IabResult result, Purchase purchase) {
+            Log.i(TAG, "Purchase finished: " + result + ", purchase: " + purchase);
+
+            // if we were disposed of in the meantime, quit.
+            if (mPurchaseHelper == null) return;
+
+            if (result.isFailure()) {
+                return;
+            }
+
+            mOwnedItems.add(purchase.getSku());
+        }
+    };
 
     public boolean IsItemBought(String itemId)
     {
@@ -257,7 +400,7 @@ public class SpaceRunnerActivity extends NativeActivity
     // Our popup window, you will call it from your C/C++ code later
     public void showAdPopup(int top)
     {
-        /*final int gravity = top;
+        final int gravity = top;
         if(adsinited)
         {
             if (adshidden)
@@ -272,7 +415,51 @@ public class SpaceRunnerActivity extends NativeActivity
                 });
             }
             return;
-        }*/
+        }
+
+        if(adView != null)  {
+            _activity.runOnUiThread(new Runnable()  {
+                @Override
+                public void run()  {
+                    adsinited = true;
+                    // Out popup window
+                    popUp = new PopupWindow(_activity);
+                    // This is the minimum size for AdMob, we need to set this in case our target device run at 320x480 resolution (Otherwise no ad will be shown, see the padding kill below)
+                    popUp.getBackground().setAlpha(0);
+                    int height = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 53, getResources().getDisplayMetrics());
+                    int width = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 325, getResources().getDisplayMetrics());
+
+                    popUp.setWidth(width);
+                    popUp.setHeight(height);
+                    //popUp.setWindowLayoutMode(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+                    popUp.setClippingEnabled(false);
+                    layout = new LinearLayout(_activity);
+                    mainLayout = new LinearLayout(_activity);
+                    // The layout system for the PopupWindow will kill some pixels due to margins/paddings etc. (No way to remove it), so padd it to adjust
+                    layout.setPadding(-5, -5, -5, -5);
+                    MarginLayoutParams params = new MarginLayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+                    params.setMargins(0, 0, 0, 0);
+                    layout.setOrientation(LinearLayout.HORIZONTAL);
+                    layout.addView(adView, params);
+
+                    _activity.setContentView(mainLayout, params);
+
+
+                    // Enable this if your are testing AdMob, otherwise you'll risk to be banned!
+
+                    AdRequest.Builder adRequestBuilder = new AdRequest.Builder();
+
+                    // Optionally populate the ad request builder.
+                    adRequestBuilder.addTestDevice(AdRequest.DEVICE_ID_EMULATOR);
+                    adRequestBuilder.addTestDevice("8C82A7CAD9096B2E6F7F8FA534C75C90");
+                    _activity.adView.loadAd(adRequestBuilder.build());
+
+                    popUp.setContentView(layout);
+                    // Show our popup window
+                    popUp.showAtLocation(mainLayout, gravity, 0, 0);
+                    popUp.update();
+                }});
+        }
     }
 
     public void hideAdPopup()
@@ -280,7 +467,7 @@ public class SpaceRunnerActivity extends NativeActivity
         if (adshidden)
             return;
 
-        /*Runnable myRunnable = new Runnable()  {
+        Runnable myRunnable = new Runnable()  {
             @Override
             public void run()  {
 
@@ -299,7 +486,7 @@ public class SpaceRunnerActivity extends NativeActivity
                 myRunnable.wait(1000);
             } catch (InterruptedException e) {
             }
-        }*/
+        }
     }
 
     /**
@@ -308,12 +495,24 @@ public class SpaceRunnerActivity extends NativeActivity
     @Override
     protected void onStop() {
         super.onStop();
+
+        mHelper.onStop();
     }
 
     // Do some cleanup
     @Override
     public void onDestroy() {
+        if (adView != null) {
+            adView.destroy();
+        }
         super.onDestroy();
+
+        //uiHelper.onDestroy();
+
+        if (mPurchaseHelper != null) {
+            mPurchaseHelper.dispose();
+            mPurchaseHelper = null;
+        }
     }
 
     ///// google services
@@ -321,37 +520,84 @@ public class SpaceRunnerActivity extends NativeActivity
     @Override
     protected void onActivityResult(int request, int response, Intent data) {
         super.onActivityResult(request, response, data);
+        mHelper.onActivityResult(request, response, data);
+
+        /*uiHelper.onActivityResult(request, response, data, new FacebookDialog.Callback() {
+            @Override
+            public void onError(FacebookDialog.PendingCall pendingCall, Exception error, Bundle data) {
+                Log.e("Activity", String.format("Error: %s", error.toString()));
+            }
+
+            @Override
+            public void onComplete(FacebookDialog.PendingCall pendingCall, Bundle data) {
+                Log.i("Activity", "Success!");
+            }
+        });*/
+
+        if (mPurchaseHelper != null)
+            mPurchaseHelper.handleActivityResult(request, response, data);
     }
 
+    protected GoogleApiClient getApiClient() {
+        return mHelper.getApiClient();
+    }
 
     protected boolean isSignedIn() {
-        return false;
+        return mHelper.isSignedIn();
     }
 
     protected void beginUserInitiatedSignIn() {
-
+        mHelper.beginUserInitiatedSignIn();
     }
 
+    @Override
+    public void onResult(LoadAchievementsResult arg0) {
+        Achievement ach;
+        AchievementBuffer aBuffer = arg0.getAchievements();
+        Iterator<Achievement> aIterator = aBuffer.iterator();
+
+        while (aIterator.hasNext()) {
+            ach = aIterator.next();
+            for (int k = 0; k < achievementList.length; k++)
+            {
+                if (achievementList[k].equals(ach.getAchievementId())) {
+                    if (ach.getState() == Achievement.STATE_UNLOCKED) {
+                        _achievementUnlockedStatus[k] = true;
+                    } else {
+                        _achievementUnlockedStatus[k] = false;
+                    }
+
+                }
+            }
+        }
+        aBuffer.close();
+    }
 
     protected void SyncAchievements()
     {
         boolean fullLoad = false;  // set to 'true' to reload all achievements (ignoring cache)
+
+        // load achievements
+        PendingResult<LoadAchievementsResult> p = Games.Achievements.load( mHelper.getApiClient(), fullLoad );
+        p.setResultCallback(this);
     }
 
     protected void signOut() {
-
+        mHelper.signOut();
     }
 
     protected void showAlert(String message) {
-
+        mHelper.makeSimpleDialog(message).show();
     }
 
     protected void showAlert(String title, String message) {
-
+        mHelper.makeSimpleDialog(title, message).show();
     }
 
     protected void enableDebugLog(boolean enabled) {
-
+        if (mHelper != null) {
+            mHelper.enableDebugLog(enabled);
+        }
     }
 
     @Deprecated
@@ -362,43 +608,89 @@ public class SpaceRunnerActivity extends NativeActivity
     }
 
     protected String getInvitationId() {
-        return "";
+        return mHelper.getInvitationId();
     }
 
     protected void reconnectClient() {
-
+        mHelper.reconnectClient();
     }
 
     protected boolean hasSignInError() {
-
-        return true;
+        return mHelper.hasSignInError();
     }
 
-    public void UpdateScore(int score)
-    {
-
+    protected GameHelper.SignInFailureReason getSignInError() {
+        return mHelper.getSignInError();
     }
 
-    public void UnlockAchievement(int id)
-    {
 
+    @Override
+    public void onSignInSucceeded() {
+        // handle sign-in succeess
+        googleSignedFinished = true;
+        //Toast.makeText(this, "Signed in to Google Services!", Toast.LENGTH_LONG).show();
+        SyncAchievements();
+    }
+    @Override
+    public void onSignInFailed() {
+        // handle sign-in failure (e.g. show Sign In button)
+        googleSignedFinished = true;
+    }
+
+    void UpdateScore(int score)
+    {
+        if (isSignedIn())
+            Games.Leaderboards.submitScore(getApiClient(), LEADERBOARD_ID, score);
+    }
+
+    void UnlockAchievement(int id)
+    {
+        if (isSignedIn())
+        {
+            Games.Achievements.unlock(getApiClient(), achievementList[id]);
+            _achievementUnlockedStatus[id] = true;
+        }
     }
 
     boolean IsAchievementUnlocked(int id)
     {
+        if (isSignedIn())
+        {
+            if (!achievementsSynced)
+                SyncAchievements();
+            else
+                return _achievementUnlockedStatus[id];
+        }
         return false;
     }
 
     void UndateAchievement(int id, int score)
     {
-        ;
+        if (isSignedIn())
+            Games.Achievements.setSteps(getApiClient(), achievementList[id], score);
     }
 
 
     void ShareOnFacebook()
     {
-        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.facebook.com/bubbleshooter3d"));
-        startActivity(browserIntent);
+        /*if (FacebookDialog.canPresentShareDialog(getApplicationContext(),
+                FacebookDialog.ShareDialogFeature.SHARE_DIALOG)) {
+
+            // Publish the post using the Share Dialog
+            FacebookDialog shareDialog = new FacebookDialog.ShareDialogBuilder(this)
+                    .setName("Bubble Shooter 3D")
+                    .setLink("https://play.google.com/store/apps/details?id=com.turbulent.bubbleshooter3d")
+                    .setCaption("Play for free on Android!")
+                    .setDescription("Shoot the bubbles! Classic bubble shooter game goes 3D.")
+                    .setApplicationName("Bubble Shooter 3D")
+                    .setPicture("https://scontent-cdg.xx.fbcdn.net/hphotos-xfp1/v/t1.0-9/19520_1386775741640166_395959818253468647_n.png?oh=c70333467011e089ff6ab83964ee417d&oe=557C95FD")
+                    .build();
+            uiHelper.trackPendingDialogCall(shareDialog.present());
+        } else {*/
+            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.facebook.com/bubbleshooter3d"));
+            startActivity(browserIntent);
+            // Fallback. For example, publish the post using the Feed Dialog
+        //}
 
     }
 

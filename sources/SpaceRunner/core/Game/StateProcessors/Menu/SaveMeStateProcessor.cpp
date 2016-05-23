@@ -23,6 +23,7 @@ namespace CoreEngine
         _query->RaisePriority(6);
 
         _queryVisible = false;
+        _soundsLoaded = false;
 
         InitSound();
     }

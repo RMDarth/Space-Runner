@@ -330,9 +330,9 @@ void SetAds(GameState::State state, GameState::State stateNew)
 
 	if (state != stateNew)
 	{
-		if (stateNew == GameState::Level)
+		if (stateNew == GameState::Level || stateNew == GameState::Store)
 			hideAds();
-		else if (stateNew == GameState::Pause)
+		else if (stateNew == GameState::Pause || stateNew == GameState::SaveMe)
 			showAds(GRAVITY_BOTTOM);
 		else if (stateNew == GameState::ShipSelect)
 		{
@@ -347,7 +347,7 @@ void SetAds(GameState::State state, GameState::State stateNew)
 		else if (stateNew == GameState::Storyboard)
 		{
 			hideAds();
-			showAds(GRAVITY_BOTTOM);
+			showAds(GRAVITY_TOP);
 		}
 		else if (stateNew == GameState::Score)
 		{
@@ -364,7 +364,13 @@ void SetAds(GameState::State state, GameState::State stateNew)
 			hideAds();
 			showAds(GRAVITY_TOP);
 		}
+		else if (stateNew == GameState::Challenges)
+		{
+			hideAds();
+			showAds(GRAVITY_BOTTOMRIGHT);
+		}
 		else {
+			hideAds();
 			showAds(GRAVITY_TOP);
 		}
 	}

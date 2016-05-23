@@ -450,8 +450,8 @@ namespace CoreEngine
             auto totalEnergy = Scores::Instance()->GetTotalEnergy();
             if (totalEnergy >= 300)
             {
-                ShowAchievement(3);
-                Config::Instance()->SetAchievementCompleted(3);
+                ShowAchievement(2);
+                Config::Instance()->SetAchievementCompleted(2);
                 achievementsCompleted++;
             }
             if (totalEnergy >= 10000)
