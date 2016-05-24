@@ -180,8 +180,9 @@ namespace CoreEngine
                 }
                 Config::Instance()->SetResurrectCount(1);
             } else {
-                BillingProcessor::Instance()->BuyItem("ResurrectItem");
-                if (BillingProcessor::Instance()->IsItemBought("ResurrectItem"))
+                BillingProcessor::Instance()->BuyEnergy(5);
+                // TODO: Fix purchase
+                if (BillingProcessor::Instance()->GetBoughtItem() == 5)
                 {
                     Config::Instance()->SetResurrectCount(1);
                 }

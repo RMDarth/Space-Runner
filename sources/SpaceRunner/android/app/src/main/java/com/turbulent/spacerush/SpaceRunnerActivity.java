@@ -2,6 +2,7 @@ package com.turbulent.spacerush;
 import java.io.IOException;
 import java.security.SecureRandom;
 import java.security.acl.Owner;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -49,6 +50,7 @@ import com.google.android.gms.games.achievement.Achievements.LoadAchievementsRes
 import com.turbulent.spacerush.Consts;
 import com.turbulent.spacerush.Consts.PurchaseState;
 import com.turbulent.spacerush.Consts.ResponseCode;
+import com.turbulent.spacerush.utils.IabBroadcastReceiver;
 import com.turbulent.spacerush.utils.IabHelper;
 import com.turbulent.spacerush.utils.IabResult;
 import com.turbulent.spacerush.utils.Inventory;
@@ -66,6 +68,7 @@ public class SpaceRunnerActivity extends NativeActivity implements GameHelper.Ga
     private static final int REQUEST_ACHIEVEMENTS = 12633536;
     private static final String LEADERBOARD_ID = "CgkIjqW0l9sVEAIQAQ";
     private static final int REQUEST_LEADERBOARD = 2134231;
+
     private String[] achievementList =
             {
                     "CgkIjqW0l9sVEAIQAg",
@@ -86,9 +89,17 @@ public class SpaceRunnerActivity extends NativeActivity implements GameHelper.Ga
                     "CgkIjqW0l9sVEAIQEQ"
             };
 
-    private boolean[] _achievementUnlockedStatus = new boolean[20];
+    private String[] skuList =
+            {
+                    "energypack1",
+                    "energypack2",
+                    "energypack3",
+                    "energypack4",
+                    "energypack5",
+                    "resurrectitem"
+            };
 
-    private String encryptKey = "BadabeemKey";
+    private boolean[] _achievementUnlockedStatus = new boolean[20];
 
     private SoundPool mSoundPool;
 
@@ -121,15 +132,14 @@ public class SpaceRunnerActivity extends NativeActivity implements GameHelper.Ga
 
 
     /// InApp purchases
-    /**
-     * The SharedPreferences key for recording whether we initialized the
-     * database.  If false, then we perform a RestoreTransactions request
-     * to get all the purchases for this user.
-     */
     // The helper object
-    private IabHelper mPurchaseHelper;
-    private Set<String> mOwnedItems = new HashSet<String>();
-    static final int RC_REQUEST = 43171;
+    IabHelper mPurchaseHelper;
+
+    // Provides purchase notification while this app is running
+    IabBroadcastReceiver mBroadcastReceiver;
+
+    private ArrayList<String> mOwnedItems = new ArrayList<String>();
+    static final int RC_REQUEST = 43156;
 
 
     /**
@@ -251,7 +261,13 @@ public class SpaceRunnerActivity extends NativeActivity implements GameHelper.Ga
 
                 // Have we been disposed of in the meantime? If so, quit.
                 if (mPurchaseHelper == null) return;
-                mPurchaseHelper.queryInventoryAsync(mGotInventoryListener);
+
+                try {
+                    mPurchaseHelper.queryInventoryAsync(mGotInventoryListener);
+                } catch (IabHelper.IabAsyncInProgressException e) {
+                    Log.e(TAG, "Error querying inventory. Another async operation in progress.");
+                }
+
             }
         });
     }
@@ -268,23 +284,25 @@ public class SpaceRunnerActivity extends NativeActivity implements GameHelper.Ga
                 return;
             }
 
-            /*
-             * Check for items we own. Notice that for each purchase, we check
-             * the developer payload to see if it's correct! See
-             * verifyDeveloperPayload().
-             */
-
-            List<String> skuList = inventory.getAllOwnedSkus();
-            for (Iterator<String> sku = skuList.iterator(); sku.hasNext();)
+            // TODO: add energy purchase!
+            // Check for gas delivery -- if we own gas, we should fill up the tank immediately
+            for (String sku : skuList)
             {
-                mOwnedItems.add(sku.next());
+                Purchase energyPurchase = inventory.getPurchase(sku);
+                if (energyPurchase != null)// && verifyDeveloperPayload(energyPurchase))
+                {
+                    Log.d(TAG, "We have energy. Consuming it.");
+                    try {
+                        mPurchaseHelper.consumeAsync(inventory.getPurchase(sku), mConsumeFinishedListener);
+                    } catch (IabHelper.IabAsyncInProgressException e) {
+                        Log.e(TAG, "Error consuming energy. Another async operation in progress.");
+                    }
+                    return;
+                }
             }
 
-
-            //Purchase premiumPurchase = inventory.getPurchase(SKU_PREMIUM);
-            //mIsPremium = (premiumPurchase != null && verifyDeveloperPayload(premiumPurchase));
-
-
+            //updateUi();
+            //setWaitScreen(false);
         }
     };
 
@@ -367,13 +385,38 @@ public class SpaceRunnerActivity extends NativeActivity implements GameHelper.Ga
     }
 
 
+    public void BuyEnergy(int id)
+    {
+        // TODO: Generate random string
+        String payload = "";
+
+        //setWaitScreen(true);
+        //Log.d(TAG, "Launching purchase flow for energy.");
+
+        try {
+            mPurchaseHelper.launchPurchaseFlow(this, skuList[id], RC_REQUEST,
+                    mPurchaseFinishedListener, payload);
+        } catch (IabHelper.IabAsyncInProgressException e) {
+            Log.e(TAG, "Error launching purchase flow. Another async operation in progress.");
+            //setWaitScreen(false);
+        }
+    }
 
     public void BuyItem(String itemId)
     {
+        // TODO: Generate random string
         String payload = "";
 
-        mPurchaseHelper.launchPurchaseFlow(this, itemId, RC_REQUEST,
-                mPurchaseFinishedListener, payload);
+        //setWaitScreen(true);
+        //Log.d(TAG, "Launching purchase flow for energy.");
+
+        try {
+            mPurchaseHelper.launchPurchaseFlow(this, itemId, RC_REQUEST,
+                    mPurchaseFinishedListener, payload);
+        } catch (IabHelper.IabAsyncInProgressException e) {
+            Log.e(TAG, "Error launching purchase flow. Another async operation in progress.");
+            //setWaitScreen(false);
+        }
     }
 
     // Callback for when a purchase is finished
@@ -388,13 +431,81 @@ public class SpaceRunnerActivity extends NativeActivity implements GameHelper.Ga
                 return;
             }
 
-            mOwnedItems.add(purchase.getSku());
+            for (String sku : skuList) {
+                if (purchase.getSku().equals(sku)) {
+                    // bought energy pack. So consume it.
+                    Log.d(TAG, "Purchase is energy. Starting energy consumption.");
+                    try {
+                        mPurchaseHelper.consumeAsync(purchase, mConsumeFinishedListener);
+                    } catch (IabHelper.IabAsyncInProgressException e) {
+                        Log.e(TAG, "Error consuming energy. Another async operation in progress.");
+                        //setWaitScreen(false);
+                        return;
+                    }
+                }
+            }
+
+        }
+    };
+
+    // Called when consumption is complete
+    IabHelper.OnConsumeFinishedListener mConsumeFinishedListener = new IabHelper.OnConsumeFinishedListener() {
+        public void onConsumeFinished(Purchase purchase, IabResult result) {
+            Log.d(TAG, "Consumption finished. Purchase: " + purchase + ", result: " + result);
+
+            // if we were disposed of in the meantime, quit.
+            if (mPurchaseHelper == null) return;
+
+            // We know this is the "energy" sku because it's the only one we consume,
+            // so we don't check which sku was consumed. If you have more than one
+            // sku, you probably should check...
+            if (result.isSuccess()) {
+                // successfully consumed, so we apply the effects of the item in our
+                // game world's logic, which in our case means filling the gas tank a bit
+                Log.d(TAG, "Consumption successful. Provisioning.");
+                mOwnedItems.add(purchase.getSku());
+            }
+            else {
+                Log.e(TAG, "Error while consuming: " + result);
+            }
+
+            //setWaitScreen(false);
+            Log.d(TAG, "End consumption flow.");
         }
     };
 
     public boolean IsItemBought(String itemId)
     {
         return mOwnedItems.contains(itemId);
+    }
+
+    public boolean CheckIsBoughtAndConsume(int id)
+    {
+        if (mOwnedItems.contains(skuList[id]))
+        {
+            mOwnedItems.remove(skuList[id]);
+            return true;
+        }
+        return false;
+    }
+
+    public int ReturnLastBoughtItem()
+    {
+        if (mOwnedItems.size() == 0)
+        {
+            return -1;
+        }
+        String boughtSku = mOwnedItems.get(0);
+        for (int i = 0; i < skuList.length; i++)
+        {
+            if (skuList[i].equalsIgnoreCase(boughtSku))
+            {
+                mOwnedItems.remove(0);
+                return i;
+            }
+        }
+        mOwnedItems.remove(0);
+        return -1;
     }
 
     // Our popup window, you will call it from your C/C++ code later
@@ -510,7 +621,7 @@ public class SpaceRunnerActivity extends NativeActivity implements GameHelper.Ga
         //uiHelper.onDestroy();
 
         if (mPurchaseHelper != null) {
-            mPurchaseHelper.dispose();
+            mPurchaseHelper.disposeWhenFinished();
             mPurchaseHelper = null;
         }
     }

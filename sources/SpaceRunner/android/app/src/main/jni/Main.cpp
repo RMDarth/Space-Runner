@@ -324,10 +324,6 @@ static int32_t handleInput(struct android_app* app, AInputEvent* event)
 
 void SetAds(GameState::State state, GameState::State stateNew)
 {
-	if (BillingProcessor::Instance()->IsItemBought(MODELS_ITEM_ID)
-			|| BillingProcessor::Instance()->IsItemBought(LEVELS_ITEM_ID))
-		return;
-
 	if (state != stateNew)
 	{
 		if (stateNew == GameState::Level || stateNew == GameState::Store)
@@ -459,9 +455,7 @@ static void handleCmd(struct android_app* app, int32_t cmd)
 				gInput = new Input(gRenderWnd);
 				gInput->AddListener((IInputListener*)gGame);
 
-				if (!BillingProcessor::Instance()->IsItemBought(MODELS_ITEM_ID)
-					&& !BillingProcessor::Instance()->IsItemBought(LEVELS_ITEM_ID))
-					showAds(GRAVITY_TOP);
+				showAds(GRAVITY_TOP);
 			}
 			else
 			{
@@ -565,9 +559,7 @@ void android_main(struct android_app* state)
 
 			if (newState == GameState::Score)
 			{
-				if (!BillingProcessor::Instance()->IsItemBought(MODELS_ITEM_ID)
-						&& !BillingProcessor::Instance()->IsItemBought(LEVELS_ITEM_ID))
-					showAds(GRAVITY_BOTTOM);
+				showAds(GRAVITY_BOTTOM);
 			} else if (oldState != newState && newState == GameState::Level)
 			{
 				hideAds();

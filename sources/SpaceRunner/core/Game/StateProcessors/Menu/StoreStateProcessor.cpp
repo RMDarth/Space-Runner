@@ -31,6 +31,32 @@ namespace CoreEngine
 	{
 		UpdateButtons();
 
+        auto boughtItem = BillingProcessor::Instance()->GetBoughtItem();
+        if (boughtItem != -1)
+        {
+            int energy = 0;
+            switch (boughtItem)
+            {
+                case 0:
+                    energy = 1500;
+                    break;
+                case 1:
+                    energy = 5000;
+                    break;
+                case 2:
+                    energy = 10000;
+                    break;
+                case 3:
+                    energy = 50000;
+                    break;
+                case 4:
+                    energy = 100000;
+                    break;
+            }
+            Scores::Instance()->UpdateTotalEnergy(energy);
+            UpdateButtons();
+        }
+
 		return GameState::Store;
 	}
 
@@ -118,30 +144,8 @@ namespace CoreEngine
         else if (!control->GetName().compare(0, 13, "buyenergypack"))
         {
             int packId = control->GetName()[13] - '0';
-            if (BillingProcessor::Instance()->BuyEnergy(packId))
-            {
-                int energy = 0;
-                switch (packId)
-                {
-                    case 1:
-                        energy = 1500;
-                        break;
-                    case 2:
-                        energy = 5000;
-                        break;
-                    case 3:
-                        energy = 10000;
-                        break;
-                    case 4:
-                        energy = 50000;
-                        break;
-                    case 5:
-                        energy = 100000;
-                        break;
-                }
-                Scores::Instance()->UpdateTotalEnergy(energy);
-                UpdateButtons();
-            }
+            BillingProcessor::Instance()->BuyEnergy(packId - 1);
+
         } else if (control->GetName() == "buybomb1")
         {
             int totalEnergy = Scores::Instance()->GetTotalEnergy();

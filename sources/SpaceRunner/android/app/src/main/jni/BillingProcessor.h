@@ -13,10 +13,12 @@ class BillingProcessor
 public:
 	static BillingProcessor* Instance();
 
-	void BuyItem(std::string id);
-	bool IsItemBought(std::string id);
+	//void BuyItem(std::string id);
+	//bool IsItemBought(std::string id);
 
-	bool BuyEnergy(int packId);
+	void BuyEnergy(int packId);
+	//bool IsItemBought(int packId);
+	int GetBoughtItem();
 
 	void Init(struct android_app* state);
 

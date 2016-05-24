@@ -23,64 +23,10 @@ void BillingProcessor::Init(struct android_app* state)
 	_state = state;
 }
 
-void BillingProcessor::BuyItem(std::string id)
-{
-#ifdef CHINA_SHOP
-	return;
-#endif
-	// Get the android application's activity.
-	ANativeActivity* activity = _state->activity;
-	JavaVM* jvm = _state->activity->vm;
-	JNIEnv* env = NULL;
-	jvm->GetEnv((void **)&env, JNI_VERSION_1_6);
-	jint res = jvm->AttachCurrentThread(&env, NULL);
-
-	jstring jStr = env->NewStringUTF(id.c_str());
-
-	if (res == JNI_ERR)
-	{
-		// Failed to retrieve JVM environment
-		return;
-	}
-
-	jclass clazz = env->GetObjectClass(activity->clazz);
-	jmethodID methodID = env->GetMethodID(clazz, "BuyItem", "(Ljava/lang/String;)V");
-	env->CallVoidMethod(activity->clazz, methodID, jStr);
-	jvm->DetachCurrentThread();
-}
 
 void BillingProcessor::RateApp()
 {
 
-}
-
-bool BillingProcessor::IsItemBought(std::string id)
-{
-#ifdef CHINA_SHOP
-	return true;
-#endif
-
-	// Get the android application's activity.
-	ANativeActivity* activity = _state->activity;
-	JavaVM* jvm = _state->activity->vm;
-	JNIEnv* env = NULL;
-	jvm->GetEnv((void **)&env, JNI_VERSION_1_6);
-	jint res = jvm->AttachCurrentThread(&env, NULL);
-
-	jstring jStr = env->NewStringUTF(id.c_str());
-
-	if (res == JNI_ERR)
-	{
-		// Failed to retrieve JVM environment
-		return false;
-	}
-
-	jclass clazz = env->GetObjectClass(activity->clazz);
-	jmethodID methodID = env->GetMethodID(clazz, "IsItemBought", "(Ljava/lang/String;)Z");
-	int result = env->CallBooleanMethod(activity->clazz, methodID, jStr);
-	jvm->DetachCurrentThread();
-
-	return result;
 }
 
 
@@ -343,7 +289,47 @@ void BillingProcessor::OpenLink(std::string link)
 	jvm->DetachCurrentThread();
 }
 
-bool BillingProcessor::BuyEnergy(int packId)
+void BillingProcessor::BuyEnergy(int packId)
 {
-	return true;
+	// Get the android application's activity.
+	ANativeActivity* activity = _state->activity;
+	JavaVM* jvm = _state->activity->vm;
+	JNIEnv* env = NULL;
+	jvm->GetEnv((void **)&env, JNI_VERSION_1_6);
+	jint res = jvm->AttachCurrentThread(&env, NULL);
+
+	//jstring jStr = env->NewStringUTF(id.c_str());
+
+	if (res == JNI_ERR)
+	{
+		// Failed to retrieve JVM environment
+		return;
+	}
+
+	jclass clazz = env->GetObjectClass(activity->clazz);
+	jmethodID methodID = env->GetMethodID(clazz, "BuyEnergy", "(I)V");
+	env->CallVoidMethod(activity->clazz, methodID, packId);
+	jvm->DetachCurrentThread();
+}
+
+int BillingProcessor::GetBoughtItem()
+{
+	ANativeActivity* activity = _state->activity;
+	JavaVM* jvm = _state->activity->vm;
+	JNIEnv* env = NULL;
+	jvm->GetEnv((void **)&env, JNI_VERSION_1_6);
+	jint res = jvm->AttachCurrentThread(&env, NULL);
+
+	if (res == JNI_ERR)
+	{
+		// Failed to retrieve JVM environment
+		return false;
+	}
+
+	jclass clazz = env->GetObjectClass(activity->clazz);
+	jmethodID methodID = env->GetMethodID(clazz, "ReturnLastBoughtItem", "()I");
+	int result = env->CallIntMethod(activity->clazz, methodID);
+	jvm->DetachCurrentThread();
+
+	return result;
 }
