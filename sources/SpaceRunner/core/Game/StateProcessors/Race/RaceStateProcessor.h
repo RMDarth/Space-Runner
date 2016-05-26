@@ -49,20 +49,24 @@ namespace CoreEngine
 
         // sounds
         UPtr<Sound> _bombSound;
+        UPtr<Sound> _superBombSound;
         UPtr<Sound> _shootSound;
         UPtr<Sound> _impactSound;
         UPtr<Sound> _collectSound;
         UPtr<Sound> _successSound;
+        UPtr<Sound> _shieldSound;
         bool _soundsLoaded;
 
         int _score;
 
         float _totalTime;
+        float _impactSoundTime = 0;
         int _frames;
 
         float _speed;
         float _speedAccel;
         float _speedMax;
+        int _multiplier = 1;
 
         float _angleHorizontal;
         const float _angleHorizontalMax = 0.7f;

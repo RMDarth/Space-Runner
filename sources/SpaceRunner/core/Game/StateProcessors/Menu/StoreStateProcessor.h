@@ -9,6 +9,7 @@ namespace CoreEngine
 		ControlDocument * _document;
 
 		bool _bonusesState;
+		float _lastStoreCheckTime;
 
 		void UpdateButtons();
 

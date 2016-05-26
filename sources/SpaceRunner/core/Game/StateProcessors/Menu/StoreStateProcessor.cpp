@@ -29,32 +29,37 @@ namespace CoreEngine
 
 	GameState::State StoreStateProcessor::Update(float time)
 	{
+        _lastStoreCheckTime += time;
 		UpdateButtons();
 
-        auto boughtItem = BillingProcessor::Instance()->GetBoughtItem();
-        if (boughtItem != -1)
+        if (_lastStoreCheckTime > 0.7f)
         {
-            int energy = 0;
-            switch (boughtItem)
+            _lastStoreCheckTime = 0;
+            auto boughtItem = BillingProcessor::Instance()->GetBoughtItem();
+            if (boughtItem != -1)
             {
-                case 0:
-                    energy = 1500;
-                    break;
-                case 1:
-                    energy = 5000;
-                    break;
-                case 2:
-                    energy = 10000;
-                    break;
-                case 3:
-                    energy = 50000;
-                    break;
-                case 4:
-                    energy = 100000;
-                    break;
+                int energy = 0;
+                switch (boughtItem)
+                {
+                    case 0:
+                        energy = 1500;
+                        break;
+                    case 1:
+                        energy = 5000;
+                        break;
+                    case 2:
+                        energy = 10000;
+                        break;
+                    case 3:
+                        energy = 50000;
+                        break;
+                    case 4:
+                        energy = 100000;
+                        break;
+                }
+                Scores::Instance()->UpdateTotalEnergy(energy);
+                UpdateButtons();
             }
-            Scores::Instance()->UpdateTotalEnergy(energy);
-            UpdateButtons();
         }
 
 		return GameState::Store;

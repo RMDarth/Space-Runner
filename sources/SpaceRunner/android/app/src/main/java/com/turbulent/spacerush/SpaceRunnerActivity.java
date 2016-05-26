@@ -16,6 +16,7 @@ import android.app.ActivityManager.MemoryInfo;
 import android.app.NativeActivity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.widget.PopupWindow;
@@ -40,6 +41,8 @@ import android.view.ViewGroup.MarginLayoutParams;
 import com.facebook.model.*;
 import com.facebook.widget.FacebookDialog;*/
 import com.google.android.gms.ads.*;
+import com.google.android.gms.ads.doubleclick.PublisherAdRequest;
+import com.google.android.gms.ads.doubleclick.PublisherInterstitialAd;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;
@@ -57,7 +60,7 @@ import com.turbulent.spacerush.utils.Inventory;
 import com.turbulent.spacerush.utils.Purchase;
 
 
-public class SpaceRunnerActivity extends NativeActivity implements GameHelper.GameHelperListener, ResultCallback<LoadAchievementsResult>
+public class SpaceRunnerActivity extends NativeActivity implements GameHelper.GameHelperListener, ResultCallback<LoadAchievementsResult>, IabBroadcastReceiver.IabBroadcastListener
 {
     static {
         System.loadLibrary("SpaceRunner");
@@ -114,6 +117,10 @@ public class SpaceRunnerActivity extends NativeActivity implements GameHelper.Ga
     LinearLayout mainLayout;
     boolean adsinited = false;
     boolean adshidden = false;
+
+    // Interstitial
+    PublisherInterstitialAd interstitialAd;
+
     boolean googleSignedFinished = false;
     boolean achievementsSynced = false;
 
@@ -247,6 +254,18 @@ public class SpaceRunnerActivity extends NativeActivity implements GameHelper.Ga
         MarginLayoutParams params = new MarginLayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
         adView.setLayoutParams(params);
 
+        // Video ads
+        interstitialAd = new PublisherInterstitialAd(this);
+        interstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+
+        interstitialAd.setAdListener(new AdListener() {
+            @Override
+            public void onAdClosed() {
+                requestNewInterstitial();
+            }
+        });
+        requestNewInterstitial();
+
         // inapp
         String base64EncodedPublicKey = SecurityConsts.PUBLIC_KEY;
         mPurchaseHelper = new IabHelper(this, base64EncodedPublicKey);
@@ -261,6 +280,10 @@ public class SpaceRunnerActivity extends NativeActivity implements GameHelper.Ga
 
                 // Have we been disposed of in the meantime? If so, quit.
                 if (mPurchaseHelper == null) return;
+
+                mBroadcastReceiver = new IabBroadcastReceiver(SpaceRunnerActivity.this);
+                IntentFilter broadcastFilter = new IntentFilter(IabBroadcastReceiver.ACTION);
+                registerReceiver(mBroadcastReceiver, broadcastFilter);
 
                 try {
                     mPurchaseHelper.queryInventoryAsync(mGotInventoryListener);
@@ -382,6 +405,26 @@ public class SpaceRunnerActivity extends NativeActivity implements GameHelper.Ga
             startActivityForResult(Games.Achievements.getAchievementsIntent(getApiClient()), REQUEST_ACHIEVEMENTS);
         else
             beginUserInitiatedSignIn();
+    }
+
+    private void requestNewInterstitial() {
+        PublisherAdRequest adRequest = new PublisherAdRequest.Builder()
+                .addTestDevice("CEC26E9D5815BCF8D34E8AE04DAE41EB")
+                .build();
+
+        interstitialAd.loadAd(adRequest);
+    }
+
+    public void ShowVideoAd()
+    {
+        _activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (interstitialAd.isLoaded()) {
+                    interstitialAd.show();
+                }
+            }
+        });
     }
 
 
@@ -563,6 +606,7 @@ public class SpaceRunnerActivity extends NativeActivity implements GameHelper.Ga
                     // Optionally populate the ad request builder.
                     adRequestBuilder.addTestDevice(AdRequest.DEVICE_ID_EMULATOR);
                     adRequestBuilder.addTestDevice("8C82A7CAD9096B2E6F7F8FA534C75C90");
+                    adRequestBuilder.addTestDevice("CEC26E9D5815BCF8D34E8AE04DAE41EB");
                     _activity.adView.loadAd(adRequestBuilder.build());
 
                     popUp.setContentView(layout);
@@ -619,6 +663,10 @@ public class SpaceRunnerActivity extends NativeActivity implements GameHelper.Ga
         super.onDestroy();
 
         //uiHelper.onDestroy();
+
+        if (mBroadcastReceiver != null) {
+            unregisterReceiver(mBroadcastReceiver);
+        }
 
         if (mPurchaseHelper != null) {
             mPurchaseHelper.disposeWhenFinished();
@@ -809,6 +857,16 @@ public class SpaceRunnerActivity extends NativeActivity implements GameHelper.Ga
     {
         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(link));
         startActivity(browserIntent);
+    }
+
+    @Override
+    public void receivedBroadcast() {
+        Log.d(TAG, "Received broadcast notification. Querying inventory.");
+        try {
+            mPurchaseHelper.queryInventoryAsync(mGotInventoryListener);
+        } catch (IabHelper.IabAsyncInProgressException e) {
+            Log.e(TAG, "Error querying inventory. Another async operation in progress.");
+        }
     }
 
     /*@Override

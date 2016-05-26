@@ -21,6 +21,7 @@ namespace CoreEngine
     {
         _totalTime = 0;
         _logged = false;
+        _updateSlider = false;
         GenerateLevel();
 
         auto sceneManager = RenderProcessor::Instance()->GetSceneManager();
@@ -49,41 +50,10 @@ namespace CoreEngine
         sceneNodeChild->attachObject(engineFire2);
 
         // Document
-        _document = new ControlDocument("GUI/startmenu.xml");
+        _document = new ControlDocument("GUI/firstrunmenu.xml");
         _document->SetMouseUpHandler(this);
+        _firstRunDocument = true;
 
-        auto configpanel = _document->GetControlByName("configpanel");
-        int x, y;
-        configpanel->GetPos(x, y);
-        y = y - (int)(configpanel->GetWidth() * 2.548f);
-        configpanel->SetPos(x, y);
-        configpanel->SetSize(configpanel->GetWidth(), (int)(configpanel->GetWidth() * 3.26));
-        configpanel->SetRenderOrder(0);
-
-        x = x + (int)(configpanel->GetWidth() * 0.05f);
-        auto soundbutton = _document->GetControlByName("sound");
-        soundbutton->SetPos(x, y);
-        soundbutton->SetSize(soundbutton->GetWidth(), soundbutton->GetWidth());
-
-        y = y + (int)(soundbutton->GetWidth() * 0.95f);
-        auto musicbutton = _document->GetControlByName("music");
-        musicbutton->SetPos(x, y);
-        musicbutton->SetSize(musicbutton->GetWidth(), musicbutton->GetWidth());
-
-        y = y + (int)(soundbutton->GetWidth() * 0.95f);
-        auto infobutton = _document->GetControlByName("info");
-        infobutton->SetPos(x, y);
-        infobutton->SetSize(infobutton->GetWidth(), infobutton->GetWidth());
-
-        Show();
-
-        configpanel->SetVisible(false);
-        soundbutton->SetVisible(false);
-        musicbutton->SetVisible(false);
-        infobutton->SetVisible(false);
-
-        UpdateSoundIcon(soundbutton.get());
-        UpdateMusicIcon(musicbutton.get());
 #ifdef CHINA_SHOP
         UpdateGooglePlayIcon(_document->GetControlByName("googleplay").get());
 #endif
@@ -200,11 +170,54 @@ namespace CoreEngine
 
     void MenuStateProcessor::Show()
     {
+        if (Scores::Instance()->GetBestStars(1) > 0 && _firstRunDocument)
+        {
+            _document->Hide();
+            _updateSlider = false;
+            _firstRunDocument = false;
+            //delete _document;
+            _document = new ControlDocument("GUI/startmenu.xml");
+            _document->SetMouseUpHandler(this);
+        }
+
         _sector->GetNode()->setVisible(true);
         _sectorShip->GetNode()->setVisible(true);
         _document->Show();
+        if (!_updateSlider)
+            UpdateSlider();
         ChangeSettingsPanelVisibility();
         //UpdateGooglePlayIcon(_document->GetControlByName("googleplay").get());
+    }
+
+    void MenuStateProcessor::UpdateSlider()
+    {
+        _updateSlider = true;
+        auto configpanel = _document->GetControlByName("configpanel");
+        int x, y;
+        configpanel->GetPos(x, y);
+        //y = y - (int)(configpanel->GetWidth() * 2.548f);
+        y = y - (configpanel->GetWidth()  * 3.048f) + (configpanel->GetWidth()  * 0.5f) ;
+        configpanel->SetPos(x, y);
+        configpanel->SetSize(configpanel->GetWidth(), (int)(configpanel->GetWidth() * 3.26));
+        configpanel->SetRenderOrder(0);
+
+        x = x + (int)(configpanel->GetWidth() * 0.05f);
+        auto soundbutton = _document->GetControlByName("sound");
+        soundbutton->SetPos(x, y);
+        soundbutton->SetSize(soundbutton->GetWidth(), soundbutton->GetWidth());
+
+        y = y + (int)(soundbutton->GetWidth() * 0.95f);
+        auto musicbutton = _document->GetControlByName("music");
+        musicbutton->SetPos(x, y);
+        musicbutton->SetSize(musicbutton->GetWidth(), musicbutton->GetWidth());
+
+        y = y + (int)(soundbutton->GetWidth() * 0.95f);
+        auto infobutton = _document->GetControlByName("info");
+        infobutton->SetPos(x, y);
+        infobutton->SetSize(infobutton->GetWidth(), infobutton->GetWidth());
+
+        UpdateSoundIcon(soundbutton.get());
+        UpdateMusicIcon(musicbutton.get());
     }
 
     void MenuStateProcessor::ProcessEvent(Control* control, IEventHandler::EventType type, int x, int y)
@@ -213,6 +226,15 @@ namespace CoreEngine
 
         if (type == IEventHandler::MouseUp)
         {
+            if (control->GetName() == "startfirst")
+            {
+                LevelManager::Instance()->SetLevelTypes(LevelType::Puzzle);
+                LevelManager::Instance()->SetLevelNum(1);
+                LevelManager::Instance()->SetStarted(false);
+                LevelManager::Instance()->SetLives(SkinManager::Instance()->LivesCount());
+                LevelManager::Instance()->ResetMovies();
+                Game::Instance()->ChangeState(GameState::ShipSelect);
+            }
             if (control->GetName() == "start")
             {
                 LevelManager::Instance()->SetLevelTypes(LevelType::Rush);
@@ -268,7 +290,6 @@ namespace CoreEngine
             if (control->GetName() == "googleplay")
             {
 #ifdef __ANDROID_API__
-#ifndef CHINA_SHOP
                 if (!BillingProcessor::Instance()->IsLoggedGoogle())
                     BillingProcessor::Instance()->LogInGoogle();
                 else
@@ -276,8 +297,15 @@ namespace CoreEngine
 #else
                 Game::Instance()->ChangeState(GameState::Achievements);
 #endif
-#else
-                Game::Instance()->ChangeState(GameState::Achievements);
+            }
+
+            if (control->GetName() == "score")
+            {
+#ifdef __ANDROID_API__
+                if (!BillingProcessor::Instance()->IsLoggedGoogle())
+                    BillingProcessor::Instance()->LogInGoogle();
+                else
+                    BillingProcessor::Instance()->ShowLeaderboard();
 #endif
             }
 

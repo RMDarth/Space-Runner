@@ -31,6 +31,7 @@ public:
 
 	void ShowAchievements();
 	void ShowLeaderboard();
+	void ShowVideoAds();
 	void ShareOnFacebook();
 	void RateApp();
 	void OpenLink(std::string link);

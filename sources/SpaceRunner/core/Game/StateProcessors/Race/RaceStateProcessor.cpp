@@ -72,10 +72,16 @@ namespace CoreEngine
                     if (type == SpaceObjectType::Mine || type == SpaceObjectType::EnemyCruiser)
                         _bombSound->Play();
                     else
-                        _impactSound->Play();
+                    {
+                        if (_totalTime - _impactSoundTime > 0.01f)
+                        {
+                            _impactSound->Play();
+                            _impactSoundTime = _totalTime;
+                        }
+                    }
                 }
                 if (type == SpaceObjectType::Mine || type == SpaceObjectType::EnemyCruiser)
-                    _score += 5;
+                    _score += 3 * _multiplier;
             });
 
         _space->RegisterBossEvent(
@@ -264,9 +270,19 @@ namespace CoreEngine
         {
             _shootSound = unique_ptr<Sound>(soundSystem->CreateSound("Sound/LaserSound2.wav"));
             _impactSound = unique_ptr<Sound>(soundSystem->CreateSound("Sound/ImpactSound.wav"));
-            _collectSound = unique_ptr<Sound>(soundSystem->CreateSound("Sound/HitDestroySound.wav"));
+            _collectSound = unique_ptr<Sound>(soundSystem->CreateSound("Sound/CollectSound.wav"));
+
+#ifdef __ANDROID_API__
+            _bombSound = unique_ptr<Sound>(soundSystem->CreateSound("Sound/BombSound.ogg"));
+            _superBombSound = unique_ptr<Sound>(soundSystem->CreateSound("Sound/SuperBombSound.ogg"));
+            _successSound = unique_ptr<Sound>(soundSystem->CreateSound("Sound/SuccessSound.ogg"));
+            _shieldSound = unique_ptr<Sound>(soundSystem->CreateSound("Sound/Shield.ogg"));
+#else
             _bombSound = unique_ptr<Sound>(soundSystem->CreateSound("Sound/BombSound.wav"));
+            _superBombSound = unique_ptr<Sound>(soundSystem->CreateSound("Sound/SuperBombSound.wav"));
             _successSound = unique_ptr<Sound>(soundSystem->CreateSound("Sound/SuccessSound.wav"));
+            _shieldSound = unique_ptr<Sound>(soundSystem->CreateSound("Sound/Shield.wav"));
+#endif
             _soundsLoaded = true;
         }
     }
@@ -414,6 +430,17 @@ namespace CoreEngine
                 // TODO: play sound of dodging?
 
             }
+            else if (intersectedObject == SpaceObjectType::Mine && _shield && Config::Instance()->GetSelectedModel() == 4)
+            {
+                if (!_sparks)
+                {
+                    _sector->GetNode()->addChild(_sparksSector->GetNode());
+                    _sparksSector->GetNode()->setVisible(true);
+                    _sparksEffect->clear();
+                    _sparks = true;
+                    _sparksStart = _totalTime;
+                }
+            }
             else
             {
                 _speed = 0.0f;
@@ -430,7 +457,7 @@ namespace CoreEngine
             if (Config::Instance()->IsSoundEnabled())
                 _collectSound->Play();
 
-            _score++;
+            _score += 1 * _multiplier;
         }
 
         if (IsGameFinished())
@@ -499,11 +526,11 @@ namespace CoreEngine
         static auto scoreControl = _document->GetControlByName("score");
         scoreControl->SetText(to_string(_score));
 
-        static auto nameControl = _document->GetControlByName("name");
-        nameControl->SetText(to_string(_speed));
+        //static auto nameControl = _document->GetControlByName("name");
+        //nameControl->SetText(to_string(_speed));
 
-        static auto missingControl = _document->GetControlByName("missing");
-        missingControl->SetText(to_string(_space->GetMissedOrbsCount()));
+        //static auto missingControl = _document->GetControlByName("missing");
+        //missingControl->SetText(to_string(_space->GetMissedOrbsCount()));
 
         static auto bombControl = _document->GetControlByName("bombcount");
         bombControl->SetText(to_string(Config::Instance()->GetBombCount()));
@@ -576,6 +603,12 @@ namespace CoreEngine
 
     void RaceStateProcessor::InitBomb()
     {
+        if (Config::Instance()->IsSoundEnabled())
+        {
+            _bombSound->Play();
+            _superBombSound->Play();
+        }
+
         if (_bigBomb)
         {
             _sector->GetNode()->removeChild(_bombSector->GetNode());
@@ -610,6 +643,8 @@ namespace CoreEngine
 
         if (_bombScale > 5)
         {
+            if (_bombScale < 5.2)
+                _bombSound->Play();
             _space->DestroyEverything();
         }
         if (_bombScale > 10)
@@ -700,6 +735,10 @@ namespace CoreEngine
                 _shieldEffectSector->GetNode()->setVisible(true);
                 _shieldEffect->clear();
 
+                if (Config::Instance()->IsSoundEnabled())
+                {
+                    _shieldSound->Play();
+                }
                 //if (Config::Instance()->IsSoundEnabled())
                 //	_shootSound->Play();
             } else if (!_explosion)
@@ -825,6 +864,22 @@ namespace CoreEngine
             _document->GetControlByName("FPStext")->SetVisible(false);
             _document->GetControlByName("FPS")->SetVisible(false);
         }
+
+        static auto nameControl = _document->GetControlByName("name");
+        switch (LevelManager::Instance()->GetLevelType())
+        {
+            case LevelType::Puzzle:
+                nameControl->SetText("Level " +to_string(LevelManager::Instance()->GetLevelNum()));
+                break;
+            case LevelType::Rush:
+                nameControl->SetText("");
+                break;
+            case LevelType::Challenge:
+                nameControl->SetText("Challenge " +to_string(LevelManager::Instance()->GetLevelNum()));
+                break;
+        }
+
+        _multiplier = Config::Instance()->IsMultiplierBought() ? 2 : 1;
 
         _document->GetControlByName("help")->SetVisible(false);
 

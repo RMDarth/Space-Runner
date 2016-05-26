@@ -76,7 +76,16 @@ namespace CoreEngine
     {
         if (key == OIS::KC_ESCAPE)
         {
-            Game::Instance()->ChangeState(GameState::Level);
+            if (LevelManager::Instance()->GetLevelType() == LevelType::Rush
+                && LevelManager::Instance()->GetScore() >= 100)
+            {
+                if (Config::Instance()->IsSoundEnabled())
+                    _successSound->Play();
+                LevelManager::Instance()->SetVictory(true);
+            }
+
+            _document->Hide();
+            Game::Instance()->ChangeState(GameState::Score);
         }
         if (key == OIS::KC_R)
         {
@@ -133,8 +142,9 @@ namespace CoreEngine
             LevelManager::Instance()->SetStarted(true);
             LevelManager::Instance()->IncreaseLive();
             LevelManager::Instance()->DecreaseMovies();
-            // TODO: Run video ads here //
-            Game::Instance()->ChangeState(GameState::Level);
+            BillingProcessor::Instance()->ShowVideoAds();
+            _document->Hide();
+            Game::Instance()->ChangeState(GameState::Pause);
         }
         if (control->GetName() == "reviveforitem" || control->GetName() == "reviveforitem2")
         {

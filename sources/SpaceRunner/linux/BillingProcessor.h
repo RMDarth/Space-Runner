@@ -1,22 +1,20 @@
 #include <string>
-
-#define LEVELS_ITEM_ID "world4"
-#define MODELS_ITEM_ID "models"
+#include <vector>
 
 class BillingProcessor
 {
 	static BillingProcessor* _instance;
 	bool _logged;
-	bool _buyItem;
+
+	std::vector<int> _boughtItems;
 
 	BillingProcessor();
 public:
 	static BillingProcessor* Instance();
 
-	void BuyItem(std::string id);
-	bool IsItemBought(std::string id);
+	void BuyEnergy(int packId);
+	int GetBoughtItem();
 
-	bool BuyEnergy(int packId);
 	void Init();
 
 	void LogInGoogle();
@@ -25,6 +23,7 @@ public:
 
 	void ShowAchievements();
 	void ShowLeaderboard();
+	void ShowVideoAds();
 	void UpdateScore(int score);
 	void SyncAchievements();
 	void RateApp();

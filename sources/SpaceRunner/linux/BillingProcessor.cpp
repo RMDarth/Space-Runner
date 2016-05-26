@@ -5,7 +5,6 @@ BillingProcessor* BillingProcessor::_instance = nullptr;
 BillingProcessor::BillingProcessor()
 {
 	_logged = false;
-	_buyItem = true;
 }
 
 BillingProcessor* BillingProcessor::Instance()
@@ -20,16 +19,6 @@ BillingProcessor* BillingProcessor::Instance()
 void BillingProcessor::Init()
 {
 
-}
-
-void BillingProcessor::BuyItem(std::string id)
-{
-	_buyItem = !_buyItem;
-}
-
-bool BillingProcessor::IsItemBought(std::string id)
-{
-	return _buyItem;
 }
 
 void BillingProcessor::LogInGoogle()
@@ -82,8 +71,26 @@ void BillingProcessor::RateApp()
 
 }
 
-bool BillingProcessor::BuyEnergy(int packId)
+void BillingProcessor::BuyEnergy(int packId)
 {
-	return true;
+	_boughtItems.push_back(packId);
 }
+
+int BillingProcessor::GetBoughtItem()
+{
+    if (_boughtItems.empty())
+        return -1;
+	auto boughtItem = _boughtItems.back();
+	_boughtItems.pop_back();
+	return boughtItem;
+}
+
+void BillingProcessor::ShowVideoAds()
+{
+
+}
+
+
+
+
 

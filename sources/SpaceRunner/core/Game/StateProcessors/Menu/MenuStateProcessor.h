@@ -17,6 +17,8 @@ namespace CoreEngine
 
 		float _totalTime;
 		bool _logged;
+		bool _updateSlider;
+		bool _firstRunDocument;
 
 	public:
 		MenuStateProcessor();
@@ -41,6 +43,7 @@ namespace CoreEngine
 		void UpdateSoundIcon(Control* control);
 		void UpdateMusicIcon(Control* control);
 		void UpdateGooglePlayIcon(Control* control);
+		void UpdateSlider();
 	};
 }
 
