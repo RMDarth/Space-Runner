@@ -35,6 +35,25 @@ namespace CoreEngine
 
     GameState::State SaveMeStateProcessor::Update(float time)
     {
+        _lastStoreCheckTime += time;
+
+        if (_lastStoreCheckTime > 0.7f)
+        {
+            auto boughtItem = BillingProcessor::Instance()->GetBoughtItem();
+            if (boughtItem == 5)
+            {
+                using namespace std;
+                Config::Instance()->SetResurrectCount(Config::Instance()->GetResurrectCount() + 1);
+
+                if (LevelManager::Instance()->IsMoviesLeft())
+                    _document->GetControlByName("resurrectcount")->SetText(to_string(Config::Instance()->GetResurrectCount()));
+                else
+                    _document->GetControlByName("resurrectcount2")->SetText(to_string(Config::Instance()->GetResurrectCount()));
+            } else if (boughtItem != -1)
+            {
+                // TODO: Handle other purchases, or restore
+            }
+        }
         return GameState::SaveMe;
     }
 
@@ -178,6 +197,8 @@ namespace CoreEngine
             _query->Hide();
             _queryVisible = false;
 
+            _document->GetControlByName("back")->SetVisible(true);
+
             if (Scores::Instance()->GetTotalEnergy() + LevelManager::Instance()->GetScore() >= 5000)
             {
                 int totalEnergy = Scores::Instance()->GetTotalEnergy();
@@ -191,11 +212,6 @@ namespace CoreEngine
                 Config::Instance()->SetResurrectCount(1);
             } else {
                 BillingProcessor::Instance()->BuyEnergy(5);
-                // TODO: Fix purchase
-                if (BillingProcessor::Instance()->GetBoughtItem() == 5)
-                {
-                    Config::Instance()->SetResurrectCount(1);
-                }
             }
 
             using namespace std;

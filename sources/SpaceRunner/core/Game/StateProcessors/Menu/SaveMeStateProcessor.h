@@ -18,6 +18,8 @@ namespace CoreEngine
 		Ptr<Sound> _successSound;
 		bool _soundsLoaded;
 
+		float _lastStoreCheckTime;
+
 	public:
 		SaveMeStateProcessor();
 		~SaveMeStateProcessor();

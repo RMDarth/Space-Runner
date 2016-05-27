@@ -306,12 +306,6 @@ namespace CoreEngine
             if (control->GetName() == "score")
             {
                 Game::Instance()->ChangeState(GameState::Highscores);
-#ifdef __ANDROID_API__
-                if (!BillingProcessor::Instance()->IsLoggedGoogle())
-                    BillingProcessor::Instance()->LogInGoogle();
-                else
-                    BillingProcessor::Instance()->ShowLeaderboard();
-#endif
             }
 
             if (control->GetName() == "facebook")

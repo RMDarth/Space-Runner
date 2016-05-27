@@ -129,6 +129,10 @@ namespace CoreEngine
                 nameControl->SetText(to_string(scores[i].place) + ". " + scores[i].name);
 
                 scoreControl->SetVisible(true);
+                if (scores[i].score == -1)
+                {
+                    scores[i].score = Scores::Instance()->GetBestArcadeScore();
+                }
                 scoreControl->SetText(to_string(scores[i].score));
             }
             _document->GetControlByName("dots")->SetVisible(i > 5);

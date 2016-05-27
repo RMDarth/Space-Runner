@@ -230,9 +230,15 @@ namespace CoreEngine
             //_document->GetControlByName("result")->SetText("成功");
 
             // reset position of restart button
-            auto restartBtn = _document->GetControlByName("restart");
-            restartBtn->SetPos(_restartX, _restartY);
-            restartBtn->SetVisible(true);
+            if (levelManager->GetLevelType() == LevelType::Rush)
+            {
+                HideContinue();
+            } else
+            {
+                auto restartBtn = _document->GetControlByName("restart");
+                restartBtn->SetPos(_restartX, _restartY);
+                restartBtn->SetVisible(true);
+            }
 
             Scores::Instance()->UpdateTotalEnergy(levelManager->GetScore());
 

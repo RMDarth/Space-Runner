@@ -123,8 +123,8 @@ public class SpaceRunnerActivity extends NativeActivity implements GameHelper.Ga
     private int _weeklyScoresSize = 0;
     private ScoreItem[] _allTimeScores = new ScoreItem[5];
     private int _allTimeScoresSize = 0;
-    private ScoreItem _myScoreWeekly;
-    private ScoreItem _myScoreAlltime;
+    private ScoreItem _myScoreWeekly = null;
+    private ScoreItem _myScoreAlltime = null;
     private boolean _scoresUpdated = false;
 
     private SoundPool mSoundPool;
@@ -887,6 +887,7 @@ public class SpaceRunnerActivity extends NativeActivity implements GameHelper.Ga
                     _weeklyScoresSize = result.getScores().getCount();
                     for(int i = 0; i < result.getScores().getCount(); i++)
                     {
+                        _weeklyScores[i] = new ScoreItem();
                         _weeklyScores[i].name = result.getScores().get(i).getScoreHolderDisplayName();
                         _weeklyScores[i].score = (int)result.getScores().get(i).getRawScore();
                         _weeklyScores[i].place = (int)result.getScores().get(i).getRank();
@@ -908,6 +909,7 @@ public class SpaceRunnerActivity extends NativeActivity implements GameHelper.Ga
                     _allTimeScoresSize = result.getScores().getCount();
                     for(int i = 0; i < result.getScores().getCount(); i++)
                     {
+                        _allTimeScores[i] = new ScoreItem();
                         _allTimeScores[i].name = result.getScores().get(i).getScoreHolderDisplayName();
                         _allTimeScores[i].score = (int)result.getScores().get(i).getRawScore();
                         _allTimeScores[i].place = (int)result.getScores().get(i).getRank();
@@ -926,6 +928,7 @@ public class SpaceRunnerActivity extends NativeActivity implements GameHelper.Ga
                 if (result != null
                         && GamesStatusCodes.STATUS_OK == result.getStatus().getStatusCode()) {
 
+                    _myScoreWeekly = new ScoreItem();
                     _myScoreWeekly.name = result.getScore().getScoreHolderDisplayName();
                     _myScoreWeekly.score = (int)result.getScore().getRank();
                     _myScoreWeekly.place = (int)result.getScore().getRawScore();
@@ -943,6 +946,7 @@ public class SpaceRunnerActivity extends NativeActivity implements GameHelper.Ga
                 if (result != null
                         && GamesStatusCodes.STATUS_OK == result.getStatus().getStatusCode()) {
 
+                    _myScoreAlltime = new ScoreItem();
                     _myScoreAlltime.name = result.getScore().getScoreHolderDisplayName();
                     _myScoreAlltime.score = (int)result.getScore().getRank();
                     _myScoreAlltime.place = (int)result.getScore().getRawScore();
@@ -972,6 +976,11 @@ public class SpaceRunnerActivity extends NativeActivity implements GameHelper.Ga
     {
         if (place == 5)
         {
+            if (weekly && _myScoreWeekly == null)
+                return "Player";
+            if (!weekly && _myScoreAlltime == null)
+                return "Player";
+
             return weekly ? _myScoreWeekly.name : _myScoreAlltime.name;
         }
         return weekly ? _weeklyScores[place].name : _allTimeScores[place].name;
@@ -981,6 +990,11 @@ public class SpaceRunnerActivity extends NativeActivity implements GameHelper.Ga
     {
         if (place == 5)
         {
+            if (weekly && _myScoreWeekly == null)
+                return -1;
+            if (!weekly && _myScoreAlltime == null)
+                return -1;
+
             return weekly ? _myScoreWeekly.score : _myScoreAlltime.score;
         }
         return weekly ? _weeklyScores[place].score : _allTimeScores[place].score;
@@ -990,6 +1004,11 @@ public class SpaceRunnerActivity extends NativeActivity implements GameHelper.Ga
     {
         if (place == 5)
         {
+            if (weekly && _myScoreWeekly == null)
+                return 999;
+            if (!weekly && _myScoreAlltime == null)
+                return 999;
+
             return weekly ? _myScoreWeekly.place : _myScoreAlltime.place;
         }
         return weekly ? _weeklyScores[place].place : _allTimeScores[place].place;

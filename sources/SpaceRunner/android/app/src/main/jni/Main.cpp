@@ -330,7 +330,7 @@ void SetAds(GameState::State state, GameState::State stateNew)
 			hideAds();
 		else if (stateNew == GameState::Pause || stateNew == GameState::SaveMe)
 			showAds(GRAVITY_BOTTOM);
-		else if (stateNew == GameState::ShipSelect)
+		else if (stateNew == GameState::ShipSelect || stateNew == GameState::Highscores)
 		{
 			hideAds();
 			showAds(GRAVITY_BOTTOMRIGHT);
