@@ -14,6 +14,7 @@
 #include "Game/StateProcessors/Menu/SelectShipStateProcessor.h"
 #include "Game/StateProcessors/Menu/CreditsStateProcessor.h"
 #include "Game/StateProcessors/Menu/AchievementsStateProcessor.h"
+#include "Game/StateProcessors/Menu/HighscoresStateProcessor.h"
 #include "Game/StateProcessors/Menu/SaveMeStateProcessor.h"
 #include "Game/StateProcessors/Race/RaceStateProcessor.h"
 using namespace CoreEngine;
@@ -49,6 +50,7 @@ Game::Game()
     StoreStateProcessor* store = new StoreStateProcessor();
 #endif
     CreditsStateProcessor *credits = new CreditsStateProcessor();
+    HighscoresStateProcessor *highscores = new HighscoresStateProcessor();
 
     race->Hide();
     storyboard->Hide();
@@ -70,6 +72,7 @@ Game::Game()
     StateProcessorFactory::Instance()->RegisterProcessor(store, GameState::Store);
 #endif
     StateProcessorFactory::Instance()->RegisterProcessor(credits, GameState::Credits);
+    StateProcessorFactory::Instance()->RegisterProcessor(highscores, GameState::Highscores);
 
     _state = GameState::MainMenu;
 

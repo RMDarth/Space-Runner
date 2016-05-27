@@ -18,7 +18,8 @@ namespace CoreEngine
             ShipSelect,
             Store,
             Credits,
-            Achievements
+            Achievements,
+            Highscores
         };
     }
 }

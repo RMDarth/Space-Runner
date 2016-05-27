@@ -14,6 +14,8 @@ import java.util.Set;
 import android.app.ActivityManager;
 import android.app.ActivityManager.MemoryInfo;
 import android.app.NativeActivity;
+import android.app.backup.BackupManager;
+import android.app.backup.RestoreObserver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -47,9 +49,15 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.games.Games;
+import com.google.android.gms.games.GamesStatusCodes;
 import com.google.android.gms.games.achievement.Achievement;
 import com.google.android.gms.games.achievement.AchievementBuffer;
 import com.google.android.gms.games.achievement.Achievements.LoadAchievementsResult;
+import com.google.android.gms.games.leaderboard.LeaderboardBuffer;
+import com.google.android.gms.games.leaderboard.LeaderboardScore;
+import com.google.android.gms.games.leaderboard.LeaderboardScoreBuffer;
+import com.google.android.gms.games.leaderboard.LeaderboardVariant;
+import com.google.android.gms.games.leaderboard.Leaderboards;
 import com.turbulent.spacerush.Consts;
 import com.turbulent.spacerush.Consts.PurchaseState;
 import com.turbulent.spacerush.Consts.ResponseCode;
@@ -104,7 +112,24 @@ public class SpaceRunnerActivity extends NativeActivity implements GameHelper.Ga
 
     private boolean[] _achievementUnlockedStatus = new boolean[20];
 
+    class ScoreItem
+    {
+        public String name;
+        public int score;
+        public int place;
+    }
+
+    private ScoreItem[] _weeklyScores = new ScoreItem[5];
+    private int _weeklyScoresSize = 0;
+    private ScoreItem[] _allTimeScores = new ScoreItem[5];
+    private int _allTimeScoresSize = 0;
+    private ScoreItem _myScoreWeekly;
+    private ScoreItem _myScoreAlltime;
+    private boolean _scoresUpdated = false;
+
     private SoundPool mSoundPool;
+
+    BackupManager backupManager;
 
     //facebook
     //private UiLifecycleHelper uiHelper;
@@ -221,6 +246,8 @@ public class SpaceRunnerActivity extends NativeActivity implements GameHelper.Ga
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
+        backupManager = new BackupManager(this);
         //facebook
         //uiHelper = new UiLifecycleHelper(this, null);
        // uiHelper.onCreate(savedInstanceState);
@@ -427,6 +454,22 @@ public class SpaceRunnerActivity extends NativeActivity implements GameHelper.Ga
         });
     }
 
+    public void RequestBackup() {
+        backupManager.dataChanged();
+    }
+
+    public void RequestRestore()
+    {
+        BackupManager bm = new BackupManager(this);
+        backupManager.requestRestore(
+                new RestoreObserver() {
+                    public void restoreFinished(int error) {
+                        /** Done with the restore!  Now draw the new state of our data */
+                        Log.v(TAG, "Restore finished, error = " + error);
+                    }
+                }
+        );
+    }
 
     public void BuyEnergy(int id)
     {
@@ -789,6 +832,7 @@ public class SpaceRunnerActivity extends NativeActivity implements GameHelper.Ga
         googleSignedFinished = true;
         //Toast.makeText(this, "Signed in to Google Services!", Toast.LENGTH_LONG).show();
         SyncAchievements();
+        GetTopScores();
     }
     @Override
     public void onSignInFailed() {
@@ -829,6 +873,127 @@ public class SpaceRunnerActivity extends NativeActivity implements GameHelper.Ga
             Games.Achievements.setSteps(getApiClient(), achievementList[id], score);
     }
 
+
+    void GetTopScores()
+    {
+        PendingResult<Leaderboards.LoadScoresResult> result = Games.Leaderboards.loadTopScores(getApiClient(), LEADERBOARD_ID, LeaderboardVariant.TIME_SPAN_WEEKLY,  LeaderboardVariant.COLLECTION_PUBLIC, 5);
+        result.setResultCallback(new ResultCallback<Leaderboards.LoadScoresResult>() {
+            @Override
+            public void onResult(Leaderboards.LoadScoresResult result) {
+                // check if valid score
+                if (result != null
+                        && GamesStatusCodes.STATUS_OK == result.getStatus().getStatusCode()) {
+
+                    _weeklyScoresSize = result.getScores().getCount();
+                    for(int i = 0; i < result.getScores().getCount(); i++)
+                    {
+                        _weeklyScores[i].name = result.getScores().get(i).getScoreHolderDisplayName();
+                        _weeklyScores[i].score = (int)result.getScores().get(i).getRawScore();
+                        _weeklyScores[i].place = (int)result.getScores().get(i).getRank();
+                    }
+                    result.getScores().close();
+                    _scoresUpdated = true;
+                }
+            }
+        });
+
+        PendingResult<Leaderboards.LoadScoresResult> result2 = Games.Leaderboards.loadTopScores(getApiClient(), LEADERBOARD_ID, LeaderboardVariant.TIME_SPAN_ALL_TIME,  LeaderboardVariant.COLLECTION_PUBLIC, 5);
+        result2.setResultCallback(new ResultCallback<Leaderboards.LoadScoresResult>() {
+            @Override
+            public void onResult(Leaderboards.LoadScoresResult result) {
+                // check if valid score
+                if (result != null
+                        && GamesStatusCodes.STATUS_OK == result.getStatus().getStatusCode()) {
+
+                    _allTimeScoresSize = result.getScores().getCount();
+                    for(int i = 0; i < result.getScores().getCount(); i++)
+                    {
+                        _allTimeScores[i].name = result.getScores().get(i).getScoreHolderDisplayName();
+                        _allTimeScores[i].score = (int)result.getScores().get(i).getRawScore();
+                        _allTimeScores[i].place = (int)result.getScores().get(i).getRank();
+                    }
+                    result.getScores().close();
+                    _scoresUpdated = true;
+                }
+            }
+        });
+
+        PendingResult<Leaderboards.LoadPlayerScoreResult> results3 = Games.Leaderboards.loadCurrentPlayerLeaderboardScore(getApiClient(), LEADERBOARD_ID, LeaderboardVariant.TIME_SPAN_WEEKLY,  LeaderboardVariant.COLLECTION_PUBLIC);
+        results3.setResultCallback(new ResultCallback<Leaderboards.LoadPlayerScoreResult>() {
+            @Override
+            public void onResult(Leaderboards.LoadPlayerScoreResult result) {
+                // check if valid score
+                if (result != null
+                        && GamesStatusCodes.STATUS_OK == result.getStatus().getStatusCode()) {
+
+                    _myScoreWeekly.name = result.getScore().getScoreHolderDisplayName();
+                    _myScoreWeekly.score = (int)result.getScore().getRank();
+                    _myScoreWeekly.place = (int)result.getScore().getRawScore();
+
+                    _scoresUpdated = true;
+                }
+            }
+        });
+
+        PendingResult<Leaderboards.LoadPlayerScoreResult> results4 = Games.Leaderboards.loadCurrentPlayerLeaderboardScore(getApiClient(), LEADERBOARD_ID, LeaderboardVariant.TIME_SPAN_ALL_TIME,  LeaderboardVariant.COLLECTION_PUBLIC);
+        results4.setResultCallback(new ResultCallback<Leaderboards.LoadPlayerScoreResult>() {
+            @Override
+            public void onResult(Leaderboards.LoadPlayerScoreResult result) {
+                // check if valid score
+                if (result != null
+                        && GamesStatusCodes.STATUS_OK == result.getStatus().getStatusCode()) {
+
+                    _myScoreAlltime.name = result.getScore().getScoreHolderDisplayName();
+                    _myScoreAlltime.score = (int)result.getScore().getRank();
+                    _myScoreAlltime.place = (int)result.getScore().getRawScore();
+
+                    _scoresUpdated = true;
+                }
+            }
+        });
+    }
+
+    boolean IsLeaderboardsUpdated()
+    {
+        if (_scoresUpdated)
+        {
+            _scoresUpdated = false;
+            return true;
+        }
+        return false;
+    }
+
+    int GetLeaderboardSize(boolean weekly)
+    {
+        return weekly ? _weeklyScoresSize : _allTimeScoresSize;
+    }
+
+    String GetLeaderboardName(int place, boolean weekly)
+    {
+        if (place == 5)
+        {
+            return weekly ? _myScoreWeekly.name : _myScoreAlltime.name;
+        }
+        return weekly ? _weeklyScores[place].name : _allTimeScores[place].name;
+    }
+
+    int GetLeaderboardScore(int place, boolean weekly)
+    {
+        if (place == 5)
+        {
+            return weekly ? _myScoreWeekly.score : _myScoreAlltime.score;
+        }
+        return weekly ? _weeklyScores[place].score : _allTimeScores[place].score;
+    }
+
+    int GetLeaderboardRank(int place, boolean weekly)
+    {
+        if (place == 5)
+        {
+            return weekly ? _myScoreWeekly.place : _myScoreAlltime.place;
+        }
+        return weekly ? _weeklyScores[place].place : _allTimeScores[place].place;
+    }
 
     void ShareOnFacebook()
     {

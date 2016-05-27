@@ -1,7 +1,12 @@
 #include <string>
+#include <vector>
 
-#define LEVELS_ITEM_ID "world4"
-#define MODELS_ITEM_ID "models"
+struct ScoreItem
+{
+	std::string name;
+	int score;
+	int place;
+};
 
 class BillingProcessor
 {
@@ -13,11 +18,7 @@ class BillingProcessor
 public:
 	static BillingProcessor* Instance();
 
-	//void BuyItem(std::string id);
-	//bool IsItemBought(std::string id);
-
 	void BuyEnergy(int packId);
-	//bool IsItemBought(int packId);
 	int GetBoughtItem();
 
 	void Init(struct android_app* state);
@@ -29,10 +30,22 @@ public:
 	void UpdateScore(int score);
 	void SyncAchievements();
 
+	void SyncScores();
+	bool IsScoresUpdated();
+	std::vector<ScoreItem> GetScores(bool weekly);
+
 	void ShowAchievements();
 	void ShowLeaderboard();
 	void ShowVideoAds();
+	void RequestBackup();
+	void RequestRestore();
 	void ShareOnFacebook();
 	void RateApp();
 	void OpenLink(std::string link);
+
+private:
+	int GetLeaderboardSize(bool weekly);
+	std::string GetLeaderboardName(int place, bool weekly);
+	int GetLeaderboardScore(int place, bool weekly);
+	int GetLeaderboardRank(int place, bool weekly);
 };

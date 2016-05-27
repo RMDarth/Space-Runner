@@ -197,6 +197,47 @@ void BillingProcessor::UpdateScore(int score)
 	jvm->DetachCurrentThread();
 }
 
+void BillingProcessor::RequestBackup()
+{
+	ANativeActivity* activity = _state->activity;
+	JavaVM* jvm = _state->activity->vm;
+	JNIEnv* env = NULL;
+	jvm->GetEnv((void **)&env, JNI_VERSION_1_6);
+	jint res = jvm->AttachCurrentThread(&env, NULL);
+
+	if (res == JNI_ERR)
+	{
+		// Failed to retrieve JVM environment
+		return;
+	}
+
+	jclass clazz = env->GetObjectClass(activity->clazz);
+	jmethodID methodID = env->GetMethodID(clazz, "RequestBackup", "()V");
+	env->CallVoidMethod(activity->clazz, methodID);
+	jvm->DetachCurrentThread();
+}
+
+void BillingProcessor::RequestRestore()
+{
+    ANativeActivity* activity = _state->activity;
+    JavaVM* jvm = _state->activity->vm;
+    JNIEnv* env = NULL;
+    jvm->GetEnv((void **)&env, JNI_VERSION_1_6);
+    jint res = jvm->AttachCurrentThread(&env, NULL);
+
+    if (res == JNI_ERR)
+    {
+        // Failed to retrieve JVM environment
+        return;
+    }
+
+    jclass clazz = env->GetObjectClass(activity->clazz);
+    jmethodID methodID = env->GetMethodID(clazz, "RequestRestore", "()V");
+    env->CallVoidMethod(activity->clazz, methodID);
+    jvm->DetachCurrentThread();
+}
+
+
 void BillingProcessor::SyncAchievements()
 {
 #ifdef CHINA_SHOP
@@ -355,3 +396,148 @@ int BillingProcessor::GetBoughtItem()
 }
 
 
+std::vector<ScoreItem> BillingProcessor::GetScores(bool weekly)
+{
+	std::vector<ScoreItem> scoreItems;
+
+    int size = GetLeaderboardSize(weekly);
+    if (size == 5)
+        size++;
+
+    for (auto i = 0; i < size; i++)
+    {
+        ScoreItem item;
+        item.name = GetLeaderboardName(i, weekly);
+        item.score = GetLeaderboardScore(i, weekly);
+        item.place = GetLeaderboardRank(i, weekly);
+        scoreItems.push_back(item);
+    }
+
+    return scoreItems;
+}
+
+void BillingProcessor::SyncScores()
+{
+    ANativeActivity* activity = _state->activity;
+    JavaVM* jvm = _state->activity->vm;
+    JNIEnv* env = NULL;
+    jvm->GetEnv((void **)&env, JNI_VERSION_1_6);
+    jint res = jvm->AttachCurrentThread(&env, NULL);
+
+    if (res == JNI_ERR)
+    {
+        // Failed to retrieve JVM environment
+        return;
+    }
+
+    jclass clazz = env->GetObjectClass(activity->clazz);
+    jmethodID methodID = env->GetMethodID(clazz, "GetTopScores", "()V");
+    env->CallVoidMethod(activity->clazz, methodID);
+    jvm->DetachCurrentThread();
+}
+
+bool BillingProcessor::IsScoresUpdated()
+{
+    ANativeActivity* activity = _state->activity;
+    JavaVM* jvm = _state->activity->vm;
+    JNIEnv* env = NULL;
+    jvm->GetEnv((void **)&env, JNI_VERSION_1_6);
+    jint res = jvm->AttachCurrentThread(&env, NULL);
+
+    if (res == JNI_ERR)
+    {
+        // Failed to retrieve JVM environment
+        return false;
+    }
+
+    jclass clazz = env->GetObjectClass(activity->clazz);
+    jmethodID methodID = env->GetMethodID(clazz, "IsLeaderboardsUpdated", "()Z");
+    bool result = env->CallBooleanMethod(activity->clazz, methodID);
+    jvm->DetachCurrentThread();
+
+    return result;
+}
+
+int BillingProcessor::GetLeaderboardSize(bool weekly)
+{
+    ANativeActivity* activity = _state->activity;
+    JavaVM* jvm = _state->activity->vm;
+    JNIEnv* env = NULL;
+    jvm->GetEnv((void **)&env, JNI_VERSION_1_6);
+    jint res = jvm->AttachCurrentThread(&env, NULL);
+
+    if (res == JNI_ERR)
+        return false;
+
+    /// Updating offline cache
+    jclass clazz = env->GetObjectClass(activity->clazz);
+    jmethodID methodID = env->GetMethodID(clazz, "GetLeaderboardSize", "(Z)I");
+    int size = env->CallIntMethod(activity->clazz, methodID, weekly);
+    jvm->DetachCurrentThread();
+
+    return size;
+}
+
+std::string BillingProcessor::GetLeaderboardName(int place, bool weekly)
+{
+    ANativeActivity* activity = _state->activity;
+    JavaVM* jvm = _state->activity->vm;
+    JNIEnv* env = NULL;
+    jvm->GetEnv((void **)&env, JNI_VERSION_1_6);
+    jint res = jvm->AttachCurrentThread(&env, NULL);
+
+    if (res == JNI_ERR)
+        return false;
+
+    /// Updating offline cache
+    jclass clazz = env->GetObjectClass(activity->clazz);
+    jmethodID methodID = env->GetMethodID(clazz, "GetLeaderboardName", "(IZ)Ljava/lang/String;");
+    jstring text = (jstring)env->CallObjectMethod(activity->clazz, methodID, place, weekly);
+
+    // convert the Java String to use it in C
+    const char * str = env->GetStringUTFChars(text, 0);
+    std::string result(str);
+    env->ReleaseStringUTFChars(text, str);
+    jvm->DetachCurrentThread();
+    return result;
+}
+
+int BillingProcessor::GetLeaderboardScore(int place, bool weekly)
+{
+    ANativeActivity* activity = _state->activity;
+    JavaVM* jvm = _state->activity->vm;
+    JNIEnv* env = NULL;
+    jvm->GetEnv((void **)&env, JNI_VERSION_1_6);
+    jint res = jvm->AttachCurrentThread(&env, NULL);
+
+    if (res == JNI_ERR)
+        return false;
+
+    /// Updating offline cache
+    jclass clazz = env->GetObjectClass(activity->clazz);
+    jmethodID methodID = env->GetMethodID(clazz, "GetLeaderboardScore", "(IZ)I");
+    int score = env->CallIntMethod(activity->clazz, methodID, place, weekly);
+    jvm->DetachCurrentThread();
+
+    return score;
+}
+
+int BillingProcessor::GetLeaderboardRank(int place, bool weekly)
+{
+    ANativeActivity* activity = _state->activity;
+    JavaVM* jvm = _state->activity->vm;
+    JNIEnv* env = NULL;
+    jvm->GetEnv((void **)&env, JNI_VERSION_1_6);
+    jint res = jvm->AttachCurrentThread(&env, NULL);
+
+    if (res == JNI_ERR)
+        return false;
+
+    /// Updating offline cache
+    jclass clazz = env->GetObjectClass(activity->clazz);
+    jmethodID methodID = env->GetMethodID(clazz, "GetLeaderboardRank", "(IZ)I");
+    int rank = env->CallIntMethod(activity->clazz, methodID, place, weekly);
+    jvm->DetachCurrentThread();
+
+    return rank;
+}

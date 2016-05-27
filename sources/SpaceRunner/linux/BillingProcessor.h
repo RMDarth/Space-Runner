@@ -1,6 +1,13 @@
 #include <string>
 #include <vector>
 
+struct ScoreItem
+{
+    std::string name;
+    int score;
+    int place;
+};
+
 class BillingProcessor
 {
 	static BillingProcessor* _instance;
@@ -20,6 +27,13 @@ public:
 	void LogInGoogle();
 	void LogOutGoogle();
 	bool IsLoggedGoogle();
+
+	void RequestBackup();
+	void RequestRestore();
+
+    void SyncScores();
+    bool IsScoresUpdated();
+    std::vector<ScoreItem> GetScores(bool weekly);
 
 	void ShowAchievements();
 	void ShowLeaderboard();

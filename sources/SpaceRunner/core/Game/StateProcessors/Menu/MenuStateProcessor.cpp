@@ -170,6 +170,7 @@ namespace CoreEngine
 
     void MenuStateProcessor::Show()
     {
+        using namespace std;
         if (Scores::Instance()->GetBestStars(1) > 0 && _firstRunDocument)
         {
             _document->Hide();
@@ -187,6 +188,9 @@ namespace CoreEngine
             UpdateSlider();
         ChangeSettingsPanelVisibility();
         //UpdateGooglePlayIcon(_document->GetControlByName("googleplay").get());
+
+        _document->GetControlByName("energybank")->SetText("Bank: §" + to_string(Scores::Instance()->GetTotalEnergy()));
+        _document->GetControlByName("bestscore")->SetText("Best score: " + to_string(Scores::Instance()->GetBestArcadeScore()));
     }
 
     void MenuStateProcessor::UpdateSlider()
@@ -301,6 +305,7 @@ namespace CoreEngine
 
             if (control->GetName() == "score")
             {
+                Game::Instance()->ChangeState(GameState::Highscores);
 #ifdef __ANDROID_API__
                 if (!BillingProcessor::Instance()->IsLoggedGoogle())
                     BillingProcessor::Instance()->LogInGoogle();

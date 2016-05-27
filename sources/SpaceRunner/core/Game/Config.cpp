@@ -1,3 +1,4 @@
+#include <BillingProcessor.h>
 #include "Config.h"
 #include "FileSystem.h"
 
@@ -20,8 +21,9 @@ namespace CoreEngine
         if (!configFile->IsOpened())
         {
             delete configFile;
-            CreateDefault();
+            //CreateDefault();
             _firstRun = true;
+            return;
 
             configFile = new SecureFileInputRef("config.dat");
         }
@@ -78,6 +80,8 @@ namespace CoreEngine
         }
 
         arcadeFile.Close();
+
+        BillingProcessor::Instance()->RequestBackup();
     }
 
     Config::Config()

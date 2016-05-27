@@ -2,6 +2,7 @@
 #include "FileSystem.h"
 #include "Game/StateProcessors/Race/LevelFileManager.h"
 #include <climits>
+#include <BillingProcessor.h>
 
 Scores* Scores::_instance = nullptr;
 
@@ -156,9 +157,11 @@ void Scores::Load()
     if (!scoresFile->IsOpened())
     {
         delete scoresFile;
+        BillingProcessor::Instance()->RequestRestore();
         CreateDefault();
+        return;
 
-        scoresFile = new SecureFileInputRef("scores.dat");
+        //scoresFile = new SecureFileInputRef("scores.dat");
     }
     totalEnergy = scoresFile->ReadInt();
     bestArcadeTime = scoresFile->ReadInt();
@@ -215,6 +218,8 @@ void Scores::Save()
     scoresFile.WriteInt(dailyChallengeLastCompleted[1]);
 
     scoresFile.Close();
+
+    BillingProcessor::Instance()->RequestBackup();
 }
 
 void Scores::CreateDefault()
@@ -234,7 +239,7 @@ void Scores::CreateDefault()
     bestArcadeScore = 0;
     bestArcadeTime = 0;
     totalEnergy = 0;
-    Save();
+    //Save();
 }
 
 

@@ -95,6 +95,7 @@
       <sourceFolder url="file://$MODULE_DIR$/core/Game/StateProcessors/Menu/CreditsStateProcessor.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/core/Game/StateProcessors/Menu/MessageStateProcessor.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/core/Game/StateProcessors/Menu/StoreStateProcessor.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/Game/StateProcessors/Menu/ChallengesStateProcessor.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/core/Game/StateProcessors/Menu/MenuStateProcessor.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/core/Game/StateProcessors/Menu/ChallengesStateProcessor.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/core/Game/StateProcessors/Menu/ScoreStateProcessor.cpp" isTestSource="false" />
@@ -102,6 +103,7 @@
       <sourceFolder url="file://$MODULE_DIR$/core/Game/StateProcessors/Menu/SaveMeStateProcessor.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/core/Game/StateProcessors/Menu/StoryboardStateProcessor.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/core/Game/StateProcessors/Menu/AchievementsStateProcessor.h" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/Game/StateProcessors/Menu/HighscoresStateProcessor.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/core/Game/StateProcessors/Menu/PauseStateProcessor.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/core/Game/StateProcessors/Menu/MenuStateProcessor.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/core/Game/StateProcessors/Menu/MessageStateProcessor.cpp" isTestSource="false" />
@@ -111,7 +113,7 @@
       <sourceFolder url="file://$MODULE_DIR$/core/Game/StateProcessors/Menu/StoryboardStateProcessor.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/core/Game/StateProcessors/Menu/SelectShipStateProcessor.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/core/Game/StateProcessors/Menu/CreditsStateProcessor.h" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/core/Game/StateProcessors/Menu/ChallengesStateProcessor.cpp" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/core/Game/StateProcessors/Menu/HighscoresStateProcessor.cpp" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/core/Game/StateProcessors/Menu/ScoreStateProcessor.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/core/Game/StateProcessors/Menu/SaveMeStateProcessor.h" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/core/Game/StateProcessors/Level/LevelManager.h" isTestSource="false" />
