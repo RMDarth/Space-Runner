@@ -594,10 +594,16 @@ namespace CoreEngine
             helpControl->SetDefaultMaterial("arrowright.png", true);
         }
 
-        if (_totalTime > 18.5 * 1.375 && _totalTime < 21.5 * 1.375)
+        if (_totalTime > 18.5 * 1.375 && _totalTime < 21 * 1.375)
         {
             helpControl->SetVisible(true);
             helpControl->SetDefaultMaterial("energyhelp.png", true);
+        }
+
+        if (_totalTime > 22.5 * 1.375 && _totalTime < 24 * 1.375)
+        {
+            helpControl->SetVisible(true);
+            helpControl->SetDefaultMaterial("bombhelp.png", true);
         }
     }
 
@@ -643,7 +649,7 @@ namespace CoreEngine
 
         if (_bombScale > 5)
         {
-            if (_bombScale < 5.2)
+            if (_bombScale < 5.2 && Config::Instance()->IsSoundEnabled())
                 _bombSound->Play();
             _space->DestroyEverything();
         }
@@ -694,7 +700,10 @@ namespace CoreEngine
 
     void RaceStateProcessor::OnMouseDoubleClick(int /*x*/, int /*y*/)
     {
-        if (Config::Instance()->GetBombCount() > 0 && LevelManager::Instance()->GetLevelType() != LevelType::Challenge)
+        if (LevelManager::Instance()->GetLevelType() == LevelType::Puzzle && LevelManager::Instance()->GetLevelNum() == 1)
+        {
+            InitBomb();
+        } else if (Config::Instance()->GetBombCount() > 0 && LevelManager::Instance()->GetLevelType() != LevelType::Challenge)
         {
             InitBomb();
             Config::Instance()->SetBombCount(Config::Instance()->GetBombCount() - 1);

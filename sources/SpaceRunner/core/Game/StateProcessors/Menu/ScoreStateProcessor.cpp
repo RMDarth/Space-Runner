@@ -249,13 +249,6 @@ namespace CoreEngine
                 stars = scores->GetStars(levelManager->GetLevelNum(), levelManager->GetMissed());
             } else if (levelManager->GetLevelType() == LevelType::Rush)
             {
-                highscore = scores->UpdateArcadeScore(levelManager->GetTime(), levelManager->GetScore());
-
-                if (highscore)
-                    stars = 3;
-                else
-                    stars = 2;
-
                 if (levelManager->GetScore() >= 150)
                 {
                     if (!Scores::Instance()->IsDailyChallengeCompleted(0))
@@ -276,6 +269,13 @@ namespace CoreEngine
                     }
                     Scores::Instance()->SetDailyChallengeCompleted(1);
                 }
+
+                highscore = scores->UpdateArcadeScore(levelManager->GetTime(), levelManager->GetScore());
+
+                if (highscore)
+                    stars = 3;
+                else
+                    stars = 2;
             } else {
                 stars = 3;
                 scores->SetChallengeCompleted(levelManager->GetLevelNum());
