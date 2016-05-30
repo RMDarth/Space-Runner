@@ -158,12 +158,17 @@ namespace CoreEngine
         }
         if (control->GetName() == "reviveforads")
         {
-            LevelManager::Instance()->SetStarted(true);
-            LevelManager::Instance()->IncreaseLive();
-            LevelManager::Instance()->DecreaseMovies();
-            BillingProcessor::Instance()->ShowVideoAds();
-            _document->Hide();
-            Game::Instance()->ChangeState(GameState::Pause);
+            if (BillingProcessor::Instance()->ShowVideoAds())
+            {
+                LevelManager::Instance()->SetStarted(true);
+                LevelManager::Instance()->IncreaseLive();
+                LevelManager::Instance()->DecreaseMovies();
+
+                _document->Hide();
+                Game::Instance()->ChangeState(GameState::Pause);
+            } else {
+                // TODO: Show message that video ad not available
+            }
         }
         if (control->GetName() == "reviveforitem" || control->GetName() == "reviveforitem2")
         {

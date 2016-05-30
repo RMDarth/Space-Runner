@@ -1,4 +1,5 @@
 /build
 /deps
+/libs
 build.gradle.release
 app-arm-release.apk

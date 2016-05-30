@@ -36,12 +36,13 @@ import android.widget.LinearLayout;
 import android.view.ViewGroup.LayoutParams;
 import android.view.ViewGroup.MarginLayoutParams;
 
-
-
+import com.vungle.publisher.AdConfig;
+import com.vungle.publisher.VunglePub;
 
 /*import com.facebook.*;
 import com.facebook.model.*;
 import com.facebook.widget.FacebookDialog;*/
+
 import com.google.android.gms.ads.*;
 import com.google.android.gms.ads.doubleclick.PublisherAdRequest;
 import com.google.android.gms.ads.doubleclick.PublisherInterstitialAd;
@@ -145,6 +146,9 @@ public class SpaceRunnerActivity extends NativeActivity implements GameHelper.Ga
 
     // Interstitial
     PublisherInterstitialAd interstitialAd;
+
+    // VideoAd
+    final VunglePub vunglePub = VunglePub.getInstance();
 
     boolean googleSignedFinished = false;
     boolean achievementsSynced = false;
@@ -281,7 +285,7 @@ public class SpaceRunnerActivity extends NativeActivity implements GameHelper.Ga
         MarginLayoutParams params = new MarginLayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
         adView.setLayoutParams(params);
 
-        // Video ads
+        // Interstitial ads
         interstitialAd = new PublisherInterstitialAd(this);
         interstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
 
@@ -292,6 +296,12 @@ public class SpaceRunnerActivity extends NativeActivity implements GameHelper.Ga
             }
         });
         requestNewInterstitial();
+
+        // Video ads
+        final String app_id = "Test_Android";
+        vunglePub.init(this, app_id);
+        final AdConfig globalAdConfig = vunglePub.getGlobalAdConfig();
+        globalAdConfig.setTransitionAnimationEnabled(true);
 
         // inapp
         String base64EncodedPublicKey = SecurityConsts.PUBLIC_KEY;
@@ -369,6 +379,7 @@ public class SpaceRunnerActivity extends NativeActivity implements GameHelper.Ga
     protected void onResume()
     {
         super.onResume();
+        vunglePub.onResume();
        // uiHelper.onResume();
        // AppEventsLogger.activateApp(this);
     }
@@ -382,6 +393,7 @@ public class SpaceRunnerActivity extends NativeActivity implements GameHelper.Ga
     @Override
     public void onPause() {
         super.onPause();
+        vunglePub.onPause();
         //uiHelper.onPause();
         //AppEventsLogger.deactivateApp(this);
     }
@@ -442,16 +454,13 @@ public class SpaceRunnerActivity extends NativeActivity implements GameHelper.Ga
         interstitialAd.loadAd(adRequest);
     }
 
-    public void ShowVideoAd()
+    public boolean ShowVideoAd()
     {
-        _activity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (interstitialAd.isLoaded()) {
-                    interstitialAd.show();
-                }
-            }
-        });
+        if (vunglePub.isAdPlayable()) {
+            vunglePub.playAd();
+            return true;
+        }
+        return false;
     }
 
     public void RequestBackup() {
@@ -460,7 +469,6 @@ public class SpaceRunnerActivity extends NativeActivity implements GameHelper.Ga
 
     public void RequestRestore()
     {
-        BackupManager bm = new BackupManager(this);
         backupManager.requestRestore(
                 new RestoreObserver() {
                     public void restoreFinished(int error) {
@@ -926,7 +934,8 @@ public class SpaceRunnerActivity extends NativeActivity implements GameHelper.Ga
             public void onResult(Leaderboards.LoadPlayerScoreResult result) {
                 // check if valid score
                 if (result != null
-                        && GamesStatusCodes.STATUS_OK == result.getStatus().getStatusCode()) {
+                        && GamesStatusCodes.STATUS_OK == result.getStatus().getStatusCode()
+                        && result.getScore() != null) {
 
                     _myScoreWeekly = new ScoreItem();
                     _myScoreWeekly.name = result.getScore().getScoreHolderDisplayName();
@@ -944,7 +953,8 @@ public class SpaceRunnerActivity extends NativeActivity implements GameHelper.Ga
             public void onResult(Leaderboards.LoadPlayerScoreResult result) {
                 // check if valid score
                 if (result != null
-                        && GamesStatusCodes.STATUS_OK == result.getStatus().getStatusCode()) {
+                        && GamesStatusCodes.STATUS_OK == result.getStatus().getStatusCode()
+                        && result.getScore() != null) {
 
                     _myScoreAlltime = new ScoreItem();
                     _myScoreAlltime.name = result.getScore().getScoreHolderDisplayName();
@@ -991,7 +1001,7 @@ public class SpaceRunnerActivity extends NativeActivity implements GameHelper.Ga
         if (place == 5)
         {
             if (weekly && _myScoreWeekly == null)
-                return -1;
+                return 0;
             if (!weekly && _myScoreAlltime == null)
                 return -1;
 

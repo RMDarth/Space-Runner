@@ -85,9 +85,9 @@ int BillingProcessor::GetBoughtItem()
 	return boughtItem;
 }
 
-void BillingProcessor::ShowVideoAds()
+bool BillingProcessor::ShowVideoAds()
 {
-
+	return true;
 }
 
 void BillingProcessor::RequestBackup()

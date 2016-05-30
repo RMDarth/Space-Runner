@@ -152,7 +152,7 @@ void BillingProcessor::ShowLeaderboard()
 	jvm->DetachCurrentThread();
 }
 
-void BillingProcessor::ShowVideoAds()
+bool BillingProcessor::ShowVideoAds()
 {
 	ANativeActivity* activity = _state->activity;
 	JavaVM* jvm = _state->activity->vm;
@@ -163,13 +163,15 @@ void BillingProcessor::ShowVideoAds()
 	if (res == JNI_ERR)
 	{
 		// Failed to retrieve JVM environment
-		return;
+		return false;
 	}
 
 	jclass clazz = env->GetObjectClass(activity->clazz);
-	jmethodID methodID = env->GetMethodID(clazz, "ShowVideoAd", "()V");
-	env->CallVoidMethod(activity->clazz, methodID);
+	jmethodID methodID = env->GetMethodID(clazz, "ShowVideoAd", "()Z");
+	bool result = env->CallBooleanMethod(activity->clazz, methodID);
 	jvm->DetachCurrentThread();
+
+	return result;
 }
 
 

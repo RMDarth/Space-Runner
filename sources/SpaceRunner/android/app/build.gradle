@@ -12,8 +12,9 @@ model {
             applicationId =  "com.turbulent.spacerush"
             minSdkVersion.apiLevel = 16
             targetSdkVersion.apiLevel = 19
-            versionCode = 9
-            versionName = "0.8.9"
+            versionCode = 11
+            versionName = "0.9.0"
+            multiDexEnabled = true
 
             buildConfigFields.with {
                 create() {
@@ -135,5 +136,6 @@ model {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:appcompat-v7:23.4.0'
+    compile 'com.android.support:multidex:1.0.1'
     compile 'com.google.android.gms:play-services:9.0.0'
 }

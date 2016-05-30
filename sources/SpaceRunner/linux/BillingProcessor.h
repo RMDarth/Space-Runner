@@ -37,7 +37,7 @@ public:
 
 	void ShowAchievements();
 	void ShowLeaderboard();
-	void ShowVideoAds();
+	bool ShowVideoAds();
 	void UpdateScore(int score);
 	void SyncAchievements();
 	void RateApp();
