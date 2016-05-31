@@ -284,7 +284,7 @@ namespace CoreEngine
 
             UpdateAchievements();
 
-            if (highscore && levelManager->GetLevelType() == LevelType::Rush)
+            if (levelManager->GetLevelType() == LevelType::Rush)
                 BillingProcessor::Instance()->UpdateScore(levelManager->GetScore());
 
             if (highscore)

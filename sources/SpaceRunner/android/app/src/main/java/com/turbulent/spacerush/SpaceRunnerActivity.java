@@ -344,8 +344,6 @@ public class SpaceRunnerActivity extends NativeActivity implements GameHelper.Ga
                 return;
             }
 
-            // TODO: add energy purchase!
-            // Check for gas delivery -- if we own gas, we should fill up the tank immediately
             for (String sku : skuList)
             {
                 Purchase energyPurchase = inventory.getPurchase(sku);
@@ -942,6 +940,11 @@ public class SpaceRunnerActivity extends NativeActivity implements GameHelper.Ga
                     _myScoreWeekly.score = (int)result.getScore().getRank();
                     _myScoreWeekly.place = (int)result.getScore().getRawScore();
 
+                    if (_myScoreWeekly.place <= 10 && !_achievementUnlockedStatus[9])
+                    {
+                        UnlockAchievement(9);
+                    }
+
                     _scoresUpdated = true;
                 }
             }
@@ -960,6 +963,11 @@ public class SpaceRunnerActivity extends NativeActivity implements GameHelper.Ga
                     _myScoreAlltime.name = result.getScore().getScoreHolderDisplayName();
                     _myScoreAlltime.score = (int)result.getScore().getRank();
                     _myScoreAlltime.place = (int)result.getScore().getRawScore();
+
+                    if (_myScoreWeekly.place <= 10 && !_achievementUnlockedStatus[9])
+                    {
+                        UnlockAchievement(9);
+                    }
 
                     _scoresUpdated = true;
                 }
