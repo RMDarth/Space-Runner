@@ -937,8 +937,8 @@ public class SpaceRunnerActivity extends NativeActivity implements GameHelper.Ga
 
                     _myScoreWeekly = new ScoreItem();
                     _myScoreWeekly.name = result.getScore().getScoreHolderDisplayName();
-                    _myScoreWeekly.score = (int)result.getScore().getRank();
-                    _myScoreWeekly.place = (int)result.getScore().getRawScore();
+                    _myScoreWeekly.score = (int)result.getScore().getRawScore();
+                    _myScoreWeekly.place = (int)result.getScore().getRank();
 
                     if (_myScoreWeekly.place <= 10 && !_achievementUnlockedStatus[9])
                     {
@@ -961,10 +961,10 @@ public class SpaceRunnerActivity extends NativeActivity implements GameHelper.Ga
 
                     _myScoreAlltime = new ScoreItem();
                     _myScoreAlltime.name = result.getScore().getScoreHolderDisplayName();
-                    _myScoreAlltime.score = (int)result.getScore().getRank();
-                    _myScoreAlltime.place = (int)result.getScore().getRawScore();
+                    _myScoreAlltime.score = (int)result.getScore().getRawScore();
+                    _myScoreAlltime.place = (int)result.getScore().getRank();
 
-                    if (_myScoreWeekly.place <= 10 && !_achievementUnlockedStatus[9])
+                    if (_myScoreAlltime.place <= 10 && !_achievementUnlockedStatus[9])
                     {
                         UnlockAchievement(9);
                     }

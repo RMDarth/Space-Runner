@@ -217,6 +217,7 @@ namespace CoreEngine
         auto scores = Scores::Instance();
         int stars;
         bool highscore = false;
+        bool daily = false;
 
         _document->Show();
         _achievementWindow->Hide();
@@ -255,7 +256,7 @@ namespace CoreEngine
                     {
                         levelManager->SetScore(levelManager->GetScore() + 150);
                         Scores::Instance()->UpdateTotalEnergy(150);
-                        // TODO: Show image with sign "daily completed, + 150 energy bonus"
+                        daily = true;
                     }
 
                     Scores::Instance()->SetDailyChallengeCompleted(0);
@@ -266,6 +267,7 @@ namespace CoreEngine
                     {
                         levelManager->SetScore(levelManager->GetScore() + 150);
                         Scores::Instance()->UpdateTotalEnergy(150);
+                        daily = true;
                     }
                     Scores::Instance()->SetDailyChallengeCompleted(1);
                 }
@@ -292,6 +294,13 @@ namespace CoreEngine
                 _document->GetControlByName("highscore")->SetVisible(true);
             } else {
                 _document->GetControlByName("highscore")->SetVisible(false);
+            }
+
+            if (daily)
+            {
+                _document->GetControlByName("daily")->SetVisible(true);
+            } else {
+                _document->GetControlByName("daily")->SetVisible(false);
             }
         } else {
             _document->GetControlByName("result")->SetText("Game over");
