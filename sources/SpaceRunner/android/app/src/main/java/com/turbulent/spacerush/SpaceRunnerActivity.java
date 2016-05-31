@@ -14,6 +14,7 @@ import java.util.Set;
 import android.app.ActivityManager;
 import android.app.ActivityManager.MemoryInfo;
 import android.app.NativeActivity;
+import android.app.ProgressDialog;
 import android.app.backup.BackupManager;
 import android.app.backup.RestoreObserver;
 import android.content.Context;
@@ -134,6 +135,9 @@ public class SpaceRunnerActivity extends NativeActivity implements GameHelper.Ga
 
     //facebook
     //private UiLifecycleHelper uiHelper;
+
+    // Loading dialog
+    ProgressDialog progressDialog;
 
     // Ads
     AdView adView;
@@ -598,6 +602,23 @@ public class SpaceRunnerActivity extends NativeActivity implements GameHelper.Ga
         }
         mOwnedItems.remove(0);
         return -1;
+    }
+
+    public void showLoadingDialog()
+    {
+        _activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                progressDialog = ProgressDialog.show(_activity, "",
+                        "Loading...", true);
+            }
+        });
+    }
+
+    public void hideLoadingDialog()
+    {
+        progressDialog.dismiss();
+        progressDialog = null;
     }
 
     // Our popup window, you will call it from your C/C++ code later

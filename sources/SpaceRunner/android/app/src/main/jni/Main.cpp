@@ -279,7 +279,7 @@ static int32_t handleInput(struct android_app* app, AInputEvent* event)
 
 	if (AKeyEvent_getKeyCode(event) == AKEYCODE_BACK) {
 		// actions on back key
-		if (gInput != NULL && backPressed == false)
+		if (gInput != NULL && !backPressed)
 		{
 			if (gGame != NULL && gGame->GetState() == GameState::MainMenu)
 			{
@@ -459,6 +459,8 @@ static void handleCmd(struct android_app* app, int32_t cmd)
 			}
 			else
 			{
+                BillingProcessor::Instance()->SetProgressDialogVisible(true);
+
 				if (!windowTerminated)
 					static_cast<Ogre::AndroidEGLWindow*>(gRenderWnd)->_destroyInternalResources();
 
@@ -466,6 +468,8 @@ static void handleCmd(struct android_app* app, int32_t cmd)
 
 				if (gConfig && gConfig->IsMusicEnabled())
 					SoundSystem::Instance()->StartBackgroundMusic();
+
+                BillingProcessor::Instance()->SetProgressDialogVisible(false);
 			}
 			AConfiguration_delete(config);
 		}

@@ -239,6 +239,32 @@ void BillingProcessor::RequestRestore()
     jvm->DetachCurrentThread();
 }
 
+void BillingProcessor::SetProgressDialogVisible(bool visible) {
+	ANativeActivity* activity = _state->activity;
+	JavaVM* jvm = _state->activity->vm;
+	JNIEnv* env = NULL;
+	jvm->GetEnv((void **)&env, JNI_VERSION_1_6);
+	jint res = jvm->AttachCurrentThread(&env, NULL);
+
+	if (res == JNI_ERR)
+	{
+		// Failed to retrieve JVM environment
+		return;
+	}
+
+	jclass clazz = env->GetObjectClass(activity->clazz);
+	if (visible)
+	{
+		jmethodID methodID = env->GetMethodID(clazz, "showLoadingDialog", "()V");
+		env->CallVoidMethod(activity->clazz, methodID);
+	} else {
+		jmethodID methodID = env->GetMethodID(clazz, "hideLoadingDialog", "()V");
+		env->CallVoidMethod(activity->clazz, methodID);
+	}
+	jvm->DetachCurrentThread();
+}
+
+
 
 void BillingProcessor::SyncAchievements()
 {

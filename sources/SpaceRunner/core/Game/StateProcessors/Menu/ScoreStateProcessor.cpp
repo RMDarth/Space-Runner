@@ -301,6 +301,7 @@ namespace CoreEngine
             _document->GetControlByName("result")->SetText("Game over");
             //_document->GetControlByName("result")->SetText("游戏结束");
             _document->GetControlByName("highscore")->SetVisible(false);
+            _document->GetControlByName("daily")->SetVisible(false);
             HideContinue();
 
             stars = 0;

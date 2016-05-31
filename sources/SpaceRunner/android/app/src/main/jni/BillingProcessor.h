@@ -43,6 +43,8 @@ public:
 	void RateApp();
 	void OpenLink(std::string link);
 
+	void SetProgressDialogVisible(bool visible);
+
 private:
 	int GetLeaderboardSize(bool weekly);
 	std::string GetLeaderboardName(int place, bool weekly);
