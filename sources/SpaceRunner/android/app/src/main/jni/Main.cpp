@@ -552,6 +552,9 @@ void android_main(struct android_app* state)
 			double time_span = (time - oldtime);
 			deltaTime = time_span / 1000.0f;
 
+			if (deltaTime > 0.2f)
+				deltaTime = 0.2f;
+
 			RenderProcessor::Instance()->Update(deltaTime);
 			gInput->Update(deltaTime);
 			gGame->Update(deltaTime);

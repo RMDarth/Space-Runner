@@ -287,21 +287,16 @@ namespace CoreEngine
             UpdateAchievements();
 
             if (levelManager->GetLevelType() == LevelType::Rush)
-                BillingProcessor::Instance()->UpdateScore(levelManager->GetScore());
-
-            if (highscore)
             {
-                _document->GetControlByName("highscore")->SetVisible(true);
-            } else {
-                _document->GetControlByName("highscore")->SetVisible(false);
+                if (BillingProcessor::Instance()->IsLoggedGoogle())
+                    BillingProcessor::Instance()->UpdateScore(levelManager->GetScore());
+                else
+                    Config::Instance()->SetScoreSubmitted(levelManager->GetScore());
             }
 
-            if (daily)
-            {
-                _document->GetControlByName("daily")->SetVisible(true);
-            } else {
-                _document->GetControlByName("daily")->SetVisible(false);
-            }
+            _document->GetControlByName("highscore")->SetVisible(highscore);
+            _document->GetControlByName("daily")->SetVisible(daily);
+
         } else {
             _document->GetControlByName("result")->SetText("Game over");
             //_document->GetControlByName("result")->SetText("游戏结束");
@@ -316,7 +311,7 @@ namespace CoreEngine
         if (LevelManager::Instance()->GetLevelType() == LevelType::Puzzle)
             ss << "Level " << LevelManager::Instance()->GetLevelNum();
         else if (LevelManager::Instance()->GetLevelType() == LevelType::Rush)
-            ss << "Difficulty " << LevelManager::Instance()->GetLevelNum();
+            ss << "Single game";
         else
             ss << "Challenge " << LevelManager::Instance()->GetLevelNum();
 

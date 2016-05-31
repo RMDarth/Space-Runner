@@ -11,6 +11,8 @@ namespace CoreEngine
 		_document = new ControlDocument("GUI/pausemenu.xml");
 		_document->SetMouseUpHandler(this);
 		_document->Hide();
+
+		_document->RaisePriority(4);
 	}
 
 

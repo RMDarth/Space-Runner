@@ -79,6 +79,12 @@ namespace CoreEngine
                 Config::Instance()->SetSignedGoogle(true);
                 UpdateGooglePlayIcon(_document->GetControlByName("googleplay").get());
                 BillingProcessor::Instance()->SyncAchievements();
+
+                if (Config::Instance()->GetScoreSubmitted() > 0)
+                {
+                    BillingProcessor::Instance()->UpdateScore(Config::Instance()->GetScoreSubmitted());
+                }
+                Config::Instance()->SetScoreSubmitted(0);
             }
             _logged = true;
         }

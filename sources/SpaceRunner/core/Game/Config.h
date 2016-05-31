@@ -21,6 +21,7 @@ namespace CoreEngine
         int _resurrectCount;
 
         bool _firstRun;
+        int _scoreSubmitted;
 
         static Config* _instance;
 
@@ -68,6 +69,9 @@ namespace CoreEngine
 
         void SetLanguage(int id);
         int GetLanguage();
+
+        int GetScoreSubmitted();
+        void SetScoreSubmitted(int value);
 
         bool IsFirstRun();
     };

@@ -3,6 +3,7 @@
 #include "BillingProcessor.h"
 #include <string>
 #include <Game/Scores.h>
+#include <Game/Config.h>
 
 namespace CoreEngine
 {
@@ -26,6 +27,14 @@ namespace CoreEngine
         if (_logged != BillingProcessor::Instance()->IsLoggedGoogle())
         {
             _logged = BillingProcessor::Instance()->IsLoggedGoogle();
+            if (_logged)
+            {
+                if (Config::Instance()->GetScoreSubmitted() > 0)
+                {
+                    BillingProcessor::Instance()->UpdateScore(Config::Instance()->GetScoreSubmitted());
+                }
+                Config::Instance()->SetScoreSubmitted(0);
+            }
             UpdateBoard();
         }
 

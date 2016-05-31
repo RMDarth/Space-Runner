@@ -31,6 +31,7 @@ namespace CoreEngine
         _soundEnabled = (configFile->ReadInt() == 1);
         _musicEnabled = (configFile->ReadInt() == 1);
         _signedGoogle = (configFile->ReadInt() == 1);
+        _scoreSubmitted = configFile->ReadInt();
         _selectedModel = configFile->ReadInt();
 
         if (_selectedModel < 0 || _selectedModel > 10)
@@ -62,6 +63,7 @@ namespace CoreEngine
         arcadeFile.WriteInt(_soundEnabled ? 1 : 0);
         arcadeFile.WriteInt(_musicEnabled ? 1 : 0);
         arcadeFile.WriteInt(_signedGoogle ? 1 : 0);
+        arcadeFile.WriteInt(_scoreSubmitted);
         arcadeFile.WriteInt(_selectedModel);
 
         for (int i = 0; i < 5; i++)
@@ -93,6 +95,7 @@ namespace CoreEngine
         _selectedModel = 0;
         _language = 0;
         _firstRun = false;
+        _scoreSubmitted = 0;
 
         _multiplierBought = false;
         _bombCount = 0;
@@ -114,6 +117,7 @@ namespace CoreEngine
         configFile.WriteInt(1); // sound
         configFile.WriteInt(1); // music
         configFile.WriteInt(0); // signed google
+        configFile.WriteInt(0); // score submitted
         configFile.WriteInt(0); // model
 
         configFile.WriteInt(1); // first model bought
@@ -270,5 +274,17 @@ namespace CoreEngine
         Save();
     }
 
+    int Config::GetScoreSubmitted()
+    {
+        return _scoreSubmitted;
+    }
 
+    void Config::SetScoreSubmitted(int value)
+    {
+        if (_scoreSubmitted < value || _scoreSubmitted == 0)
+        {
+            _scoreSubmitted = value;
+        }
+        Save();
+    }
 }
