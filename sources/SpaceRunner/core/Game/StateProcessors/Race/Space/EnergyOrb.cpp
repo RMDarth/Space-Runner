@@ -25,6 +25,7 @@ namespace CoreEngine
 	{
 		delete _sparksEffect;
 		delete _glowEffect;
+		delete _sector;
 	}
 
 	void EnergyOrb::Update(float time, float roadSpeed)

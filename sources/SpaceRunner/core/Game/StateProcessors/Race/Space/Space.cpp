@@ -32,6 +32,11 @@ namespace CoreEngine
         _lastObstaclePos = 0;
     }
 
+    Space::~Space()
+    {
+
+    }
+
     void Space::GenerateSpace()
     {
         for (int i = 0; i < ASTEROID_NUM; i++)
@@ -960,6 +965,7 @@ namespace CoreEngine
     {
         return _missedOrbs;
     }
+
 
 
 }

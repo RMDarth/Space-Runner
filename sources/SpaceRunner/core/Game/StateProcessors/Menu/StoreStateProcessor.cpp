@@ -42,16 +42,16 @@ namespace CoreEngine
                 switch (boughtItem)
                 {
                     case 0:
-                        energy = 1500;
-                        break;
-                    case 1:
                         energy = 5000;
                         break;
+                    case 1:
+                        energy = 12500;
+                        break;
                     case 2:
-                        energy = 10000;
+                        energy = 50000;
                         break;
                     case 3:
-                        energy = 50000;
+                        energy = 75000;
                         break;
                     case 4:
                         energy = 100000;
@@ -172,9 +172,9 @@ namespace CoreEngine
         } else if (control->GetName() == "buymultiplier")
         {
             int totalEnergy = Scores::Instance()->GetTotalEnergy();
-            if (totalEnergy >= 3000)
+            if (totalEnergy >= 4000)
             {
-                Scores::Instance()->UpdateTotalEnergy(-3000);
+                Scores::Instance()->UpdateTotalEnergy(-4000);
                 Config::Instance()->SetMultiplierBought();
                 UpdateButtons();
             }

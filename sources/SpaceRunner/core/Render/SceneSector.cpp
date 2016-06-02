@@ -15,3 +15,11 @@ Ogre::SceneNode* SceneSector::GetNode()
 {
 	return _node;
 }
+
+SceneSector::~SceneSector()
+{
+	//_node->getParentSceneNode()->removeChild(_node);
+	RenderProcessor::Instance()->GetSceneManager()->destroySceneNode(_node);
+}
+
+

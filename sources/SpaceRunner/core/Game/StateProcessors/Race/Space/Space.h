@@ -66,6 +66,7 @@ namespace CoreEngine
         float _lastPosChange;
     public:
         Space();
+        ~Space();
         void GenerateSpace();
         void Update(float time, float speed);
         void SetVisible(bool visible);

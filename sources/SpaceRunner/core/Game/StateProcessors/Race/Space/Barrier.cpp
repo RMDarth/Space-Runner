@@ -61,6 +61,7 @@ namespace CoreEngine
 		{
 			delete _rectList[i];
 		}
+		_sectorList.clear();
 		delete _sector;
 	}
 

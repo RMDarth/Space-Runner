@@ -334,6 +334,8 @@ public class SpaceRunnerActivity extends NativeActivity implements GameHelper.Ga
 
             }
         });
+
+        RequestBackup();
     }
 
     // Listener that's called when we finish querying the items and subscriptions we own

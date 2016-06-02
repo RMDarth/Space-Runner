@@ -182,7 +182,7 @@ namespace CoreEngine
                 if (Scores::Instance()->GetTotalEnergy() + LevelManager::Instance()->GetScore() >= 5000)
                     _query->GetControlByName("buy")->SetText("Buy for §5000");
                 else
-                    _query->GetControlByName("buy")->SetText("Buy for $2.49");
+                    _query->GetControlByName("buy")->SetText("Buy for $0.99");
                 _query->Show();
                 _queryVisible = true;
 

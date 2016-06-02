@@ -35,6 +35,7 @@ namespace CoreEngine
 	{
 		for (int i = 0; i < EXPLOSIONS_NUM; i++)
 			delete _explosionEffect[i];
+		delete _sector;
 	}
 
 	void Explosion::Update(float time, float roadSpeed)

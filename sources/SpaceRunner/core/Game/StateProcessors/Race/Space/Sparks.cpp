@@ -28,6 +28,7 @@ namespace CoreEngine
     {
         delete _sparksEffect;
         delete _glowEffect;
+        delete _sector;
     }
 
     void Sparks::Update(float time, float roadSpeed)

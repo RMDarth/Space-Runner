@@ -234,6 +234,7 @@ namespace CoreEngine
 
         _shieldEffect = sceneManager->createParticleSystem("ShieldEffect", "ShieldAnim");
         _shieldEffect->setKeepParticlesInLocalSpace(true);
+        _shieldEffect->setEmitting(false);
         sceneNodeShieldEffect->attachObject(_shieldEffect);
 
         auto sceneNodeSparks = sceneManager->createSceneNode();
@@ -359,6 +360,9 @@ namespace CoreEngine
                 _shield = false;
                 _sector->GetNode()->removeChild(_shieldSector->GetNode());
                 _sector->GetNode()->removeChild(_shieldEffectSector->GetNode());
+                _shieldEffectSector->GetNode()->setVisible(false);
+                _shieldEffect->setEmitting(false);
+                _shieldEffect->clear();
                 if (_shieldQueued)
                 {
                     OnKeyPressed(OIS::KC_DOWN);
@@ -545,6 +549,7 @@ namespace CoreEngine
         {
             float fps = OgreApplication::Instance()->GetWindow()->getAverageFPS();
 
+
             stream.str("");
             stream << (int)(fps);
             static auto fpsControl = _document->GetControlByName("FPS");
@@ -636,8 +641,11 @@ namespace CoreEngine
 
         if (!Config::Instance()->IsAchievementCompleted(11))
         {
-            Config::Instance()->SetAchievementCompleted(11);
-            BillingProcessor::Instance()->SyncAchievements();
+            if (!(LevelManager::Instance()->GetLevelType() == LevelType::Puzzle && LevelManager::Instance()->GetLevelNum() == 1))
+            {
+                Config::Instance()->SetAchievementCompleted(11);
+                BillingProcessor::Instance()->SyncAchievements();
+            }
         }
     }
 
@@ -741,8 +749,9 @@ namespace CoreEngine
                 _sector->GetNode()->addChild(_shieldSector->GetNode());
                 _sector->GetNode()->addChild(_shieldEffectSector->GetNode());
                 _shieldSector->GetNode()->setVisible(true);
-                _shieldEffectSector->GetNode()->setVisible(true);
                 _shieldEffect->clear();
+                _shieldEffectSector->GetNode()->setVisible(true);
+                _shieldEffect->setEmitting(true);
 
                 if (Config::Instance()->IsSoundEnabled())
                 {
