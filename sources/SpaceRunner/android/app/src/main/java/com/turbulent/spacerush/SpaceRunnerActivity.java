@@ -1071,7 +1071,7 @@ public class SpaceRunnerActivity extends NativeActivity implements GameHelper.Ga
                     .build();
             uiHelper.trackPendingDialogCall(shareDialog.present());
         } else {*/
-            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.facebook.com/bubbleshooter3d"));
+            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.facebook.com/spacerush"));
             startActivity(browserIntent);
             // Fallback. For example, publish the post using the Feed Dialog
         //}

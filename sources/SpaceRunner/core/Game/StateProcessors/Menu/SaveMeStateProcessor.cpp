@@ -160,6 +160,15 @@ namespace CoreEngine
         {
             if (BillingProcessor::Instance()->ShowVideoAds())
             {
+                if (LevelManager::Instance()->GetLevelType() == LevelType::Rush
+                        && LevelManager::Instance()->GetScore() > 100)
+                {
+                    if (BillingProcessor::Instance()->IsLoggedGoogle())
+                        BillingProcessor::Instance()->UpdateScore(LevelManager::Instance()->GetScore());
+                    else
+                        Config::Instance()->SetScoreSubmitted(LevelManager::Instance()->GetScore());
+                }
+
                 LevelManager::Instance()->SetStarted(true);
                 LevelManager::Instance()->IncreaseLive();
                 LevelManager::Instance()->DecreaseMovies();

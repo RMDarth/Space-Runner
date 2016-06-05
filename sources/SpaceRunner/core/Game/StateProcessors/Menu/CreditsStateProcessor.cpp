@@ -74,29 +74,25 @@ namespace CoreEngine
 		{
 			BillingProcessor::Instance()->OpenLink("http://turbulentsoft.com/");
 		}
-		if (control->GetName() == "credits2")
-		{
-			BillingProcessor::Instance()->OpenLink("http://turbulentsoft.com/");
-		}
 		if (control->GetName() == "facebook")
 		{
-			BillingProcessor::Instance()->OpenLink("https://www.facebook.com/bubbleshooter3d");
+			BillingProcessor::Instance()->OpenLink("https://www.facebook.com/spacerush");
 		}
 		if (control->GetName() == "credits4" || control->GetName() == "credits7")
 		{
 			BillingProcessor::Instance()->OpenLink("mailto:igor.barinov@gmail.com");
 		}
-		if (control->GetName() == "credits6" || control->GetName() == "credits9")
+		if (control->GetName() == "credits9")
 		{
-			BillingProcessor::Instance()->OpenLink("http://portfolios.ru/alopex");
+			BillingProcessor::Instance()->OpenLink("http://vk.com/heisenbergwork");
 		}
 		if (control->GetName() == "credits10")
 		{
-			BillingProcessor::Instance()->OpenLink("https://www.facebook.com/pages/No13/576218159143568");
+			BillingProcessor::Instance()->OpenLink("http://www.freepik.com/");
 		}
 		if (control->GetName() == "credits12")
 		{
-			BillingProcessor::Instance()->OpenLink("http://audiojungle.net/user/3KTrack-Exclusive/portfolio");
+			BillingProcessor::Instance()->OpenLink("http://audiojungle.net/user/antarctic/portfolio");
 		}
 		if (control->GetName() == "credits15")
 		{

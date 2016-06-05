@@ -545,16 +545,15 @@ namespace CoreEngine
             livesControl->SetText(to_string(LevelManager::Instance()->GetLives()));
         }
 
-        //if (Config::Instance()->IsShowFPS())
+        /*if (Config::Instance()->IsShowFPS())
         {
             float fps = OgreApplication::Instance()->GetWindow()->getAverageFPS();
-
 
             stream.str("");
             stream << (int)(fps);
             static auto fpsControl = _document->GetControlByName("FPS");
             fpsControl->SetText(stream.str());
-        }
+        }*/
 
         if (LevelManager::Instance()->GetLevelNum() == 1 && LevelManager::Instance()->GetLevelType() == LevelType::Puzzle)
             UpdateHelp();
@@ -873,7 +872,7 @@ namespace CoreEngine
 
         _document->Show();
 
-        if (Config::Instance()->IsShowFPS())
+        /*if (Config::Instance()->IsShowFPS())
         {
             _document->GetControlByName("FPStext")->SetVisible(true);
             _document->GetControlByName("FPS")->SetVisible(true);
@@ -881,7 +880,7 @@ namespace CoreEngine
         else {
             _document->GetControlByName("FPStext")->SetVisible(false);
             _document->GetControlByName("FPS")->SetVisible(false);
-        }
+        }*/
 
         static auto nameControl = _document->GetControlByName("name");
         switch (LevelManager::Instance()->GetLevelType())
@@ -932,6 +931,8 @@ namespace CoreEngine
         {
             bossLifePanel->SetVisible(false);
             bossLifeBar->SetVisible(false);
+
+            _score += 10 * _multiplier;
         } else {
             bossLifePanel->SetVisible(true);
 
