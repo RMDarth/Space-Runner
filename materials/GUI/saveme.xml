@@ -14,5 +14,7 @@
 		<Label name="resurrectcount2" font-size="15" text="2" x="0.85" y="0.12" height="0.4" width="0" />
 	</Button>	
 
+	<Label name="noads" text="No ads available" font-size="16" font-color="0.8 0.2 0.2 1.0" x="0.17" y="0.56" width="0" height="0" />
+
 	<Button name="back" text="Skip" x="0.35" y="0.56" width="0.3" height="0.12"/>
 </document>

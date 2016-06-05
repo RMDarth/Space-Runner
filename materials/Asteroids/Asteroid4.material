@@ -40,3 +40,31 @@ material asteroidsA4__A4D
         }
     }
 }
+
+material asteroid4_Dark
+{ 
+    technique
+    {
+        pass
+        {
+            illumination_stage per_light
+            scene_blend alpha_blend
+            alpha_to_coverage off
+
+            vertex_program_ref appear_vs
+            {
+                param_named appearRange float2 1000 1300
+            }
+ 
+            fragment_program_ref appear_ps
+            {
+                param_named color float4 0.3 0.3 0.3 1.0
+            }
+
+            texture_unit diffuseMap
+            {
+                texture textures/Asteroid4_d.png
+            }
+        }
+    }
+}

@@ -9,7 +9,7 @@ material Skybox_3
 	
             texture_unit cubeMap
             {
-                cubic_texture 03_space.jpg separateUV
+                cubic_texture space_3.jpg separateUV
                 tex_address_mode clamp
             }
         }

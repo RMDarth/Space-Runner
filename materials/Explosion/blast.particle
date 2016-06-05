@@ -112,3 +112,27 @@ particle_system Blast4
         colour 0.952 0.6137 0.2 1
     }
 }
+
+particle_system Blast4Low
+{
+    material            SparksExplosionMaterial
+    particle_width      0.04                
+    particle_height     0.35                 
+    cull_each           false
+    quota               50
+    billboard_type      oriented_self
+    billboard_rotation_type vertex
+    sorted              false
+
+    emitter Point
+    {
+        angle 360
+        emission_rate 100
+        time_to_live_min 0.5
+        time_to_live_max 2
+        duration 0.6
+        velocity_min 5
+        velocity_max 10
+        colour 0.952 0.6137 0.2 1
+    }
+}

@@ -21,13 +21,13 @@ material ProbeMaterial
 
             texture_unit diffuseMap
             {
-                texture textures/probe_diffuse_green.png
+                texture textures/probe_diffuse_green.jpg
                 tex_address_mode wrap
                 colour_op modulate
             }
             texture_unit specMap
             {
-                texture textures/probe_specular.tga
+                texture textures/probe_specular.png
                 tex_address_mode wrap
                 colour_op modulate
             }

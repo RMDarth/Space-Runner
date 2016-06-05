@@ -14,17 +14,28 @@ material MineMaterial
             {
             }
 
+            ambient 1 1 1 1
+            diffuse 1 1 1 1
+            specular 0.5 0.5 0.5 1.0 12.5
+            emissive 0.0 0.0 0.0 1.0
+
             texture_unit diffuseMap
             {
-                texture textures/Mine_diffuse.png
+                texture textures/Mine_diffuse.jpg
+                tex_address_mode wrap
+                colour_op modulate
             }
             texture_unit specMap
             {
                 texture textures/Mine_specular.png
+                tex_address_mode wrap
+                colour_op modulate
             }
             texture_unit normalMap
             {
                 texture textures/Mine_normal.png
+                tex_address_mode wrap
+                colour_op modulate
             }
         }
     }

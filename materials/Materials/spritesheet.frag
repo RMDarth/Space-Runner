@@ -1,6 +1,6 @@
 #version 100
-precision mediump int;
-precision mediump float;
+precision highp int;
+precision highp float;
 
 uniform sampler2D diffuseMap;
 varying vec2 oUv0;

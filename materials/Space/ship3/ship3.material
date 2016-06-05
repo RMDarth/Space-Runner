@@ -21,19 +21,19 @@ material Ship3Material
 
             texture_unit diffuseMap
             {
-                texture textures/BaseMaterial_diffuse2.tga
+                texture textures/BaseMaterial_diffuse2.png
                 tex_address_mode wrap
                 colour_op modulate
             }
             texture_unit specMap
             {
-                texture textures/BaseMaterial_specular.tga
+                texture textures/BaseMaterial_specular.png
                 tex_address_mode wrap
                 colour_op modulate
             }
             texture_unit normalMap
             {
-                texture textures/BaseMaterial_normal.tga
+                texture textures/BaseMaterial_normal.png
                 tex_address_mode wrap
                 colour_op modulate
             }

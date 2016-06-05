@@ -1,6 +1,6 @@
 <document>
 	<Label name="bosslifepanel" text="" x="0.2" y="0.15" width="0.6" height="0.01" image="blackalpha.png" mousetransparent="true" />
-	<Label name="bosslifebar" text="" x="0.2" y="0.15" width="0.6" height="0.01" image="green.png" mousetransparent="true" />
+	<Label name="bosslifebar" text="" x="0.2" y="0.15" width="0.6" height="0.01" image="green.png" mousetransparent="true" order="2" />
 
 	<Label name="scoreimg" x="0.01" y="0.01" width="0.27" height="-0.283" image="scorebar.png" mousetransparent="true" />
 	<Label name="timeimg" x="0.25" y="0.01" width="0.27" height="-0.283" image="timebar.png" mousetransparent="true" />
@@ -13,13 +13,13 @@
 	<Image name="bombimg" x="0.6" y="0.005" height="0.12" width="-1" image="bomb.png" mousetransparent="true" />
 	<Label name="bombcount" text="2" font-size="20" x="0.63" y="0.005" height="0.08" width="-1" mousetransparent="true" />
 	
-	<Label name="FPStext" text="FPS:" x="0.6" y="0.02" width="0.1" height="0.05" mousetransparent="true" />
-	<Label name="FPS" x="0.68" y="0.02" width="0.1" height="0.05" mousetransparent="true" />
+	<!--Label name="FPStext" text="FPS:" x="0.6" y="0.02" width="0.1" height="0.05" mousetransparent="true" />
+	<Label name="FPS" x="0.68" y="0.02" width="0.1" height="0.05" mousetransparent="true" /-->
 
 	<Label name="help" y="0.1" alignment="center" width="0.4" height="-1" image="arrowleft.png" mousetransparent="true" /> 
 
 	<Button name="pause" text="" x="0.87" y="0.01" width="0.1" height="-1" image="buttons/pause.png" hoverimage="buttons/pause_hover.png" pressedimage="buttons/pause_pressed.png"/>
 	<Label name="name" text="Race" font-color="0.1 0.5 0.9 0.8" x="0.6" y="0.92" width="0.1" height="0.05" mousetransparent="true"/>
 
-	<Label name="missing" text="Race" font-color="0.1 0.5 0.9 0.8" x="0.45" y="0.92" width="0.1" height="0.05" mousetransparent="true"/>
+	<Label name="missing" text="" font-color="0.1 0.5 0.9 0.8" x="0.45" y="0.92" width="0.1" height="0.05" mousetransparent="true"/>
 </document>

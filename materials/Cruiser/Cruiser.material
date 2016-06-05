@@ -1,4 +1,4 @@
-material "Cruiser"
+material Cruiser
 { 
     technique
     {
@@ -34,4 +34,9 @@ material "Cruiser"
             }
         }
     }
+}
+
+material Cruiser_green : Cruiser
+{
+    set_texture_alias diffuseMap textures/cruiser_diffuse_green.png
 }

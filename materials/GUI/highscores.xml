@@ -1,52 +1,45 @@
 <document>
-	<Panel name="panel" x="0.1" y="0.05" width="0.8" height="0.9">
-		<Label name="line1" text="" background-color="0.2 0.2 0.8 0.2" alignment="center" y="0.1" width="0.9" height="0.1" />
-		<Label name="line2" text="" background-color="0.2 0.8 0.2 0.2" alignment="center" y="0.2" width="0.9" height="0.1" />
-		<Label name="line3" text="" background-color="0.2 0.2 0.8 0.2" alignment="center" y="0.3" width="0.9" height="0.1" />
-		<Label name="line4" text="" background-color="0.2 0.8 0.2 0.2" alignment="center" y="0.4" width="0.9" height="0.1" />
-		<Label name="line5" text="" background-color="0.2 0.2 0.8 0.2" alignment="center" y="0.5" width="0.9" height="0.1" />
-		<Label name="line6" text="" background-color="0.2 0.8 0.2 0.2" alignment="center" y="0.6" width="0.9" height="0.1" />
-		
-		<Label name="line7" text="" background-color="0.2 0.8 0.8 0.2" alignment="center" y="0.75" width="0.9" height="0.1" />
-		
-		
-		
-		<Label name="header1" text="Difficulty" font-color="0 1 0.5 1" x="0.05" y="0.04" width="0.2" height="0.05" />
-		<Label name="header2" text="Best score" font-color="0 1 0.5 1" x="0.4" y="0.04" width="0.2" height="0.06" />
-		<Label name="header3" text="Best time" font-color="0 1 0.5 1" x="0.7" y="0.04" width="0.2" height="0.07" />
-		
-		<Label name="name1" font-color="0 1 0.5 1"  text="1" x="0.1" y="0.1" width="0.1" height="0.1" />
-		<Label name="name2" font-color="0 1 0.5 1"  text="2" x="0.1" y="0.2" width="0.1" height="0.1" />
-		<Label name="name3" font-color="0 1 0.5 1"  text="3" x="0.1" y="0.3" width="0.1" height="0.1" />
-		<Label name="name4" font-color="0 1 0.5 1"  text="4" x="0.1" y="0.4" width="0.1" height="0.1" />		
-		<Label name="name5" font-color="0 1 0.5 1"  text="5" x="0.1" y="0.5" width="0.1" height="0.1" />
-		<Label name="name6" font-color="0 1 0.5 1"  text="6" x="0.1" y="0.6" width="0.1" height="0.1" />
-				
-		<Label name="name7" font-color="0 1 0.5 1"  text="Endless" x="0.1" y="0.75" width="0.1" height="0.1" />
-				
-		
-		<Label name="score1" font-color="0 1 0.5 1"  text="123456" x="0.4" y="0.1" width="0.2" height="0.1" />
-		<Label name="score2" font-color="0 1 0.5 1"  text="123456" x="0.4" y="0.2" width="0.2" height="0.1" />
-		<Label name="score3" font-color="0 1 0.5 1"  text="123456" x="0.4" y="0.3" width="0.2" height="0.1" />
-		<Label name="score4" font-color="0 1 0.5 1"  text="123456" x="0.4" y="0.4" width="0.2" height="0.1" />
-		<Label name="score5" font-color="0 1 0.5 1"  text="123456" x="0.4" y="0.5" width="0.2" height="0.1" />
-		<Label name="score6" font-color="0 1 0.5 1"  text="123456" x="0.4" y="0.6" width="0.2" height="0.1" />
-		
-		<Label name="score7" font-color="0 1 0.5 1"  text="123456" x="0.4" y="0.75" width="0.2" height="0.1" />
-		
-		
-		<Label name="time1" font-color="0 1 0.5 1"  text="999:99" x="0.7" y="0.1" width="0.2" height="0.1" />
-		<Label name="time2" font-color="0 1 0.5 1"  text="12:34" x="0.7" y="0.2" width="0.2" height="0.1" />
-		<Label name="time3" font-color="0 1 0.5 1"  text="12:34" x="0.7" y="0.3" width="0.2" height="0.1" />
-		<Label name="time4" font-color="0 1 0.5 1"  text="12:34" x="0.7" y="0.4" width="0.2" height="0.1" />
-		<Label name="time5" font-color="0 1 0.5 1"  text="12:34" x="0.7" y="0.5" width="0.2" height="0.1" />		
-		<Label name="time6" font-color="0 1 0.5 1"  text="12:34" x="0.7" y="0.6" width="0.2" height="0.1" />
 
-		<Label name="time7" font-color="0 1 0.5 1"  text="12:34" x="0.7" y="0.75" width="0.2" height="0.1" />
+	<Panel name="panel" x="0.1" y="0.05" width="0.8" height="0.9" image="windows/titled.png" >
+		<Label name="SelectLabel" text="High Scores" alignment="center" y="0.05" width="0.6" height="0.05" />
 
-		<Button name="leaderboard" x="0.89" y="0.75" width="-1" height="0.1" image="buttons/Leaderboard.png" hoverimage="buttons/Leaderboard_hover.png" pressedimage="buttons/Leaderboard_pressed.png" />
-		
+		<Button name="weekly" text="Weekly" x="0.25" y="0.15" width="0.26" height="0.12" />	
+		<Button name="alltime" text="All-Time" x="0.49" y="0.15" width="0.25" height="0.12" />	
+
+		<Panel name="scorePanel" x="0.1" y="0.2" width="0.8" height="0.7" image="windows/untitled.png" >
+			<Label name="scorestype" text="Weekly scores" font-size="20" font-color="0.8 0.3 0.8 0.8" x="0.15" y="0.1" width="0.7" height="0.05" />
+
+			<Label name="name1" text="1. Chuck Norris" font-size="20" font-color="0.8 0.3 0.8 0.8" x="0.15" y="0.2" width="0" height="0.05" />
+			<Label name="score1" text="10000"  font-size="20" font-color="0.9 0.88 0.4 0.8" pressed-font-color="0.8 0.7 0.3 0.8" x="0.55" y="0.2" width="0.3" height="0.05" />	
+
+			<Label name="name2" text="2. John Snow" font-size="20" font-color="0.8 0.3 0.8 0.8" x="0.15" y="0.3" width="0" height="0.05" />
+			<Label name="score2" text="8000"  font-size="20" font-color="0.9 0.88 0.4 0.8" pressed-font-color="0.8 0.7 0.3 0.8" x="0.55" y="0.3" width="0.3" height="0.05" />	
+
+			<Label name="name3" text="3. Vladimir Putin" font-size="20" font-color="0.8 0.3 0.8 0.8" x="0.15" y="0.4" width="0" height="0.05" />
+			<Label name="score3" text="7123"  font-size="20" font-color="0.9 0.88 0.4 0.8" pressed-font-color="0.8 0.7 0.3 0.8" x="0.55" y="0.4" width="0.3" height="0.05" />	
+
+			<Label name="name4" text="4. Barak Obama" font-size="20" font-color="0.8 0.3 0.8 0.8" x="0.15" y="0.5" width="0" height="0.05" />
+			<Label name="score4" text="4321"  font-size="20" font-color="0.9 0.88 0.4 0.8" pressed-font-color="0.8 0.7 0.3 0.8" x="0.55" y="0.5" width="0.3" height="0.05" />
+
+			<Label name="name5" text="5. Elvis Presley" font-size="20" font-color="0.8 0.3 0.8 0.8" x="0.15" y="0.6" width="0" height="0.05" />
+			<Label name="score5" text="1200"  font-size="20" font-color="0.9 0.88 0.4 0.8" pressed-font-color="0.8 0.7 0.3 0.8" x="0.55" y="0.6" width="0.3" height="0.05" />	
+
+			<Label name="dots" text="..." font-size="20" font-color="0.8 0.3 0.8 0.8" x="0.15" y="0.65" width="0" height="0.05" />
+			<Label name="name6" text="125. Fduch" font-size="20" font-color="0.8 0.3 0.8 0.8" x="0.15" y="0.70" width="0" height="0.05" />
+			<Label name="score6" text="875"  font-size="20" font-color="0.9 0.88 0.4 0.8" pressed-font-color="0.8 0.7 0.3 0.8" x="0.55" y="0.70" width="0.3" height="0.05" />
+
+			<Label name="allScores" text="All scores:" font-size="20" font-color="0.8 0.3 0.8 0.8" x="0.2" y="0.85" width="0" height="0.05" />
+			<Button name="googleplay" text="" x="0.42" y="0.73" width="0.16" height="-1" image="buttons/googleplay.png" hoverimage="buttons/googleplay.png" pressedimage="buttons/googleplay.png" />	
+
+		</Panel>
+		<Panel name="loginPanel" x="0.1" y="0.2" width="0.8" height="0.7" image="windows/untitled.png" >
+			<Label name="allScores" text="Log in to see scores" font-size="20" font-color="0.8 0.3 0.8 0.8" x="0.2" y="0.2" width="0.6" height="0.05" />
+			<Button name="googleplay2" text="" x="0.42" y="0.3" width="0.16" height="-1" image="buttons/googleplay_gray.png" hoverimage="buttons/googleplay_gray.png" pressedimage="buttons/googleplay_gray.png" />	
+
+			<Label name="bestscoreText" text="Best score:" font-size="20" font-color="0.8 0.3 0.8 0.8" x="0.15" y="0.6" width="0" height="0.05" />
+			<Label name="namePlayer2" text="Player" font-size="20" font-color="0.8 0.3 0.8 0.8" x="0.15" y="0.70" width="0" height="0.05" />
+			<Label name="scorePlayer2" text="875"  font-size="20" font-color="0.9 0.88 0.4 0.8" pressed-font-color="0.8 0.7 0.3 0.8" x="0.55" y="0.70" width="0.3" height="0.05" />
+		</Panel>
 	</Panel>
-	<Button name="back" x="0.3" y="0.88" width="0.08" height="-1" image="buttons/back.png" hoverimage="buttons/back_hover.png" pressedimage="buttons/back_pressed.png" />
-	
+	<Button name="back"  x="0.3" y="0.87" width="0.08" height="-1" image="buttons/back.png" hoverimage="buttons/back_hover.png" pressedimage="buttons/back_pressed.png" />
 </document>
