@@ -14,6 +14,7 @@ namespace CoreEngine
     {
         ControlDocument * _document;
         ControlDocument * _query;
+        ControlDocument * _loading;
         bool _queryVisible;
 
         SceneSector* _sector;
@@ -23,6 +24,7 @@ namespace CoreEngine
         float _totalTime;
 
         int _skinId;
+        int _changeState;
 
     public:
         SelectShipStateProcessor();

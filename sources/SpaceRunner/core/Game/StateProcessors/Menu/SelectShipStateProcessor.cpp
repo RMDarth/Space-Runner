@@ -27,6 +27,9 @@ namespace CoreEngine
         _query->SetMouseUpHandler(this);
         _query->Hide();
 
+        _loading = new ControlDocument("GUI/loading.xml");
+        _loading->Hide();
+
         _document->RaisePriority(4);
         _query->RaisePriority(7);
 
@@ -40,6 +43,7 @@ namespace CoreEngine
 
         _skinId = SkinManager::Instance()->GetSkinID();
         _sparksEffect = nullptr;
+        _changeState = 0;
 
         UpdateModel();
 
@@ -64,6 +68,14 @@ namespace CoreEngine
                 delete _sparksEffect;
                 _sparksEffect = nullptr;
             }
+        }
+
+        if (_changeState == 1)
+            _changeState = 2;
+        else if (_changeState ==  2)
+        {
+            _changeState = 0;
+            return GameState::Level;
         }
 
         return GameState::ShipSelect;
@@ -106,6 +118,7 @@ namespace CoreEngine
     {
         _document->Hide();
         _query->Hide();
+        _loading->Hide();
         _sector->GetNode()->setVisible(false);
     }
 
@@ -113,7 +126,9 @@ namespace CoreEngine
     {
         _document->Show();
         _query->Hide();
+        _loading->Hide();
         _queryVisible = false;
+        _changeState = 0;
         _skinId = SkinManager::Instance()->GetSkinID();
         UpdateModel();
         UpdateHUD();
@@ -135,7 +150,13 @@ namespace CoreEngine
                 LevelManager::Instance()->SetStarted(false);
                 LevelManager::Instance()->SetLives(SkinManager::Instance()->LivesCount());
                 LevelManager::Instance()->ResetMovies();
-                Game::Instance()->ChangeState(GameState::Level);
+
+                _document->Hide();
+                _sector->GetNode()->setVisible(false);
+                _loading->Show();
+                _changeState = 1;
+
+                //Game::Instance()->ChangeState(GameState::Level);
             } else {
                 auto price = SkinManager::Instance()->GetPrice(_skinId);
                 auto bank = Scores::Instance()->GetTotalEnergy();

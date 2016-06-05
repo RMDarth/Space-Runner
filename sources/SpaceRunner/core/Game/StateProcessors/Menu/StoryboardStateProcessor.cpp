@@ -14,7 +14,7 @@ namespace CoreEngine
         _document->SetMouseUpHandler(this);
         _document->Hide();
 
-        _changeState = 0;
+
 
         auto sceneManager = RenderProcessor::Instance()->GetSceneManager();
         auto sceneNode = sceneManager->createSceneNode();
