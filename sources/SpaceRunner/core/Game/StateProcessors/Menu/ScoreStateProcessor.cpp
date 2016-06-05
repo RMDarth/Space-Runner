@@ -447,7 +447,7 @@ namespace CoreEngine
 
         if (!Config::Instance()->IsAchievementCompleted(9))
         {
-            // TODO: check if top-10 score (weekly or alltime)
+            // do nothing
         }
         else { achievementsCompleted++; }
 
@@ -566,8 +566,8 @@ namespace CoreEngine
                 else {
                     Game::Instance()->ChangeState(GameState::Storyboard);
                 }
-            } else if (LevelManager::Instance()->GetLevelType() == LevelType::Rush) {
-                // TODO: This button should show scores
+            } else if (LevelManager::Instance()->GetLevelType() == LevelType::Rush)
+            {
                 Game::Instance()->ChangeState(GameState::Level);
             }
             else

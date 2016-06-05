@@ -6,13 +6,13 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="com.android.vending.BILLING" />
 
-    <supports-screens
+    <!--supports-screens
 		android:anyDensity="true"
-		android:largeScreens="true"
-		android:normalScreens="true"
-		android:smallScreens="true"
-		android:xlargeScreens="false" />
-    <!--compatible-screens>
+		android:largeScreens="false"
+		android:normalScreens="false"
+		android:smallScreens="false"
+		android:xlargeScreens="true" /-->
+    <compatible-screens>
         <screen android:screenSize="normal" android:screenDensity="xhdpi"/>
         <screen android:screenSize="normal" android:screenDensity="480"/>
         <screen android:screenSize="normal" android:screenDensity="560"/>
@@ -20,7 +20,7 @@
         <screen android:screenSize="large" android:screenDensity="xhdpi"/>
         <screen android:screenSize="large" android:screenDensity="480"/>
         <screen android:screenSize="large" android:screenDensity="560"/>
-    </compatible-screens-->
+    </compatible-screens>
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"

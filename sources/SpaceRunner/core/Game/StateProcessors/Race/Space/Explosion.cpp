@@ -8,7 +8,7 @@ namespace CoreEngine
 {
 	const float Explosion::_explosionTime[4] = { 1.0f, 2.0f, 1.5f, 2.0f };;
 
-	Explosion::Explosion(Vector3 offset, float scale)
+	Explosion::Explosion(Vector3 offset, bool lowSparks, float scale)
 		: SpaceObject(offset, 0)
 	{
 		auto sceneManager = RenderProcessor::Instance()->GetSceneManager();
@@ -27,6 +27,9 @@ namespace CoreEngine
 			std::string templateName = str.str();
 			str.str("");
 			str << "Blast" << (i + 1);
+			if (i == 3 && lowSparks)
+				str << "Low";
+
 			_explosionEffect[i] = new ParticleSystem(sceneNodeChild, templateName, str.str(), _explosionTime[i], EXPLOSIONS_NUM - i, true);
 		}
 	}

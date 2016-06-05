@@ -139,6 +139,8 @@ namespace CoreEngine
             _document->GetControlByName("reviveforitem2")->SetVisibleRecursive(true);
             _document->GetControlByName("resurrectcount2")->SetText(to_string(Config::Instance()->GetResurrectCount()));
         }
+
+        _document->GetControlByName("noads")->SetVisible(false);
     }
 
     void SaveMeStateProcessor::ProcessEvent(Control* control, IEventHandler::EventType type, int x, int y)
@@ -169,6 +171,8 @@ namespace CoreEngine
                         Config::Instance()->SetScoreSubmitted(LevelManager::Instance()->GetScore());
                 }
 
+                _document->GetControlByName("noads")->SetVisible(false);
+
                 LevelManager::Instance()->SetStarted(true);
                 LevelManager::Instance()->IncreaseLive();
                 LevelManager::Instance()->DecreaseMovies();
@@ -176,7 +180,7 @@ namespace CoreEngine
                 _document->Hide();
                 Game::Instance()->ChangeState(GameState::Pause);
             } else {
-                // TODO: Show message that video ad not available
+                _document->GetControlByName("noads")->SetVisible(true);
             }
         }
         if (control->GetName() == "reviveforitem" || control->GetName() == "reviveforitem2")

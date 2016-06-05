@@ -754,7 +754,7 @@ namespace CoreEngine
                     //_explosionList.push_back(make_shared<Explosion>(cruiser->getPos(), 3.0f));
                     for (float offset = presetPos[0]; offset <= presetPos[2] + 1; offset += presetPos[2]/2)
                     {
-                        _explosionList.push_back(make_shared<Explosion>(Vector3(cruiser->getPos().x, cruiser->getPos().y, offset)));
+                        _explosionList.push_back(make_shared<Explosion>(Vector3(cruiser->getPos().x, cruiser->getPos().y, offset), true));
                     }
 
                     if (_shotCallback)
@@ -788,7 +788,7 @@ namespace CoreEngine
                     } else {
                         for (float offset = presetPos[0]; offset <= presetPos[2] + 1; offset += presetPos[2]/2)
                         {
-                            _explosionList.push_back(make_shared<Explosion>(Vector3(_boss->getPos().x, _boss->getPos().y, offset)));
+                            _explosionList.push_back(make_shared<Explosion>(Vector3(_boss->getPos().x, _boss->getPos().y, offset), true));
                         }
                     }
                     _currentObstacle.reset();

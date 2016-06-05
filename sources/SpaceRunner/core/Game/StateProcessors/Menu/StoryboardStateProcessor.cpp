@@ -14,8 +14,6 @@ namespace CoreEngine
         _document->SetMouseUpHandler(this);
         _document->Hide();
 
-
-
         auto sceneManager = RenderProcessor::Instance()->GetSceneManager();
         auto sceneNode = sceneManager->createSceneNode();
         sceneManager->getRootSceneNode()->addChild(sceneNode);
@@ -103,15 +101,15 @@ namespace CoreEngine
         RenderProcessor::Instance()->GetViewport()->getActualDimensions(left, top, width, height);
         float aspect = (float) width / height;
 
-        if (abs(_moveShift - x) > width * 0.1)
+        if (abs(_moveShift - x) > width * 0.1f)
             _bigMove = true;
 
         _document->OnMouseMove(x, y, 0);
         if (_moving)
         {
-            int x, y;
-            _document->GetControlByName("panel")->GetPos(x, y);
-            _sector->GetNode()->setPosition(Ogre::Vector3((float)x * aspect,0,0));
+            int xp, yp;
+            _document->GetControlByName("panel")->GetPos(xp, yp);
+            _sector->GetNode()->setPosition(Ogre::Vector3((float)xp * aspect,0,0));
             SetLightAndCamera();
         }
 
