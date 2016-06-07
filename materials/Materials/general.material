@@ -40,9 +40,8 @@ vertex_program diffuse_vs_GLSLES glsles
  
     default_params
     {
-		param_named_auto vpMat viewproj_matrix
-		param_named_auto invWMat inverse_world_matrix
-		param_named_auto boneMatrices world_matrix_array_3x4
+        param_named_auto wMat world_matrix
+        param_named_auto wvpMat worldviewproj_matrix
 
     }
 }

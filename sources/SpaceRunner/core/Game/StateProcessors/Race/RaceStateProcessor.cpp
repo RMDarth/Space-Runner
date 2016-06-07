@@ -709,11 +709,17 @@ namespace CoreEngine
     {
         if (LevelManager::Instance()->GetLevelType() == LevelType::Puzzle && LevelManager::Instance()->GetLevelNum() == 1)
         {
-            InitBomb();
+            if (!_bigBomb && _totalTime > 1.2f)
+            {
+                InitBomb();
+            }
         } else if (Config::Instance()->GetBombCount() > 0 && LevelManager::Instance()->GetLevelType() != LevelType::Challenge)
         {
-            InitBomb();
-            Config::Instance()->SetBombCount(Config::Instance()->GetBombCount() - 1);
+            if (!_bigBomb && _totalTime > 1.2f)
+            {
+                InitBomb();
+                Config::Instance()->SetBombCount(Config::Instance()->GetBombCount() - 1);
+            }
         }
     }
 
@@ -794,7 +800,11 @@ namespace CoreEngine
         }
         if (key == OIS::KC_SPACE)
         {
-            if (Config::Instance()->GetBombCount() > 0)
+            if (LevelManager::Instance()->GetLevelType() == LevelType::Puzzle && LevelManager::Instance()->GetLevelNum() == 1)
+            {
+                InitBomb();
+            }
+            else if (Config::Instance()->GetBombCount() > 0 && !_bigBomb)
             {
                 InitBomb();
                 Config::Instance()->SetBombCount(Config::Instance()->GetBombCount() - 1);
