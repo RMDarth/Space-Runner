@@ -58,6 +58,17 @@ namespace CoreEngine
                         break;
                 }
                 Scores::Instance()->UpdateTotalEnergy(energy);
+
+                if (!Config::Instance()->IsAchievementCompleted(12))
+                {
+                    if (Scores::Instance()->GetTotalEnergy() >= 10000)
+                    {
+                        Config::Instance()->SetAchievementCompleted(12);
+                        if (BillingProcessor::Instance()->IsLoggedGoogle())
+                            BillingProcessor::Instance()->SyncAchievements();
+                    }
+                }
+
                 UpdateButtons();
             }
         }

@@ -327,9 +327,16 @@ void BillingProcessor::SyncAchievements()
 	{
 		CoreEngine::Config::Instance()->SetAchievementCompleted(15);
 
-		jclass clazz = env->GetObjectClass(activity->clazz);
-		jmethodID methodID = env->GetMethodID(clazz, "UndateAchievement", "(II)V");
-		env->CallVoidMethod(activity->clazz, methodID, 15, 15);
+		{
+			jclass clazz = env->GetObjectClass(activity->clazz);
+			jmethodID methodID = env->GetMethodID(clazz, "UndateAchievement", "(II)V");
+			env->CallVoidMethod(activity->clazz, methodID, 15, 15);
+		}
+		{
+			jclass clazz = env->GetObjectClass(activity->clazz);
+			jmethodID methodID = env->GetMethodID(clazz, "UnlockAchievement", "(I)V");
+			env->CallVoidMethod(activity->clazz, methodID, 15);
+		}
 	}
 
 	jvm->DetachCurrentThread();

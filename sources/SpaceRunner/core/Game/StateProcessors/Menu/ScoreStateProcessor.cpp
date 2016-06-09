@@ -397,30 +397,35 @@ namespace CoreEngine
             {
                 ShowAchievement(3);
                 Config::Instance()->SetAchievementCompleted(3);
-                achievementsCompleted++;
             }
             if (levelNum >= 11)
             {
                 ShowAchievement(4);
                 Config::Instance()->SetAchievementCompleted(4);
-                achievementsCompleted++;
             }
             if (levelNumMax >= 5)
             {
                 ShowAchievement(5);
                 Config::Instance()->SetAchievementCompleted(5);
-                achievementsCompleted++;
             }
             if (levelNumMax >= 11)
             {
                 ShowAchievement(6);
                 Config::Instance()->SetAchievementCompleted(6);
-                achievementsCompleted++;
             }
             Config::Instance()->SetAchievementData(3, levelNum);
             Config::Instance()->SetAchievementData(4, levelNum);
             Config::Instance()->SetAchievementData(5, levelNumMax);
             Config::Instance()->SetAchievementData(6, levelNumMax);
+
+            if (Config::Instance()->IsAchievementCompleted(3))
+                achievementsCompleted++;
+            if (Config::Instance()->IsAchievementCompleted(4))
+                achievementsCompleted++;
+            if (Config::Instance()->IsAchievementCompleted(5))
+                achievementsCompleted++;
+            if (Config::Instance()->IsAchievementCompleted(6))
+                achievementsCompleted++;
         } else {
             achievementsCompleted += 4;
         }
@@ -432,14 +437,18 @@ namespace CoreEngine
             {
                 ShowAchievement(7);
                 Config::Instance()->SetAchievementCompleted(7);
-                achievementsCompleted++;
             }
+
             if (energy >= 1000)
             {
                 ShowAchievement(8);
                 Config::Instance()->SetAchievementCompleted(8);
-                achievementsCompleted++;
             }
+
+            if (Config::Instance()->IsAchievementCompleted(7))
+                achievementsCompleted++;
+            if (Config::Instance()->IsAchievementCompleted(8))
+                achievementsCompleted++;
         }
         else {
             achievementsCompleted += 2;
@@ -463,14 +472,17 @@ namespace CoreEngine
             {
                 ShowAchievement(2);
                 Config::Instance()->SetAchievementCompleted(2);
-                achievementsCompleted++;
             }
             if (totalEnergy >= 10000)
             {
                 ShowAchievement(12);
                 Config::Instance()->SetAchievementCompleted(12);
-                achievementsCompleted++;
             }
+
+            if (Config::Instance()->IsAchievementCompleted(2))
+                achievementsCompleted++;
+            if (Config::Instance()->IsAchievementCompleted(12))
+                achievementsCompleted++;
         } else {
             achievementsCompleted += 2;
         }
@@ -487,16 +499,20 @@ namespace CoreEngine
             {
                 ShowAchievement(10);
                 Config::Instance()->SetAchievementCompleted(10);
-                achievementsCompleted++;
             }
             if (shipsBought >= 5)
             {
                 ShowAchievement(13);
                 Config::Instance()->SetAchievementCompleted(13);
-                achievementsCompleted++;
             }
 
             Config::Instance()->SetAchievementData(13, shipsBought);
+
+            if (Config::Instance()->IsAchievementCompleted(10))
+                achievementsCompleted++;
+            if (Config::Instance()->IsAchievementCompleted(13))
+                achievementsCompleted++;
+
         } else {
             achievementsCompleted += 2;
         }
@@ -516,8 +532,6 @@ namespace CoreEngine
                 Config::Instance()->SetAchievementCompleted(14);
                 achievementsCompleted++;
             }
-
-            Config::Instance()->SetAchievementData(15, achievementsCompleted);
         }
         else { achievementsCompleted++; }
 

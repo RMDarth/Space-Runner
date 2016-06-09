@@ -854,6 +854,11 @@ namespace CoreEngine
                     _shield = false;
                     _shieldQueued = false;
                 }
+                if (_sparks)
+                {
+                    _sparks = false;
+                    _sector->GetNode()->removeChild(_sparksSector->GetNode());
+                }
                 _space->SetVisible(false);
             }
         }

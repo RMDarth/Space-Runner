@@ -16,6 +16,7 @@ namespace CoreEngine
 		ControlDocument * _document;
 
 		float _totalTime;
+		float _signTime;
 		bool _logged;
 		bool _updateSlider;
 		bool _firstRunDocument;

@@ -20,6 +20,7 @@ namespace CoreEngine
     MenuStateProcessor::MenuStateProcessor()
     {
         _totalTime = 0;
+        _signTime = 0;
         _logged = false;
         _updateSlider = false;
         GenerateLevel();
@@ -94,6 +95,16 @@ namespace CoreEngine
                 UpdateGooglePlayIcon(_document->GetControlByName("googleplay").get());
             }
             _logged = false;
+
+            if (Config::Instance()->IsSignedGoogle())
+            {
+                _signTime += time;
+                if (_signTime >= 1.0f)
+                {
+                    BillingProcessor::Instance()->LogInGoogle();
+                    _signTime = 0;
+                }
+            }
         }
 #endif
 

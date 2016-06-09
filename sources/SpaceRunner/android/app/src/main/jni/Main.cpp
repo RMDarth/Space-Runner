@@ -470,6 +470,11 @@ static void handleCmd(struct android_app* app, int32_t cmd)
 				if (gConfig && gConfig->IsMusicEnabled())
 					SoundSystem::Instance()->StartBackgroundMusic();
 
+				if (Config::Instance()->IsSignedGoogle())
+				{
+					BillingProcessor::Instance()->LogInGoogle();
+				}
+
                 //BillingProcessor::Instance()->SetProgressDialogVisible(false);
 			}
 			AConfiguration_delete(config);
