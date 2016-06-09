@@ -619,8 +619,11 @@ public class SpaceRunnerActivity extends NativeActivity implements GameHelper.Ga
 
     public void hideLoadingDialog()
     {
-        progressDialog.dismiss();
-        progressDialog = null;
+        if (progressDialog != null)
+        {
+            progressDialog.dismiss();
+            progressDialog = null;
+        }
     }
 
     // Our popup window, you will call it from your C/C++ code later

@@ -431,9 +431,10 @@ static void handleCmd(struct android_app* app, int32_t cmd)
 
 				Ogre::NameValuePairList opt;
 				opt["externalWindowHandle"] = Ogre::StringConverter::toString((int)app->window);
-				opt["androidConfig"] = Ogre::StringConverter::toString((int)config); 
+				opt["androidConfig"] = Ogre::StringConverter::toString((int)config);
+                opt["preserveContext"] = "true";
 
-				gRenderWnd = gRoot->createRenderWindow("OgreWindow", 0, 0, false, &opt);
+				gRenderWnd = gRoot->createRenderWindow("SpaceRush", 0, 0, false, &opt);
 				OgreApplication::Instance()->Init(gRoot, gRenderWnd);
 
 				setupScene(AConfiguration_getDensity(config));
@@ -459,7 +460,7 @@ static void handleCmd(struct android_app* app, int32_t cmd)
 			}
 			else
 			{
-                BillingProcessor::Instance()->SetProgressDialogVisible(true);
+                //BillingProcessor::Instance()->SetProgressDialogVisible(true);
 
 				if (!windowTerminated)
 					static_cast<Ogre::AndroidEGLWindow*>(gRenderWnd)->_destroyInternalResources();
@@ -469,7 +470,7 @@ static void handleCmd(struct android_app* app, int32_t cmd)
 				if (gConfig && gConfig->IsMusicEnabled())
 					SoundSystem::Instance()->StartBackgroundMusic();
 
-                BillingProcessor::Instance()->SetProgressDialogVisible(false);
+                //BillingProcessor::Instance()->SetProgressDialogVisible(false);
 			}
 			AConfiguration_delete(config);
 		}
@@ -487,6 +488,8 @@ static void handleCmd(struct android_app* app, int32_t cmd)
 	case APP_CMD_GAINED_FOCUS:
 		break;
 	case APP_CMD_LOST_FOCUS:
+		break;
+	default:
 		break;
 	}
 }
@@ -522,7 +525,7 @@ void android_main(struct android_app* state)
         LOGW(gRoot->getAvailableRenderers().at(0)->getName().c_str());
 		gRoot->initialise(false);
 
-		//Ogre::LogManager::getSingleton().setLogDetail(Ogre::LL_LOW);
+		Ogre::LogManager::getSingleton().setLogDetail(Ogre::LL_LOW);
 	}
 
 	state->onAppCmd = &handleCmd;
