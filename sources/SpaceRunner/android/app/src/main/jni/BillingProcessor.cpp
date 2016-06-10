@@ -286,9 +286,9 @@ void BillingProcessor::SyncAchievements()
 		return;
 	}
 
-	for (int i = 0; i < 16; i++)
+	for (int i = 0; i < 15; i++)
 	{
-		if (CoreEngine::Config::Instance()->IsAchievementCompleted(i) && CoreEngine::Config::Instance()->GetAchievementData(i) == 0)
+		if (CoreEngine::Config::Instance()->IsAchievementCompleted(i))
 		{
 			// Updating online status
 			completed++;
@@ -296,15 +296,6 @@ void BillingProcessor::SyncAchievements()
 			jclass clazz = env->GetObjectClass(activity->clazz);
 			jmethodID methodID = env->GetMethodID(clazz, "UnlockAchievement", "(I)V");
 			env->CallVoidMethod(activity->clazz, methodID, i);
-
-		} else if (CoreEngine::Config::Instance()->GetAchievementData(i) > 0)
-		{
-			if (CoreEngine::Config::Instance()->IsAchievementCompleted(i))
-				completed++;
-
-			jclass clazz = env->GetObjectClass(activity->clazz);
-			jmethodID methodID = env->GetMethodID(clazz, "UndateAchievement", "(II)V");
-			env->CallVoidMethod(activity->clazz, methodID, i, CoreEngine::Config::Instance()->GetAchievementData(i) );
 		}
 
 		if (!CoreEngine::Config::Instance()->IsAchievementCompleted(i))
@@ -322,21 +313,17 @@ void BillingProcessor::SyncAchievements()
 		}
 	}
 
+    if (completed > 0)
+    {
+        jclass clazz = env->GetObjectClass(activity->clazz);
+        jmethodID methodID = env->GetMethodID(clazz, "UndateAchievement", "(II)V");
+        env->CallVoidMethod(activity->clazz, methodID, 15, completed);
+    }
+
 	// Updating platinum achievement
 	if (completed >= 15 && !CoreEngine::Config::Instance()->IsAchievementCompleted(15))
 	{
 		CoreEngine::Config::Instance()->SetAchievementCompleted(15);
-
-		{
-			jclass clazz = env->GetObjectClass(activity->clazz);
-			jmethodID methodID = env->GetMethodID(clazz, "UndateAchievement", "(II)V");
-			env->CallVoidMethod(activity->clazz, methodID, 15, 15);
-		}
-		{
-			jclass clazz = env->GetObjectClass(activity->clazz);
-			jmethodID methodID = env->GetMethodID(clazz, "UnlockAchievement", "(I)V");
-			env->CallVoidMethod(activity->clazz, methodID, 15);
-		}
 	}
 
 	jvm->DetachCurrentThread();

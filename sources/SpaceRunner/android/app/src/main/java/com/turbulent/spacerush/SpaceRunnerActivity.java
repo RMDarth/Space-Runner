@@ -805,6 +805,7 @@ public class SpaceRunnerActivity extends NativeActivity implements GameHelper.Ga
             }
         }
         aBuffer.close();
+        achievementsSynced = true;
     }
 
     protected void SyncAchievements()
