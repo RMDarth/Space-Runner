@@ -50,4 +50,8 @@ private:
 	std::string GetLeaderboardName(int place, bool weekly);
 	int GetLeaderboardScore(int place, bool weekly);
 	int GetLeaderboardRank(int place, bool weekly);
+
+	bool IsAchivementUnlocked(int id);
+	void UnlockAchievement(int id);
+	void UpdateAchievement(int id, int data);
 };

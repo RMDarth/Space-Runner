@@ -239,7 +239,8 @@ void BillingProcessor::RequestRestore()
     jvm->DetachCurrentThread();
 }
 
-void BillingProcessor::SetProgressDialogVisible(bool visible) {
+void BillingProcessor::SetProgressDialogVisible(bool visible)
+{
 	ANativeActivity* activity = _state->activity;
 	JavaVM* jvm = _state->activity->vm;
 	JNIEnv* env = NULL;
@@ -268,44 +269,20 @@ void BillingProcessor::SetProgressDialogVisible(bool visible) {
 
 void BillingProcessor::SyncAchievements()
 {
-#ifdef CHINA_SHOP
-	return;
-#endif
-
 	int completed = 0;
 
-	ANativeActivity* activity = _state->activity;
-	JavaVM* jvm = _state->activity->vm;
-	JNIEnv* env = NULL;
-	jvm->GetEnv((void **)&env, JNI_VERSION_1_6);
-	jint res = jvm->AttachCurrentThread(&env, NULL);
-
-	if (res == JNI_ERR)
-	{
-		// Failed to retrieve JVM environment
-		return;
-	}
-
-	for (int i = 0; i < 15; i++)
+	for (int i = 0; i < 16; i++)
 	{
 		if (CoreEngine::Config::Instance()->IsAchievementCompleted(i))
 		{
 			// Updating online status
 			completed++;
-
-			jclass clazz = env->GetObjectClass(activity->clazz);
-			jmethodID methodID = env->GetMethodID(clazz, "UnlockAchievement", "(I)V");
-			env->CallVoidMethod(activity->clazz, methodID, i);
+			UnlockAchievement(i);
 		}
 
 		if (!CoreEngine::Config::Instance()->IsAchievementCompleted(i))
 		{
-			/// Updating offline cache
-			jclass clazz = env->GetObjectClass(activity->clazz);
-			jmethodID methodID = env->GetMethodID(clazz, "IsAchievementUnlocked", "(I)Z");
-			bool unlocked = env->CallBooleanMethod(activity->clazz, methodID, i );
-
-			if (unlocked)
+			if (IsAchivementUnlocked(i))
 			{
 				CoreEngine::Config::Instance()->SetAchievementCompleted(i);
 				completed++;
@@ -313,20 +290,12 @@ void BillingProcessor::SyncAchievements()
 		}
 	}
 
-    if (completed > 0)
-    {
-        jclass clazz = env->GetObjectClass(activity->clazz);
-        jmethodID methodID = env->GetMethodID(clazz, "UndateAchievement", "(II)V");
-        env->CallVoidMethod(activity->clazz, methodID, 15, completed);
-    }
-
 	// Updating platinum achievement
 	if (completed >= 15 && !CoreEngine::Config::Instance()->IsAchievementCompleted(15))
 	{
 		CoreEngine::Config::Instance()->SetAchievementCompleted(15);
+        UnlockAchievement(15);
 	}
-
-	jvm->DetachCurrentThread();
 }
 
 void BillingProcessor::ShareOnFacebook()
@@ -511,7 +480,6 @@ std::string BillingProcessor::GetLeaderboardName(int place, bool weekly)
     if (res == JNI_ERR)
         return false;
 
-    /// Updating offline cache
     jclass clazz = env->GetObjectClass(activity->clazz);
     jmethodID methodID = env->GetMethodID(clazz, "GetLeaderboardName", "(IZ)Ljava/lang/String;");
     jstring text = (jstring)env->CallObjectMethod(activity->clazz, methodID, place, weekly);
@@ -535,7 +503,6 @@ int BillingProcessor::GetLeaderboardScore(int place, bool weekly)
     if (res == JNI_ERR)
         return false;
 
-    /// Updating offline cache
     jclass clazz = env->GetObjectClass(activity->clazz);
     jmethodID methodID = env->GetMethodID(clazz, "GetLeaderboardScore", "(IZ)I");
     int score = env->CallIntMethod(activity->clazz, methodID, place, weekly);
@@ -555,11 +522,63 @@ int BillingProcessor::GetLeaderboardRank(int place, bool weekly)
     if (res == JNI_ERR)
         return false;
 
-    /// Updating offline cache
     jclass clazz = env->GetObjectClass(activity->clazz);
     jmethodID methodID = env->GetMethodID(clazz, "GetLeaderboardRank", "(IZ)I");
     int rank = env->CallIntMethod(activity->clazz, methodID, place, weekly);
     jvm->DetachCurrentThread();
 
     return rank;
+}
+
+bool BillingProcessor::IsAchivementUnlocked(int id)
+{
+	ANativeActivity* activity = _state->activity;
+	JavaVM* jvm = _state->activity->vm;
+	JNIEnv* env = NULL;
+	jvm->GetEnv((void **)&env, JNI_VERSION_1_6);
+	jint res = jvm->AttachCurrentThread(&env, NULL);
+
+	if (res == JNI_ERR)
+		return false;
+
+	jclass clazz = env->GetObjectClass(activity->clazz);
+	jmethodID methodID = env->GetMethodID(clazz, "IsAchievementUnlocked", "(I)Z");
+	bool unlocked = env->CallBooleanMethod(activity->clazz, methodID, id);
+	jvm->DetachCurrentThread();
+
+	return unlocked;
+}
+
+void BillingProcessor::UnlockAchievement(int id)
+{
+	ANativeActivity* activity = _state->activity;
+	JavaVM* jvm = _state->activity->vm;
+	JNIEnv* env = NULL;
+	jvm->GetEnv((void **)&env, JNI_VERSION_1_6);
+	jint res = jvm->AttachCurrentThread(&env, NULL);
+
+	if (res == JNI_ERR)
+		return;
+
+	jclass clazz = env->GetObjectClass(activity->clazz);
+	jmethodID methodID = env->GetMethodID(clazz, "UnlockAchievement", "(I)V");
+	env->CallVoidMethod(activity->clazz, methodID, id);
+	jvm->DetachCurrentThread();
+}
+
+void BillingProcessor::UpdateAchievement(int id, int data)
+{
+	ANativeActivity* activity = _state->activity;
+	JavaVM* jvm = _state->activity->vm;
+	JNIEnv* env = NULL;
+	jvm->GetEnv((void **)&env, JNI_VERSION_1_6);
+	jint res = jvm->AttachCurrentThread(&env, NULL);
+
+	if (res == JNI_ERR)
+		return;
+
+	jclass clazz = env->GetObjectClass(activity->clazz);
+	jmethodID methodID = env->GetMethodID(clazz, "UndateAchievement", "(II)V");
+	env->CallVoidMethod(activity->clazz, methodID, id, data);
+	jvm->DetachCurrentThread();
 }
