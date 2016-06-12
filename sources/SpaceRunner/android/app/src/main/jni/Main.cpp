@@ -270,6 +270,7 @@ static void setupScene(int dpi)
 
 	Ogre::RTShader::ShaderGenerator::getSingletonPtr()->addSceneManager(gSceneMgr);
 	Ogre::RTShader::ShaderGenerator::getSingletonPtr()->invalidateScheme(Ogre::RTShader::ShaderGenerator::DEFAULT_SCHEME_NAME);
+    gSceneMgr->getRootSceneNode()->removeAllChildren();
 }
 
 static int32_t handleInput(struct android_app* app, AInputEvent* event) 

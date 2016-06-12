@@ -40,7 +40,7 @@ void RenderProcessor::Init(int dpi)
 	camera->setNearClipDistance(5);
 
 	_viewport = window->addViewport(camera);
-	_viewport->setBackgroundColour(Ogre::ColourValue(0.28f,0.38f,0.75f));
+	_viewport->setBackgroundColour(Ogre::ColourValue(0.0f,0.0f,0.0f));
 	_viewport->setMaterialScheme(Ogre::RTShader::ShaderGenerator::DEFAULT_SCHEME_NAME);
 	camera->setAutoAspectRatio(true);
 

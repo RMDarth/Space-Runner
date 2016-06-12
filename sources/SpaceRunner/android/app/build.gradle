@@ -12,8 +12,8 @@ model {
             applicationId =  "com.turbulent.spacerush"
             minSdkVersion.apiLevel = 15
             targetSdkVersion.apiLevel = 19
-            versionCode = 42
-            versionName = "0.9.15-hd2"
+            versionCode = 45
+            versionName = "0.9.16-hd2"
             multiDexEnabled = true
 
             buildConfigFields.with {

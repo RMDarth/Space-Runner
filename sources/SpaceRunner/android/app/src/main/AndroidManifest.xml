@@ -35,7 +35,7 @@
         <activity
                  android:name=".SpaceRunnerActivity"
                  android:screenOrientation="landscape"
-                 android:configChanges="orientation|keyboardHidden"
+                 android:configChanges="orientation|keyboardHidden|screenSize|screenLayout|uiMode"
                  android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"
                  android:keepScreenOn="true">
                  <meta-data android:name="android.app.lib_name" android:value="SpaceRunner" />
