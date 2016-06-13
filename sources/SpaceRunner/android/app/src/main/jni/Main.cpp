@@ -492,6 +492,7 @@ static void handleCmd(struct android_app* app, int32_t cmd)
 
 		break;
 	case APP_CMD_GAINED_FOCUS:
+		OgreApplication::Instance()->WindowResized();
 		break;
 	case APP_CMD_LOST_FOCUS:
 		break;

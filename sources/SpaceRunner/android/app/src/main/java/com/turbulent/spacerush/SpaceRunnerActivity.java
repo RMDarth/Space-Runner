@@ -22,6 +22,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.view.View;
 import android.widget.PopupWindow;
 import android.widget.Toast;
 import android.media.AudioManager;
@@ -68,6 +69,8 @@ import com.turbulent.spacerush.utils.IabHelper;
 import com.turbulent.spacerush.utils.IabResult;
 import com.turbulent.spacerush.utils.Inventory;
 import com.turbulent.spacerush.utils.Purchase;
+
+import org.codechimp.apprater.AppRater;
 
 
 public class SpaceRunnerActivity extends NativeActivity implements GameHelper.GameHelperListener, ResultCallback<LoadAchievementsResult>, IabBroadcastReceiver.IabBroadcastListener
@@ -261,9 +264,8 @@ public class SpaceRunnerActivity extends NativeActivity implements GameHelper.Ga
        // uiHelper.onCreate(savedInstanceState);
 
         // rate
-        //AppRater.app_launched(this);
-        //AppRater.showRateDialog(this, null);
-
+        AppRater.app_launched(this);
+        //AppRater.showRateDialog(this);
 
         // sound
         mSoundPool = new SoundPool(5, AudioManager.STREAM_MUSIC, 0);
@@ -305,7 +307,8 @@ public class SpaceRunnerActivity extends NativeActivity implements GameHelper.Ga
         final String app_id = "Test_Android";
         vunglePub.init(this, app_id);
         final AdConfig globalAdConfig = vunglePub.getGlobalAdConfig();
-        globalAdConfig.setTransitionAnimationEnabled(true);
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT)
+            globalAdConfig.setImmersiveMode(true);
 
         // inapp
         String base64EncodedPublicKey = SecurityConsts.PUBLIC_KEY;
@@ -1098,7 +1101,7 @@ public class SpaceRunnerActivity extends NativeActivity implements GameHelper.Ga
         }
     }
 
-    /*@Override
+    @Override
     public void onWindowFocusChanged(boolean hasFocus) {
             super.onWindowFocusChanged(hasFocus);
         if (hasFocus && android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
@@ -1109,5 +1112,5 @@ public class SpaceRunnerActivity extends NativeActivity implements GameHelper.Ga
                     | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                     | View.SYSTEM_UI_FLAG_FULLSCREEN
                     | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);}
-    }*/
+    }
 }

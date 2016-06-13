@@ -104,6 +104,7 @@ namespace CoreEngine
             }
 
             _document->Hide();
+            _query->Hide();
             Game::Instance()->ChangeState(GameState::Score);
         }
         if (key == OIS::KC_R)
@@ -119,6 +120,7 @@ namespace CoreEngine
     void SaveMeStateProcessor::Hide()
     {
         _document->Hide();
+        _query->Hide();
     }
 
     void SaveMeStateProcessor::Show()

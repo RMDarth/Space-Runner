@@ -281,7 +281,7 @@ namespace CoreEngine
 
     void Config::SetScoreSubmitted(int value)
     {
-        if (_scoreSubmitted < value || _scoreSubmitted == 0)
+        if (_scoreSubmitted < value || value == 0)
         {
             _scoreSubmitted = value;
         }

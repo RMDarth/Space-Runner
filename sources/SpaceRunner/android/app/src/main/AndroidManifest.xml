@@ -37,7 +37,7 @@
                  android:screenOrientation="landscape"
                  android:configChanges="orientation|keyboardHidden|screenSize|screenLayout|uiMode"
                  android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"
-                 android:keepScreenOn="true">
+                 android:keepScreenOn="false">
                  <meta-data android:name="android.app.lib_name" android:value="SpaceRunner" />
                  <intent-filter>
                                 <action android:name="android.intent.action.MAIN" />

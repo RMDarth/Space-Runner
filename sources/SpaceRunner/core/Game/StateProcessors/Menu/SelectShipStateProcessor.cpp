@@ -109,7 +109,13 @@ namespace CoreEngine
     {
         if (key == OIS::KC_ESCAPE)
         {
-            Game::Instance()->ChangeState(GameState::Level);
+            if (LevelManager::Instance()->GetLevelType() == LevelType::Rush)
+            {
+                Game::Instance()->ChangeState(GameState::MainMenu);
+            }
+            else {
+                Game::Instance()->ChangeState(GameState::Storyboard);
+            }
         }
     }
 
