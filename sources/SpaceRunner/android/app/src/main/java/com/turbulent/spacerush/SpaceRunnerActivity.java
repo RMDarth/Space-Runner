@@ -152,7 +152,7 @@ public class SpaceRunnerActivity extends NativeActivity implements GameHelper.Ga
     boolean adshidden = false;
 
     // Interstitial
-    PublisherInterstitialAd interstitialAd;
+    // PublisherInterstitialAd interstitialAd;
 
     // VideoAd
     final VunglePub vunglePub = VunglePub.getInstance();
@@ -279,6 +279,8 @@ public class SpaceRunnerActivity extends NativeActivity implements GameHelper.Ga
 
 
         /// Ads
+        MobileAds.initialize(getApplicationContext(), SecurityConsts.AdmobAppId);
+
         // Make your custom init here
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         _activity = this;
@@ -286,13 +288,13 @@ public class SpaceRunnerActivity extends NativeActivity implements GameHelper.Ga
         adView = new AdView(this);
         adView.setAdSize(AdSize.BANNER);
         //adView.setAdUnitId("ca-app-pub-4708479882450965/2339704886");
-        adView.setAdUnitId("ca-app-pub-3940256099942544/6300978111");
+        adView.setAdUnitId(SecurityConsts.AdmobMainBannerId);
 
         MarginLayoutParams params = new MarginLayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
         adView.setLayoutParams(params);
 
         // Interstitial ads
-        interstitialAd = new PublisherInterstitialAd(this);
+        /*interstitialAd = new PublisherInterstitialAd(this);
         interstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
 
         interstitialAd.setAdListener(new AdListener() {
@@ -301,11 +303,10 @@ public class SpaceRunnerActivity extends NativeActivity implements GameHelper.Ga
                 requestNewInterstitial();
             }
         });
-        requestNewInterstitial();
+        requestNewInterstitial(); */
 
         // Video ads
-        final String app_id = "Test_Android";
-        vunglePub.init(this, app_id);
+        vunglePub.init(this, SecurityConsts.VungleId);
         final AdConfig globalAdConfig = vunglePub.getGlobalAdConfig();
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT)
             globalAdConfig.setImmersiveMode(true);
@@ -453,13 +454,13 @@ public class SpaceRunnerActivity extends NativeActivity implements GameHelper.Ga
             beginUserInitiatedSignIn();
     }
 
-    private void requestNewInterstitial() {
+    /*private void requestNewInterstitial() {
         PublisherAdRequest adRequest = new PublisherAdRequest.Builder()
                 .addTestDevice("CEC26E9D5815BCF8D34E8AE04DAE41EB")
                 .build();
 
         interstitialAd.loadAd(adRequest);
-    }
+    }*/
 
     public boolean ShowVideoAd()
     {
@@ -685,6 +686,7 @@ public class SpaceRunnerActivity extends NativeActivity implements GameHelper.Ga
                     adRequestBuilder.addTestDevice(AdRequest.DEVICE_ID_EMULATOR);
                     adRequestBuilder.addTestDevice("8C82A7CAD9096B2E6F7F8FA534C75C90");
                     adRequestBuilder.addTestDevice("CEC26E9D5815BCF8D34E8AE04DAE41EB");
+                    adRequestBuilder.addTestDevice("BEF45C49826651B9AEDA604ABB8471A1");
                     _activity.adView.loadAd(adRequestBuilder.build());
 
                     popUp.setContentView(layout);
