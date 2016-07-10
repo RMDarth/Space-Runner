@@ -37,6 +37,7 @@ public:
 	void ShowAchievements();
 	void ShowLeaderboard();
 	bool ShowVideoAds();
+	void ShowInterstitial();
 	void RequestBackup();
 	void RequestRestore();
 	void ShareOnFacebook();

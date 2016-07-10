@@ -4,6 +4,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="com.android.vending.BILLING" />
 
     <!--supports-screens
@@ -49,6 +50,12 @@
             android:name="com.vungle.publisher.FullScreenAdActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen"/>
+
+        <activity android:name="com.chartboost.sdk.CBImpressionActivity"
+            android:excludeFromRecents="true"
+            android:hardwareAccelerated="true"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen"
+            android:configChanges="keyboardHidden|orientation|screenSize"/>
 
         <!-- AdMobActivity definition -->
         <activity android:name="com.google.android.gms.ads.AdActivity" android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize" />

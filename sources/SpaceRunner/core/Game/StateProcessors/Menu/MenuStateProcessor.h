@@ -20,6 +20,7 @@ namespace CoreEngine
 		bool _logged;
 		bool _updateSlider;
 		bool _firstRunDocument;
+		bool _showInterstitial;
 
 	public:
 		MenuStateProcessor();

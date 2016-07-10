@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
-//import org.codechimp.apprater.AppRater;
+import com.chartboost.sdk.*;
 
 import android.app.ActivityManager;
 import android.app.ActivityManager.MemoryInfo;
@@ -38,6 +38,8 @@ import android.widget.LinearLayout;
 import android.view.ViewGroup.LayoutParams;
 import android.view.ViewGroup.MarginLayoutParams;
 
+import com.chartboost.sdk.Libraries.CBLogging;
+import com.turbulent.spacerush.utils.Security;
 import com.vungle.publisher.AdConfig;
 import com.vungle.publisher.VunglePub;
 
@@ -294,16 +296,9 @@ public class SpaceRunnerActivity extends NativeActivity implements GameHelper.Ga
         adView.setLayoutParams(params);
 
         // Interstitial ads
-        /*interstitialAd = new PublisherInterstitialAd(this);
-        interstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
-
-        interstitialAd.setAdListener(new AdListener() {
-            @Override
-            public void onAdClosed() {
-                requestNewInterstitial();
-            }
-        });
-        requestNewInterstitial(); */
+        Chartboost.startWithAppId(this, SecurityConsts.ChartBoostAppId, SecurityConsts.ChartBoostAppSignature);
+        Chartboost.setLoggingLevel(CBLogging.Level.ALL);
+        Chartboost.onCreate(this);
 
         // Video ads
         vunglePub.init(this, SecurityConsts.VungleId);
@@ -380,6 +375,8 @@ public class SpaceRunnerActivity extends NativeActivity implements GameHelper.Ga
     @Override
     protected void onStart() {
         super.onStart();
+        Chartboost.onStart(this);
+        Chartboost.cacheInterstitial(CBLocation.LOCATION_DEFAULT);
     }
 
 
@@ -390,6 +387,7 @@ public class SpaceRunnerActivity extends NativeActivity implements GameHelper.Ga
         vunglePub.onResume();
        // uiHelper.onResume();
        // AppEventsLogger.activateApp(this);
+        Chartboost.onResume(this);
     }
 
     @Override
@@ -404,6 +402,7 @@ public class SpaceRunnerActivity extends NativeActivity implements GameHelper.Ga
         vunglePub.onPause();
         //uiHelper.onPause();
         //AppEventsLogger.deactivateApp(this);
+        Chartboost.onPause(this);
     }
 
     public int LoadSound(String name)
@@ -469,6 +468,13 @@ public class SpaceRunnerActivity extends NativeActivity implements GameHelper.Ga
             return true;
         }
         return false;
+    }
+
+    public void ShowInterstitial()
+    {
+        Log.w(TAG, "Showing interstitial ads");
+        Chartboost.showInterstitial(CBLocation.LOCATION_DEFAULT);
+
     }
 
     public void RequestBackup() {
@@ -732,6 +738,7 @@ public class SpaceRunnerActivity extends NativeActivity implements GameHelper.Ga
         super.onStop();
 
         mHelper.onStop();
+        Chartboost.onStop(this);
     }
 
     // Do some cleanup
@@ -752,6 +759,17 @@ public class SpaceRunnerActivity extends NativeActivity implements GameHelper.Ga
             mPurchaseHelper.disposeWhenFinished();
             mPurchaseHelper = null;
         }
+
+        Chartboost.onDestroy(this);
+    }
+
+    @Override
+    public void onBackPressed() {
+        // If an interstitial is on screen, close it.
+        if (Chartboost.onBackPressed())
+            return;
+        else
+            super.onBackPressed();
     }
 
     ///// google services

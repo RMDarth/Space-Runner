@@ -131,6 +131,9 @@ namespace CoreEngine
             int i;
             for (i = 0; i < scores.size(); i++)
             {
+                if (i == 5 && scores[i].place < 6)
+                    break;
+
                 auto suffix = to_string(i+1);
                 auto nameControl = _document->GetControlByName("name" + suffix);
                 auto scoreControl = _document->GetControlByName("score" + suffix);

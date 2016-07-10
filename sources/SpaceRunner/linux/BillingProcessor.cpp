@@ -107,10 +107,10 @@ std::vector<ScoreItem> BillingProcessor::GetScores(bool weekly)
 	{
 		result.push_back({"Chuck Norris", 10000, 1});
 		result.push_back({"Vladimir Putin", 8000, 2});
-		result.push_back({"John Snow", 7123, 3});
+		result.push_back({"Fduch", 7123, 3});
 		result.push_back({"Barak Obama", 4321, 4});
 		result.push_back({"Elvis Presley", 1200, 5});
-		result.push_back({"Fduch", 875, 28});
+		result.push_back({"Fduch", 7123, 3});
 	} else {
 		result.push_back({"Chuck Norris", 10000, 1});
 		result.push_back({"Vladimir Putin", 8000, 2});
@@ -128,6 +128,13 @@ bool BillingProcessor::IsScoresUpdated()
 {
 	return false;
 }
+
+void BillingProcessor::ShowInterstitial()
+{
+
+}
+
+
 
 
 

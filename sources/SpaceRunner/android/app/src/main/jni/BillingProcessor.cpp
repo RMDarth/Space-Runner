@@ -174,6 +174,26 @@ bool BillingProcessor::ShowVideoAds()
 	return result;
 }
 
+void BillingProcessor::ShowInterstitial()
+{
+	ANativeActivity* activity = _state->activity;
+	JavaVM* jvm = _state->activity->vm;
+	JNIEnv* env = NULL;
+	jvm->GetEnv((void **)&env, JNI_VERSION_1_6);
+	jint res = jvm->AttachCurrentThread(&env, NULL);
+
+	if (res == JNI_ERR)
+	{
+		// Failed to retrieve JVM environment
+		return;
+	}
+
+	jclass clazz = env->GetObjectClass(activity->clazz);
+	jmethodID methodID = env->GetMethodID(clazz, "ShowInterstitial", "()V");
+	env->CallVoidMethod(activity->clazz, methodID);
+	jvm->DetachCurrentThread();
+}
+
 
 void BillingProcessor::UpdateScore(int score)
 {

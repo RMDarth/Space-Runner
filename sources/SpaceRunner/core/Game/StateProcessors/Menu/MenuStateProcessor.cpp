@@ -23,6 +23,7 @@ namespace CoreEngine
         _signTime = 0;
         _logged = false;
         _updateSlider = false;
+        _showInterstitial = false;
         GenerateLevel();
 
         auto sceneManager = RenderProcessor::Instance()->GetSceneManager();
@@ -54,10 +55,6 @@ namespace CoreEngine
         _document = new ControlDocument("GUI/firstrunmenu.xml");
         _document->SetMouseUpHandler(this);
         _firstRunDocument = true;
-
-#ifdef CHINA_SHOP
-        UpdateGooglePlayIcon(_document->GetControlByName("googleplay").get());
-#endif
     }
 
     MenuStateProcessor::~MenuStateProcessor()
@@ -131,7 +128,6 @@ namespace CoreEngine
     {
         auto sceneManager = RenderProcessor::Instance()->GetSceneManager();
 
-
         std::string image = "gamelogo.png";
         // Create background material
         Ogre::MaterialPtr material = Ogre::MaterialManager::getSingleton().create(image, "General");
@@ -168,7 +164,7 @@ namespace CoreEngine
         auto camera = RenderProcessor::Instance()->GetCamera();
         Vector3 pos = Vector3(
                 CAMERA_RADIUS*cos(_totalTime * CAMERA_SPEED),
-                1.5 * SIZE,
+                1.5f * SIZE,
                 CAMERA_RADIUS*sin(_totalTime * CAMERA_SPEED));
         camera->SetPosition(pos);
         camera->SetTarget(Vector3(0, 1.5 * SIZE,0));
@@ -188,6 +184,7 @@ namespace CoreEngine
     void MenuStateProcessor::Show()
     {
         using namespace std;
+
         if (Scores::Instance()->GetBestStars(1) > 0 && _firstRunDocument)
         {
             _document->Hide();
@@ -196,6 +193,14 @@ namespace CoreEngine
             //delete _document;
             _document = new ControlDocument("GUI/startmenu.xml");
             _document->SetMouseUpHandler(this);
+        }
+        if (_firstRunDocument)
+        {
+            BillingProcessor::Instance()->LogInGoogle();
+        }
+        if (_showInterstitial)
+        {
+            BillingProcessor::Instance()->ShowInterstitial();
         }
 
         _sector->GetNode()->setVisible(true);
@@ -208,6 +213,7 @@ namespace CoreEngine
 
         _document->GetControlByName("energybank")->SetText("Bank: §" + to_string(Scores::Instance()->GetTotalEnergy()));
         _document->GetControlByName("bestscore")->SetText("Best score: " + to_string(Scores::Instance()->GetBestArcadeScore()));
+        _showInterstitial = !_showInterstitial;
     }
 
     void MenuStateProcessor::UpdateSlider()

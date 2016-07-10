@@ -31,6 +31,8 @@ namespace CoreEngine
 		bool _soundsLoaded;
 		int _soundsPlayed;
 
+		bool _interstitialShown;
+
 		void InitSound();
 		void HideContinue();
 

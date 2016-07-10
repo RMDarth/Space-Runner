@@ -126,7 +126,11 @@ namespace CoreEngine
         stream << "Score: " << (int)_currentScore;
         control->SetText(stream.str());
 
-        float deltaTime = _span / _stars;
+        float deltaTime = 1.0f;
+        if (_stars > 0)
+        {
+            deltaTime = _span / _stars;
+        }
 
         if (_totalTime > deltaTime && _stars > 0)
         {
@@ -157,6 +161,12 @@ namespace CoreEngine
                 if (Config::Instance()->IsSoundEnabled())
                     _starSound->Play();
             }
+        }
+        if (_totalTime > deltaTime * (_stars + 1) && !_interstitialShown)
+        {
+
+            _interstitialShown = true;
+            BillingProcessor::Instance()->ShowInterstitial();
         }
 
         return GameState::Score;
@@ -222,6 +232,7 @@ namespace CoreEngine
         _document->Show();
         _achievementWindow->Hide();
         _soundsPlayed = 0;
+        _interstitialShown = false;
         //_achievementTime = 0;
 
 
@@ -613,6 +624,8 @@ namespace CoreEngine
                 _document->Hide();
                 Game::Instance()->ChangeState(GameState::Challenges);
             }
+
+            //BillingProcessor::Instance()->ShowInterstitial();
         }
     }
 }
