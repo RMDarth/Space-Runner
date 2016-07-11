@@ -26,6 +26,7 @@ public:
 	void LogInGoogle();
 	void LogOutGoogle();
 	bool IsLoggedGoogle();
+	bool IsPlayServicesAvailable();
 
 	void UpdateScore(int score);
 	void SyncAchievements();

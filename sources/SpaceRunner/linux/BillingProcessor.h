@@ -27,6 +27,7 @@ public:
 	void LogInGoogle();
 	void LogOutGoogle();
 	bool IsLoggedGoogle();
+	bool IsPlayServicesAvailable();
 
 	void RequestBackup();
 	void RequestRestore();

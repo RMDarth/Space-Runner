@@ -196,7 +196,10 @@ namespace CoreEngine
         }
         if (_firstRunDocument)
         {
-            BillingProcessor::Instance()->LogInGoogle();
+            if (BillingProcessor::Instance()->IsPlayServicesAvailable())
+            {
+                BillingProcessor::Instance()->LogInGoogle();
+            }
         }
         if (_showInterstitial)
         {

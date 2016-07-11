@@ -134,6 +134,13 @@ void BillingProcessor::ShowInterstitial()
 
 }
 
+bool BillingProcessor::IsPlayServicesAvailable()
+{
+	return true;
+}
+
+
+
 
 
 

@@ -39,6 +39,9 @@ import android.view.ViewGroup.LayoutParams;
 import android.view.ViewGroup.MarginLayoutParams;
 
 import com.chartboost.sdk.Libraries.CBLogging;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.common.api.GoogleApiActivity;
 import com.turbulent.spacerush.utils.Security;
 import com.vungle.publisher.AdConfig;
 import com.vungle.publisher.VunglePub;
@@ -432,6 +435,12 @@ public class SpaceRunnerActivity extends NativeActivity implements GameHelper.Ga
         signOut();
     }
 
+    public boolean IsGoogleServicesAvailable()
+    {
+        int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
+        return resultCode == ConnectionResult.SUCCESS;
+    }
+
     public boolean IsGoogleLogged()
     {
         return isSignedIn();
@@ -474,6 +483,7 @@ public class SpaceRunnerActivity extends NativeActivity implements GameHelper.Ga
     {
         Log.w(TAG, "Showing interstitial ads");
         Chartboost.showInterstitial(CBLocation.LOCATION_DEFAULT);
+        Chartboost.cacheInterstitial(CBLocation.LOCATION_DEFAULT);
 
     }
 

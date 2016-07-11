@@ -104,6 +104,28 @@ bool BillingProcessor::IsLoggedGoogle()
 	return result;
 }
 
+bool BillingProcessor::IsPlayServicesAvailable()
+{
+	ANativeActivity* activity = _state->activity;
+	JavaVM* jvm = _state->activity->vm;
+	JNIEnv* env = NULL;
+	jvm->GetEnv((void **)&env, JNI_VERSION_1_6);
+	jint res = jvm->AttachCurrentThread(&env, NULL);
+
+	if (res == JNI_ERR)
+	{
+		// Failed to retrieve JVM environment
+		return false;
+	}
+
+	jclass clazz = env->GetObjectClass(activity->clazz);
+	jmethodID methodID = env->GetMethodID(clazz, "IsGoogleServicesAvailable", "()Z");
+	bool result = env->CallBooleanMethod(activity->clazz, methodID);
+	jvm->DetachCurrentThread();
+
+	return result;
+}
+
 void BillingProcessor::ShowAchievements()
 {
 #ifdef CHINA_SHOP
