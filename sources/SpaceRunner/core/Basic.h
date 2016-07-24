@@ -75,9 +75,9 @@ namespace CoreEngine
 
 		inline void Abs()
 		{
-			x = abs(x);
-			y = abs(y);
-			z = abs(z);
+			x = fabs(x);
+			y = fabs(y);
+			z = fabs(z);
 		}
 
 		void Normalize();

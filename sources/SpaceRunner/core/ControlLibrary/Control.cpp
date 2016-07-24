@@ -557,8 +557,8 @@ bool Control::OnMouseMove(int x, int y, float deltaTime)
     return false;
 }
 
-bool Control::OnMouseDown(int x, int y)  
-{ 
+bool Control::OnMouseDown(int x, int y)
+{
     if (IsInside(x, y) && _visible)
     {
         if (_usePushMaterial)
